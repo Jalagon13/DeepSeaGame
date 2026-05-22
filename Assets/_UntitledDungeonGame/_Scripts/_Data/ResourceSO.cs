@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Resource Data", menuName = "Data/ResourceData")]
     public class ResourceSO : ScriptableObject

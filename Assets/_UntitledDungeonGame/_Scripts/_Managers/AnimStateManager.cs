@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public static class AnimStateManager
     {

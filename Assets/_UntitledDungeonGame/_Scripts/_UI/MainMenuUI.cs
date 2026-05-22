@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class MainMenuUI : MonoBehaviour
     {

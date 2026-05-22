@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class Item : NetworkBehaviour
     {

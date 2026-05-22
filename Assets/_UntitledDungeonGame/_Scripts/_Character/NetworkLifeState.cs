@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class NetworkLifeState : NetworkBehaviour
     {

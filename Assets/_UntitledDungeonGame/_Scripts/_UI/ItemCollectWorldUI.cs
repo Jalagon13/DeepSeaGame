@@ -5,7 +5,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     // Facilitates destination of item collect plate
     public class ItemCollectWorldUI : MonoBehaviour

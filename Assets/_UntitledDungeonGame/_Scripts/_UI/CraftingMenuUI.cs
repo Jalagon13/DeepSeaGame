@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class CraftingMenuUI : MonoBehaviour
     {

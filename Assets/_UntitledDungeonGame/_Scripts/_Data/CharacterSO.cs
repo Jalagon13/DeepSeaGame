@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Character Data", menuName = "Data/CharacterData")]
     public class CharacterSO : ScriptableObject

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
 
     // NTFS: Create separate Player and Npc server character movement scripts later

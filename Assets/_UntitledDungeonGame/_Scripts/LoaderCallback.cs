@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class LoaderCallback : MonoBehaviour
     {

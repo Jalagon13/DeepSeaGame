@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     [Serializable]
     public class Loot

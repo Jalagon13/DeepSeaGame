@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     [RequireComponent(typeof(NetworkHealthState), typeof(NetworkLifeState))]
     public class ServerCharacter : NetworkBehaviour

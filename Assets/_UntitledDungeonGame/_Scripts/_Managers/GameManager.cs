@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class GameManager : MonoBehaviour
     {

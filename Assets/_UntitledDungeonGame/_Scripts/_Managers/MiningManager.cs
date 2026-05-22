@@ -4,7 +4,7 @@ using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class MiningManager : MonoBehaviour
     {

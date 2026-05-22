@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     [Serializable]
     public class AnimationConfigSO

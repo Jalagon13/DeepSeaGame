@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class GameInput : MonoBehaviour
     {

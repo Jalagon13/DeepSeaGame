@@ -6,7 +6,7 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class ServerSpriteAnimHandler : NetworkBehaviour
     {

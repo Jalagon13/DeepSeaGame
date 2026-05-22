@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class InventoryManager : MonoBehaviour
     {

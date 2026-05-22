@@ -3,8 +3,9 @@ using FMODUnity;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace UntitledDungeonGame
+namespace UntitledDeepSeaGame
 {
     public class PlayerCamera : NetworkBehaviour
     {
@@ -81,7 +82,7 @@ namespace UntitledDungeonGame
                 _cachedMinCorner = currentMin;
                 _cachedMaxCorner = currentMax;
                 
-                LightmapManager.Instance.UpdateLightMapBounds(_cachedMinCorner, _cachedMaxCorner);
+                // LightmapManager.Instance.UpdateLightMapBounds(_cachedMinCorner, _cachedMaxCorner);
             }
         }
 
@@ -94,6 +95,8 @@ namespace UntitledDungeonGame
             _cinemachineCam.enabled = true;
 
             SetListenerToPlayer();
+            
+            SceneManager.LoadScene("New Scene", LoadSceneMode.Additive);
         }
 
         private void SetListenerToPlayer()
