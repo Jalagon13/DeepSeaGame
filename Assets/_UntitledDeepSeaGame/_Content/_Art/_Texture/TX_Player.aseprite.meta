@@ -36,7 +36,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 16
+    spritePixelsToUnits: 8
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639145160810060090
+  platformSettingsDirtyTick: 639151208429298730
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -160,7 +160,7 @@ ScriptedImporter:
       x: 2
       y: 4
       width: 16
-      height: 24
+      height: 22
     spriteID: 35a707cd4d01148cfbe796c8edb4e8e2
     spriteBone: []
     spriteOutline: []
@@ -181,7 +181,7 @@ ScriptedImporter:
       x: 18
       y: 4
       width: 16
-      height: 24
+      height: 22
     spriteID: 6601a5485bf204099904a2711a8bae36
     spriteBone: []
     spriteOutline: []
@@ -202,7 +202,7 @@ ScriptedImporter:
       x: 34
       y: 4
       width: 16
-      height: 24
+      height: 22
     spriteID: 62d1544df424a4d3ca9c02390ebbf10a
     spriteBone: []
     spriteOutline: []

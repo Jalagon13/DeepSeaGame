@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a3e0d4d73cd2b469f8e66a28d3e708dd
+guid: 814e31fe4b9e44fadbfeb7e1b5f7a746
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -36,7 +36,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 16
+    spritePixelsToUnits: 8
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639143831071887940
+  platformSettingsDirtyTick: 639151181502264900
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,19 +127,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Tileset_Dungeon
+  - name: TX_Tileset_Sand
     originalName: 
-    pivot: {x: 0.45000002, y: 0}
+    pivot: {x: 0.5633803, y: -0.20754717}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 160
-      height: 96
-    spriteID: f6ce33073225947ebacb9d4d296e5b35
+      x: 4
+      y: 4
+      width: 71
+      height: 53
+    spriteID: bfa7d6277568a4559aaac55f6289a186
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,9 +147,9 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Dungeon_Tileset_0
+  - name: TX_Tileset_Sand_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -158,10 +158,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 0
-      y: 80
-      width: 16
-      height: 16
-    spriteID: dd28f716809d04a6f9dbe561c4c006af
+      y: 45
+      width: 8
+      height: 8
+    spriteID: 6c3e641bc6e2240f6a2dd2edc1a6d542
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -170,7 +170,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_1
+  - name: TX_Tileset_Sand_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -178,11 +178,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 16
-      y: 80
-      width: 16
-      height: 16
-    spriteID: e7908471d50fa44a9a117609caa783ae
+      x: 9
+      y: 45
+      width: 8
+      height: 8
+    spriteID: e3b71a524883f4157bfd5854bc386aa5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -191,7 +191,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_2
+  - name: TX_Tileset_Sand_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -199,11 +199,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 32
-      y: 80
-      width: 16
-      height: 16
-    spriteID: cf2a0343ab70040b4b7cc3e8698487a1
+      x: 18
+      y: 45
+      width: 8
+      height: 8
+    spriteID: ea1b0f2cf7e0b423698f701391afde9c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -212,7 +212,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_3
+  - name: TX_Tileset_Sand_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -220,11 +220,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 64
-      y: 80
-      width: 16
-      height: 16
-    spriteID: 4b689c93f5f5a462aa20bc9893fe90c9
+      x: 27
+      y: 45
+      width: 8
+      height: 8
+    spriteID: 82d78908e1979456bb1e140dce9e588f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -233,7 +233,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_4
+  - name: TX_Tileset_Sand_4
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -241,11 +241,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 80
-      y: 80
-      width: 16
-      height: 16
-    spriteID: 46c766a4febd646a9895720aa180e32e
+      x: 36
+      y: 45
+      width: 8
+      height: 8
+    spriteID: aeeddda40550d4997893c3369bd5ff53
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -254,7 +254,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_5
+  - name: TX_Tileset_Sand_5
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -262,11 +262,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 96
-      y: 80
-      width: 16
-      height: 16
-    spriteID: f81235ef01dfe4e1498a9ebaaa9a2e63
+      x: 45
+      y: 45
+      width: 8
+      height: 8
+    spriteID: 98461f96405824ca8aaeef3bf35d09ec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -275,7 +275,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_6
+  - name: TX_Tileset_Sand_6
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -283,11 +283,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 112
-      y: 80
-      width: 16
-      height: 16
-    spriteID: 30ced001d5981496d82c4e74fe3de423
+      x: 54
+      y: 45
+      width: 8
+      height: 8
+    spriteID: a78dcf96a643f405b8ee85d76abb5e7b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -296,7 +296,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_7
+  - name: TX_Tileset_Sand_7
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -304,11 +304,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 128
-      y: 80
-      width: 16
-      height: 16
-    spriteID: a55e66122459b413983ee0a912a4c59d
+      x: 63
+      y: 45
+      width: 8
+      height: 8
+    spriteID: 6286a6fc32d1a4032be662e7c81f589b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -317,154 +317,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_8
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 64
-      width: 16
-      height: 16
-    spriteID: d2c2da6755bb64b128c99cdb77d96e87
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_9
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 32
-      y: 64
-      width: 16
-      height: 16
-    spriteID: 8e74e995920594563bdd0d69c8ea2dbb
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_10
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 64
-      y: 64
-      width: 16
-      height: 16
-    spriteID: 9258bd771133e406ab5dac9ebd108615
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_11
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 80
-      y: 64
-      width: 16
-      height: 16
-    spriteID: 688fdafd3bf4c456f98514360640b9b3
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_12
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 96
-      y: 64
-      width: 16
-      height: 16
-    spriteID: ce8931a48eaa14818835f864fb8b712f
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_13
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 112
-      y: 64
-      width: 16
-      height: 16
-    spriteID: 65016dd87b1bc45bcabd4af131a22d08
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_14
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 128
-      y: 64
-      width: 16
-      height: 16
-    spriteID: 7100fed2eb82748018dc58f04ee753fc
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_15
+  - name: TX_Tileset_Sand_8
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -473,10 +326,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 0
-      y: 48
-      width: 16
-      height: 16
-    spriteID: ec0b15ed3d9634e618e4c369076a4dcd
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 1370d8a2a676d40c19df0b4cac0254e6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -485,7 +338,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_16
+  - name: TX_Tileset_Sand_9
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -493,11 +346,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 16
-      y: 48
-      width: 16
-      height: 16
-    spriteID: a3e2c8e71feb64cd6a708fa9b6d51e9a
+      x: 9
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 164564717ce104b109820e00dfbae2e6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -506,7 +359,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_17
+  - name: TX_Tileset_Sand_10
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -514,11 +367,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 32
-      y: 48
-      width: 16
-      height: 16
-    spriteID: 83290a4723afe4c8e9cb9c1df20a9964
+      x: 18
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 95dfd172e308447de838ed440f679290
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -527,7 +380,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_18
+  - name: TX_Tileset_Sand_11
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -535,11 +388,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 64
-      y: 48
-      width: 16
-      height: 16
-    spriteID: 7e53833c2722c4877ac092f4f5267dc9
+      x: 27
+      y: 36
+      width: 8
+      height: 8
+    spriteID: a37f878f9770f42798d5ae6b087ec41e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -548,7 +401,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_19
+  - name: TX_Tileset_Sand_12
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -556,11 +409,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 80
-      y: 48
-      width: 16
-      height: 16
-    spriteID: d8a99a078e875447cadc48054b7614d2
+      x: 36
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 27c43f6dd89e1449db2d9274b4a03055
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -569,7 +422,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_20
+  - name: TX_Tileset_Sand_13
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -577,11 +430,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 96
-      y: 48
-      width: 16
-      height: 16
-    spriteID: 753755a16a84445a0b2856a0d64df5dc
+      x: 45
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 550641a0620cf45b986278b39c3901e5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -590,7 +443,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_21
+  - name: TX_Tileset_Sand_14
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -598,11 +451,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 112
-      y: 48
-      width: 16
-      height: 16
-    spriteID: a95c85dcabfa8485daeed575edb95739
+      x: 54
+      y: 36
+      width: 8
+      height: 8
+    spriteID: e6c5668ec914c461fad45138800ced07
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -611,7 +464,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_22
+  - name: TX_Tileset_Sand_15
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -619,11 +472,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 128
-      y: 48
-      width: 16
-      height: 16
-    spriteID: e7862cefb24ea43ecafd287b110e8f17
+      x: 63
+      y: 36
+      width: 8
+      height: 8
+    spriteID: 749dfde92aefd44fba2fa67db27d4793
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -632,112 +485,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_23
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 32
-      width: 16
-      height: 16
-    spriteID: ad54c543a28e7431eac77e71b916eb62
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_24
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 16
-      y: 32
-      width: 16
-      height: 16
-    spriteID: b7d22a6fad71c47f983de3368086584d
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_25
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 32
-      y: 32
-      width: 16
-      height: 16
-    spriteID: 61069405672c1497aaf4882df6a22426
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_26
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 64
-      y: 32
-      width: 16
-      height: 16
-    spriteID: 16169d6dd372f4a8ba63e1c6828eaf2d
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_27
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 128
-      y: 32
-      width: 16
-      height: 16
-    spriteID: 5b8729925389e40518d1947c993e31a5
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_28
+  - name: TX_Tileset_Sand_16
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -746,10 +494,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 0
-      y: 16
-      width: 16
-      height: 16
-    spriteID: ee76016347aa84e46937f404117f0785
+      y: 27
+      width: 8
+      height: 8
+    spriteID: ebad2f3f995c94940862888cb5cb1173
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -758,7 +506,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_29
+  - name: TX_Tileset_Sand_17
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -766,11 +514,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 16
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 5b42fa4957da846cfb49aa5857b567d7
+      x: 9
+      y: 27
+      width: 8
+      height: 8
+    spriteID: 7418612af8b504d75b830f4e9471e35c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -779,7 +527,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_30
+  - name: TX_Tileset_Sand_18
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -787,11 +535,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 32
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 2d2214b4063544637b58887d5bb0ccf6
+      x: 18
+      y: 27
+      width: 8
+      height: 8
+    spriteID: f3dc6eced396a4b8fbe48c3661c75d7c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -800,7 +548,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_31
+  - name: TX_Tileset_Sand_19
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -808,11 +556,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 64
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 97ca47833fe544ddc979e16469993e3e
+      x: 27
+      y: 27
+      width: 8
+      height: 8
+    spriteID: 10139c7315e4d4e6f9592f0a3987443b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -821,7 +569,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_32
+  - name: TX_Tileset_Sand_20
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -829,11 +577,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 80
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 92e74d828a2514af886748e3de192c6f
+      x: 36
+      y: 27
+      width: 8
+      height: 8
+    spriteID: def3a2da7f02e4f7880c2d003bff67bb
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -842,7 +590,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_33
+  - name: TX_Tileset_Sand_21
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -850,11 +598,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 96
-      y: 16
-      width: 16
-      height: 16
-    spriteID: a31124798ca0848b6935d22c5c646ea6
+      x: 45
+      y: 27
+      width: 8
+      height: 8
+    spriteID: c13d2e23a4b194f62bc6b3b0c4b814ec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -863,7 +611,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_34
+  - name: TX_Tileset_Sand_22
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -871,11 +619,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 112
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 174abc9d688874be5a494e519056b948
+      x: 54
+      y: 27
+      width: 8
+      height: 8
+    spriteID: 59944f49c756a48d48240d14dc9d609c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -884,7 +632,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_35
+  - name: TX_Tileset_Sand_23
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -892,11 +640,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 128
-      y: 16
-      width: 16
-      height: 16
-    spriteID: a4fa417596f76462bbbe717119af53eb
+      x: 63
+      y: 27
+      width: 8
+      height: 8
+    spriteID: d4bfdc0b4b17748abab57257366dfbc4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -905,7 +653,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Dungeon_Tileset_36
+  - name: TX_Tileset_Sand_24
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -913,11 +661,473 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 144
+      x: 0
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 2d6b4d6ba543f4b209cad14606a0a103
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_25
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 9
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 1554a78e946e74fb0a24a62a5e74e6c8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_26
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 18
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 5dc1dc4f174c842bd87ebcd2187eddbd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_27
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 27
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 042fc215b9dab48808c51d4fa013f9a4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_28
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 4534fac3372a34259aa3c63938d538ad
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_29
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 45
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 2e1f5c67008d044b085c09a0ffd11dfa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_30
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 54
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 4ee77938c319e4e6585e108ab6a7d415
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_31
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 63
+      y: 18
+      width: 8
+      height: 8
+    spriteID: 27b17d72b523f4821afdf93cacc06f5a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_32
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 9
+      width: 8
+      height: 8
+    spriteID: f6240e1d4a11b4064ba05480c4d24555
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_33
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 9
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 3908dcf1d7a3f4ffb8fb5e4f08071108
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_34
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 18
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 21b281c20c54643a1b0d098517c7d1e6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_35
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 27
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 0cb22b14a500a432ba01d3b42a50204d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_36
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 6326880fba29143d680fcfcb74d680c7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_37
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 54
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 4e9e62d53ec4043259c979df4cef324f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_38
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 63
+      y: 9
+      width: 8
+      height: 8
+    spriteID: 94e339560d5ea4dee966cd97ce49b1db
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_39
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
       y: 0
-      width: 16
-      height: 16
-    spriteID: 603632c6a3bc8478f998650d2ffa6b4d
+      width: 8
+      height: 8
+    spriteID: 422abc2ed6194487cb7affda66609266
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_40
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 9
+      y: 0
+      width: 8
+      height: 8
+    spriteID: 572eb0a41c50943ef9656d73e98cc88d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_41
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 18
+      y: 0
+      width: 8
+      height: 8
+    spriteID: d8ea9a8bc4d9843149d0e23848e08f95
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_42
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 27
+      y: 0
+      width: 8
+      height: 8
+    spriteID: 552f24efc9ae44d0e9eb1082aa7a7247
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_43
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 0
+      width: 8
+      height: 8
+    spriteID: ebe1b36c1938645d0895bd2af47a44b7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_44
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 45
+      y: 0
+      width: 8
+      height: 8
+    spriteID: 0237d00210c49437492cbb52ef6d4e1f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_45
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 54
+      y: 0
+      width: 8
+      height: 8
+    spriteID: c88805644d9ff4c19979f581554fa4ae
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Tileset_Sand_46
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 63
+      y: 0
+      width: 8
+      height: 8
+    spriteID: 09add9323a0604098891cf8f8883026e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -927,19 +1137,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   tileSetImportData:
-  - name: WallTiles
+  - name: Template
     originalName: 
-    pivot: {x: 0.63309354, y: 0.7}
+    pivot: {x: 0.5633803, y: 0.6037736}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 139
-      height: 80
-    spriteID: bde2220463fe54946bbada1c103950dd
+      x: 4
+      y: 4
+      width: 71
+      height: 53
+    spriteID: 1799598f4e5a645f7be0f42c07d6b68c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -947,50 +1157,29 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: Floor
-    originalName: 
-    pivot: {x: 5.5, y: 3.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 139
-      y: 0
-      width: 16
-      height: 16
-    spriteID: a638925af714e4575b6801fbc022a1ea
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 139, y: 0}
+    uvTransform: {x: 4, y: 4}
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 304241140
+      value0: 4033674568
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Tileset_Dungeon
-    layerFlags: 0
+    name: Template
+    layerFlags: 3
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Dungeon_Tileset
+    - name: TX_Tileset_Sand
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 16
-        y: 0
-        width: 160
-        height: 96
-      spriteId: 421a89cf97f534d48b9a1694150b8f1c
+        x: 0
+        y: 11
+        width: 71
+        height: 53
+      spriteId: 1799598f4e5a645f7be0f42c07d6b68c
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -1036,5 +1225,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 176, y: 112}
-  previousTextureSize: {x: 256, y: 128}
+  canvasSize: {x: 80, y: 64}
+  previousTextureSize: {x: 128, y: 64}

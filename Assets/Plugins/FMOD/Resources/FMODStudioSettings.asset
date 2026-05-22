@@ -536,8 +536,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: Assets/_UntitledDungeonGame/_Content/_Audio/UntitledDungeonGameFmod/UntitledDungeonGameFmod.fspro
-  sourceBankPath: Assets/_UntitledDungeonGame/_Content/_Audio/UntitledDungeonGameFmod/Build
+  sourceProjectPath: Assets/_UntitledDeepSeaGame/_Content/_Audio/UntitledDeepSeaGameFmod/UntitledDeepSeaGameFmod.fspro
+  sourceBankPath: Assets/_UntitledDeepSeaGame/_Content/_Audio/UntitledDeepSeaGameFmod/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1

@@ -95,8 +95,6 @@ namespace UntitledDeepSeaGame
             _cinemachineCam.enabled = true;
 
             SetListenerToPlayer();
-            
-            SceneManager.LoadScene("New Scene", LoadSceneMode.Additive);
         }
 
         private void SetListenerToPlayer()

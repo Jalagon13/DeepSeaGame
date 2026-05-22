@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513a9a771ecb4df18a851a7a3cbe4d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Tilemap.Editor::UnityEditor.Tilemaps.TileSet
-  m_TextureSources:
-  - m_Texture: {fileID: -8328923581568760697, guid: a3e0d4d73cd2b469f8e66a28d3e708dd, type: 3}
-    m_TileTemplate: {fileID: 0}
+  m_TextureSources: []
   m_CreateAtlas: 1
   m_ScriptablePacker: {fileID: 0}
   m_CellLayout: 0
@@ -44,20 +42,7 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings:
-    - serializedVersion: 4
-      m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 2048
-      m_ResizeAlgorithm: 0
-      m_TextureFormat: -1
-      m_TextureCompression: 0
-      m_CompressionQuality: 50
-      m_CrunchedCompression: 0
-      m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
-      m_IgnorePlatformSupport: 0
-      m_AndroidETC2FallbackOverride: 0
-      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    platformSettings: []
     packingSettings:
       serializedVersion: 2
       padding: 4
@@ -68,8 +53,7 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables:
-    - {fileID: -8328923581568760697, guid: a3e0d4d73cd2b469f8e66a28d3e708dd, type: 3}
+    packables: []
     bindAsDefault: 1
     isAtlasV2: 1
     cachedData: {fileID: 0}
