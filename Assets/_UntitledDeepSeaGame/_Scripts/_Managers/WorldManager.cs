@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ namespace UntitledDeepSeaGame
 
         public WorldDataStore WorldDataStore { get; private set; }
         public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
-        
-        [SerializeField] 
-        private Transform _spawnPoint;
+        public bool IsWorldReady { get; private set; }
+
+        public event Action OnWorldReady;
         
         private void Awake()
         {
@@ -42,17 +43,42 @@ namespace UntitledDeepSeaGame
         {
             if (NetworkManager.LocalClientId != clientId) return;
 
-            InitializeRuntimeWorld();
-            Player.Instance.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+            StartCoroutine(InitializeRuntimeWorldRoutine());
         }
 
-        private void InitializeRuntimeWorld()
+        private IEnumerator InitializeRuntimeWorldRoutine()
         {
             WorldGenerationData generationData = WorldGenerator.GetComponent<WorldGenerationData>();
 
+            IsWorldReady = false;
             WorldDataStore.Initialize(generationData.WorldWidth, generationData.WorldHeight);
-            WorldGenerator.GenerateWorldData();
+            WorldGenerator.StartGeneration();
+
+            while (!WorldGenerator.IsGenerationComplete)
+            {
+                yield return null;
+            }
+
             TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap);
+
+            yield return new WaitUntil(() => Player.Instance != null);
+
+            Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
+            Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
+
+            IsWorldReady = true;
+            OnWorldReady?.Invoke();
+        }
+
+        private Vector3 ResolveSpawnWorldPosition(Vector3Int spawnTile)
+        {
+            if (WorldGenerator.ForegroundTilemap != null)
+            {
+                Vector3 center = WorldGenerator.ForegroundTilemap.GetCellCenterWorld(spawnTile);
+                return new Vector3(center.x, center.y, 0f);
+            }
+
+            return spawnTile;
         }
     }
 }

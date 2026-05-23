@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 
 namespace UntitledDeepSeaGame
@@ -6,8 +7,9 @@ namespace UntitledDeepSeaGame
     public abstract class GenerationStep : MonoBehaviour
     {
         [field: SerializeField, TextArea(15, 20)] public string Description { get; private set; }
+        public abstract WorldGenerationState State { get; }
 
-        public abstract void Execute(WorldGenerationData genData, WorldDataStore worldDataStore);
+        public abstract IEnumerator Execute(WorldGenerationContext context);
     }
 
 }

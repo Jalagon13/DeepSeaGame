@@ -275,37 +275,6 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!1 &182509551
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 182509552}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &182509552
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 182509551}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30, y: 21, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &256065240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,7 +1310,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2100001001}
   - {fileID: 1032539435}
+  - {fileID: 2100002001}
+  - {fileID: 2100003001}
   m_Father: {fileID: 1071455227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &885515392
@@ -1369,9 +1341,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d365b2b3011f345638a5cac4ee5f9e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldGenerationData
-  _worldWidth: 60
-  _worldHeight: 20
+  _worldWidth: 1024
+  _worldHeight: 384
   <Seed>k__BackingField: 
+  _defaultSeed: prototype-world
+  _columnsPerFrame: 32
 --- !u!114 &885515394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1407,7 +1381,7 @@ GameObject:
   - component: {fileID: 1032539435}
   - component: {fileID: 1032539436}
   m_Layer: 0
-  m_Name: PlaceSandStep
+  m_Name: FillSandTerrainStep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1437,9 +1411,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032539434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9644e66329fd54739aedc936c39b53c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 235c2bacfa59409497f016fb22bd9648, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlaceSandGenStep
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FillSandTerrainStep
   <Description>k__BackingField: 
   _sandTileSO: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
 --- !u!1 &1059519058
@@ -1835,7 +1809,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.WorldManager
   ShowTopMostFoldoutHeaderGroup: 1
   <WorldGenerator>k__BackingField: {fileID: 885515392}
-  _spawnPoint: {fileID: 182509552}
 --- !u!114 &1760391186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2343,7 +2316,7 @@ TilemapCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -2387,6 +2360,159 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2100001000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100001001}
+  - component: {fileID: 2100001002}
+  m_Layer: 0
+  m_Name: BuildSurfaceHeightmapStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100001001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100001000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100001002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100001000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b04c5fd3a274bd3b188258cb1e6744c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.BuildSurfaceHeightmapStep
+  <Description>k__BackingField: 
+  _surfaceBaseHeightPercent: 0.6
+  _surfaceAmplitude: 18
+  _primarySurfaceNoiseScale: 72
+  _secondarySurfaceNoiseScale: 28
+  _secondarySurfaceNoiseStrength: 0.35
+  _applyThreePointSmoothing: 1
+--- !u!1 &2100002000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100002001}
+  - component: {fileID: 2100002002}
+  m_Layer: 0
+  m_Name: CarveCavesStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100002001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100002000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100002002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100002000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cce4ccce364bc98d2d662b357db77b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CarveCavesStep
+  <Description>k__BackingField: 
+  _minimumCaveY: 8
+  _surfaceClearanceForCaves: 8
+  _walkerMinStartBelowSurface: 20
+  _caveWalkerCount: 18
+  _caveWalkerSteps: 140
+  _minimumCaveRadius: 2
+  _maximumCaveRadius: 4
+  _verticalDriftStrength: 0.8
+  _minimumHorizontalStep: 0.8
+  _maximumHorizontalStep: 1.4
+  _horizontalFlipChance: 0.14
+  _cavernPocketChance: 0.18
+--- !u!1 &2100003000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100003001}
+  - component: {fileID: 2100003002}
+  m_Layer: 0
+  m_Name: ResolveSpawnPointStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100003001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100003000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100003002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100003000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33cd993c5cc4d8ba4203f674fdb1152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ResolveSpawnPointStep
+  <Description>k__BackingField: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2397,5 +2523,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 654374647}
   - {fileID: 620709479}
-  - {fileID: 182509552}
   - {fileID: 1071455227}

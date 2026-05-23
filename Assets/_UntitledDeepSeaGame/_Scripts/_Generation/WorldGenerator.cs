@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,11 +10,19 @@ namespace UntitledDeepSeaGame
     public class WorldGenerator : MonoBehaviour
     {
         [SerializeField] private Tilemap _forgroundTilemap;
-
         public Tilemap ForegroundTilemap => _forgroundTilemap;
+
+        public WorldGenerationState CurrentState { get; private set; } = WorldGenerationState.NotStarted;
+        public float Progress { get; private set; }
+        public Vector3Int SpawnTile { get; private set; }
+        public bool IsGenerationComplete => CurrentState == WorldGenerationState.Completed;
+
+        public event Action<WorldGenerationState, float> OnGenerationProgressChanged;
+        public event Action<Vector3Int> OnGenerationCompleted;
 
         private WorldGenerationData _worldGenerationData;
         private WorldDataStore _worldDataStore;
+        private Coroutine _generationCoroutine;
 
         private void Awake() 
         {
@@ -20,16 +30,88 @@ namespace UntitledDeepSeaGame
             _worldDataStore = GetComponent<WorldDataStore>();
         }
 
-        public void GenerateWorldData()
+        public void StartGeneration()
         {
-            Debug.Log($"Generating world data with seed {_worldGenerationData.Seed}");
+            if (_generationCoroutine != null)
+            {
+                StopCoroutine(_generationCoroutine);
+            }
+
+            _generationCoroutine = StartCoroutine(GenerateWorldRoutine());
+        }
+
+        private IEnumerator GenerateWorldRoutine()
+        {
+            string resolvedSeed = _worldGenerationData.ResolvedSeed;
+            int seedHash = ComputeStableSeedHash(resolvedSeed);
+            float generationStartTime = Time.realtimeSinceStartup;
+
+            Debug.Log($"Generating world data with seed '{resolvedSeed}' ({seedHash})");
+
+            CurrentState = WorldGenerationState.Initializing;
+            Progress = 0f;
+            OnGenerationProgressChanged?.Invoke(CurrentState, Progress);
+
+            List<GenerationStep> orderedSteps = GetOrderedSteps();
+            WorldGenerationContext context = new(_worldGenerationData, _worldDataStore, seedHash, resolvedSeed, HandleProgressChanged);
+            context.Begin(orderedSteps.Count);
+
+            for (int i = 0; i < orderedSteps.Count; i++)
+            {
+                GenerationStep step = orderedSteps[i];
+                float stepStartTime = Time.realtimeSinceStartup;
+                context.BeginStep(step.State, i);
+                yield return StartCoroutine(step.Execute(context));
+
+                float stepDuration = Time.realtimeSinceStartup - stepStartTime;
+                Debug.Log($"World generation step complete: {step.GetType().Name} ({step.State}) in {stepDuration:F3}s");
+            }
+
+            context.Complete();
+            SpawnTile = context.SpawnTile;
+            _generationCoroutine = null;
+            float totalGenerationTime = Time.realtimeSinceStartup - generationStartTime;
+            Debug.Log($"World generation complete in {totalGenerationTime:F3}s");
+            OnGenerationCompleted?.Invoke(SpawnTile);
+        }
+
+        private List<GenerationStep> GetOrderedSteps()
+        {
+            List<GenerationStep> orderedSteps = new();
 
             foreach (Transform child in transform)
             {
-                if(child.TryGetComponent(out GenerationStep step))
+                if (child.TryGetComponent(out GenerationStep step))
                 {
-                    step.Execute(_worldGenerationData, _worldDataStore);
+                    orderedSteps.Add(step);
                 }
+            }
+
+            if (orderedSteps.Count == 0)
+            {
+                Debug.LogError("WorldGenerator has no GenerationStep children.");
+            }
+
+            return orderedSteps;
+        }
+
+        private void HandleProgressChanged(WorldGenerationState state, float progress)
+        {
+            CurrentState = state;
+            Progress = progress;
+            OnGenerationProgressChanged?.Invoke(CurrentState, Progress);
+        }
+
+        private int ComputeStableSeedHash(string seed)
+        {
+            unchecked
+            {
+                int hash = 23;
+                for (int i = 0; i < seed.Length; i++)
+                {
+                    hash = (hash * 31) + seed[i];
+                }
+                return hash;
             }
         }
     }

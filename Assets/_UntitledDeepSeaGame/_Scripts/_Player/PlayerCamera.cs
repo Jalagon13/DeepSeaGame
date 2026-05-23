@@ -74,22 +74,7 @@ namespace UntitledDeepSeaGame
 
         private void LateUpdate()
         {
-            UpdateVisibleTileBounds();
-        }
-
-        private void RegisterCameraToPlayer(ulong clientId)
-        {
-            if (NetworkManager.LocalClientId != clientId) return;
-
-            _playerObject = NetworkManager.ConnectedClients[clientId].PlayerObject;
-            _cinemachineCam.Follow = _playerObject.transform;
-            _cinemachineCam.enabled = true;
-
-            SetListenerToPlayer();
-        }
-
-        private void UpdateVisibleTileBounds()
-        {
+            // Update Visibile Tile Bounds
             if (_mainCamera == null)
             {
                 return;
@@ -112,6 +97,17 @@ namespace UntitledDeepSeaGame
 
             CurrentVisibleTileBounds = visibleBounds;
             VisibleTileBoundsChanged?.Invoke(CurrentVisibleTileBounds);
+        }
+
+        private void RegisterCameraToPlayer(ulong clientId)
+        {
+            if (NetworkManager.LocalClientId != clientId) return;
+
+            _playerObject = NetworkManager.ConnectedClients[clientId].PlayerObject;
+            _cinemachineCam.Follow = _playerObject.transform;
+            _cinemachineCam.enabled = true;
+
+            SetListenerToPlayer();
         }
 
         private void SetListenerToPlayer()

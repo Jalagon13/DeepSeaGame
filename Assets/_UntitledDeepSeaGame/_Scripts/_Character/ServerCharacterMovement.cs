@@ -24,6 +24,14 @@ namespace UntitledDeepSeaGame
 
         public void FixedUpdateMovement()
         {
+            if (WorldManager.Instance != null && !WorldManager.Instance.IsWorldReady)
+            {
+                _desiredDirection = Vector2.zero;
+                _velocity = Vector2.zero;
+                _rigidbody2D.linearVelocity = Vector2.zero;
+                return;
+            }
+
             if(Player.Instance.Character.LifeState == LifeState.Dead)
             {
                 return;

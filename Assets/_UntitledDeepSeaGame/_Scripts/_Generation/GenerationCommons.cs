@@ -7,4 +7,15 @@ namespace UntitledDeepSeaGame
         ForegroundTile,
         BackgroundTile
     }
+
+    public enum WorldGenerationState
+    {
+        NotStarted,
+        Initializing,
+        GeneratingSurface,
+        FillingTerrain,
+        CarvingCaves,
+        FinalizingSpawn,
+        Completed
+    }
 }
