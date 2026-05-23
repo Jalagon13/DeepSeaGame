@@ -2458,16 +2458,13 @@ MonoBehaviour:
   <Description>k__BackingField: 
   _minimumCaveY: 8
   _surfaceClearanceForCaves: 8
-  _walkerMinStartBelowSurface: 20
-  _caveWalkerCount: 18
-  _caveWalkerSteps: 140
-  _minimumCaveRadius: 2
-  _maximumCaveRadius: 4
-  _verticalDriftStrength: 0.8
-  _minimumHorizontalStep: 0.8
-  _maximumHorizontalStep: 1.4
-  _horizontalFlipChance: 0.14
-  _cavernPocketChance: 0.18
+  _noiseCaveStartBelowSurface: 16
+  _caveNoiseScale: 22
+  _verticalStretch: 0.75
+  _octaves: 4
+  _persistence: 0.6
+  _lacunarity: 2
+  _caveThreshold: 0.5
 --- !u!1 &2100003000
 GameObject:
   m_ObjectHideFlags: 0

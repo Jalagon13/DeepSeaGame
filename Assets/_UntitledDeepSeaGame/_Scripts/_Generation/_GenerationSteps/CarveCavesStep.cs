@@ -8,118 +8,86 @@ namespace UntitledDeepSeaGame
         [Header("Cave Bounds")]
         [SerializeField] private int _minimumCaveY = 8;
         [SerializeField] private int _surfaceClearanceForCaves = 8;
-        [SerializeField] private int _walkerMinStartBelowSurface = 20;
+        [SerializeField] private int _noiseCaveStartBelowSurface = 16;
 
-        [Header("Walker Count")]
-        [SerializeField] private int _caveWalkerCount = 18;
-        [SerializeField] private int _caveWalkerSteps = 140;
-
-        [Header("Walker Shape")]
-        [SerializeField] private int _minimumCaveRadius = 2;
-        [SerializeField] private int _maximumCaveRadius = 4;
-        [SerializeField] private float _verticalDriftStrength = 0.8f;
-        [SerializeField] private float _minimumHorizontalStep = 0.8f;
-        [SerializeField] private float _maximumHorizontalStep = 1.4f;
-        [SerializeField, Range(0f, 1f)] private float _horizontalFlipChance = 0.14f;
-        [SerializeField, Range(0f, 1f)] private float _cavernPocketChance = 0.18f;
+        [Header("Perlin Noise")]
+        [SerializeField] private float _caveNoiseScale = 36f;
+        [SerializeField] private float _verticalStretch = 0.75f;
+        [SerializeField] private int _octaves = 4;
+        [SerializeField, Range(0f, 1f)] private float _persistence = 0.5f;
+        [SerializeField] private float _lacunarity = 2f;
+        [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.68f;
 
         public override WorldGenerationState State => WorldGenerationState.CarvingCaves;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {
+            int width = context.Config.WorldWidth;
+            int height = context.Config.WorldHeight;
             int minimumCaveY = Mathf.Max(0, _minimumCaveY);
             int surfaceClearanceForCaves = Mathf.Max(1, _surfaceClearanceForCaves);
-            int walkerMinStartBelowSurface = Mathf.Max(surfaceClearanceForCaves + 1, _walkerMinStartBelowSurface);
-            int caveWalkerCount = Mathf.Max(1, _caveWalkerCount);
-            int caveWalkerSteps = Mathf.Max(1, _caveWalkerSteps);
-            int minimumCaveRadius = Mathf.Max(1, _minimumCaveRadius);
-            int maximumCaveRadius = Mathf.Max(minimumCaveRadius, _maximumCaveRadius);
-            float verticalDriftStrength = Mathf.Max(0.05f, _verticalDriftStrength);
-            float minimumHorizontalStep = Mathf.Max(0.1f, _minimumHorizontalStep);
-            float maximumHorizontalStep = Mathf.Max(minimumHorizontalStep, _maximumHorizontalStep);
+            int startBelowSurface = Mathf.Max(surfaceClearanceForCaves + 1, _noiseCaveStartBelowSurface);
+            float caveNoiseScale = Mathf.Max(1f, _caveNoiseScale);
+            float verticalStretch = Mathf.Max(0.05f, _verticalStretch);
+            int octaves = Mathf.Max(1, _octaves);
+            float persistence = Mathf.Clamp01(_persistence);
+            float lacunarity = Mathf.Max(1f, _lacunarity);
 
-            for (int walkerIndex = 0; walkerIndex < caveWalkerCount; walkerIndex++)
+            float offsetX = Mathf.Abs((context.SeedHash * 17) % 10000) + 13.371f;
+            float offsetY = Mathf.Abs((context.SeedHash * 43) % 10000) + 41.913f;
+
+            for (int x = 0; x < width; x++)
             {
-                int startX = context.Random.Next(4, context.Config.WorldWidth - 4);
-                int maxStartY = Mathf.Max(minimumCaveY + 1, context.SurfaceHeights[startX] - walkerMinStartBelowSurface);
-                int startY = context.Random.Next(minimumCaveY, Mathf.Max(minimumCaveY + 1, maxStartY + 1));
-
-                float positionX = startX;
-                float positionY = startY;
-                float horizontalDirection = context.Random.NextDouble() < 0.5 ? -1f : 1f;
-
-                for (int step = 0; step < caveWalkerSteps; step++)
+                int maxCarveY = Mathf.Min(height - 1, context.SurfaceHeights[x] - startBelowSurface);
+                if (maxCarveY < minimumCaveY)
                 {
-                    if (context.Random.NextDouble() < _horizontalFlipChance)
+                    continue;
+                }
+
+                for (int y = minimumCaveY; y <= maxCarveY; y++)
+                {
+                    float sample = SampleFractalNoise(x, y, offsetX, offsetY, caveNoiseScale, verticalStretch, octaves, persistence, lacunarity);
+                    if (sample >= _caveThreshold)
                     {
-                        horizontalDirection *= -1f;
+                        context.DataStore.SetTileId(x, y, GameDataRegistry.INVALID_ID);
                     }
+                }
 
-                    float horizontalStep = Mathf.Lerp(minimumHorizontalStep, maximumHorizontalStep, (float)context.Random.NextDouble());
-                    float verticalStep = Mathf.Lerp(-verticalDriftStrength, verticalDriftStrength, (float)context.Random.NextDouble());
-
-                    positionX += horizontalDirection * horizontalStep;
-                    positionY += verticalStep;
-
-                    int currentX = Mathf.Clamp(Mathf.RoundToInt(positionX), 4, context.Config.WorldWidth - 5);
-                    int surfaceLimit = context.SurfaceHeights[currentX] - surfaceClearanceForCaves;
-                    positionY = Mathf.Clamp(positionY, minimumCaveY, surfaceLimit);
-
-                    int radius = context.Random.Next(minimumCaveRadius, maximumCaveRadius + 1);
-                    if (context.Random.NextDouble() < _cavernPocketChance)
-                    {
-                        radius += 1;
-                    }
-
-                    CarveCircle(context, currentX, Mathf.RoundToInt(positionY), radius, minimumCaveY, surfaceClearanceForCaves);
-
-                    if ((step + 1) % context.Config.ColumnsPerFrame == 0)
-                    {
-                        float overallWalkerProgress = (walkerIndex + ((step + 1f) / caveWalkerSteps)) / caveWalkerCount;
-                        context.SetStepProgress(overallWalkerProgress);
-                        yield return null;
-                    }
+                if ((x + 1) % context.Config.ColumnsPerFrame == 0)
+                {
+                    context.SetStepProgress((x + 1f) / width);
+                    yield return null;
                 }
             }
 
             context.SetStepProgress(1f);
         }
 
-        private void CarveCircle(WorldGenerationContext context, int centerX, int centerY, int radius, int minimumCaveY, int surfaceClearanceForCaves)
+        private float SampleFractalNoise(int x, int y, float offsetX, float offsetY, float baseScale, float verticalStretch, int octaves, float persistence, float lacunarity)
         {
-            int radiusSquared = radius * radius;
+            float amplitude = 1f;
+            float frequency = 1f;
+            float total = 0f;
+            float amplitudeSum = 0f;
 
-            for (int x = centerX - radius; x <= centerX + radius; x++)
+            for (int octave = 0; octave < octaves; octave++)
             {
-                if (x < 0 || x >= context.Config.WorldWidth)
-                {
-                    continue;
-                }
+                float sampleX = ((x + offsetX) / baseScale) * frequency;
+                float sampleY = (((y * verticalStretch) + offsetY) / baseScale) * frequency;
+                float noise = Mathf.PerlinNoise(sampleX, sampleY);
 
-                int surfaceLimit = context.SurfaceHeights[x] - surfaceClearanceForCaves;
-
-                for (int y = centerY - radius; y <= centerY + radius; y++)
-                {
-                    if (y < minimumCaveY || y >= context.Config.WorldHeight)
-                    {
-                        continue;
-                    }
-
-                    if (y > surfaceLimit)
-                    {
-                        continue;
-                    }
-
-                    int deltaX = x - centerX;
-                    int deltaY = y - centerY;
-                    if ((deltaX * deltaX) + (deltaY * deltaY) > radiusSquared)
-                    {
-                        continue;
-                    }
-
-                    context.DataStore.SetTileId(x, y, GameDataRegistry.INVALID_ID);
-                }
+                total += noise * amplitude;
+                amplitudeSum += amplitude;
+                amplitude *= persistence;
+                frequency *= lacunarity;
             }
+
+            if (amplitudeSum <= 0f)
+            {
+                return 0f;
+            }
+
+            return total / amplitudeSum;
         }
     }
 }
