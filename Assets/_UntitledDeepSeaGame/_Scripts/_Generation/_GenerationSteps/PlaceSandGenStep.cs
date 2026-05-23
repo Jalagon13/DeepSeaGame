@@ -6,16 +6,17 @@ namespace UntitledDeepSeaGame
     {
         [SerializeField] private TileSO _sandTileSO;
     
-        public override void Execute(WorldGenerationData genData)
+        public override void Execute(WorldGenerationData genData, WorldDataStore worldDataStore)
         {
-            int width = genData.TileData.GetLength(0);
-            int height = genData.TileData.GetLength(1);
+            int width = worldDataStore.Width;
+            int height = worldDataStore.Height;
+            ushort sandTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_sandTileSO);
 
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    genData.SetTileData(x, y, _sandTileSO);
+                    worldDataStore.SetTileId(x, y, sandTileId);
                 }
             }
             

@@ -1317,6 +1317,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 885515390}
+  - component: {fileID: 885515395}
+  - component: {fileID: 885515394}
   - component: {fileID: 885515392}
   - component: {fileID: 885515393}
   m_Layer: 0
@@ -1370,6 +1372,30 @@ MonoBehaviour:
   _worldWidth: 60
   _worldHeight: 20
   <Seed>k__BackingField: 
+--- !u!114 &885515394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885515389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0578168a8645fa88fdf552808a9253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldDataStore
+--- !u!114 &885515395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885515389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185e1318f7d54de180fd6a6eb8731fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
 --- !u!1 &1032539434
 GameObject:
   m_ObjectHideFlags: 0
@@ -2370,6 +2396,6 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 519420032}
   - {fileID: 654374647}
+  - {fileID: 620709479}
   - {fileID: 182509552}
   - {fileID: 1071455227}
-  - {fileID: 620709479}

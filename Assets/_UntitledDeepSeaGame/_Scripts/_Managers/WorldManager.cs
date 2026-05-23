@@ -10,6 +10,9 @@ namespace UntitledDeepSeaGame
 
         [field: SerializeField] 
         public WorldGenerator WorldGenerator { get; private set; }
+
+        public WorldDataStore WorldDataStore { get; private set; }
+        public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
         
         [SerializeField] 
         private Transform _spawnPoint;
@@ -17,6 +20,9 @@ namespace UntitledDeepSeaGame
         private void Awake()
         {
             Instance = this;
+            
+            WorldDataStore = WorldGenerator.GetComponent<WorldDataStore>();
+            TileStreamingRenderer = WorldGenerator.GetComponent<WorldTileStreamingRenderer>();
 
             if (NetworkManager != null)
             {
@@ -36,8 +42,17 @@ namespace UntitledDeepSeaGame
         {
             if (NetworkManager.LocalClientId != clientId) return;
 
-            WorldGenerator.GenerateWorld();
+            InitializeRuntimeWorld();
             Player.Instance.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+        }
+
+        private void InitializeRuntimeWorld()
+        {
+            WorldGenerationData generationData = WorldGenerator.GetComponent<WorldGenerationData>();
+
+            WorldDataStore.Initialize(generationData.WorldWidth, generationData.WorldHeight);
+            WorldGenerator.GenerateWorldData();
+            TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap);
         }
     }
 }

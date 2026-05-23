@@ -9,19 +9,22 @@ namespace UntitledDeepSeaGame
 {
     public class PlayerCamera : NetworkBehaviour
     {
+        public static PlayerCamera Instance { get; private set; }
+        public static event Action<RectInt> VisibleTileBoundsChanged;
+
         [field: SerializeField, Tooltip("How much padding, from the min and max points of the camera bounds to give to cover the whole frustum for the lightmap")] 
         public float MinMaxOffsetPadding { get; private set; }
+
+        public RectInt CurrentVisibleTileBounds { get; private set; }
 
         private BoxCollider2D _cameraFrustumCollider;
         private Camera _mainCamera;
         private CinemachineCamera _cinemachineCam;
         private NetworkObject _playerObject;
-        private Vector3 _lastPlayerPosition;
-        private Vector2Int _cachedMinCorner;
-        private Vector2Int _cachedMaxCorner;
 
         private void Awake()
         {
+            Instance = this;
             _cameraFrustumCollider = GetComponent<BoxCollider2D>();
             
             _cinemachineCam = GetComponent<CinemachineCamera>();
@@ -46,6 +49,11 @@ namespace UntitledDeepSeaGame
 
         public override void OnDestroy()
         {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+
             if (NetworkManager != null)
             {
                 NetworkManager.OnClientConnectedCallback -= RegisterCameraToPlayer;
@@ -55,35 +63,18 @@ namespace UntitledDeepSeaGame
         private void Update()
         {
             if (_playerObject == null) return;
-
-            if (_playerObject != null && _playerObject.transform.position != _lastPlayerPosition)
-            {
-                SetListenerToPlayer();
-                _lastPlayerPosition = _playerObject.transform.position;
-            }
+            SetListenerToPlayer();
 
             // Update the frustum collider in case the camera size has changed
             float verticalSize = _mainCamera.orthographicSize * 2;
             float horizontalSize = verticalSize * _mainCamera.aspect;
             _cameraFrustumCollider.size = new Vector2(horizontalSize, verticalSize);
             _cameraFrustumCollider.offset = Vector2.zero;
+        }
 
-            // Check if the camera frustum bounds have changed, with padding
-            Bounds bounds = _cameraFrustumCollider.bounds;
-            int width = Mathf.CeilToInt(bounds.size.x + MinMaxOffsetPadding * 2);
-            int height = Mathf.CeilToInt(bounds.size.y + MinMaxOffsetPadding * 2);
-            Vector2 center = bounds.center;
-            Vector2Int centerInt = Vector2Int.RoundToInt(center);
-            Vector2Int currentMin = centerInt - new Vector2Int(width / 2, height / 2);
-            Vector2Int currentMax = centerInt + new Vector2Int(width / 2, height / 2);
-
-            if (currentMin != _cachedMinCorner || currentMax != _cachedMaxCorner)
-            {
-                _cachedMinCorner = currentMin;
-                _cachedMaxCorner = currentMax;
-                
-                // LightmapManager.Instance.UpdateLightMapBounds(_cachedMinCorner, _cachedMaxCorner);
-            }
+        private void LateUpdate()
+        {
+            UpdateVisibleTileBounds();
         }
 
         private void RegisterCameraToPlayer(ulong clientId)
@@ -95,6 +86,32 @@ namespace UntitledDeepSeaGame
             _cinemachineCam.enabled = true;
 
             SetListenerToPlayer();
+        }
+
+        private void UpdateVisibleTileBounds()
+        {
+            if (_mainCamera == null)
+            {
+                return;
+            }
+
+            int padding = Mathf.CeilToInt(MinMaxOffsetPadding);
+            Vector3 bottomLeft = _mainCamera.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
+            Vector3 topRight = _mainCamera.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
+
+            int minX = Mathf.FloorToInt(bottomLeft.x) - padding;
+            int minY = Mathf.FloorToInt(bottomLeft.y) - padding;
+            int maxX = Mathf.CeilToInt(topRight.x) + padding;
+            int maxY = Mathf.CeilToInt(topRight.y) + padding;
+            RectInt visibleBounds = new RectInt(minX, minY, Mathf.Max(0, maxX - minX), Mathf.Max(0, maxY - minY));
+
+            if (visibleBounds == CurrentVisibleTileBounds)
+            {
+                return;
+            }
+
+            CurrentVisibleTileBounds = visibleBounds;
+            VisibleTileBoundsChanged?.Invoke(CurrentVisibleTileBounds);
         }
 
         private void SetListenerToPlayer()

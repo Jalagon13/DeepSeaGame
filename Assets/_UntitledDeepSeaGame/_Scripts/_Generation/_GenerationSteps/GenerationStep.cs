@@ -7,7 +7,7 @@ namespace UntitledDeepSeaGame
     {
         [field: SerializeField, TextArea(15, 20)] public string Description { get; private set; }
 
-        public abstract void Execute(WorldGenerationData genData);
+        public abstract void Execute(WorldGenerationData genData, WorldDataStore worldDataStore);
     }
 
 }
