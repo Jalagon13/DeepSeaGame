@@ -26,10 +26,10 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.PrimaryActionHeldDown)
-            {
-                SwitchState(new AIStateData(AIState.Attacking));
-            }
+            // if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.PrimaryActionHeldDown)
+            // {
+            //     SwitchState(new AIStateData(AIState.Attacking));
+            // }
             // else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
             // {
             //     Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);

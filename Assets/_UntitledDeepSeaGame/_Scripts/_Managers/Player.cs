@@ -27,6 +27,8 @@ namespace UntitledDeepSeaGame
         
         private CapsuleCollider2D _playerCollider;
         public CapsuleCollider2D PlayerCollider => _playerCollider;
+        public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
+
 
         private void Awake()
         {

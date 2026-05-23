@@ -1740,8 +1740,8 @@ MonoBehaviour:
     _amount: 99
   - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 3671644d65a8440cc868925e7d038801, type: 2}
-    _amount: 5
+  - _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+    _amount: 99
 --- !u!114 &1760391182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,9 +1757,12 @@ MonoBehaviour:
   _itemData:
   - {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
   - {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
-  - {fileID: 11400000, guid: 3671644d65a8440cc868925e7d038801, type: 2}
+  - {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
+  _tileItemMappings:
+  - _tile: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
+    _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
 --- !u!114 &1760391183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1772,11 +1775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053513c6e3f9e4d6e92290480d69a8d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.MiningManager
-  _miningRange: 3
+  _miningRange: 4.5
   _timeBetweenMiningSounds: 0.225
-  _resourceLayer:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!114 &1760391184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1789,12 +1789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc3423fdb8144a32afde2d7c824c938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlacementManager
-  _placementRange: 2.5
-  _resourceLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _ghostColorValid: {r: 0, g: 1, b: 0, a: 0.59607846}
-  _ghostColorInvalid: {r: 1, g: 0, b: 0, a: 0.59607846}
+  _placementRange: 4.5
 --- !u!114 &1760391185
 MonoBehaviour:
   m_ObjectHideFlags: 0

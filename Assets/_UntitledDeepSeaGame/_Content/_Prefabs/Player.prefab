@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1733515650
+  GlobalObjectIdHash: 1336743837
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -226,8 +226,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _heldItemPivot: {fileID: 8769432622025642449}
   _heldItemHolder: {fileID: 1224968750194530153}
-  _northPivot: {fileID: 0}
-  _southPivot: {fileID: 0}
   _eastPivot: {fileID: 2121108582731336343}
   _westPivot: {fileID: 3394721781645054817}
 --- !u!114 &1902777031516221210

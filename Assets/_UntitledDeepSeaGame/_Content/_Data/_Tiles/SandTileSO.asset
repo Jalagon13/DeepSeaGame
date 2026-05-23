@@ -921,5 +921,10 @@ MonoBehaviour:
     m_RuleTransform: 0
   StringID: sandTile
   <TileType>k__BackingField: 0
+  <RequiredToolType>k__BackingField: 2
   <Hardness>k__BackingField: 0.65
-  <ItemDropTable>k__BackingField: []
+  <ItemDropTable>k__BackingField:
+  - Item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+    Min: 1
+    Max: 1
+    Chance: 100

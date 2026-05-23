@@ -15,10 +15,6 @@ namespace UntitledDeepSeaGame
 
         [Header("Pivots")]
         [SerializeField]
-        private Transform _northPivot;
-        [SerializeField]
-        private Transform _southPivot;
-        [SerializeField]
         private Transform _eastPivot;
         [SerializeField]
         private Transform _westPivot;
@@ -99,12 +95,6 @@ namespace UntitledDeepSeaGame
         {
             switch (direction)
             {
-                case CardinalDirection.North:
-                    _heldItemPivot.transform.position = _northPivot.transform.position;
-                    break;
-                case CardinalDirection.South:
-                    _heldItemPivot.transform.position = _southPivot.transform.position;
-                    break;
                 case CardinalDirection.West:
                     _heldItemPivot.transform.position = _westPivot.transform.position;
                     break;

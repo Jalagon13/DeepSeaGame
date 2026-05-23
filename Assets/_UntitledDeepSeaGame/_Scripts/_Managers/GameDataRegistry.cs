@@ -6,6 +6,16 @@ namespace UntitledDeepSeaGame
 {
     public class GameDataRegistry : MonoBehaviour
     {
+        [System.Serializable]
+        private struct TileItemMapping
+        {
+            [SerializeField] private TileSO _tile;
+            [SerializeField] private TileItemSO _item;
+
+            public TileSO Tile => _tile;
+            public TileItemSO Item => _item;
+        }
+
         public static GameDataRegistry Instance { get; private set; }
         public const ushort INVALID_ID = ushort.MaxValue;
         
@@ -16,6 +26,10 @@ namespace UntitledDeepSeaGame
         [Space(15)]
         [SerializeField]
         private List<TileSO> _tileData;
+
+        [Space(15)]
+        [SerializeField]
+        private List<TileItemMapping> _tileItemMappings;
 
 
         private void Awake()
@@ -92,6 +106,29 @@ namespace UntitledDeepSeaGame
         public ushort GetTileIdFromTileBase(TileBase tileBase)
         {
             return GetTileIdFromTileSO(GetTileSOFromTileBase(tileBase));
+        }
+
+        public TileItemSO GetTileItemSOFromTileSO(TileSO tileSO)
+        {
+            if (tileSO == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < _tileItemMappings.Count; i++)
+            {
+                if (_tileItemMappings[i].Tile == tileSO)
+                {
+                    return _tileItemMappings[i].Item;
+                }
+            }
+
+            return null;
+        }
+
+        public TileSO GetTileSOFromTileItemSO(TileItemSO tileItemSO)
+        {
+            return tileItemSO == null ? null : tileItemSO.PlaceableTile;
         }
 
         public TileSO GetTileSOFromTileBase(TileBase tileBase)
