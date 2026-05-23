@@ -29,21 +29,11 @@ namespace UntitledDeepSeaGame
 
             if (movementState == MovementState.Idle)
             {
-                clip = cardinalDirection switch
-                {
-                    CardinalDirection.North => _animConfig.BackIdleClip,
-                    CardinalDirection.South => _animConfig.FrontIdleClip,
-                    _ => _animConfig.SideIdleClip,
-                };
+                clip = _animConfig.SideIdleClip;
             }
             else if (movementState == MovementState.Pursuing || movementState == MovementState.Knockback || movementState == MovementState.Moving || movementState == MovementState.Fleeing)
             {
-                clip = cardinalDirection switch
-                {
-                    CardinalDirection.North => _animConfig.BackMoveClip,
-                    CardinalDirection.South => _animConfig.FrontMoveClip,
-                    _ => _animConfig.SideMoveClip,
-                };
+                clip = _animConfig.SideMoveClip;
             }
 
             if (clip != null)

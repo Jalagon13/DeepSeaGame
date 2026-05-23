@@ -8,10 +8,6 @@ namespace UntitledDeepSeaGame
     {
         public AnimationClip SideMoveClip;
         public AnimationClip SideIdleClip;
-        public AnimationClip FrontMoveClip;
-        public AnimationClip FrontIdleClip;
-        public AnimationClip BackMoveClip;
-        public AnimationClip BackIdleClip;
     }
 
     public enum CardinalDirection
