@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace UntitledDeepSeaGame
 {
@@ -11,7 +12,11 @@ namespace UntitledDeepSeaGame
 
         [SerializeField]
         private List<ItemSO> _itemData;
-        
+
+        [Space(15)]
+        [SerializeField]
+        private List<TileSO> _tileData;
+
 
         private void Awake()
         {
@@ -48,6 +53,59 @@ namespace UntitledDeepSeaGame
             }
 
             return _itemData[itemId];
+        }
+
+        #endregion
+
+        #region Tile Data Functions
+
+        public TileSO GetTileSOFromTileId(ushort tileId)
+        {
+            if (tileId >= _tileData.Count || tileId < 0)
+            {
+                // Debug.LogError($"Invalid Tile ID: {tileId}");
+                return null;
+            }
+
+            return _tileData[tileId];
+        }
+
+        public ushort GetTileIdFromTileSO(TileSO tileSO)
+        {
+            if (tileSO == null)
+            {
+                Debug.LogError($"TileDataSO is null. Use this log to deduce where this came from");
+            }
+
+            for (int i = 0; i < _tileData.Count; i++)
+            {
+                if (_tileData[i].StringID == tileSO.StringID)
+                {
+                    return (ushort)i;
+                }
+            }
+
+            Debug.LogError($"TileDataSO '{tileSO}' not found!");
+            return ushort.MaxValue;
+        }
+
+        public ushort GetTileIdFromTileBase(TileBase tileBase)
+        {
+            return GetTileIdFromTileSO(GetTileSOFromTileBase(tileBase));
+        }
+
+        public TileSO GetTileSOFromTileBase(TileBase tileBase)
+        {
+            foreach (TileSO tileSO in _tileData)
+            {
+                if (tileSO == tileBase)
+                {
+                    return tileSO;
+                }
+            }
+
+            Debug.LogError($"Cannot find {tileBase} in TileObjectSOList, returning default");
+            return default;
         }
 
         #endregion
