@@ -52,14 +52,14 @@ namespace UntitledDeepSeaGame
             bool isPlayer = _serverCharacter.TryGetComponent(out Player player);
 
             // Default scale facing East
-            if (isPlayer)
-            {
-                transform.localScale = Vector3.one;
-            }
-            else
-            {
-                transform.parent.localScale = Vector3.one;
-            }
+            // if (isPlayer)
+            // {
+            //     transform.localScale = Vector3.one;
+            // }
+            // else
+            // {
+            //     transform.parent.localScale = Vector3.one;
+            // }
 
             // Flip sprite for West direction
             if (direction == CardinalDirection.West)
@@ -71,6 +71,17 @@ namespace UntitledDeepSeaGame
                 else
                 {
                     transform.parent.localScale = new Vector3(-1, 1, 1);
+                }
+            }
+            else if(direction == CardinalDirection.East)
+            {
+                if (isPlayer)
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+                else
+                {
+                    transform.parent.localScale = new Vector3(1, 1, 1);
                 }
             }
         }
