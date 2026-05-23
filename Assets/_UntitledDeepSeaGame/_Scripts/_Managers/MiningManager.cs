@@ -230,11 +230,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            TileItemSO tileItemSO = GameDataRegistry.Instance.GetTileItemSOFromTileSO(tileSO);
-            if (tileItemSO != null)
-            {
-                GameManager.Instance.SpawnItem(new InventoryStack(tileItemSO, 1), spawnPosition);
-            }
+            GameManager.Instance.SpawnItem(new InventoryStack(tileSO.TileItemSO, 1), spawnPosition);
         }
     }
 }

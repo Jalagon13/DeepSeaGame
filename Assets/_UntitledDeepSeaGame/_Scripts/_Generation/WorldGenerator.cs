@@ -64,7 +64,7 @@ namespace UntitledDeepSeaGame
                 yield return StartCoroutine(step.Execute(context));
 
                 float stepDuration = Time.realtimeSinceStartup - stepStartTime;
-                Debug.Log($"World generation step complete: {step.GetType().Name} ({step.State}) in {stepDuration:F3}s");
+                Debug.Log($"World gen step complete: {step.GetType().Name} ({step.State}) in {stepDuration:F3}s");
             }
 
             context.Complete();
