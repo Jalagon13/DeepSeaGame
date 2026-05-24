@@ -525,7 +525,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 15.9375
+  orthographic size: 31.875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2001,6 +2001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1463938961}
+  - component: {fileID: 1463938962}
   m_Layer: 0
   m_Name: FillSandBackgroundStep
   m_TagString: Untagged
@@ -2023,6 +2024,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 885515390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1463938962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463938960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8db73786479954a249107d97224e81b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FillSandBackgroundStep
+  <Description>k__BackingField: 
+  _sandWallTileSO: {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}
 --- !u!1 &1720046716
 GameObject:
   m_ObjectHideFlags: 0
