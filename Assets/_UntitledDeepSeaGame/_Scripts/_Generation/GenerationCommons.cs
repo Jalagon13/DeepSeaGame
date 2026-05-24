@@ -18,4 +18,10 @@ namespace UntitledDeepSeaGame
         FinalizingSpawn,
         Completed
     }
+    
+    public enum WorldTm
+    {
+        ForegroundTilemap,
+        BackgroundTilemap
+    }
 }

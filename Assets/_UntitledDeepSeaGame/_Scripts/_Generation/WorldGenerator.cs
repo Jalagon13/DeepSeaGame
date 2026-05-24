@@ -9,8 +9,13 @@ namespace UntitledDeepSeaGame
     [RequireComponent(typeof(WorldGenerationData), typeof(WorldDataStore), typeof(WorldTileStreamingRenderer))]
     public class WorldGenerator : MonoBehaviour
     {
-        [SerializeField] private Tilemap _forgroundTilemap;
+        [SerializeField] 
+        private Tilemap _forgroundTilemap;
         public Tilemap ForegroundTilemap => _forgroundTilemap;
+
+        [SerializeField] 
+        private Tilemap _backgroundTilemap;
+        public Tilemap BackgroundTilemap => _backgroundTilemap;
 
         public WorldGenerationState CurrentState { get; private set; } = WorldGenerationState.NotStarted;
         public float Progress { get; private set; }

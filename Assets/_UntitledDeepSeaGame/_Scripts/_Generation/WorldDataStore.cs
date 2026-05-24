@@ -7,36 +7,25 @@ namespace UntitledDeepSeaGame
     {
         public event Action<Vector2Int, ushort, ushort> TileChanged;
 
-        private ushort[,] _tileData;
+        private ushort[,] _fgTileData;
+        private ushort[,] _bgTileData;
 
-        public int Width => _tileData?.GetLength(0) ?? 0;
-        public int Height => _tileData?.GetLength(1) ?? 0;
+        public int Width => _fgTileData?.GetLength(0) ?? 0;
+        public int Height => _fgTileData?.GetLength(1) ?? 0;
 
-        public void Initialize(int width, int height, ushort defaultTileId = GameDataRegistry.INVALID_ID)
+        public void Initialize(int width, int height)
         {
-            _tileData = new ushort[width, height];
-            Fill(defaultTileId);
-        }
-
-        public void Fill(ushort tileId)
-        {
-            if (_tileData == null)
-            {
-                return;
-            }
-
+            _fgTileData = new ushort[width, height];
+            _bgTileData = new ushort[width, height];
+            
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    _tileData[x, y] = tileId;
+                    _fgTileData[x, y] = GameDataRegistry.INVALID_ID;
+                    _bgTileData[x, y] = GameDataRegistry.INVALID_ID;
                 }
             }
-        }
-
-        public void Clear()
-        {
-            Fill(GameDataRegistry.INVALID_ID);
         }
 
         public bool IsInBounds(int x, int y)
@@ -51,7 +40,7 @@ namespace UntitledDeepSeaGame
                 return GameDataRegistry.INVALID_ID;
             }
 
-            return _tileData[x, y];
+            return _fgTileData[x, y];
         }
 
         public void SetTileId(int x, int y, ushort tileId)
@@ -69,13 +58,13 @@ namespace UntitledDeepSeaGame
                 return false;
             }
 
-            ushort previousTileId = _tileData[x, y];
+            ushort previousTileId = _fgTileData[x, y];
             if (previousTileId == tileId)
             {
                 return true;
             }
 
-            _tileData[x, y] = tileId;
+            _fgTileData[x, y] = tileId;
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId);
             return true;
         }

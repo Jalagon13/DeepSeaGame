@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 135491153db834b08a4ff0a655a9d735, type: 3}
-  m_Name: SandTileSO
+  m_Name: SandFgTileSO
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileSO
   m_DefaultSprite: {fileID: -212160175407610149, guid: 814e31fe4b9e44fadbfeb7e1b5f7a746, type: 3}
   m_DefaultGameObject: {fileID: 0}
@@ -919,7 +919,7 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  StringID: sandTile
+  StringID: sandFgTile
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 2
   <Hardness>k__BackingField: 0.65
