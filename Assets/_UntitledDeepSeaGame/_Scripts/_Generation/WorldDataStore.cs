@@ -5,7 +5,7 @@ namespace UntitledDeepSeaGame
 {
     public class WorldDataStore : MonoBehaviour
     {
-        public event Action<Vector2Int, ushort, ushort> TileChanged;
+        public event Action<Vector2Int, ushort, ushort, WorldTm> TileChanged;
 
         private ushort[,] _fgTileData;
         private ushort[,] _bgTileData;
@@ -33,39 +33,40 @@ namespace UntitledDeepSeaGame
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
 
-        public ushort GetTileId(int x, int y)
+        public ushort GetTileId(int x, int y, WorldTm targetMap = WorldTm.ForegroundTilemap)
         {
             if (!IsInBounds(x, y))
             {
                 return GameDataRegistry.INVALID_ID;
             }
 
-            return _fgTileData[x, y];
+            return targetMap == WorldTm.ForegroundTilemap ? _fgTileData[x, y] : _bgTileData[x, y];
         }
 
-        public void SetTileId(int x, int y, ushort tileId)
+        public void SetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap)
         {
-            if (!TrySetTileId(x, y, tileId))
+            if (!TrySetTileId(x, y, tileId, targetMap))
             {
-                Debug.LogWarning($"Failed to set tile at ({x}, {y}) because it is out of bounds.");
+                Debug.LogWarning($"Failed to set tile at ({x}, {y}) on {targetMap} because it is out of bounds.");
             }
         }
 
-        public bool TrySetTileId(int x, int y, ushort tileId)
+        public bool TrySetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap)
         {
             if (!IsInBounds(x, y))
             {
                 return false;
             }
 
-            ushort previousTileId = _fgTileData[x, y];
+            ushort[,] data = targetMap == WorldTm.ForegroundTilemap ? _fgTileData : _bgTileData;
+            ushort previousTileId = data[x, y];
             if (previousTileId == tileId)
             {
                 return true;
             }
 
-            _fgTileData[x, y] = tileId;
-            TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId);
+            data[x, y] = tileId;
+            TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
             return true;
         }
     }

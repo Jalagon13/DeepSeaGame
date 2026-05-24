@@ -6,7 +6,8 @@ namespace UntitledDeepSeaGame
     public class WorldTileStreamingRenderer : MonoBehaviour
     {
         private WorldDataStore _worldDataStore;
-        private Tilemap _targetTilemap;
+        private Tilemap _foregroundTilemap;
+        private Tilemap _backgroundTilemap;
         private RectInt _renderedBounds;
         private bool _isInitialized;
         private bool _hasRenderedBounds;
@@ -26,7 +27,7 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        public void Initialize(WorldDataStore worldDataStore, Tilemap targetTilemap)
+        public void Initialize(WorldDataStore worldDataStore, Tilemap foregroundTilemap, Tilemap backgroundTilemap)
         {
             if (_worldDataStore != null)
             {
@@ -34,8 +35,9 @@ namespace UntitledDeepSeaGame
             }
 
             _worldDataStore = worldDataStore;
-            _targetTilemap = targetTilemap;
-            _isInitialized = _worldDataStore != null && _targetTilemap != null;
+            _foregroundTilemap = foregroundTilemap;
+            _backgroundTilemap = backgroundTilemap;
+            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null;
             _hasRenderedBounds = false;
             _renderedBounds = default;
 
@@ -46,7 +48,8 @@ namespace UntitledDeepSeaGame
             }
 
             _worldDataStore.TileChanged += HandleTileChanged;
-            _targetTilemap.ClearAllTiles();
+            _foregroundTilemap.ClearAllTiles();
+            _backgroundTilemap.ClearAllTiles();
 
             if (PlayerCamera.Instance != null)
             {
@@ -88,14 +91,14 @@ namespace UntitledDeepSeaGame
             _renderedBounds = clampedBounds;
         }
 
-        private void HandleTileChanged(Vector2Int tilePosition, ushort previousTileId, ushort newTileId)
+        private void HandleTileChanged(Vector2Int tilePosition, ushort previousTileId, ushort newTileId, WorldTm targetMap)
         {
             if (!_isInitialized || !_hasRenderedBounds || !_renderedBounds.Contains(tilePosition))
             {
                 return;
             }
 
-            ApplyTile(tilePosition.x, tilePosition.y);
+            ApplyTile(tilePosition.x, tilePosition.y, targetMap);
         }
 
         private RectInt ClampToWorldBounds(RectInt bounds)
@@ -226,17 +229,31 @@ namespace UntitledDeepSeaGame
             {
                 for (int y = bounds.yMin; y < bounds.yMax; y++)
                 {
-                    _targetTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                    _foregroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                    _backgroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
 
         private void ApplyTile(int x, int y)
         {
-            ushort tileId = _worldDataStore.GetTileId(x, y);
+            ApplyTile(x, y, WorldTm.ForegroundTilemap);
+            ApplyTile(x, y, WorldTm.BackgroundTilemap);
+        }
+
+        private void ApplyTile(int x, int y, WorldTm targetMap)
+        {
+            ushort tileId = _worldDataStore.GetTileId(x, y, targetMap);
             TileBase tile = tileId == GameDataRegistry.INVALID_ID ? null : GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
 
-            _targetTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+            if (targetMap == WorldTm.ForegroundTilemap)
+            {
+                _foregroundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+            }
+            else
+            {
+                _backgroundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+            }
         }
 
         private RectInt CreateRectFromMinMax(int minX, int minY, int maxX, int maxY)
