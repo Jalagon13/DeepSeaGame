@@ -6,14 +6,20 @@ namespace UntitledDeepSeaGame
     public class FillSandBackgroundStep : GenerationStep
     {
         [Header("Terrain")]
-        [SerializeField] private TileSO _sandWallTileSO;
+        [SerializeField] 
+        private TileSO _sandWallTileSO;
         
-        [SerializeField] private int _belowSurfaceOffset = 3;
+        [SerializeField] 
+        private int _belowSurfaceOffset = 3;
+        
+        [SerializeField, Range(0f, 1f)] 
+        private float _underGroundStartPercent = 0.45f;
 
         public override WorldGenerationState State => WorldGenerationState.FillingTerrain;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {
+            int undergroundStartHeight = Mathf.RoundToInt(context.Config.WorldHeight * _underGroundStartPercent);
             int width = context.Config.WorldWidth;
             int height = context.Config.WorldHeight;
             ushort sandWallTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_sandWallTileSO);
@@ -23,8 +29,11 @@ namespace UntitledDeepSeaGame
                 int surfaceHeight = context.SurfaceHeights[x] - _belowSurfaceOffset;
                 for (int y = 0; y < height; y++)
                 {
-                    ushort tileId = y <= surfaceHeight ? sandWallTileId : GameDataRegistry.INVALID_ID;
-                    context.DataStore.SetTileId(x, y, tileId, WorldTm.BackgroundTilemap);
+                    if(y > undergroundStartHeight)
+                    {
+                        ushort tileId = y <= surfaceHeight ? sandWallTileId : GameDataRegistry.INVALID_ID;
+                        context.DataStore.SetTileId(x, y, tileId, WorldTm.BackgroundTilemap);
+                    }
                 }
 
                 if ((x + 1) % context.Config.ColumnsPerFrame == 0)
