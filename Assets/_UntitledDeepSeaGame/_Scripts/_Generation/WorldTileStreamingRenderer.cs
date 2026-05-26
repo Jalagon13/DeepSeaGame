@@ -14,12 +14,12 @@ namespace UntitledDeepSeaGame
 
         private void OnEnable()
         {
-            PlayerCamera.VisibleTileBoundsChanged += HandleVisibleTileBoundsChanged;
+            PlayerCamera.OnVisibleTileBoundsChanged += HandleVisibleTileBoundsChanged;
         }
 
         private void OnDisable()
         {
-            PlayerCamera.VisibleTileBoundsChanged -= HandleVisibleTileBoundsChanged;
+            PlayerCamera.OnVisibleTileBoundsChanged -= HandleVisibleTileBoundsChanged;
 
             if (_worldDataStore != null)
             {

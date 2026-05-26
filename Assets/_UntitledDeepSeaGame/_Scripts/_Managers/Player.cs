@@ -73,7 +73,7 @@ namespace UntitledDeepSeaGame
                 {
                     return;
                 }
-                Debug.Log($"Changed Selected Item ID: {hotBatSlotStackItemID}");
+                // Debug.Log($"Changed Selected Item ID: {hotBatSlotStackItemID}");
                 SelectedItemID.Value = hotBatSlotStackItemID;
             }
         }

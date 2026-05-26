@@ -24,12 +24,12 @@ namespace UntitledDeepSeaGame
         
         private void Start() 
         {
-            PlayerCamera.VisibleTileBoundsChanged += HandleVisibleTileBoundsChanged;
+            PlayerCamera.OnVisibleTileBoundsChanged += HandleVisibleTileBoundsChanged;
         }
         
         private void OnDestroy() 
         {
-            PlayerCamera.VisibleTileBoundsChanged -= HandleVisibleTileBoundsChanged;
+            PlayerCamera.OnVisibleTileBoundsChanged -= HandleVisibleTileBoundsChanged;
         }
 
         private void HandleVisibleTileBoundsChanged(RectInt bounds)
@@ -58,7 +58,7 @@ namespace UntitledDeepSeaGame
             _backgroundSr.size = new Vector2(multiplierX * _baseSize.x, multiplierY * _baseSize.y);
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (!gameObject.activeSelf || Player.Instance == null || _baseSize.x <= 0f || _baseSize.y <= 0f)
                 return;

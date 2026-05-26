@@ -10,7 +10,7 @@ namespace UntitledDeepSeaGame
     public class PlayerCamera : NetworkBehaviour
     {
         public static PlayerCamera Instance { get; private set; }
-        public static event Action<RectInt> VisibleTileBoundsChanged;
+        public static event Action<RectInt> OnVisibleTileBoundsChanged;
 
         [field: SerializeField, Tooltip("How much padding, from the min and max points of the camera bounds to give to cover the whole frustum for the lightmap")] 
         public float MinMaxOffsetPadding { get; private set; }
@@ -96,7 +96,7 @@ namespace UntitledDeepSeaGame
             }
 
             CurrentVisibleTileBounds = visibleBounds;
-            VisibleTileBoundsChanged?.Invoke(CurrentVisibleTileBounds);
+            OnVisibleTileBoundsChanged?.Invoke(CurrentVisibleTileBounds);
         }
 
         private void RegisterCameraToPlayer(ulong clientId)
