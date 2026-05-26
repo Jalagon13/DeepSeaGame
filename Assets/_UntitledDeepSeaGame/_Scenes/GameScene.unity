@@ -640,8 +640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac04fb39bbfe4599860c30a38eca992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.Paralax
-  _paralaxEffect: 0.7
-  _paralaxEffectY: 0.2
+  _paralaxEffect: 0.6
+  _paralaxEffectY: 0.1
 --- !u!210 &285601403
 SortingGroup:
   m_ObjectHideFlags: 0
