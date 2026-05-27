@@ -23,6 +23,7 @@ namespace UntitledDeepSeaGame
             // Super States
             _states[AIState.Grounded] = new PlayerGroundedState(AIState.Grounded, this);
             _states[AIState.Attacking] = new PlayerAttackState(AIState.Attacking, this);
+            _states[AIState.Mining] = new PlayerMiningState(AIState.Mining, this);
             _states[AIState.Dead] = new PlayerDeadState(AIState.Dead, this);
 
             _currentState = _states[AIState.Grounded];

@@ -18,7 +18,7 @@ MonoBehaviour:
   m_TilingRules: []
   StringID: light
   <TileType>k__BackingField: 0
-  <RequiredToolType>k__BackingField: 2
+  <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 8
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}

@@ -22,7 +22,7 @@ namespace UntitledDeepSeaGame
             _animator = GetComponent<Animator>();
         }
 
-        public void PlayAnimation(MovementState movementState, CardinalDirection cardinalDirection)
+        public void PlayAnimation(MovementState movementState, Direction cardinalDirection)
         {
             UpdateSpriteOrientationClientRpc(cardinalDirection);
             AnimationClip clip = null;
@@ -47,12 +47,12 @@ namespace UntitledDeepSeaGame
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        private void UpdateSpriteOrientationClientRpc(CardinalDirection direction)
+        private void UpdateSpriteOrientationClientRpc(Direction direction)
         {
             bool isPlayer = _serverCharacter.TryGetComponent(out Player player);
 
             // Flip sprite for West direction
-            if (direction == CardinalDirection.West)
+            if (direction == Direction.Left)
             {
                 if (isPlayer)
                 {
@@ -63,7 +63,7 @@ namespace UntitledDeepSeaGame
                     transform.parent.localScale = new Vector3(-1, 1, 1);
                 }
             }
-            else if(direction == CardinalDirection.East)
+            else if(direction == Direction.Right)
             {
                 if (isPlayer)
                 {

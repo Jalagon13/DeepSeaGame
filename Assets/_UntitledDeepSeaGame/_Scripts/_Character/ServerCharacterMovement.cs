@@ -68,15 +68,15 @@ namespace UntitledDeepSeaGame
             _rigidbody2D.linearVelocity = _velocity;
         }
 
-        public CardinalDirection GetCardinalDirectionFromVector2(Vector2 desiredDirection)
+        public Direction GetCardinalDirectionFromVector2(Vector2 desiredDirection)
         {
             if (Math.Abs(desiredDirection.x) > Math.Abs(desiredDirection.y))
             {
-                return desiredDirection.x > 0 ? CardinalDirection.East : CardinalDirection.West;
+                return desiredDirection.x > 0 ? Direction.Right : Direction.Left;
             }
             else
             {
-                return desiredDirection.y > 0 ? CardinalDirection.North : CardinalDirection.South;
+                return desiredDirection.y > 0 ? Direction.Up : Direction.Down;
             }
         }
 

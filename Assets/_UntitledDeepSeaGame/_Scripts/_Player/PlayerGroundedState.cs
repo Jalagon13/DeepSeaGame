@@ -15,7 +15,7 @@ namespace UntitledDeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            // Debug.Log("Player entering grounded");
+            Debug.Log("Player entering grounded");
 
         }
 
@@ -26,10 +26,10 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            // if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.PrimaryActionHeldDown)
-            // {
-            //     SwitchState(new AIStateData(AIState.Attacking));
-            // }
+            if (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType == ToolType.Drill && GameInput.Instance.PrimaryActionHeldDown)
+            {
+                SwitchState(new AIStateData(AIState.Mining));
+            }
             // else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
             // {
             //     Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);

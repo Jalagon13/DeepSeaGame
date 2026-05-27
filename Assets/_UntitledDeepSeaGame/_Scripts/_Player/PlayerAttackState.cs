@@ -8,7 +8,7 @@ namespace UntitledDeepSeaGame
     {
         private PlayerStateMachine _ctx;
         private ToolItemSO _toolItemSO;
-        private CardinalDirection _swingDirection;
+        private Direction _swingDirection;
 
         public PlayerAttackState(AIState key, StateMachine context) : base(key, context)
         {
@@ -27,22 +27,22 @@ namespace UntitledDeepSeaGame
 
             switch (_swingDirection)
             {
-                case CardinalDirection.North:
-                    Swing(160, 20, duration, true, CardinalDirection.North, toolItemId);
+                case Direction.Up:
+                    Swing(160, 20, duration, true, Direction.Up, toolItemId);
                     break;
-                case CardinalDirection.South:
-                    Swing(340, 200, duration, false, CardinalDirection.South, toolItemId);
+                case Direction.Down:
+                    Swing(340, 200, duration, false, Direction.Down, toolItemId);
                     break;
-                case CardinalDirection.West:
-                    Swing(110, 250, duration, false, CardinalDirection.West, toolItemId);
+                case Direction.Left:
+                    Swing(110, 250, duration, false, Direction.Left, toolItemId);
                     break;
-                case CardinalDirection.East:
-                    Swing(70, 290, duration, true, CardinalDirection.East, toolItemId);
+                case Direction.Right:
+                    Swing(70, 290, duration, true, Direction.Right, toolItemId);
                     break;
             }
         }
 
-        private void Swing(int startAngle, int endAngle, float duration, bool clockwise, CardinalDirection swingDirection, ushort toolItemId)
+        private void Swing(int startAngle, int endAngle, float duration, bool clockwise, Direction swingDirection, ushort toolItemId)
         {
             // TODO: Melee Collider Data set up here
             if (clockwise && endAngle > startAngle) startAngle += 360;

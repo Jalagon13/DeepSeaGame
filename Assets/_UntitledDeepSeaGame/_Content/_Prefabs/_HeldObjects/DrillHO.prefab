@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4479442178478723672}
   - component: {fileID: 5679233240984726865}
   m_Layer: 0
-  m_Name: RustySword
+  m_Name: DrillHO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

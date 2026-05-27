@@ -16,7 +16,7 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private List<ServerSpriteAnimHandler> _spriteAnimHandlers = new List<ServerSpriteAnimHandler>();
 
-        private CardinalDirection _actionDirection = CardinalDirection.None; // Used for casting direction and swing direction
+        private Direction _actionDirection = Direction.None; // Used for casting direction and swing direction
 
         public override void OnNetworkSpawn()
         {
@@ -48,31 +48,31 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void OnActionDirectionChanged(CardinalDirection previousValue, CardinalDirection newValue)
+        private void OnActionDirectionChanged(Direction previousValue, Direction newValue)
         {
             _actionDirection = newValue;
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == CardinalDirection.None ? _serverCharacter.CardinalDirection.Value : _actionDirection);
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? _serverCharacter.CardinalDirection.Value : _actionDirection);
             }
         }
 
-        private void OnCardinalDirectionChanged(CardinalDirection previousValue, CardinalDirection newValue)
+        private void OnCardinalDirectionChanged(Direction previousValue, Direction newValue)
         {
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == CardinalDirection.None ? newValue : _actionDirection);
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? newValue : _actionDirection);
             }
         }
 
         private void PlayCurrentMoveState(MovementState previousMovementState, MovementState newMovementState)
         {
-            CardinalDirection direction = _serverCharacter.CardinalDirection.Value;
+            Direction direction = _serverCharacter.CardinalDirection.Value;
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(newMovementState, _actionDirection == CardinalDirection.None ? direction : _actionDirection);
+                handler.PlayAnimation(newMovementState, _actionDirection == Direction.None ? direction : _actionDirection);
             }
         }
 

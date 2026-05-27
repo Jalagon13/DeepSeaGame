@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7ee61e6155346dc844ca14364df86f, type: 3}
-  m_Name: RustySwordItemSO
+  m_Name: DrillToolSO
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ToolItemSO
-  _itemName: Rusty Sword
+  _itemName: Drill
   _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: 6fd0b649401ca5b419a5ebf5df170c0f, type: 3}
   _isStackable: 1
-  HarvestType: 2
-  <SwingObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
+  <HarvestType>k__BackingField: 0
+  <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
   <Damage>k__BackingField: 4
   <Knockback>k__BackingField: 6
   <SwingDuration>k__BackingField: 0.5

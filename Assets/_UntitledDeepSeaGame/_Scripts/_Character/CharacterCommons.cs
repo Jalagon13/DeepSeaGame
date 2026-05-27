@@ -10,13 +10,13 @@ namespace UntitledDeepSeaGame
         public AnimationClip SideIdleClip;
     }
 
-    public enum CardinalDirection
+    public enum Direction
     {
         None,
-        North,
-        South,
-        West,
-        East
+        Up,
+        Down,
+        Left,
+        Right
     }
 
     public enum CharacterStateMachine
@@ -43,9 +43,7 @@ namespace UntitledDeepSeaGame
 
     public enum ToolType
     {
-        Pickaxe,
-        Axe,
-        Sword
+        Drill,
     }
     
     public enum MiningState
