@@ -21,4 +21,4 @@ MonoBehaviour:
   <Damage>k__BackingField: 4
   <Knockback>k__BackingField: 6
   <SwingDuration>k__BackingField: 0.5
-  <MiningPower>k__BackingField: 1
+  <MiningPower>k__BackingField: 4

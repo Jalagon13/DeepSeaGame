@@ -969,7 +969,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 31.875
+  orthographic size: 33.625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2884,6 +2884,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.LightmapManager
   _lightmapOverlay: {fileID: 1644655726}
+  _fullBrightnessInterpretation: 8
+  _solidForegroundAttenuation: 1.5
+  _backgroundOnlyAttenuation: 0.75
+  _airOnlyAttenuation: 0.5
+  _lightmapFilterMode: 0
+  _enableMultiplyBlending: 1
+  _multiplyMaterial: {fileID: 0}
+  _extraLightmapPadding: 5
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0
