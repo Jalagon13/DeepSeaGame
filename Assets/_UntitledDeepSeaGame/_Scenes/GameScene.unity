@@ -2786,6 +2786,8 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
     _amount: 99
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 99
 --- !u!114 &1760391182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2802,9 +2804,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
   - {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
   - {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+  - {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
   - {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}
+  - {fileID: 11400000, guid: ad3dc3449151c47e1a74c40627d9c551, type: 2}
 --- !u!114 &1760391183
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -127,16 +127,13 @@ namespace UntitledDeepSeaGame
         }
 
         /// <summary>
-        /// Main lightmap recalculation logic called whenever the camera viewport streams new tiles.
+        /// Main lightmap recalculation entry point. Orchestrates the full pipeline:
+        /// bounds inflation → buffer preparation → daylight seeding → BFS propagation → texture upload.
         /// </summary>
         /// <param name="currentVisibleTileBounds">The RectInt defining the current camera frustum in tile coords.</param>
         private void UpdateLightmap(RectInt currentVisibleTileBounds)
         {
-            // Verify world references and readiness
-            if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady)
-            {
-                return;
-            }
+            if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady) return;
 
             if (_worldDataStore == null)
             {
@@ -146,32 +143,45 @@ namespace UntitledDeepSeaGame
 
             _currentVisibleTileBounds = currentVisibleTileBounds;
 
-            // Inflate bounds by the padding in all four directions to prevent pop-in on screen edges
-            int minX = currentVisibleTileBounds.xMin - _extraLightmapPadding;
-            int minY = currentVisibleTileBounds.yMin - _extraLightmapPadding;
-            int maxX = currentVisibleTileBounds.xMax + _extraLightmapPadding;
-            int maxY = currentVisibleTileBounds.yMax + _extraLightmapPadding;
-            RectInt inflatedBounds = new(minX, minY, maxX - minX, maxY - minY);
+            if (!TryInflateBounds(currentVisibleTileBounds, out RectInt inflatedBounds)) return;
+
+            PrepareLightmap(inflatedBounds.width, inflatedBounds.height);
+            SeedLightSources(inflatedBounds);
+            RunBFSPropagation(inflatedBounds);
+            ApplyLightmapToOverlay(inflatedBounds);
+        }
+
+        /// <summary>
+        /// Expands the camera frustum bounds outward by the configured padding to prevent lighting
+        /// pop-in on screen edges. Returns false if the resulting bounds are degenerate.
+        /// </summary>
+        private bool TryInflateBounds(RectInt visibleBounds, out RectInt inflatedBounds)
+        {
+            int minX = visibleBounds.xMin - _extraLightmapPadding;
+            int minY = visibleBounds.yMin - _extraLightmapPadding;
+            int maxX = visibleBounds.xMax + _extraLightmapPadding;
+            int maxY = visibleBounds.yMax + _extraLightmapPadding;
+
+            inflatedBounds = new RectInt(minX, minY, maxX - minX, maxY - minY);
             _currentInflatedBounds = inflatedBounds;
 
-            int width = inflatedBounds.width;
-            int height = inflatedBounds.height;
+            return inflatedBounds.width > 0 && inflatedBounds.height > 0;
+        }
 
-            if (width <= 0 || height <= 0) return;
-
-            // Step 1: Manage buffer sizes and allocate/resize only when dimensions change (eliminates GC spikes)
+        /// <summary>
+        /// Allocates (or reuses) the light grid, color buffer, and Texture2D for the given dimensions.
+        /// Allocation only occurs when dimensions change to avoid GC spikes each frame.
+        /// </summary>
+        private void PrepareLightmap(int width, int height)
+        {
             if (_lightGrid == null || _gridWidth != width || _gridHeight != height)
             {
                 _lightGrid = new float[width, height];
                 _gridWidth = width;
                 _gridHeight = height;
 
-                if (_lightmapTexture != null)
-                {
-                    Destroy(_lightmapTexture);
-                }
+                if (_lightmapTexture != null) Destroy(_lightmapTexture);
 
-                // Initialize a standard 2D grayscale texture with bilinear/point filtering and clamped borders
                 _lightmapTexture = new Texture2D(width, height, TextureFormat.RGB24, false)
                 {
                     filterMode = _lightmapFilterMode,
@@ -182,15 +192,22 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                // Clear the light grid and clear the reusable BFS queue
+                // Reuse existing buffers — just zero out the light grid
                 Array.Clear(_lightGrid, 0, _lightGrid.Length);
             }
 
             _bfsQueue.Clear();
+        }
 
-            // Step 2: Seed daylight sources
-            // A tile is a surface daylight source if there is air in the foreground
-            // AND no background tile behind it.
+        /// <summary>
+        /// Scans the inflated grid and seeds any tile that has no foreground AND no background as a
+        /// full-brightness daylight source (value = 15), enqueuing it for BFS propagation.
+        /// </summary>
+        private void SeedLightSources(RectInt inflatedBounds)
+        {
+            int width  = inflatedBounds.width;
+            int height = inflatedBounds.height;
+
             for (int localX = 0; localX < width; localX++)
             {
                 for (int localY = 0; localY < height; localY++)
@@ -198,124 +215,129 @@ namespace UntitledDeepSeaGame
                     int worldX = inflatedBounds.x + localX;
                     int worldY = inflatedBounds.y + localY;
 
-                    ushort fgTileId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
-                    ushort bgTileId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
+                    ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
+                    ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
+                    TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
 
-                    // For now this just looks for daylight sources not torches
-                    if (fgTileId == GameDataRegistry.INVALID_ID && bgTileId == GameDataRegistry.INVALID_ID)
+                    bool isOpenSky = fgId == GameDataRegistry.INVALID_ID && bgId == GameDataRegistry.INVALID_ID;
+                    if (isOpenSky)
                     {
                         _lightGrid[localX, localY] = _fullBrightnessInterpretation;
+                        _bfsQueue.Enqueue(new Vector2Int(localX, localY));
+                        continue;
+                    }
+                    else if(fgId == GameDataRegistry.INVALID_ID)
+                    {
+                        continue;
+                    }
+
+                    if (fgTile.LightValue > 0)
+                    {
+                        _lightGrid[localX, localY] = fgTile.LightValue;
                         _bfsQueue.Enqueue(new Vector2Int(localX, localY));
                     }
                 }
             }
+        }
 
-            // Step 3: Queue-based BFS Flood Fill Propagation
-            // Moves in the 4 cardinal directions (Up, Down, Left, Right)
-            Vector2Int[] directions = new Vector2Int[]
-            {
-                new(0, 1),   // Up
-                new(0, -1),  // Down
-                new(-1, 0),  // Left
-                new(1, 0)    // Right
-            };
+        /// <summary>
+        /// Iterative queue-based BFS that propagates light outward from all seeded sources simultaneously.
+        /// Each step applies per-tile attenuation based on whether the neighbor is solid, background-only, or open air.
+        /// A neighbor is only enqueued if the new brightness strictly improves on its current stored value.
+        /// </summary>
+        private void RunBFSPropagation(RectInt inflatedBounds)
+        {
+            int width  = inflatedBounds.width;
+            int height = inflatedBounds.height;
+
+            // Static cardinal directions: Up, Down, Left, Right
+            Vector2Int[] directions = { new(0, 1), new(0, -1), new(-1, 0), new(1, 0) };
 
             while (_bfsQueue.Count > 0)
             {
                 Vector2Int curr = _bfsQueue.Dequeue();
                 float currLight = _lightGrid[curr.x, curr.y];
 
-                for (int i = 0; i < 4; i++)
+                foreach (Vector2Int dir in directions)
                 {
-                    int nextX = curr.x + directions[i].x;
-                    int nextY = curr.y + directions[i].y;
+                    int nextX = curr.x + dir.x;
+                    int nextY = curr.y + dir.y;
 
-                    // Bounds check within the viewport grid
-                    if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height)
+                    if (nextX < 0 || nextX >= width || nextY < 0 || nextY >= height) continue;
+
+                    int worldX = inflatedBounds.x + nextX;
+                    int worldY = inflatedBounds.y + nextY;
+
+                    ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
+                    ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
+
+                    float attenuation = GetTileAttenuation(fgId, bgId);
+                    float newLight = currLight - attenuation;
+
+                    if (newLight > 0f && newLight > _lightGrid[nextX, nextY])
                     {
-                        int neighborWorldX = inflatedBounds.x + nextX;
-                        int neighborWorldY = inflatedBounds.y + nextY;
-
-                        ushort fgTileId = _worldDataStore.GetTileId(neighborWorldX, neighborWorldY, WorldTm.ForegroundTilemap);
-                        ushort bgTileId = _worldDataStore.GetTileId(neighborWorldX, neighborWorldY, WorldTm.BackgroundTilemap);
-
-                        // Select attenuation value based on the neighbor tile's layers:
-                        // - Solid foreground tile: subtract 1.0
-                        // - Background-only tile: subtract 0.5
-                        // - Air-only tile (empty): subtract 0.5 (or air attenuation)
-                        float attenuation;
-                        if (fgTileId != GameDataRegistry.INVALID_ID)
-                        {
-                            attenuation = _solidForegroundAttenuation;
-                        }
-                        else if (bgTileId != GameDataRegistry.INVALID_ID)
-                        {
-                            attenuation = _backgroundOnlyAttenuation;
-                        }
-                        else
-                        {
-                            attenuation = _airOnlyAttenuation;
-                        }
-
-                        float newLight = currLight - attenuation;
-
-                        // Only propagate if the light exceeds 0 AND improves upon the neighbor's current light level
-                        if (newLight > 0 && newLight > _lightGrid[nextX, nextY])
-                        {
-                            _lightGrid[nextX, nextY] = newLight;
-                            _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
-                        }
+                        _lightGrid[nextX, nextY] = newLight;
+                        _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
                     }
                 }
             }
+        }
 
-            // Step 4: Map grid light values to greyscale pixels for the Texture2D
-            // 0 brightness maps to pure black (0,0,0) and _fullBrightnessInterpretation maps to white (255,255,255)
-            // Ensure texture coordinates correspond to the Flat buffer: index = y * width + x
+        /// <summary>
+        /// Returns the correct light attenuation value for a given tile based on its layer state.
+        /// </summary>
+        private float GetTileAttenuation(ushort fgId, ushort bgId)
+        {
+            if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
+            if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation;
+            return _airOnlyAttenuation;
+        }
+
+        /// <summary>
+        /// Converts the finished float light grid into a grayscale Texture2D and uploads it
+        /// to the RawImage overlay, applying the multiply material if blending is enabled.
+        /// </summary>
+        private void ApplyLightmapToOverlay(RectInt inflatedBounds)
+        {
+            int width  = inflatedBounds.width;
+            int height = inflatedBounds.height;
+
+            // Map each light value [0, 15] to a grayscale byte [0, 255]
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    float lightVal = _lightGrid[x, y];
-                    float normalized = Mathf.Clamp01(lightVal / _fullBrightnessInterpretation);
-                    byte grayscale = (byte)Mathf.RoundToInt(normalized * 255f);
-
-                    int bufferIdx = y * width + x;
-                    _colorBuffer[bufferIdx] = new Color32(grayscale, grayscale, grayscale, 255);
+                    float normalized = Mathf.Clamp01(_lightGrid[x, y] / _fullBrightnessInterpretation);
+                    byte  grayscale  = (byte)Mathf.RoundToInt(normalized * 255f);
+                    _colorBuffer[y * width + x] = new Color32(grayscale, grayscale, grayscale, 255);
                 }
             }
 
-            // Ensure filter mode stays in sync if modified in the Inspector at runtime
+            // Sync filter mode if tweaked in the Inspector at runtime
             if (_lightmapTexture.filterMode != _lightmapFilterMode)
-            {
                 _lightmapTexture.filterMode = _lightmapFilterMode;
-            }
 
             _lightmapTexture.SetPixels32(_colorBuffer);
             _lightmapTexture.Apply();
 
             _lightmapOverlay.texture = _lightmapTexture;
 
-            // Apply correct material depending on blending toggle
+            // Assign multiply material or fall back to raw grayscale
             if (_enableMultiplyBlending)
             {
-                if (_multiplyMaterial == null)
-                {
-                    InitializeMultiplyMaterial();
-                }
+                if (_multiplyMaterial == null) InitializeMultiplyMaterial();
                 _lightmapOverlay.material = _multiplyMaterial;
             }
             else
             {
-                _lightmapOverlay.material = null; // Renders raw grayscale
+                _lightmapOverlay.material = null;
             }
 
-            // Step 5: Update the Canvas Overlay Transform bounds in world units
             UpdateOverlayRectTf(inflatedBounds);
         }
 
         /// <summary>
-        /// Instantiates the multiply blend material dynamically if none was provided.
+        /// Instantiates the multiply blend material dynamically if none was provided in the Inspector.
         /// </summary>
         private void InitializeMultiplyMaterial()
         {
@@ -328,27 +350,21 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                Debug.LogWarning("Multiply blend shader 'UI/MultiplyBlend' not found! Make sure MultiplyUI.shader is imported and compiled.");
+                Debug.LogWarning("LightmapManager: Shader 'UI/MultiplyBlend' not found. Make sure MultiplyUI.shader is imported.");
             }
         }
 
         /// <summary>
-        /// Fits, scales, and positions the Canvas RawImage overlay to exactly match the world position
-        /// boundaries of the camera frustum's visible tiles.
+        /// Positions and sizes the Canvas RawImage overlay to exactly cover the inflated tile bounds in world space.
         /// </summary>
-        private void UpdateOverlayRectTf(RectInt currentVisibleTileBounds)
+        private void UpdateOverlayRectTf(RectInt bounds)
         {
-            Vector2Int minWorldPos = currentVisibleTileBounds.min;
-            Vector2Int maxWorldPos = currentVisibleTileBounds.max;
+            Vector2 center = new Vector2(bounds.xMin + bounds.xMax, bounds.yMin + bounds.yMax) * 0.5f;
+            Vector2 size   = new Vector2(bounds.width, bounds.height);
 
-            // Calculate precise center in floating-point world units (recovers 0.5 unit accuracy vs integer division)
-            Vector2 centerWorldPos = new Vector2(minWorldPos.x + maxWorldPos.x, minWorldPos.y + maxWorldPos.y) * 0.5f;
-            Vector2 sizeWorld = new(maxWorldPos.x - minWorldPos.x, maxWorldPos.y - minWorldPos.y);
-
-            // Translate bounds directly onto the Canvas Overlay RectTransform
-            _lightmapOverlay.rectTransform.position = centerWorldPos; 
-            _lightmapOverlay.rectTransform.sizeDelta = sizeWorld;      
-            _lightmapOverlay.rectTransform.localScale = Vector3.one;   
+            _lightmapOverlay.rectTransform.position   = center;
+            _lightmapOverlay.rectTransform.sizeDelta  = size;
+            _lightmapOverlay.rectTransform.localScale = Vector3.one;
         }
     }
 }
