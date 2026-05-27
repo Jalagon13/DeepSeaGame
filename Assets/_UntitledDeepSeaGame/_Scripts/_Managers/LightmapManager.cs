@@ -55,6 +55,8 @@ namespace UntitledDeepSeaGame
 
         // Cached runtime variables to completely eliminate GC garbage collection overhead
         private WorldDataStore _worldDataStore;
+        private RectInt _currentVisibleTileBounds;
+        private RectInt _currentInflatedBounds;
         private float[,] _lightGrid;
         private int _gridWidth;
         private int _gridHeight;
@@ -72,16 +74,55 @@ namespace UntitledDeepSeaGame
         {
             // Subscribe to the camera visible tile bounds change event
             PlayerCamera.OnVisibleTileBoundsChanged += UpdateLightmap;
+
+            // Subscribe to tile changes in the world data store to update lighting when blocks are broken/placed
+            if (WorldManager.Instance.IsWorldReady)
+            {
+                SubscribeToTileChanges();
+            }
+            else
+            {
+                WorldManager.Instance.OnWorldReady += SubscribeToTileChanges;
+            }
         }
         
         private void OnDestroy() 
         {
             PlayerCamera.OnVisibleTileBoundsChanged -= UpdateLightmap;
-            
+            WorldManager.Instance.OnWorldReady -= SubscribeToTileChanges;
+
+            if (_worldDataStore != null)
+            {
+                _worldDataStore.TileChanged -= HandleTileChanged;
+            }
+
             // Clean up resources to prevent memory leaks
             if (_lightmapTexture != null)
             {
                 Destroy(_lightmapTexture);
+            }
+        }
+
+        private void SubscribeToTileChanges()
+        {
+            if (_worldDataStore == null && WorldManager.Instance != null)
+            {
+                _worldDataStore = WorldManager.Instance.WorldDataStore;
+            }
+
+            if (_worldDataStore != null)
+            {
+                _worldDataStore.TileChanged -= HandleTileChanged;
+                _worldDataStore.TileChanged += HandleTileChanged;
+            }
+        }
+
+        private void HandleTileChanged(Vector2Int tilePosition, ushort previousTileId, ushort newTileId, WorldTm targetMap)
+        {
+            // Only trigger recalculation if the modified tile falls inside the active inflated calculations boundary
+            if (_gridWidth > 0 && _gridHeight > 0 && _currentInflatedBounds.Contains(tilePosition))
+            {
+                UpdateLightmap(_currentVisibleTileBounds);
             }
         }
 
@@ -103,12 +144,15 @@ namespace UntitledDeepSeaGame
                 if (_worldDataStore == null) return;
             }
 
+            _currentVisibleTileBounds = currentVisibleTileBounds;
+
             // Inflate bounds by the padding in all four directions to prevent pop-in on screen edges
             int minX = currentVisibleTileBounds.xMin - _extraLightmapPadding;
             int minY = currentVisibleTileBounds.yMin - _extraLightmapPadding;
             int maxX = currentVisibleTileBounds.xMax + _extraLightmapPadding;
             int maxY = currentVisibleTileBounds.yMax + _extraLightmapPadding;
             RectInt inflatedBounds = new(minX, minY, maxX - minX, maxY - minY);
+            _currentInflatedBounds = inflatedBounds;
 
             int width = inflatedBounds.width;
             int height = inflatedBounds.height;
