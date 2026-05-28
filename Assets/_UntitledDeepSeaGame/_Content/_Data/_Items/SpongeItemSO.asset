@@ -16,4 +16,4 @@ MonoBehaviour:
   _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: 0e4040556b24d6040826b165baa18a21, type: 3}
   _isStackable: 1
-  <MaxTileDetection>k__BackingField: 40
+  <MaxTileDetection>k__BackingField: 800

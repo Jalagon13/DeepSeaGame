@@ -16,7 +16,7 @@ namespace UntitledDeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log($"Player enter mining state");
+            // Debug.Log($"Player enter mining state");
             
             ushort itemId = GameDataRegistry.Instance.GetItemIdFromItemSO(_ctx.HeldItem);
             _ctx.PlayerRef.PlayerArmController.StartAimHandRpc(itemId);

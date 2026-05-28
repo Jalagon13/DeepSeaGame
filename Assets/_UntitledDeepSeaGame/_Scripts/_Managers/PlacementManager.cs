@@ -51,7 +51,7 @@ namespace UntitledDeepSeaGame
 
         private void TryToPlaceTile()
         {
-            if (!TryGetPlaceableTile(out Vector3Int tilePosition, out TileSO tileSO))
+            if (!TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO))
             {
                 return;
             }
@@ -92,7 +92,7 @@ namespace UntitledDeepSeaGame
             return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _placementRange;
         }
 
-        private bool TryGetPlaceableTile(out Vector3Int tilePosition, out TileSO tileSO)
+        private bool TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO)
         {
             tilePosition = GameManager.MouseTilePosition;
             tileSO = _currentTileItem == null ? null : _currentTileItem.PlaceableTile;

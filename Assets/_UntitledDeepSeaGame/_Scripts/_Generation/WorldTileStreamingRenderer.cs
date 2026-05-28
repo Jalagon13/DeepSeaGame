@@ -264,6 +264,7 @@ namespace UntitledDeepSeaGame
                 {
                     _foregroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
                     _backgroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                    _airTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }

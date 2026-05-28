@@ -20,7 +20,7 @@ namespace UntitledDeepSeaGame
 
         private Coroutine _currentMiningCoroutine;
         private ToolItemSO _currentTool;
-        private Vector3Int _currentTargetTilePosition;
+        private Vector2Int _currentTargetTilePosition;
         private TileSO _currentTargetTile;
 
         public ToolItemSO CurrentTool => _currentTool;
@@ -100,7 +100,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            if (!TryGetMineableTile(out Vector3Int tilePosition, out TileSO tileSO))
+            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO))
             {
                 return;
             }
@@ -174,7 +174,7 @@ namespace UntitledDeepSeaGame
             return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _miningRange;
         }
 
-        private bool TryGetMineableTile(out Vector3Int tilePosition, out TileSO tileSO)
+        private bool TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO)
         {
             tilePosition = GameManager.MouseTilePosition;
             tileSO = null;
@@ -212,7 +212,7 @@ namespace UntitledDeepSeaGame
                 return false;
             }
 
-            if (!TryGetMineableTile(out Vector3Int tilePosition, out TileSO tileSO))
+            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO))
             {
                 return false;
             }
@@ -220,9 +220,9 @@ namespace UntitledDeepSeaGame
             return tilePosition == _currentTargetTilePosition && tileSO == _currentTargetTile;
         }
 
-        private void SpawnTileDrops(TileSO tileSO, Vector3Int tilePosition)
+        private void SpawnTileDrops(TileSO tileSO, Vector2Int tilePosition)
         {
-            Vector2 spawnPosition = tilePosition + new Vector3(0.5f, 0.5f);
+            Vector2 spawnPosition = tilePosition + new Vector2(0.5f, 0.5f);
 
             if (tileSO.ItemDropTable != null && tileSO.ItemDropTable.Count > 0)
             {

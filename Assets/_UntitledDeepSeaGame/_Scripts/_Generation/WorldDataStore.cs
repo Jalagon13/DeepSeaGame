@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UntitledDeepSeaGame
@@ -86,7 +87,74 @@ namespace UntitledDeepSeaGame
 
             data[x, y] = tileId;
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
+
+            // Check for exposed air tiles if a foreground tile was broken
+            if (targetMap == WorldTm.ForegroundTilemap && tileId == GameDataRegistry.INVALID_ID && !IsAirAt(x, y))
+            {
+                CheckForExposedAir(x, y);
+            }
+
             return true;
+        }
+
+        private void CheckForExposedAir(int x, int y)
+        {
+            Vector2Int[] neighbors = { new(x, y + 1), new(x, y - 1), new(x - 1, y), new(x + 1, y) };
+            bool hasWaterNeighbor = false;
+
+            foreach (var pos in neighbors)
+            {
+                // A "water" tile is an empty foreground tile that is not air
+                if (GetTileId(pos.x, pos.y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID && !IsAirAt(pos.x, pos.y))
+                {
+                    hasWaterNeighbor = true;
+                    break;
+                }
+            }
+
+            if (hasWaterNeighbor)
+            {
+                foreach (var pos in neighbors)
+                {
+                    if (IsAirAt(pos.x, pos.y))
+                    {
+                        OnAirTileExposed(pos.x, pos.y);
+                    }
+                }
+            }
+            else
+            {
+                SetAirValue(x, y, true);
+            }
+        }
+
+        private void OnAirTileExposed(int startX, int startY)
+        {
+            Debug.Log($"Air pocket exposed at ({startX}, {startY})! Filling with water...");
+
+            Queue<Vector2Int> queue = new();
+            
+            // Start the flood fill by clearing the first detected air tile
+            SetAirValue(startX, startY, false);
+            queue.Enqueue(new Vector2Int(startX, startY));
+
+            while (queue.Count > 0)
+            {
+                Vector2Int current = queue.Dequeue();
+                Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+
+                foreach (var dir in neighbors)
+                {
+                    Vector2Int next = current + dir;
+                    
+                    if (IsAirAt(next.x, next.y))
+                    {
+                        // Setting to false immediately prevents the tile from being re-added to the queue
+                        SetAirValue(next.x, next.y, false);
+                        queue.Enqueue(next);
+                    }
+                }
+            }
         }
 
         public bool IsInBounds(int x, int y)
