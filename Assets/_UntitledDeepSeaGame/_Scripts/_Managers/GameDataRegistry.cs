@@ -14,6 +14,11 @@ namespace UntitledDeepSeaGame
         private List<ItemSO> _itemData;
 
         [Space(15)]
+        
+        [SerializeField] 
+        private TileBase _airTile;
+        public TileBase AirTile => _airTile;
+        
         [SerializeField]
         private List<TileSO> _tileData;
 

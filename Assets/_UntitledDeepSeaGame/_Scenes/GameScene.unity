@@ -970,7 +970,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 24.625
+  orthographic size: 33.625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3187,6 +3187,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
   - {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   - {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
+  _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
   - {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}

@@ -12,7 +12,9 @@ namespace UntitledDeepSeaGame
         {
             Debug.Log($"Attempting drain attempt");
             
-            // Drain algorithm here
+            Vector2Int startPos = GameManager.MouseTilePosition;
+            
+            
         }
     }
 }

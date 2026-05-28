@@ -10,7 +10,7 @@ namespace UntitledDeepSeaGame
         [field: Header("TileData Properties")]
         [Tooltip("Name of the resource world object")]
         public string StringID;
-        [field: SerializeField] public TileType TileType { get; private set; }
+        [field: SerializeField] public WorldTm TileType { get; private set; }
         [field: SerializeField] public ToolType RequiredToolType { get; private set; } = ToolType.Drill;
         [field: SerializeField] public float Hardness { get; private set; } = 0.65f;
         [field: SerializeField, Min(0)] public float LightValue { get; private set; }

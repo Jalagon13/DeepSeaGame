@@ -18,6 +18,7 @@ namespace UntitledDeepSeaGame
         {
             _fgTileData = new ushort[width, height];
             _bgTileData = new ushort[width, height];
+            _airTileData = new bool[width, height];
             
             for (int x = 0; x < Width; x++)
             {
@@ -25,13 +26,30 @@ namespace UntitledDeepSeaGame
                 {
                     _fgTileData[x, y] = GameDataRegistry.INVALID_ID;
                     _bgTileData[x, y] = GameDataRegistry.INVALID_ID;
+                    _airTileData[x, y] = false;
                 }
             }
         }
-
-        public bool IsInBounds(int x, int y)
+        
+        public void SetAirValue(int x, int y, bool value)
         {
-            return x >= 0 && x < Width && y >= 0 && y < Height;
+            if (!IsInBounds(x, y))
+            {
+                return;
+            }
+            
+            _airTileData[x, y] = value;
+            TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+        }
+        
+        public bool IsAirAt(int x, int y)
+        {
+            if (!IsInBounds(x, y))
+            {
+                return false;
+            }
+
+            return _airTileData[x, y];
         }
 
         public ushort GetTileId(int x, int y, WorldTm targetMap = WorldTm.ForegroundTilemap)
@@ -69,6 +87,11 @@ namespace UntitledDeepSeaGame
             data[x, y] = tileId;
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
             return true;
+        }
+
+        public bool IsInBounds(int x, int y)
+        {
+            return x >= 0 && x < Width && y >= 0 && y < Height;
         }
     }
 }

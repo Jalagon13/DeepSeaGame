@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public enum TileType
-    {
-        ForegroundTile,
-        BackgroundTile
-    }
-
     public enum WorldGenerationState
     {
         NotStarted,
@@ -23,6 +17,7 @@ namespace UntitledDeepSeaGame
     public enum WorldTm
     {
         ForegroundTilemap,
-        BackgroundTilemap
+        BackgroundTilemap,
+        AirTilemap
     }
 }

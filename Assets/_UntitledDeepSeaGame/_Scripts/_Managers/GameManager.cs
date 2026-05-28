@@ -10,7 +10,7 @@ namespace UntitledDeepSeaGame
     {
         public static GameManager Instance { get; private set; }
         public static Vector2 MouseWorldPosition { get; private set; }
-        public static Vector3Int MouseTilePosition { get; private set; }
+        public static Vector2Int MouseTilePosition { get; private set; }
 
         [SerializeField] private GameObject _itemBasePrefab;
 
@@ -32,7 +32,7 @@ namespace UntitledDeepSeaGame
         private void Update()
         {
             MouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            MouseTilePosition = Vector3Int.FloorToInt(MouseWorldPosition);
+            MouseTilePosition = Vector2Int.FloorToInt(MouseWorldPosition);
         }
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
