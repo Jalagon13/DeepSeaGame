@@ -1815,6 +1815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldGenerator
   _forgroundTilemap: {fileID: 2039596632}
   _backgroundTilemap: {fileID: 1078061515}
+  _airTilemap: {fileID: 1299052148}
 --- !u!114 &885515393
 MonoBehaviour:
   m_ObjectHideFlags: 0

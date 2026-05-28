@@ -17,6 +17,10 @@ namespace UntitledDeepSeaGame
         private Tilemap _backgroundTilemap;
         public Tilemap BackgroundTilemap => _backgroundTilemap;
 
+        [SerializeField]
+        private Tilemap _airTilemap;
+        public Tilemap AirTilemap => _airTilemap;
+
         public WorldGenerationState CurrentState { get; private set; } = WorldGenerationState.NotStarted;
         public float Progress { get; private set; }
         public Vector3Int SpawnTile { get; private set; }

@@ -12,7 +12,7 @@ namespace UntitledDeepSeaGame
         {
             Debug.Log($"Attempting drain attempt");
             
-            
+            // Drain algorithm here
         }
     }
 }
