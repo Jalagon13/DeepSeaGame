@@ -8,6 +8,8 @@ namespace UntitledDeepSeaGame
     {
         [SerializeField] private ItemSO _item;
         [SerializeField] private int _amount;
+        
+        public bool HasItem => _item != null && _amount > 0;
 
         public InventoryStack()
         {

@@ -9,6 +9,7 @@ namespace UntitledDeepSeaGame
 
         private ushort[,] _fgTileData;
         private ushort[,] _bgTileData;
+        private bool[,] _airTileData;
 
         public int Width => _fgTileData?.GetLength(0) ?? 0;
         public int Height => _fgTileData?.GetLength(1) ?? 0;
