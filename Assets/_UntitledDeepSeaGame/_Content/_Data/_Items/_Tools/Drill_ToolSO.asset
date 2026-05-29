@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7ee61e6155346dc844ca14364df86f, type: 3}
-  m_Name: DrillToolSO
+  m_Name: Drill_ToolSO
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ToolItemSO
   _itemName: Drill
   _itemDescription: 

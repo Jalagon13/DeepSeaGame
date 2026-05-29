@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e421dc634c2304029aaccdcf6480e078, type: 3}
-  m_Name: StickItemSO
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ItemSO
-  _itemName: Stone
+  m_Script: {fileID: 11500000, guid: e03f7e5b0d4d4e9585753833c883e350, type: 3}
+  m_Name: Hatch_MTileItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
+  _itemName: Hatch
   _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}
   _isStackable: 1
+  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}

@@ -149,7 +149,15 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            WorldManager.Instance.WorldDataStore.SetTileId(_currentTargetTilePosition.x, _currentTargetTilePosition.y, GameDataRegistry.INVALID_ID);
+            if(_currentTargetTile.IsMultiTile)
+            {
+                WorldManager.Instance.WorldDataStore.DestroyMultiTile(_currentTargetTilePosition.x, _currentTargetTilePosition.y);
+            }
+            else
+            {
+                WorldManager.Instance.WorldDataStore.SetTileId(_currentTargetTilePosition.x, _currentTargetTilePosition.y, GameDataRegistry.INVALID_ID);
+            }
+            
             SpawnTileDrops(_currentTargetTile, _currentTargetTilePosition);
             StopMiningRoutine();
         }

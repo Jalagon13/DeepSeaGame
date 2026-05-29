@@ -49,17 +49,6 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void TryToPlaceTile()
-        {
-            if (!TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO))
-            {
-                return;
-            }
-
-            WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO));
-            InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
-        }
-
         private void OnSelectedHotbarSlotChanged(int arg1, InventoryStack stack)
         {
             _currentTileItem = !stack.IsEmpty && stack.Item is TileItemSO tileItemSO ? tileItemSO : null;
@@ -87,9 +76,23 @@ namespace UntitledDeepSeaGame
             _placingState = newState;
         }
 
-        private bool PlayerWithinPlacingRangeOfMouse()
+        private void TryToPlaceTile()
         {
-            return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _placementRange;
+            if (!TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO))
+            {
+                return;
+            }
+
+            if(tileSO.IsMultiTile)
+            {
+                WorldManager.Instance.WorldDataStore.SetMultiTile(tilePosition.x, tilePosition.y, tileSO);
+            }
+            else
+            {
+                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO));
+            }
+            
+            InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
         }
 
         private bool TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO)
@@ -107,8 +110,31 @@ namespace UntitledDeepSeaGame
             {
                 return false;
             }
+            
+            if(tileSO.IsMultiTile)
+            {
+                Vector2Int size = tileSO.Size;
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        int checkX = tilePosition.x + x;
+                        int checkY = tilePosition.y + y;
+                        if (!worldDataStore.IsInBounds(checkX, checkY) || worldDataStore.GetTileId(checkX, checkY) != GameDataRegistry.INVALID_ID)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
 
             return worldDataStore.GetTileId(tilePosition.x, tilePosition.y) == GameDataRegistry.INVALID_ID;
+        }
+
+        private bool PlayerWithinPlacingRangeOfMouse()
+        {
+            return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _placementRange;
         }
     }
 }
