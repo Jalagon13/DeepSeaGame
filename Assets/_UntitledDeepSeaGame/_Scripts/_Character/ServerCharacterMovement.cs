@@ -13,6 +13,9 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
         public Rigidbody2D RigidBody2D => _rigidbody2D;
+        
+        [SerializeField] 
+        private BoxCollider2D _feetCollider;
 
         private Vector2 _moveInput;
 
@@ -21,6 +24,16 @@ namespace UntitledDeepSeaGame
 
         private Vector2 _velocity;
         public Vector2 Velocity => _velocity;
+
+        [Header("Air Movement Settings")]
+        [SerializeField] private float _gravity = -30f;
+        [SerializeField] private float _jumpPower = 12f;
+        [SerializeField] private float _groundCheckDistance = 0.6f;
+        [SerializeField] private LayerMask _groundLayer;
+
+        private bool _isGrounded;
+        private bool _jumpRequested;
+        private RaycastHit2D _groundHit;
 
         public void FixedUpdateMovement()
         {
@@ -37,35 +50,102 @@ namespace UntitledDeepSeaGame
                 return;
             }
             
+            if(_serverCharacter.CharacterZoneType.Value == ZoneType.Water)
+            {
+                WaterMovement();
+            }
+            else
+            {
+                AirMovement();
+            }
+            
+            _rigidbody2D.linearVelocity = _velocity;
+        }
+
+        private void WaterMovement()
+        {
             if (_serverCharacter.CharacterData.CanMove)
             {
-                // float currentSpeed = _serverCharacter.Stats.MovementSpeed.GetValue();
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
 
-                // if (_serverCharacter.MovementState.Value == MovementState.Fleeing)
-                // {
-                //     currentSpeed *= _serverCharacter.CharacterData.FleeSpeedMultiplier;
-                // }
-                // else if (_serverCharacter.MovementState.Value == MovementState.Pursuing)
-                // {
-                //     currentSpeed *= _serverCharacter.CharacterData.PursueSpeedMultiplier;
-                //     currentSpeed *= _strafeSpeedMultiplier;
-                // }
+                // In water mode, we treat the Jump button as a vertical 'Up' input override.
+                // We use an effective input vector so we don't overwrite the cached _moveInput.
+                Vector2 effectiveInput = _moveInput;
+                if (GameInput.Instance.JumpHeldDown)
+                {
+                    effectiveInput.y = 1f;
+                }
 
-                if (_serverCharacter.MovementState.Value == MovementState.Idle)
+                // Re-evaluate movement state and direction based on the combined input
+                if (effectiveInput.sqrMagnitude > 0.0001f)
+                {
+                    _desiredDirection = effectiveInput.normalized;
+                }
+                else
                 {
                     _desiredDirection = Vector2.zero;
                 }
 
-                _velocity = Vector2.Lerp(_velocity, _desiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+                _velocity = Vector2.Lerp(_rigidbody2D.linearVelocity, _desiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
             }
 
             if (_desiredDirection != Vector2.zero)
             {
                 _serverCharacter.CardinalDirection.Value = GetCardinalDirectionFromVector2(_desiredDirection);
             }
+        }
+
+        private void AirMovement()
+        {
+            Debug.Log($"Air Movement");
+            // 1. Grounded Check
+            _isGrounded = IsGrounded();
             
-            _rigidbody2D.linearVelocity = _velocity;
+            if (_serverCharacter.CharacterData.CanMove)
+            {
+                float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
+                Vector2 currentVelocity = _rigidbody2D.linearVelocity;
+
+                // 2. Horizontal Movement (Lerp for that snappy control)
+                float targetX = Mathf.Lerp(currentVelocity.x, _desiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+
+                // 3. Vertical Movement (Constant Gravity)
+                float targetY = currentVelocity.y + (_gravity * Time.fixedDeltaTime);
+
+                // 4. Jump Logic
+                if (_jumpRequested)
+                {
+                    if (_isGrounded)
+                    {
+                        targetY = _jumpPower;
+                    }
+                    _jumpRequested = false; // Consume request regardless of success
+                }
+
+                _velocity = new Vector2(targetX, targetY);
+
+                // 5. Update Direction (Horizontal only in air)
+                if (Mathf.Abs(_desiredDirection.x) > 0.01f)
+                {
+                    _serverCharacter.CardinalDirection.Value = _desiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                }
+            }
+        }
+
+        private bool IsGrounded()
+        {
+            Vector2 boxCastOrigin = new(_feetCollider.bounds.center.x, _feetCollider.bounds.center.y);
+            Vector2 boxCastSize = new(_feetCollider.bounds.size.x, _groundCheckDistance);
+            
+            _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, _groundCheckDistance, _groundLayer);
+            if(_groundHit.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }        
         }
 
         public Direction GetCardinalDirectionFromVector2(Vector2 desiredDirection)
@@ -92,6 +172,11 @@ namespace UntitledDeepSeaGame
             {
                 StartIdle();
             }
+        }
+
+        public void ReceiveJumpInput()
+        {
+            _jumpRequested = true;
         }
 
         public void StartMovement()

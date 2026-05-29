@@ -18,6 +18,12 @@ namespace UntitledDeepSeaGame
         Left,
         Right
     }
+    
+    public enum ZoneType
+    {
+        Water,
+        Air
+    }
 
     public enum CharacterStateMachine
     {

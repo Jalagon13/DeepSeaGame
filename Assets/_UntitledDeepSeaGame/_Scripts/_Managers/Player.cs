@@ -16,6 +16,10 @@ namespace UntitledDeepSeaGame
         
         public static Player Instance { get; private set; }
 
+        [SerializeField]
+        private BoxCollider2D _playerCollider;
+        public BoxCollider2D PlayerCollider => _playerCollider;
+
         private ServerCharacter _character;
         public ServerCharacter Character => _character;
         
@@ -24,9 +28,6 @@ namespace UntitledDeepSeaGame
 
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         
-        
-        private CapsuleCollider2D _playerCollider;
-        public CapsuleCollider2D PlayerCollider => _playerCollider;
         public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
 
 
@@ -34,7 +35,6 @@ namespace UntitledDeepSeaGame
         {
             _character = GetComponent<ServerCharacter>();
             _playerArmController = GetComponent<PlayerArmController>();
-            _playerCollider = GetComponent<CapsuleCollider2D>();
         }
 
         public override void OnDestroy()
@@ -45,6 +45,8 @@ namespace UntitledDeepSeaGame
             }
 
             GameInput.Instance.OnMove -= GameInput_OnMove;
+            GameInput.Instance.OnJump -= GameInput_OnJump;
+            
             InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
         }
@@ -60,8 +62,30 @@ namespace UntitledDeepSeaGame
 
             // local player start up code here, maybe input
             GameInput.Instance.OnMove += GameInput_OnMove;
+            GameInput.Instance.OnJump += GameInput_OnJump;
+
             InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+        }
+
+        private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
+        {
+            if (_character == null || !_character.IsOwner)
+            {
+                return;
+            }
+
+            _character.Movement?.ReceiveJumpInput();
+        }
+
+        private void GameInput_OnMove(object sender, InputAction.CallbackContext context)
+        {
+            if (_character == null || !_character.IsOwner)
+            {
+                return;
+            }
+
+            _character.Movement?.ReceiveMoveInput(GameInput.Instance.MoveInput);
         }
 
         private void OnSelectedHotbarSlotChanged(int slotIndex, InventoryStack selectedHotbarSlotStack)
@@ -88,14 +112,6 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void GameInput_OnMove(object sender, InputAction.CallbackContext context)
-        {
-            if (_character == null || !_character.IsOwner)
-            {
-                return;
-            }
-
-            _character.Movement?.ReceiveMoveInput(GameInput.Instance.MoveInput);
-        }
+        
     }
 }

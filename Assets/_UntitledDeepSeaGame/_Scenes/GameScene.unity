@@ -970,7 +970,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 33.625
+  orthographic size: 30.875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3417,8 +3417,8 @@ GameObject:
   - component: {fileID: 2039596632}
   - component: {fileID: 2039596631}
   - component: {fileID: 2039596633}
-  m_Layer: 0
-  m_Name: ForgroundTilemap
+  m_Layer: 3
+  m_Name: ForegroundTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3773,7 +3773,7 @@ TilemapCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

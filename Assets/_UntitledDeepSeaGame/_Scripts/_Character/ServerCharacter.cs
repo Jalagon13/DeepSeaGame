@@ -43,6 +43,7 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<Direction> CardinalDirection { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SuperAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<ZoneType> CharacterZoneType { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         private void Awake()
         {
@@ -97,6 +98,10 @@ namespace UntitledDeepSeaGame
         {
             if (IsOwner /* || (_characterData.IsNpc && IsServer) */)
             {
+                Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y + 1));
+                bool isInAir = WorldManager.Instance.WorldDataStore.IsAirAt(gridPos.x, gridPos.y);
+                CharacterZoneType.Value = isInAir ? ZoneType.Air : ZoneType.Water;
+
                 _serverCharacterMovement.FixedUpdateMovement();
             }
         }

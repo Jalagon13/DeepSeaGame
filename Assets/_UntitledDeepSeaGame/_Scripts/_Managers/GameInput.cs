@@ -9,14 +9,16 @@ namespace UntitledDeepSeaGame
         public static GameInput Instance { get; private set; }
 
         public event EventHandler<InputAction.CallbackContext> OnPrimaryActionStarted;
-
         public event EventHandler<InputAction.CallbackContext> OnMove;
+        public event EventHandler<InputAction.CallbackContext> OnJump;
 
         public event EventHandler<InputAction.CallbackContext> OnToggleInventory;
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
 
-        private bool _isGameplayInputBlocked, _primaryHeldDown;
+        private bool _isGameplayInputBlocked, _primaryHeldDown, _jumpHeldDown;
+
+        public bool JumpHeldDown => _jumpHeldDown;
         public bool PrimaryActionHeldDown => _primaryHeldDown;
 
         public bool IsGameplayInputBlocked 
@@ -47,6 +49,9 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.Move.started += PlayerInput_OnMove;
             _playerInput.Player.Move.performed += PlayerInput_OnMove;
             _playerInput.Player.Move.canceled += PlayerInput_OnMove;
+            
+            _playerInput.Player.Jump.started += PlayerInput_OnJump;
+            _playerInput.Player.Jump.canceled += PlayerInput_OnJump;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -63,12 +68,31 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.Move.performed -= PlayerInput_OnMove;
             _playerInput.Player.Move.canceled -= PlayerInput_OnMove;
 
+            _playerInput.Player.Jump.started -= PlayerInput_OnJump;
+            _playerInput.Player.Jump.canceled -= PlayerInput_OnJump;
+
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
             _playerInput.UI.ToggleInventory.started -= GameInput_OnToggleInventory;
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnJump(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                _jumpHeldDown = true;
+            }
+            else if(context.canceled)
+            {
+                _jumpHeldDown = false;
+            }
+
+            if (_isGameplayInputBlocked || !_jumpHeldDown) return;
+
+            OnJump?.Invoke(this, context);
         }
 
         private void PlayerInput_OnPrimaryAction(InputAction.CallbackContext context)
