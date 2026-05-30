@@ -62,6 +62,13 @@ namespace UntitledDeepSeaGame
             _rigidbody2D.linearVelocity = _velocity;
         }
 
+        public void StartKnockback(Vector2 knockerPosition, float knockbackForce, bool inverse = false)
+        {
+            Vector2 knockbackDirection = ((Vector2)_serverCharacter.transform.position - knockerPosition).normalized;
+            _serverCharacter.MovementState.Value = MovementState.Knockback;
+            // _knockback.ApplyKnockback(knockerPosition, knockbackForce, inverse);
+        }
+
         private void WaterMovement()
         {
             if (_serverCharacter.CharacterData.CanMove)

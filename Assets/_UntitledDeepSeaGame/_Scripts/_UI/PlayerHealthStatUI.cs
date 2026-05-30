@@ -11,8 +11,7 @@ namespace UntitledDeepSeaGame
 {
     public class PlayerHealthStatUI : MonoBehaviour
     {
-        [SerializeField] private MMProgressBar _healthBar;
-        [SerializeField] private RectTransform _border; // Set width to max health dynamically
+        [SerializeField] private Image _healthBarFg;
         [SerializeField] private TextMeshProUGUI _amountText;
 
         private void Awake()
@@ -25,7 +24,7 @@ namespace UntitledDeepSeaGame
             Player.OnAnyPlayerSpawned -= Player_OnAnyPlayerSpawned;
             if (Player.Instance != null)
             {
-                // Player.Instance.ServerCharacter.NetHealthState.OnHitPointsChanged -= Player_OnPlayerHealthUpdated;
+                Player.Instance.Character.NetHealthState.OnHitPointsChanged -= Player_OnPlayerHealthUpdated;
             }
         }
 
@@ -33,20 +32,21 @@ namespace UntitledDeepSeaGame
         {
             if (Player.Instance != null)
             {
-                // Player.Instance.ServerCharacter.NetHealthState.OnHitPointsChanged += Player_OnPlayerHealthUpdated;
-                // UpdateView(Player.Instance.ServerCharacter.Stats.MaxHealth.AsIntValue, Player.Instance.ServerCharacter.Stats.MaxHealth.AsIntValue);
+                Player.Instance.Character.NetHealthState.OnHitPointsChanged += Player_OnPlayerHealthUpdated;
+                UpdateView(Player.Instance.Character.CharacterData.BaseMaxHealth, Player.Instance.Character.CharacterData.BaseMaxHealth);
             }
         }
 
-        private void Player_OnPlayerHealthUpdated(object sender, PointsChangedEventArgs e)
+        private void Player_OnPlayerHealthUpdated(object sender, NetworkHealthState.PointsChangedEventArgs e)
         {
             UpdateView(e.CurrentPoints, e.MaxPoints);
         }
 
         private void UpdateView(int currentAmount, int maxAmount)
         {
-            _healthBar.UpdateBar(currentAmount, 0, maxAmount);
-            // _border.sizeDelta = new Vector2(maxAmount * 2, _border.sizeDelta.y);
+            float fill = maxAmount > 0 ? (float)currentAmount / maxAmount : 0f;
+            Debug.Log($"currentAmount: {currentAmount}, maxAmount: {maxAmount}, fill amount {fill}");
+            _healthBarFg.fillAmount = fill;
             _amountText.text = $"{currentAmount}/{maxAmount}";
         }
     }

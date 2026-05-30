@@ -7,7 +7,17 @@ namespace UntitledDeepSeaGame
     {
         [Header("Core Stats")]
         [Tooltip("Base Speed for character")]
-        public float BaseSpeed;
+        public int BaseSpeed;
+        public int BaseMaxHealth;
+        public int BaseDefense;
+        
+
+        [Space]
+        [Header("Health & Survival")]
+        [Tooltip("If true, character can die")]
+        public bool CanDie = true;
+        [Tooltip("If true, the NPC can be knocked back")]
+        public bool CanBeKnockedBack = true;
 
 
         [Space]
@@ -15,7 +25,9 @@ namespace UntitledDeepSeaGame
         [Tooltip("If false, the NPC will remain idle and not move")]
         public bool CanMove = true;
         [Tooltip("Smaller values = slower transition to desired direction")]
-        public float TurnSharpness = 5f;
+        public int TurnSharpness = 5;
+        [Tooltip("Duration of invincibility frames when character is hit")]
+        public float IFrameDuration = 0.17f;
 
         [Space]
         [Header("AI Parameters")]

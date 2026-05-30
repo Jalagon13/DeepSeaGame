@@ -1,0 +1,52 @@
+using System;
+using Sirenix.OdinInspector;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace UntitledDeepSeaGame
+{
+    public class DamageReceiver : NetworkBehaviour
+    {
+        [SerializeField]
+        private NetworkLifeState _lifeState;
+
+        public event EventHandler<HpReceivedEventArgs> HpReceived;
+        public class HpReceivedEventArgs : EventArgs
+        {
+            public ServerCharacter Inflicter;
+            public int HpReceived;
+            public bool PlayKnockback;
+            public float KnockbackForce;
+            public HpReceivedEventArgs(ServerCharacter inflicter, int hpReceived, bool playKnockback, float knockbackForce = -1)
+            {
+                Inflicter = inflicter;
+                HpReceived = hpReceived;
+                PlayKnockback = playKnockback;
+                KnockbackForce = knockbackForce;
+            }
+        }
+        
+        public void ReceiveHP(ServerCharacter inflicter, int hp, bool playKnockback, float knockback = -1)
+        {
+            // Send request to server
+            ReceiveHpRequestServerRpc(inflicter.NetworkObjectId, hp, playKnockback, knockback);
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        private void ReceiveHpRequestServerRpc(ulong networkObjectId, int hp, bool playKnockback, float knockback)
+        {
+            NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject inflicterNet);
+            ServerCharacter inflicterServerCharacter = inflicterNet != null ? inflicterNet.GetComponent<ServerCharacter>() : null;
+
+            if (IsAlive())
+            {
+                HpReceived?.Invoke(this, new HpReceivedEventArgs(inflicterServerCharacter, hp, playKnockback, knockback));
+            }
+        }
+
+        public bool IsAlive()
+        {
+            return _lifeState.LifeState.Value != LifeState.Dead;
+        }
+    }
+}

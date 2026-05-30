@@ -45,10 +45,12 @@ GameObject:
   - component: {fileID: 4586583695564191674}
   - component: {fileID: 803792098292795098}
   - component: {fileID: 8924049036358242053}
+  - component: {fileID: 2863469088550283713}
   - component: {fileID: 5720560256968510660}
   - component: {fileID: 1902777031516221210}
   - component: {fileID: 8316067687826058288}
   - component: {fileID: 7146354698580210200}
+  - component: {fileID: 7807344152892952825}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -111,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -174,6 +176,20 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+--- !u!114 &2863469088550283713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef712d44ecd3a4d1fb59fbe4e016ec3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
+  ShowTopMostFoldoutHeaderGroup: 1
+  _lifeState: {fileID: 803792098292795098}
 --- !u!114 &5720560256968510660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +224,7 @@ MonoBehaviour:
   _characterData: {fileID: 11400000, guid: 68201d85a864340baa683230156879c1, type: 2}
   _serverCharacterMovement: {fileID: 8316067687826058288}
   _clientCharacter: {fileID: 7738663476197840072}
+  _clientFeedbacks: {fileID: 2007233871411950095}
 --- !u!114 &8316067687826058288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +263,19 @@ MonoBehaviour:
   _networkLifeState: {fileID: 803792098292795098}
   _spriteAnimHandlers:
   - {fileID: 6435305078094566520}
+--- !u!114 &7807344152892952825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69d434d7e9a8940a19a9d1979c59aa0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageTest
+  _damageReceiver: {fileID: 0}
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +806,54 @@ Transform:
   - {fileID: 3090479732997603263}
   m_Father: {fileID: 818794910293839067}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6369666318251684093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5802233591326184213}
+  - component: {fileID: 2007233871411950095}
+  m_Layer: 0
+  m_Name: ClientFeedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5802233591326184213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369666318251684093}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 818794910293839067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2007233871411950095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369666318251684093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8974b9609f10242e58cbadd3f017e266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ClientCharacterFeedbacks
+  ShowTopMostFoldoutHeaderGroup: 1
+  _serverCharacter: {fileID: 1902777031516221210}
+  _damagedParticles: {fileID: 0}
+  _deathParticles: {fileID: 0}
 --- !u!1 &6734466772814568300
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +918,7 @@ Transform:
   - {fileID: 4273721582200961487}
   - {fileID: 2662637307106457156}
   - {fileID: 3052035236414259425}
+  - {fileID: 5802233591326184213}
   m_Father: {fileID: 4937875723858935662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7738663476197840072
