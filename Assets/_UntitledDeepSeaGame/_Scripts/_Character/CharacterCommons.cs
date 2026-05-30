@@ -9,6 +9,12 @@ namespace UntitledDeepSeaGame
         public AnimationClip SideMoveClip;
         public AnimationClip SideIdleClip;
     }
+    
+    public enum OxygenState
+    {
+        
+        Depleted
+    }
 
     public enum Direction
     {

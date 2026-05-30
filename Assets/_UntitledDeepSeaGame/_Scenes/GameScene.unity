@@ -3114,15 +3114,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1760391178}
   - component: {fileID: 1760391186}
-  - component: {fileID: 1760391179}
+  - component: {fileID: 1760391188}
   - component: {fileID: 1760391180}
-  - component: {fileID: 1760391181}
   - component: {fileID: 1760391182}
-  - component: {fileID: 1760391183}
-  - component: {fileID: 1760391184}
   - component: {fileID: 1760391185}
   - component: {fileID: 1760391187}
-  - component: {fileID: 1760391188}
   m_Layer: 0
   m_Name: LOCAL_MANAGERS
   m_TagString: Untagged
@@ -3142,21 +3138,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1794183282}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1760391179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760391177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7e9e2443db934993aa1b1d720638532, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameInput
 --- !u!114 &1760391180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3170,40 +3155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameManager
   _itemBasePrefab: {fileID: 4976966994841218345, guid: 1a9261989f58c4554bd3ab7212d38a20, type: 3}
---- !u!114 &1760391181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760391177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21ff06c930b604c2fa399bed16c38fc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.InventoryManager
-  _craftingMenuUI: {fileID: 0}
-  _slotCount: 16
-  _hotbarSlotCount: 8
-  _startingSelectedHotbarSlotIndex: 0
-  _inventoryStackMax: 9999
-  _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
-  _timeBetweenCollections: 0.1
-  _initialDelay: 0.25
-  _delayBetweenItemsGiven: 0.2
-  _startingItems:
-  - _item: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
-    _amount: 1
-  - _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
-    _amount: 99
 --- !u!114 &1760391182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3229,33 +3180,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}
   - {fileID: 11400000, guid: ad3dc3449151c47e1a74c40627d9c551, type: 2}
   - {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}
---- !u!114 &1760391183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760391177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053513c6e3f9e4d6e92290480d69a8d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.MiningManager
-  _miningRange: 4.5
-  _timeBetweenMiningSounds: 0.225
---- !u!114 &1760391184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760391177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cc3423fdb8144a32afde2d7c824c938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlacementManager
-  _placementRange: 4.5
 --- !u!114 &1760391185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3325,9 +3249,131 @@ MonoBehaviour:
   m_GameObject: {fileID: 1760391177}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7e9e2443db934993aa1b1d720638532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameInput
+--- !u!1 &1794183281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1794183282}
+  - component: {fileID: 1794183286}
+  - component: {fileID: 1794183285}
+  - component: {fileID: 1794183284}
+  - component: {fileID: 1794183283}
+  - component: {fileID: 1794183287}
+  m_Layer: 0
+  m_Name: PLAYER_MANAGERS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1794183282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1760391178}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1794183283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aded76ac5c5b441d871e0efc3393518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ActionManager
+--- !u!114 &1794183284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc3423fdb8144a32afde2d7c824c938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlacementManager
+  _placementRange: 4.5
+--- !u!114 &1794183285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053513c6e3f9e4d6e92290480d69a8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.MiningManager
+  _miningRange: 4.5
+  _timeBetweenMiningSounds: 0.225
+--- !u!114 &1794183286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21ff06c930b604c2fa399bed16c38fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.InventoryManager
+  _craftingMenuUI: {fileID: 0}
+  _slotCount: 16
+  _hotbarSlotCount: 8
+  _startingSelectedHotbarSlotIndex: 0
+  _inventoryStackMax: 9999
+  _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
+  _timeBetweenCollections: 0.1
+  _initialDelay: 0.25
+  _delayBetweenItemsGiven: 0.2
+  _startingItems:
+  - _item: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
+    _amount: 1
+  - _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 99
+--- !u!114 &1794183287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef93f1d14822042ebb3f0b7b0050ce4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.OxygenManager
+  _maxOxygen: 100
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0
