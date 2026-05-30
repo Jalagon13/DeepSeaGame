@@ -97,7 +97,7 @@ namespace UntitledDeepSeaGame
 
         private void AirMovement()
         {
-            Debug.Log($"Air Movement");
+            // Debug.Log($"Air Movement");
             // 1. Grounded Check
             _isGrounded = IsGrounded();
             

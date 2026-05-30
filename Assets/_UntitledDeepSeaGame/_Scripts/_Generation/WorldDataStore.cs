@@ -124,9 +124,13 @@ namespace UntitledDeepSeaGame
                     SetTileId(anchor.x + i, anchor.y + j, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
                 }
             }
+
+            // Notify the renderer to remove the GameObject and clean up the registry
+            MultiTileChanged?.Invoke(anchor, multiTileSO, false);
+            _activeMultiTileObjects.Remove(anchor);
         }
 
-        public void SetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap)
+        public void SetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap, bool checkForExposedAir = false)
         {
             if (!IsInBounds(x, y))
             {
@@ -145,7 +149,7 @@ namespace UntitledDeepSeaGame
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
 
             // Check for exposed air tiles if a foreground tile was broken
-            if (targetMap == WorldTm.ForegroundTilemap && tileId == GameDataRegistry.INVALID_ID && !IsAirAt(x, y))
+            if (checkForExposedAir && targetMap == WorldTm.ForegroundTilemap && tileId == GameDataRegistry.INVALID_ID && !IsAirAt(x, y))
             {
                 CheckForExposedAir(x, y);
             }

@@ -919,7 +919,7 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  StringID: sandFgTile
+  <StringID>k__BackingField: sand
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
@@ -930,3 +930,6 @@ MonoBehaviour:
     Min: 1
     Max: 1
     Chance: 100
+  <IsMultiTile>k__BackingField: 0
+  <Size>k__BackingField: {x: 1, y: 2}
+  <Prefab>k__BackingField: {fileID: 0}

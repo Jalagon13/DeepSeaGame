@@ -155,7 +155,7 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                WorldManager.Instance.WorldDataStore.SetTileId(_currentTargetTilePosition.x, _currentTargetTilePosition.y, GameDataRegistry.INVALID_ID);
+                WorldManager.Instance.WorldDataStore.SetTileId(_currentTargetTilePosition.x, _currentTargetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap, true);
             }
             
             SpawnTileDrops(_currentTargetTile, _currentTargetTilePosition);

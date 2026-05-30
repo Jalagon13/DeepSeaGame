@@ -59,7 +59,7 @@ namespace UntitledDeepSeaGame
                 yield return null;
             }
 
-            TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap, WorldGenerator.BackgroundTilemap, WorldGenerator.AirTilemap);
+            TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap, WorldGenerator.BackgroundTilemap, WorldGenerator.AirTilemap, WorldGenerator.MultiTileRenderingTransform);
 
             yield return new WaitUntil(() => Player.Instance != null);
 

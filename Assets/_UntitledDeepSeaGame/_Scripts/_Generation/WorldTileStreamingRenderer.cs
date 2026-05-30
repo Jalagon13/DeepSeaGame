@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,9 +11,11 @@ namespace UntitledDeepSeaGame
         private Tilemap _foregroundTilemap;
         private Tilemap _backgroundTilemap;
         private Tilemap _airTilemap;
+        private Transform _multiTileRenderingTf;
         private RectInt _renderedBounds;
         private bool _isInitialized;
         private bool _hasRenderedBounds;
+        private Dictionary<Vector2Int, GameObject> _spawnedMultiTileObjects = new();
 
         private void Start() 
         {
@@ -25,20 +29,24 @@ namespace UntitledDeepSeaGame
             if (_worldDataStore != null)
             {
                 _worldDataStore.TileChanged -= HandleTileChanged;
+                _worldDataStore.MultiTileChanged -= HandleMultiTileChanged;
             }
         }
 
-        public void Initialize(WorldDataStore worldDataStore, Tilemap foregroundTilemap, Tilemap backgroundTilemap, Tilemap airTilemap)
+        public void Initialize(WorldDataStore worldDataStore, Tilemap foregroundTilemap, Tilemap backgroundTilemap, Tilemap airTilemap, Transform multiTileRenderingTf)
         {
             if (_worldDataStore != null)
             {
                 _worldDataStore.TileChanged -= HandleTileChanged;
+                _worldDataStore.MultiTileChanged -= HandleMultiTileChanged;
             }
 
             _worldDataStore = worldDataStore;
             _foregroundTilemap = foregroundTilemap;
             _backgroundTilemap = backgroundTilemap;
             _airTilemap = airTilemap;
+            _multiTileRenderingTf = multiTileRenderingTf;
+
             _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _airTilemap != null;
             _hasRenderedBounds = false;
             _renderedBounds = default;
@@ -50,13 +58,58 @@ namespace UntitledDeepSeaGame
             }
 
             _worldDataStore.TileChanged += HandleTileChanged;
+            _worldDataStore.MultiTileChanged += HandleMultiTileChanged;
+            
             _foregroundTilemap.ClearAllTiles();
             _backgroundTilemap.ClearAllTiles();
             _airTilemap.ClearAllTiles();
+            
+            // Clean up any existing multi-tile GameObjects
+            foreach (var go in _spawnedMultiTileObjects.Values)
+            {
+                if (go != null) Destroy(go);
+            }
+            _spawnedMultiTileObjects.Clear();
 
             if (PlayerCamera.Instance != null)
             {
                 HandleVisibleTileBoundsChanged(PlayerCamera.Instance.CurrentVisibleTileBounds);
+            }
+        }
+
+        private void HandleMultiTileChanged(Vector2Int anchorPosition, TileSO multiTile, bool isPlacingMultiTile)
+        {
+            if (isPlacingMultiTile)
+            {
+                // Only spawn if it's within the currently rendered view
+                if (_renderedBounds.Contains(anchorPosition))
+                {
+                    SpawnMultiTile(anchorPosition, multiTile);
+                }
+            }
+            else
+            {
+                DespawnMultiTile(anchorPosition);
+            }
+        }
+
+        private void SpawnMultiTile(Vector2Int anchorPosition, TileSO multiTile)
+        {
+            if (_spawnedMultiTileObjects.ContainsKey(anchorPosition) || multiTile.Prefab == null)
+            {
+                return;
+            }
+
+            GameObject go = Instantiate(multiTile.Prefab, new Vector3(anchorPosition.x, anchorPosition.y, 0), Quaternion.identity, _multiTileRenderingTf);
+            _spawnedMultiTileObjects.Add(anchorPosition, go);
+        }
+
+        private void DespawnMultiTile(Vector2Int anchorPosition)
+        {
+            if (_spawnedMultiTileObjects.TryGetValue(anchorPosition, out GameObject go))
+            {
+                Destroy(go);
+                _spawnedMultiTileObjects.Remove(anchorPosition);
             }
         }
 
@@ -112,13 +165,6 @@ namespace UntitledDeepSeaGame
             RenderRowsOutside(previousBounds, currentBounds);
         }
 
-        private void ApplyTile(int x, int y)
-        {
-            ApplyTile(x, y, WorldTm.ForegroundTilemap);
-            ApplyTile(x, y, WorldTm.BackgroundTilemap);
-            ApplyTile(x, y, WorldTm.AirTilemap);
-        }
-
         private void ApplyTile(int x, int y, WorldTm targetMap)
         {
             if (targetMap == WorldTm.AirTilemap)
@@ -140,31 +186,6 @@ namespace UntitledDeepSeaGame
             {
                 _backgroundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
             }
-        }
-
-        private RectInt ClampToWorldBounds(RectInt bounds)
-        {
-            if (_worldDataStore.Width == 0 || _worldDataStore.Height == 0)
-            {
-                return new RectInt(0, 0, 0, 0);
-            }
-
-            int minX = Mathf.Clamp(bounds.xMin, 0, _worldDataStore.Width);
-            int minY = Mathf.Clamp(bounds.yMin, 0, _worldDataStore.Height);
-            int maxX = Mathf.Clamp(bounds.xMax, 0, _worldDataStore.Width);
-            int maxY = Mathf.Clamp(bounds.yMax, 0, _worldDataStore.Height);
-
-            if (maxX < minX)
-            {
-                maxX = minX;
-            }
-
-            if (maxY < minY)
-            {
-                maxY = minY;
-            }
-
-            return CreateRectFromMinMax(minX, minY, maxX, maxY);
         }
 
         private void ClearColumnsOutside(RectInt previousBounds, RectInt currentBounds)
@@ -246,7 +267,19 @@ namespace UntitledDeepSeaGame
             {
                 for (int y = bounds.yMin; y < bounds.yMax; y++)
                 {
-                    ApplyTile(x, y);
+                    ApplyTile(x, y, WorldTm.ForegroundTilemap);
+                    ApplyTile(x, y, WorldTm.BackgroundTilemap);
+                    ApplyTile(x, y, WorldTm.AirTilemap);
+                }
+            }
+
+            // Render Multi-Tiles found within these bounds
+            foreach (var kvp in _worldDataStore.ActiveMultiTileObjects)
+            {
+                Vector2Int anchor = kvp.Key;
+                if (bounds.Contains(anchor))
+                {
+                    SpawnMultiTile(anchor, kvp.Value);
                 }
             }
         }
@@ -267,11 +300,51 @@ namespace UntitledDeepSeaGame
                     _airTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
+
+            // Clean up Multi-Tiles that are leaving the rendered bounds
+            List<Vector2Int> toRemove = new();
+            foreach (var anchor in _spawnedMultiTileObjects.Keys)
+            {
+                if (bounds.Contains(anchor))
+                {
+                    toRemove.Add(anchor);
+                }
+            }
+
+            foreach (var anchor in toRemove)
+            {
+                DespawnMultiTile(anchor);
+            }
         }
 
         private RectInt CreateRectFromMinMax(int minX, int minY, int maxX, int maxY)
         {
             return new RectInt(minX, minY, Mathf.Max(0, maxX - minX), Mathf.Max(0, maxY - minY));
+        }
+
+        private RectInt ClampToWorldBounds(RectInt bounds)
+        {
+            if (_worldDataStore.Width == 0 || _worldDataStore.Height == 0)
+            {
+                return new RectInt(0, 0, 0, 0);
+            }
+
+            int minX = Mathf.Clamp(bounds.xMin, 0, _worldDataStore.Width);
+            int minY = Mathf.Clamp(bounds.yMin, 0, _worldDataStore.Height);
+            int maxX = Mathf.Clamp(bounds.xMax, 0, _worldDataStore.Width);
+            int maxY = Mathf.Clamp(bounds.yMax, 0, _worldDataStore.Height);
+
+            if (maxX < minX)
+            {
+                maxX = minX;
+            }
+
+            if (maxY < minY)
+            {
+                maxY = minY;
+            }
+
+            return CreateRectFromMinMax(minX, minY, maxX, maxY);
         }
     }
 }
