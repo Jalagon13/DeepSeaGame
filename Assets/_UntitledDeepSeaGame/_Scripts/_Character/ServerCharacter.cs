@@ -48,6 +48,8 @@ namespace UntitledDeepSeaGame
         public StateMachine StateMachine => _stateMachine;
 
         private DamageReceiver _damageReceiver;
+        public DamageReceiver DamageReceiver => _damageReceiver;
+
 
         private ServerCharacter _inflicter;
         public ServerCharacter Inflicter => _inflicter;

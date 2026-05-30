@@ -74,7 +74,7 @@ namespace UntitledDeepSeaGame
             InitializeSlots();
         }
 
-        private IEnumerator Start()
+        private void Start()
         {
             SelectHotbarSlot(_startingSelectedHotbarSlotIndex);
 
@@ -83,10 +83,11 @@ namespace UntitledDeepSeaGame
             GameInput.Instance.OnToggleInventory += GameInput_OnToggleInventory;
             // HealthManager.Instance.OnDeath += HandleDeath;
 
-            yield return null;
-
             CloseInventory(force: true);
-
+        }
+        
+        public IEnumerator GiveStartingItems()
+        {
             yield return new WaitForSeconds(_initialDelay);
 
             foreach (InventoryStack slotItem in _startingItems)

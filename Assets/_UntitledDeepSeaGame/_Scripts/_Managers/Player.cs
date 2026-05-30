@@ -27,9 +27,9 @@ namespace UntitledDeepSeaGame
         public PlayerArmController PlayerArmController => _playerArmController;
 
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        
         public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
 
+        public Vector2 SpawnPoint;
 
         private void Awake()
         {
@@ -112,6 +112,11 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        
+        public void Respawn()
+        {
+            transform.SetPositionAndRotation(SpawnPoint, Quaternion.identity);
+            StartCoroutine(_character.StartIFrameTimer());
+            _character.DamageReceiver.ReceiveHP(_character, _character.RuntimeStats.MaxHealth.GetValue(), false);
+        }
     }
 }

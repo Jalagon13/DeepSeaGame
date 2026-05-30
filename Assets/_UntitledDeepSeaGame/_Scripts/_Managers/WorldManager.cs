@@ -65,6 +65,8 @@ namespace UntitledDeepSeaGame
 
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
+            Player.Instance.SpawnPoint = spawnPosition;
+            StartCoroutine(InventoryManager.Instance.GiveStartingItems());
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();

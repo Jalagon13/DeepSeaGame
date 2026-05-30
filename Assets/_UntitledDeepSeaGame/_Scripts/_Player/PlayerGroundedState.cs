@@ -30,11 +30,11 @@ namespace UntitledDeepSeaGame
             {
                 SwitchState(new AIStateData(AIState.Mining));
             }
-            // else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
-            // {
-            //     Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);
-            //     SwitchState(new AIStateData(AIState.Dead, payload));
-            // }
+            else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
+            {
+                Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);
+                SwitchState(new AIStateData(AIState.Dead, payload));
+            }
         }
 
         public override void ExitState()

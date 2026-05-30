@@ -15,12 +15,7 @@ namespace UntitledDeepSeaGame
         protected override void EnterState(AIStateData stateData)
         {
             Debug.Log("Player entering dead");
-            if (_ctx.ServerCharacter.TryGetComponent(out Collider2D collider2D))
-            {
-                collider2D.enabled = false;
-            }
-
-            // _ctx.Character.ClientCharacter.ColliderHolder.gameObject.SetActive(false);
+            _ctx.ServerCharacter.ClientCharacter.ColliderHolder.SetActive(false);
         }
 
         public override void UpdateState()
@@ -30,10 +25,10 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            // if (_ctx.Character.LifeState == LifeState.IFrame)
-            // {
-            //     SwitchState(new AIStateData(AIState.Grounded));
-            // }
+            if (_ctx.ServerCharacter.LifeState == LifeState.IFrame)
+            {
+                SwitchState(new AIStateData(AIState.Grounded));
+            }
         }
 
         public override void ExitState()
@@ -43,18 +38,19 @@ namespace UntitledDeepSeaGame
                 collider2D.enabled = true;
             }
 
-            // _ctx.ServerCharacter.ClientCharacter.ColliderHolder.gameObject.SetActive(true);
+            _ctx.ServerCharacter.ClientCharacter.ColliderHolder.gameObject.SetActive(true);
         }
 
         public override void ClientEnterState(AIStateData stateData)
         {
             // NTFS: Player death animations here, just turn off visuals for now
-            // _ctx.ServerCharacter.ClientFeedbacks.PlayDeathFeedbacksRpc(stateData.Payload);
+            _ctx.ServerCharacter.ClientFeedbacks.PlayDeathFeedbacksRpc(stateData.Payload);
+            _ctx.ServerCharacter.ClientCharacter.Visuals.SetActive(false);
         }
 
         public override void ClientExitState(AIStateData stateData)
         {
-            // _ctx.ServerCharacter.ClientCharacter.Visuals.SetActive(true);
+            _ctx.ServerCharacter.ClientCharacter.Visuals.SetActive(true);
         }
     }
 }
