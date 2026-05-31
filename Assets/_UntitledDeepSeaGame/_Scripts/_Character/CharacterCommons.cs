@@ -31,12 +31,6 @@ namespace UntitledDeepSeaGame
         Air
     }
 
-    public enum CharacterStateMachine
-    {
-        Player,
-        BasicNpc
-    }
-
     public enum MovementState
     {
         Idle,

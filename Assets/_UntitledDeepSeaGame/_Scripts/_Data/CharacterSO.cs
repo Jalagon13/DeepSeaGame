@@ -10,7 +10,6 @@ namespace UntitledDeepSeaGame
         public int BaseSpeed;
         public int BaseMaxHealth;
         public int BaseDefense;
-        
 
         [Space]
         [Header("Health & Survival")]
@@ -26,8 +25,7 @@ namespace UntitledDeepSeaGame
         public bool CanMove = true;
         [Tooltip("Smaller values = slower transition to desired direction")]
         public int TurnSharpness = 5;
-        [Tooltip("Duration of invincibility frames when character is hit")]
-        public float IFrameDuration = 0.17f;
+        
 
         [Space]
         [Header("AI Parameters")]

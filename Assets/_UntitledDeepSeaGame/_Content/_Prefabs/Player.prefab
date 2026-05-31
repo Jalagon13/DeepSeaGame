@@ -140,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.Player
   ShowTopMostFoldoutHeaderGroup: 1
   _playerCollider: {fileID: 7189654115469789931}
+  SpawnPoint: {x: 0, y: 0}
 --- !u!114 &803792098292795098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacter
   ShowTopMostFoldoutHeaderGroup: 1
   _aiType: 0
-  _characterData: {fileID: 11400000, guid: 68201d85a864340baa683230156879c1, type: 2}
+  _characterData: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
   _serverCharacterMovement: {fileID: 8316067687826058288}
   _clientCharacter: {fileID: 7738663476197840072}
   _clientFeedbacks: {fileID: 2007233871411950095}

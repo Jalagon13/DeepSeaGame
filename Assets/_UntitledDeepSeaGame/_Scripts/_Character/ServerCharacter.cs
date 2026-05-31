@@ -9,9 +9,6 @@ namespace UntitledDeepSeaGame
     public class ServerCharacter : NetworkBehaviour
     {
         [SerializeField]
-        private CharacterStateMachine _aiType;
-
-        [SerializeField]
         private CharacterSO _characterData;
         public CharacterSO CharacterData => _characterData;
 
@@ -50,7 +47,6 @@ namespace UntitledDeepSeaGame
         private DamageReceiver _damageReceiver;
         public DamageReceiver DamageReceiver => _damageReceiver;
 
-
         private ServerCharacter _inflicter;
         public ServerCharacter Inflicter => _inflicter;
         
@@ -66,31 +62,34 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<ZoneType> CharacterZoneType { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _damageReceiver = GetComponent<DamageReceiver>();
-            _characterStats = new(_characterData);
 
             NetHealthState = GetComponent<NetworkHealthState>();
             NetLifeState = GetComponent<NetworkLifeState>();
 
-            switch (_aiType)
-            {
-                case CharacterStateMachine.BasicNpc:
-                    // _stateMachine = new BasicNpcStateMachine(this);
-                    break;
-                case CharacterStateMachine.Player:
-                    if(TryGetComponent(out Player player))
-                    {
-                        _stateMachine = new PlayerStateMachine(this, player);
-                    }
-                    else
-                    {
-                        Debug.LogError($"Ai type set to player but no player component found");
-                    }
+            _characterStats = new(_characterData);
+            
+            // switch (_aiType)
+            // {
+            //     case CharacterStateMachine.BasicNpc:
+                   
+            //         // _stateMachine = new BasicNpcStateMachine(this);
+            //         break;
+            //     case CharacterStateMachine.Player:
+            //         if(TryGetComponent(out Player player))
+            //         {
+            //             _characterStats = new PlayerCharacterStats(_characterData as PlayerCharacterSO);
+            //             _stateMachine = new PlayerStateMachine(this, player);
+            //         }
+            //         else
+            //         {
+            //             Debug.LogError($"Ai type set to player but no player component found");
+            //         }
                     
-                    break;
-            }
+            //         break;
+            // }
         }
 
         public override void OnDestroy()
@@ -205,7 +204,8 @@ namespace UntitledDeepSeaGame
         public IEnumerator StartIFrameTimer()
         {
             LifeState = LifeState.IFrame;
-            yield return new WaitForSeconds(_characterData.IFrameDuration);
+            PlayerCharacterSO playerCharacterSO = _characterData as PlayerCharacterSO;
+            yield return new WaitForSeconds(playerCharacterSO.IFrameDuration);
             LifeState = LifeState.Alive;
         }
 
