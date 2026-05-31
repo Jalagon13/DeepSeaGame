@@ -121,6 +121,7 @@ namespace UntitledDeepSeaGame
             transform.SetPositionAndRotation(SpawnPoint, Quaternion.identity);
             StartCoroutine(_character.StartIFrameTimer());
             _character.DamageReceiver.ReceiveHP(_character, _character.RuntimeStats.MaxHealth.GetValue(), false);
+            _playerOxygenController.OnRespawn();
         }
     }
 }

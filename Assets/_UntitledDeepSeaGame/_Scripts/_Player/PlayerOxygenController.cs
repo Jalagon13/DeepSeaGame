@@ -41,6 +41,8 @@ namespace UntitledDeepSeaGame
         private void Update()
         {
             if (!IsOwner) return;
+            
+            if(Player.Instance.Character.LifeState == LifeState.Dead) return;
 
             Environment env = _serverCharacter.CurrentEnvironment.Value;
 
@@ -66,6 +68,12 @@ namespace UntitledDeepSeaGame
             {
                 _drowningTimer = 0f;
             }
+        }
+        
+        public void OnRespawn()
+        {
+            CurrentOxygen.Value = _playerSO.BaseOxygenDuration;
+            StateOfOxygen.Value = OxygenState.Full;
         }
 
         private void HandleWaterOxygen()

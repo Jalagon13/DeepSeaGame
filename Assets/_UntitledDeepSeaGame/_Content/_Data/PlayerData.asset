@@ -21,7 +21,7 @@ MonoBehaviour:
   TurnSharpness: 6
   IsNpc: 0
   IFrameDuration: 0.17
-  BaseOxygenDuration: 5
+  BaseOxygenDuration: 60
   OxygenRefillDuration: 2
-  OxygenDepletedTimeBetweenDamage: 3
+  OxygenDepletedTimeBetweenDamage: 5
   OxygenDepletedDamage: 10
