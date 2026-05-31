@@ -50,7 +50,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
             
-            if(_serverCharacter.CharacterZoneType.Value == ZoneType.Water)
+            if(_serverCharacter.CurrentEnvironment.Value == Environment.Water)
             {
                 WaterMovement();
             }

@@ -46,10 +46,11 @@ GameObject:
   - component: {fileID: 803792098292795098}
   - component: {fileID: 8924049036358242053}
   - component: {fileID: 2863469088550283713}
-  - component: {fileID: 5720560256968510660}
   - component: {fileID: 1902777031516221210}
   - component: {fileID: 8316067687826058288}
   - component: {fileID: 7146354698580210200}
+  - component: {fileID: 5720560256968510660}
+  - component: {fileID: 534220837259839922}
   - component: {fileID: 7807344152892952825}
   m_Layer: 0
   m_Name: Player
@@ -191,23 +192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
   _lifeState: {fileID: 803792098292795098}
---- !u!114 &5720560256968510660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120328430538976818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3937f7ad47995458f89f717443e7bc8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlayerArmController
-  ShowTopMostFoldoutHeaderGroup: 1
-  _heldItemPivot: {fileID: 8769432622025642449}
-  _heldItemHolder: {fileID: 1224968750194530153}
-  _eastPivot: {fileID: 2121108582731336343}
-  _westPivot: {fileID: 3394721781645054817}
 --- !u!114 &1902777031516221210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +248,36 @@ MonoBehaviour:
   _networkLifeState: {fileID: 803792098292795098}
   _spriteAnimHandlers:
   - {fileID: 6435305078094566520}
+--- !u!114 &5720560256968510660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3937f7ad47995458f89f717443e7bc8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlayerArmController
+  ShowTopMostFoldoutHeaderGroup: 1
+  _heldItemPivot: {fileID: 8769432622025642449}
+  _heldItemHolder: {fileID: 1224968750194530153}
+  _eastPivot: {fileID: 2121108582731336343}
+  _westPivot: {fileID: 3394721781645054817}
+--- !u!114 &534220837259839922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4926fc23b5697480cbb07ce86a6f0308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlayerOxygenController
+  _playerSO: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
 --- !u!114 &7807344152892952825
 MonoBehaviour:
   m_ObjectHideFlags: 0

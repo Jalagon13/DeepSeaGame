@@ -10,12 +10,6 @@ namespace UntitledDeepSeaGame
         public AnimationClip SideIdleClip;
     }
     
-    public enum OxygenState
-    {
-        
-        Depleted
-    }
-
     public enum Direction
     {
         None,
@@ -25,10 +19,16 @@ namespace UntitledDeepSeaGame
         Right
     }
     
-    public enum ZoneType
+    public enum Environment
     {
         Water,
         Air
+    }
+
+    public enum CharacterStateMachine
+    {
+        Player,
+        BasicNpc
     }
 
     public enum MovementState

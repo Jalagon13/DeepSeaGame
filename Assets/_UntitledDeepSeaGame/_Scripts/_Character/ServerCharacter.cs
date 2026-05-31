@@ -9,6 +9,9 @@ namespace UntitledDeepSeaGame
     public class ServerCharacter : NetworkBehaviour
     {
         [SerializeField]
+        private CharacterStateMachine _aiType;
+
+        [SerializeField]
         private CharacterSO _characterData;
         public CharacterSO CharacterData => _characterData;
 
@@ -60,36 +63,33 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<Direction> CardinalDirection { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SuperAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<ZoneType> CharacterZoneType { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Environment> CurrentEnvironment { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-        protected virtual void Awake()
+        private void Awake()
         {
             _damageReceiver = GetComponent<DamageReceiver>();
+            _characterStats = new(_characterData);
 
             NetHealthState = GetComponent<NetworkHealthState>();
             NetLifeState = GetComponent<NetworkLifeState>();
 
-            _characterStats = new(_characterData);
-            
-            // switch (_aiType)
-            // {
-            //     case CharacterStateMachine.BasicNpc:
-                   
-            //         // _stateMachine = new BasicNpcStateMachine(this);
-            //         break;
-            //     case CharacterStateMachine.Player:
-            //         if(TryGetComponent(out Player player))
-            //         {
-            //             _characterStats = new PlayerCharacterStats(_characterData as PlayerCharacterSO);
-            //             _stateMachine = new PlayerStateMachine(this, player);
-            //         }
-            //         else
-            //         {
-            //             Debug.LogError($"Ai type set to player but no player component found");
-            //         }
+            switch (_aiType)
+            {
+                case CharacterStateMachine.BasicNpc:
+                    // _stateMachine = new BasicNpcStateMachine(this);
+                    break;
+                case CharacterStateMachine.Player:
+                    if(TryGetComponent(out Player player))
+                    {
+                        _stateMachine = new PlayerStateMachine(this, player);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Ai type set to player but no player component found");
+                    }
                     
-            //         break;
-            // }
+                    break;
+            }
         }
 
         public override void OnDestroy()
@@ -138,7 +138,7 @@ namespace UntitledDeepSeaGame
             {
                 Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y + 1));
                 bool isInAir = WorldManager.Instance.WorldDataStore.IsAirAt(gridPos.x, gridPos.y);
-                CharacterZoneType.Value = isInAir ? ZoneType.Air : ZoneType.Water;
+                CurrentEnvironment.Value = isInAir ? Environment.Air : Environment.Water;
 
                 _serverCharacterMovement.FixedUpdateMovement();
             }
