@@ -33,6 +33,8 @@ namespace UntitledDeepSeaGame
         public event Action<Vector3Int> OnGenerationCompleted;
 
         private WorldGenerationData _worldGenerationData;
+        public WorldGenerationData WorldGenerationData => _worldGenerationData;
+        
         private WorldDataStore _worldDataStore;
         private Coroutine _generationCoroutine;
 

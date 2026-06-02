@@ -14,6 +14,9 @@ namespace UntitledDeepSeaGame
 
         [field: SerializeField, Tooltip("How much padding, from the min and max points of the camera bounds to give to cover the whole frustum for the lightmap")] 
         public float MinMaxOffsetPadding { get; private set; }
+        
+        [SerializeField] private PolygonCollider2D _boundaryCollider; // For the cinemachine camera
+        [SerializeField] private EdgeCollider2D _edgeCollider; // For the player
 
         public RectInt CurrentVisibleTileBounds { get; private set; }
 
@@ -21,12 +24,14 @@ namespace UntitledDeepSeaGame
         private Camera _mainCamera;
         private CinemachineCamera _cinemachineCam;
         private NetworkObject _playerObject;
+        private CinemachineConfiner2D _confiner;
+
 
         private void Awake()
         {
             Instance = this;
             _cameraFrustumCollider = GetComponent<BoxCollider2D>();
-            
+            _confiner = GetComponent<CinemachineConfiner2D>();
             _cinemachineCam = GetComponent<CinemachineCamera>();
             _cinemachineCam.enabled = false;
             
@@ -106,6 +111,27 @@ namespace UntitledDeepSeaGame
             _playerObject = NetworkManager.ConnectedClients[clientId].PlayerObject;
             _cinemachineCam.Follow = _playerObject.transform;
             _cinemachineCam.enabled = true;
+            
+            int worldWidth = WorldManager.Instance.WorldGenerator.WorldGenerationData.WorldWidth;
+            int worldHeight = WorldManager.Instance.WorldGenerator.WorldGenerationData.WorldHeight;
+
+            _boundaryCollider.points = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(worldWidth, 0),
+                new Vector2(worldWidth, worldHeight),
+                new Vector2(0, worldHeight)
+            };
+
+            _edgeCollider.points = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(worldWidth, 0),
+                new Vector2(worldWidth, worldHeight),
+                new Vector2(0, worldHeight)
+            };
+
+            _confiner.InvalidateBoundingShapeCache();
 
             SetListenerToPlayer();
         }
