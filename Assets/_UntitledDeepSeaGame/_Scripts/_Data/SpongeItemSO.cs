@@ -18,9 +18,8 @@ namespace UntitledDeepSeaGame
 
             if (dataStore == null) return;
 
-            // 1. Initial check: Is the starting point in bounds and "water" (empty foreground)?
-            // NTFS: this only checks if the forground tile is completely empty not if its a walk throughable forground tile or not
-            if (!dataStore.IsInBounds(startPos.x, startPos.y) || dataStore.GetTileId(startPos.x, startPos.y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID || dataStore.IsAirAt(startPos.x, startPos.y))
+            // 1. Initial check: sponge can only drain actual water cells.
+            if (!dataStore.IsWaterCell(startPos.x, startPos.y))
             {
                 return;
             }
@@ -49,8 +48,8 @@ namespace UntitledDeepSeaGame
                         return;
                     }
 
-                    // If the neighbor is empty space in the foreground, it's more "water" to explore
-                    if (dataStore.GetTileId(next.x, next.y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID)
+                    // If the neighbor is water, it belongs to the same drain candidate area.
+                    if (dataStore.IsWaterCell(next.x, next.y))
                     {
                         if (!visited.Contains(next))
                         {
@@ -82,9 +81,9 @@ namespace UntitledDeepSeaGame
 
             foreach (Vector2Int pos in visited)
             {
-                if (!dataStore.IsAirAt(pos.x, pos.y))
+                if (dataStore.IsWaterCell(pos.x, pos.y))
                 {
-                    dataStore.SetAirValue(pos.x, pos.y, true);
+                    dataStore.SetUnderwaterAir(pos.x, pos.y, true);
                     count++;
                 }
             }

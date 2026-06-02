@@ -12,19 +12,22 @@ namespace UntitledDeepSeaGame
 
         private ushort[,] _fgTileData;
         private ushort[,] _bgTileData;
-        private bool[,] _airTileData;
+        private readonly HashSet<int> _underwaterAirTiles = new();
+        private int _seaLevelY;
         
         private Dictionary<Vector2Int, TileSO> _activeMultiTileObjects;
         public IReadOnlyDictionary<Vector2Int, TileSO> ActiveMultiTileObjects => _activeMultiTileObjects;
 
         public int Width => _fgTileData?.GetLength(0) ?? 0;
         public int Height => _fgTileData?.GetLength(1) ?? 0;
+        public int SeaLevelY => _seaLevelY;
 
-        public void Initialize(int width, int height)
+        public void Initialize(int width, int height, int seaLevelY)
         {
             _fgTileData = new ushort[width, height];
             _bgTileData = new ushort[width, height];
-            _airTileData = new bool[width, height];
+            _seaLevelY = Mathf.Clamp(seaLevelY, 1, Mathf.Max(1, height - 1));
+            _underwaterAirTiles.Clear();
             _activeMultiTileObjects = new();
 
 
@@ -34,20 +37,48 @@ namespace UntitledDeepSeaGame
                 {
                     _fgTileData[x, y] = GameDataRegistry.INVALID_ID;
                     _bgTileData[x, y] = GameDataRegistry.INVALID_ID;
-                    _airTileData[x, y] = false;
                 }
             }
         }
         
+        public bool IsAtmosphereZone(int y)
+        {
+            return y >= _seaLevelY && y < Height;
+        }
+
+        public bool IsOceanZone(int y)
+        {
+            return y >= 0 && y < _seaLevelY;
+        }
+
         public void SetAirValue(int x, int y, bool value)
+        {
+            SetUnderwaterAir(x, y, value);
+        }
+
+        public void SetUnderwaterAir(int x, int y, bool value)
         {
             if (!IsInBounds(x, y))
             {
                 return;
             }
+
+            if (!IsOceanZone(y))
+            {
+                return;
+            }
+
+            if (value && GetTileId(x, y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID)
+            {
+                return;
+            }
             
-            _airTileData[x, y] = value;
-            TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            int index = GetTileIndex(x, y);
+            bool changed = value ? _underwaterAirTiles.Add(index) : _underwaterAirTiles.Remove(index);
+            if (changed)
+            {
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            }
         }
         
         public bool IsAirAt(int x, int y)
@@ -57,7 +88,27 @@ namespace UntitledDeepSeaGame
                 return false;
             }
 
-            return _airTileData[x, y];
+            return IsAtmosphereZone(y) || IsUnderwaterAirAt(x, y);
+        }
+
+        public bool IsUnderwaterAirAt(int x, int y)
+        {
+            if (!IsInBounds(x, y) || !IsOceanZone(y))
+            {
+                return false;
+            }
+
+            return _underwaterAirTiles.Contains(GetTileIndex(x, y));
+        }
+
+        public bool IsWaterCell(int x, int y)
+        {
+            if (!IsInBounds(x, y) || !IsOceanZone(y))
+            {
+                return false;
+            }
+
+            return GetTileId(x, y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID && !IsUnderwaterAirAt(x, y);
         }
         
         public void SetMultiTile(int x, int y, TileSO tile)
@@ -121,7 +172,7 @@ namespace UntitledDeepSeaGame
                 for (int j = 0; j < multiTileSO.Size.y; j++)
                 {
                     // SetTileId will trigger the TileChanged event and clean up the anchor registry automatically
-                    SetTileId(anchor.x + i, anchor.y + j, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
+                    SetTileId(anchor.x + i, anchor.y + j, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap, true);
                 }
             }
 
@@ -148,6 +199,11 @@ namespace UntitledDeepSeaGame
             data[x, y] = tileId;
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
 
+            if (targetMap == WorldTm.ForegroundTilemap && tileId != GameDataRegistry.INVALID_ID)
+            {
+                ClearUnderwaterAirSilently(x, y, true);
+            }
+
             // Check for exposed air tiles if a foreground tile was broken
             if (checkForExposedAir && targetMap == WorldTm.ForegroundTilemap && tileId == GameDataRegistry.INVALID_ID && !IsAirAt(x, y))
             {
@@ -172,8 +228,7 @@ namespace UntitledDeepSeaGame
 
             foreach (var pos in neighbors)
             {
-                // A "water" tile is an empty foreground tile that is not air
-                if (GetTileId(pos.x, pos.y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID && !IsAirAt(pos.x, pos.y))
+                if (IsWaterCell(pos.x, pos.y))
                 {
                     hasWaterNeighbor = true;
                     break;
@@ -184,7 +239,7 @@ namespace UntitledDeepSeaGame
             {
                 foreach (var pos in neighbors)
                 {
-                    if (IsAirAt(pos.x, pos.y))
+                    if (IsFloodableUnderwaterAirCell(pos.x, pos.y))
                     {
                         OnAirTileExposed(pos.x, pos.y);
                     }
@@ -192,7 +247,7 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                SetAirValue(x, y, true);
+                SetUnderwaterAir(x, y, true);
             }
         }
 
@@ -203,7 +258,7 @@ namespace UntitledDeepSeaGame
             Queue<Vector2Int> queue = new();
             
             // Start the flood fill by clearing the first detected air tile
-            SetAirValue(startX, startY, false);
+            SetUnderwaterAir(startX, startY, false);
             queue.Enqueue(new Vector2Int(startX, startY));
 
             while (queue.Count > 0)
@@ -215,10 +270,10 @@ namespace UntitledDeepSeaGame
                 {
                     Vector2Int next = current + dir;
                     
-                    if (IsAirAt(next.x, next.y))
+                    if (IsFloodableUnderwaterAirCell(next.x, next.y))
                     {
                         // Setting to false immediately prevents the tile from being re-added to the queue
-                        SetAirValue(next.x, next.y, false);
+                        SetUnderwaterAir(next.x, next.y, false);
                         queue.Enqueue(next);
                     }
                 }
@@ -228,6 +283,32 @@ namespace UntitledDeepSeaGame
         public bool IsInBounds(int x, int y)
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
+        }
+
+        private bool IsFloodableUnderwaterAirCell(int x, int y)
+        {
+            return IsUnderwaterAirAt(x, y) && GetTileId(x, y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID;
+        }
+
+        private bool ClearUnderwaterAirSilently(int x, int y, bool notify)
+        {
+            if (!IsInBounds(x, y) || !IsOceanZone(y))
+            {
+                return false;
+            }
+
+            bool removed = _underwaterAirTiles.Remove(GetTileIndex(x, y));
+            if (removed && notify)
+            {
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            }
+
+            return removed;
+        }
+
+        private int GetTileIndex(int x, int y)
+        {
+            return (y * Width) + x;
         }
     }
 }

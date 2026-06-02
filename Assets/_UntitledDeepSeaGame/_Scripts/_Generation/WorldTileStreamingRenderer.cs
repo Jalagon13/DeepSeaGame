@@ -169,8 +169,8 @@ namespace UntitledDeepSeaGame
         {
             if (targetMap == WorldTm.AirTilemap)
             {
-                bool isAir = _worldDataStore.IsAirAt(x, y);
-                _airTilemap.SetTile(new Vector3Int(x, y, 0), isAir ? GameDataRegistry.Instance.AirTile : null);
+                bool hasUnderwaterAir = _worldDataStore.IsUnderwaterAirAt(x, y);
+                _airTilemap.SetTile(new Vector3Int(x, y, 0), hasUnderwaterAir ? GameDataRegistry.Instance.AirTile : null);
 
                 return;
             }
