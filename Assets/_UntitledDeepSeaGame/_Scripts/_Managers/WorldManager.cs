@@ -17,7 +17,6 @@ namespace UntitledDeepSeaGame
         public bool IsWorldReady { get; private set; }
 
         [Header("Ocean Visuals")]
-        [SerializeField] private bool _createDefaultOceanRenderers = true;
         [SerializeField] private OceanRenderer _oceanRenderer;
         [SerializeField] private OceanSurfaceRenderer _oceanSurfaceRenderer;
 
@@ -57,7 +56,6 @@ namespace UntitledDeepSeaGame
 
             IsWorldReady = false;
             WorldDataStore.Initialize(generationData.WorldWidth, generationData.WorldHeight, generationData.SeaLevelY);
-            EnsureOceanRenderers(generationData);
             WorldGenerator.StartGeneration();
 
             while (!WorldGenerator.IsGenerationComplete)
@@ -68,6 +66,9 @@ namespace UntitledDeepSeaGame
             TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap, WorldGenerator.BackgroundTilemap, WorldGenerator.AirTilemap, WorldGenerator.MultiTileRenderingTransform);
 
             yield return new WaitUntil(() => Player.Instance != null);
+
+            _oceanRenderer.Initialize(generationData);
+            _oceanSurfaceRenderer.Initialize(generationData);
 
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
@@ -89,41 +90,5 @@ namespace UntitledDeepSeaGame
             return spawnTile;
         }
 
-        private void EnsureOceanRenderers(WorldGenerationData generationData)
-        {
-            if (!_createDefaultOceanRenderers)
-            {
-                _oceanRenderer?.Initialize(generationData);
-                _oceanSurfaceRenderer?.Initialize(generationData);
-                return;
-            }
-
-            if (_oceanRenderer == null)
-            {
-                _oceanRenderer = FindAnyObjectByType<OceanRenderer>();
-            }
-
-            if (_oceanRenderer == null)
-            {
-                GameObject oceanGo = new("OceanRenderer", typeof(SpriteRenderer), typeof(OceanRenderer));
-                oceanGo.transform.SetParent(WorldGenerator.transform, false);
-                _oceanRenderer = oceanGo.GetComponent<OceanRenderer>();
-            }
-
-            if (_oceanSurfaceRenderer == null)
-            {
-                _oceanSurfaceRenderer = FindAnyObjectByType<OceanSurfaceRenderer>();
-            }
-
-            if (_oceanSurfaceRenderer == null)
-            {
-                GameObject surfaceGo = new("OceanSurfaceRenderer", typeof(SpriteRenderer), typeof(OceanSurfaceRenderer));
-                surfaceGo.transform.SetParent(WorldGenerator.transform, false);
-                _oceanSurfaceRenderer = surfaceGo.GetComponent<OceanSurfaceRenderer>();
-            }
-
-            _oceanRenderer.Initialize(generationData);
-            _oceanSurfaceRenderer.Initialize(generationData);
-        }
     }
 }
