@@ -11,11 +11,16 @@ namespace UntitledDeepSeaGame
         private Tilemap _foregroundTilemap;
         private Tilemap _backgroundTilemap;
         private Tilemap _airTilemap;
+        private TilemapRenderer _airTilemapRenderer;
         private Transform _multiTileRenderingTf;
         private RectInt _renderedBounds;
         private bool _isInitialized;
         private bool _hasRenderedBounds;
         private Dictionary<Vector2Int, GameObject> _spawnedMultiTileObjects = new();
+
+        [Header("Air Mask Rendering")]
+        [SerializeField] private Material _airMaskStencilMaterial;
+        [SerializeField] private int _airMaskSortingOrder = 98;
 
         private void Start() 
         {
@@ -45,9 +50,10 @@ namespace UntitledDeepSeaGame
             _foregroundTilemap = foregroundTilemap;
             _backgroundTilemap = backgroundTilemap;
             _airTilemap = airTilemap;
+            _airTilemapRenderer = _airTilemap != null ? _airTilemap.GetComponent<TilemapRenderer>() : null;
             _multiTileRenderingTf = multiTileRenderingTf;
 
-            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _airTilemap != null;
+            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _airTilemap != null && _airTilemapRenderer != null;
             _hasRenderedBounds = false;
             _renderedBounds = default;
 
@@ -56,6 +62,8 @@ namespace UntitledDeepSeaGame
                 Debug.LogWarning("WorldTileStreamingRenderer could not initialize because required references are missing.");
                 return;
             }
+
+            ConfigureAirMaskRenderer();
 
             _worldDataStore.TileChanged += HandleTileChanged;
             _worldDataStore.MultiTileChanged += HandleMultiTileChanged;
@@ -75,6 +83,28 @@ namespace UntitledDeepSeaGame
             {
                 HandleVisibleTileBoundsChanged(PlayerCamera.Instance.CurrentVisibleTileBounds);
             }
+        }
+
+        private void ConfigureAirMaskRenderer()
+        {
+            if (_airMaskStencilMaterial == null)
+            {
+                Shader shader = Shader.Find("UntitledDeepSeaGame/AirMaskStencilWrite");
+                if (shader == null)
+                {
+                    Debug.LogWarning("Could not find UntitledDeepSeaGame/AirMaskStencilWrite. AirTilemap will render visibly instead of writing the ocean cutout stencil.");
+                    return;
+                }
+
+                _airMaskStencilMaterial = new Material(shader)
+                {
+                    name = "Runtime Air Mask Stencil Write",
+                    hideFlags = HideFlags.DontSave
+                };
+            }
+
+            _airTilemapRenderer.sharedMaterial = _airMaskStencilMaterial;
+            _airTilemapRenderer.sortingOrder = _airMaskSortingOrder;
         }
 
         private void HandleMultiTileChanged(Vector2Int anchorPosition, TileSO multiTile, bool isPlacingMultiTile)

@@ -6,6 +6,9 @@ namespace UntitledDeepSeaGame
     public class OceanRenderer : MonoBehaviour
     {
         [SerializeField] private WorldGenerationData _worldGenerationData;
+        [SerializeField] private Material _oceanStencilMaterial;
+        [SerializeField] private Color _waterColor = new(0.05f, 0.42f, 0.72f, 0.5f);
+        [SerializeField] private int _sortingOrder = 99;
 
         private SpriteRenderer _spriteRenderer;
 
@@ -42,9 +45,34 @@ namespace UntitledDeepSeaGame
             float height = _worldGenerationData.SeaLevelY;
 
             _spriteRenderer.sprite = OceanRenderSpriteUtility.UnitSprite;
+            _spriteRenderer.color = Color.white;
+            _spriteRenderer.sortingOrder = _sortingOrder;
+            ConfigureStencilMaterial();
 
             transform.position = new Vector3(width * 0.5f, height * 0.5f);
             transform.localScale = new Vector3(width, height, 1f);
+        }
+
+        private void ConfigureStencilMaterial()
+        {
+            if (_oceanStencilMaterial == null)
+            {
+                Shader shader = Shader.Find("UntitledDeepSeaGame/OceanStencilRead");
+                if (shader == null)
+                {
+                    Debug.LogWarning("Could not find UntitledDeepSeaGame/OceanStencilRead. Ocean will render without AirTilemap cutouts.");
+                    return;
+                }
+
+                _oceanStencilMaterial = new Material(shader)
+                {
+                    name = "Runtime Ocean Stencil Read",
+                    hideFlags = HideFlags.DontSave
+                };
+            }
+
+            _oceanStencilMaterial.SetColor("_Color", _waterColor);
+            _spriteRenderer.sharedMaterial = _oceanStencilMaterial;
         }
     }
 }

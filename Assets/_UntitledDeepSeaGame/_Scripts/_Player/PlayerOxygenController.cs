@@ -17,6 +17,9 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private PlayerCharacterSO _playerSO;
         
+        [SerializeField] 
+        private Transform _headPoint;
+        
         private ServerCharacter _serverCharacter;
         
         public NetworkVariable<OxygenState> StateOfOxygen { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -46,13 +49,16 @@ namespace UntitledDeepSeaGame
 
             Environment env = _serverCharacter.CurrentEnvironment.Value;
 
-            if (env == Environment.Water)
-            {
-                HandleWaterOxygen();
-            }
-            else
+            Vector2Int headGridPos = new(Mathf.FloorToInt(_headPoint.position.x), Mathf.FloorToInt(_headPoint.position.y + 1));
+            bool headInAir = WorldManager.Instance.WorldDataStore.IsAirAt(headGridPos.x, headGridPos.y);
+
+            if(headInAir || env == Environment.Air)
             {
                 HandleAirOxygen();
+            }
+            else if (env == Environment.Water)
+            {
+                HandleWaterOxygen();
             }
 
             if (StateOfOxygen.Value == OxygenState.Empty)

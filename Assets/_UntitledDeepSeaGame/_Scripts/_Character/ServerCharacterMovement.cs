@@ -98,7 +98,7 @@ namespace UntitledDeepSeaGame
 
             if (_desiredDirection != Vector2.zero)
             {
-                _serverCharacter.CardinalDirection.Value = GetCardinalDirectionFromVector2(_desiredDirection);
+                _serverCharacter.CurrentDirection.Value = GetCardinalDirectionFromVector2(_desiredDirection);
             }
         }
 
@@ -134,7 +134,7 @@ namespace UntitledDeepSeaGame
                 // 5. Update Direction (Horizontal only in air)
                 if (Mathf.Abs(_desiredDirection.x) > 0.01f)
                 {
-                    _serverCharacter.CardinalDirection.Value = _desiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                    _serverCharacter.CurrentDirection.Value = _desiredDirection.x > 0 ? Direction.Right : Direction.Left;
                 }
             }
         }

@@ -32,6 +32,7 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
 
+        [HideInInspector]
         public Vector2 SpawnPoint;
 
         private void Awake()

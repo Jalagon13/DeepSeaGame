@@ -71,7 +71,7 @@ namespace UntitledDeepSeaGame
         {
             if (_ctx.ServerCharacter.MovementState.Value == MovementState.Idle)
             {
-                _ctx.ServerCharacter.CardinalDirection.Value = _swingDirection;
+                _ctx.ServerCharacter.CurrentDirection.Value = _swingDirection;
             }
         }
     }

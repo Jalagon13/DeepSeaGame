@@ -24,7 +24,7 @@ namespace UntitledDeepSeaGame
             {
                 _networkLifeState.LifeState.OnValueChanged += OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged += PlayCurrentMoveState;
-                _serverCharacter.CardinalDirection.OnValueChanged += OnCardinalDirectionChanged;
+                _serverCharacter.CurrentDirection.OnValueChanged += OnCardinalDirectionChanged;
                 // if (_serverCharacter.TryGetComponent(out Player player))
                 // {
                 //     player.PlayerHand.SwingDirection.OnValueChanged += OnActionDirectionChanged;
@@ -39,7 +39,7 @@ namespace UntitledDeepSeaGame
             {
                 _networkLifeState.LifeState.OnValueChanged -= OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged -= PlayCurrentMoveState;
-                _serverCharacter.CardinalDirection.OnValueChanged -= OnCardinalDirectionChanged;
+                _serverCharacter.CurrentDirection.OnValueChanged -= OnCardinalDirectionChanged;
                 // if (_serverCharacter.TryGetComponent(out Player player))
                 // {
                 //     player.PlayerHand.SwingDirection.OnValueChanged -= OnActionDirectionChanged;
@@ -54,7 +54,7 @@ namespace UntitledDeepSeaGame
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? _serverCharacter.CardinalDirection.Value : _actionDirection);
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? _serverCharacter.CurrentDirection.Value : _actionDirection);
             }
         }
 
@@ -68,7 +68,7 @@ namespace UntitledDeepSeaGame
 
         private void PlayCurrentMoveState(MovementState previousMovementState, MovementState newMovementState)
         {
-            Direction direction = _serverCharacter.CardinalDirection.Value;
+            Direction direction = _serverCharacter.CurrentDirection.Value;
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
