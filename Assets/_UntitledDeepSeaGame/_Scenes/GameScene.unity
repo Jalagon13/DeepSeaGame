@@ -211,7 +211,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 75, y: 75}
+  m_CellSize: {x: 70, y: 70}
   m_Spacing: {x: 10, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -300,8 +300,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 775, y: 100}
+  m_AnchoredPosition: {x: 0, y: 295}
+  m_SizeDelta: {x: 935, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &172656907
 MonoBehaviour:
@@ -323,8 +323,8 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 75, y: 75}
-  m_Spacing: {x: 10, y: 0}
+  m_CellSize: {x: 70, y: 70}
+  m_Spacing: {x: 7, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &239637566
@@ -604,8 +604,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 325}
-  m_SizeDelta: {x: 775, y: 100}
+  m_AnchoredPosition: {x: 0, y: 135}
+  m_SizeDelta: {x: 935, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &256065242
 MonoBehaviour:
@@ -627,10 +627,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 75, y: 75}
-  m_Spacing: {x: 10, y: 10}
+  m_CellSize: {x: 70, y: 70}
+  m_Spacing: {x: 7, y: 7}
   m_Constraint: 1
-  m_ConstraintCount: 8
+  m_ConstraintCount: 10
 --- !u!1 &302151825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,7 +1108,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 24.8125
+  orthographic size: 14.9375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1133,7 +1133,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.125004, y: 24.812498, z: 0}
+  m_LocalPosition: {x: 26.562487, y: 14.9375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1707,6 +1707,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &777869976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 777869977}
+  - component: {fileID: 777869978}
+  m_Layer: 5
+  m_Name: CraftingMenuUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &777869977
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777869976}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1165345162}
+  m_Father: {fileID: 1976162734}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 130}
+  m_SizeDelta: {x: 765, y: 550}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &777869978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777869976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51647d9ff401f4e5a966fe0e5a6756e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CraftingMenuUI
 --- !u!1 &801674181
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,6 +2070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185e1318f7d54de180fd6a6eb8731fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
+  _airMaskStencilMaterial: {fileID: 0}
+  _airMaskSortingOrder: 98
 --- !u!1 &890717787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,6 +2682,81 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1165345161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1165345162}
+  - component: {fileID: 1165345164}
+  - component: {fileID: 1165345163}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1165345162
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165345161}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 777869977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1165345163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165345161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1165345164
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165345161}
+  m_CullTransparentMesh: 1
 --- !u!1 &1180917597
 GameObject:
   m_ObjectHideFlags: 0
@@ -4077,11 +4203,11 @@ RectTransform:
   - {fileID: 89916958}
   m_Father: {fileID: 801674182}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 775, y: 100}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 935, y: 100}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1760391177
 GameObject:
   m_ObjectHideFlags: 0
@@ -4319,8 +4445,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.InventoryManager
   _craftingMenuUI: {fileID: 0}
-  _slotCount: 16
-  _hotbarSlotCount: 8
+  _slotCount: 40
+  _hotbarSlotCount: 10
   _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
   _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
@@ -4462,6 +4588,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.OceanSurfaceRenderer
   _worldGenerationData: {fileID: 885515393}
   _surfaceHeight: 0.35
+  _oceanStencilMaterial: {fileID: 0}
+  _surfaceColor: {r: 0.55, g: 0.9, b: 1, a: 0.7}
+  _sortingOrder: 100
 --- !u!212 &1827668789
 SpriteRenderer:
   serializedVersion: 2
@@ -4629,6 +4758,7 @@ RectTransform:
   - {fileID: 172656906}
   - {fileID: 256065241}
   - {fileID: 1256865250}
+  - {fileID: 777869977}
   m_Father: {fileID: 365846640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5321,6 +5451,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.OceanRenderer
   _worldGenerationData: {fileID: 885515393}
+  _oceanStencilMaterial: {fileID: 0}
+  _waterColor: {r: 0.05, g: 0.42, b: 0.72, a: 0.5}
+  _sortingOrder: 99
 --- !u!212 &2134409143
 SpriteRenderer:
   serializedVersion: 2
