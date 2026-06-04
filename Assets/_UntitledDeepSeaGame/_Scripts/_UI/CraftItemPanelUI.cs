@@ -13,11 +13,7 @@ namespace UntitledDeepSeaGame
         [SerializeField] private TextMeshProUGUI _outputItemNameText;
         [SerializeField] private GameObject _ingredientListSectionUI;
         [SerializeField] private IngredientPanelUI _ingredientPanelUIPrefab;
-
-        [Header("Craft Button")]
         [SerializeField] private Image _craftButtonCantCraftOverlay;
-        [SerializeField] private TextMeshProUGUI _craftButtonText;
-        [SerializeField] private float _craftingDuration = 2f;
 
         private List<IngredientPanelUI> _ingredientList;
 
