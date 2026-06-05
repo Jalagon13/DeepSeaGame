@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e03f7e5b0d4d4e9585753833c883e350, type: 3}
-  m_Name: Sand_TileItemSO
+  m_Name: LightTileItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
-  _itemName: Sand Block
+  _itemName: Light
   _itemDescription: 
-  _inventoryIcon: {fileID: -212160175407610149, guid: 814e31fe4b9e44fadbfeb7e1b5f7a746, type: 3}
+  _inventoryIcon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   _isStackable: 1
-  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
+  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: ad3dc3449151c47e1a74c40627d9c551, type: 2}
