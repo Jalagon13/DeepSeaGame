@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e03f7e5b0d4d4e9585753833c883e350, type: 3}
+  m_Name: TitaniumOreItem
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
+  _itemName: 'Titanium Ore '
+  _itemDescription: 
+  _inventoryIcon: {fileID: 6835907365155878909, guid: 7d66b36eb70204f0cb3ca69fcf7f767a, type: 3}
+  _isStackable: 1
+  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: d209e9899a4134876ba9bda8e49ace6a, type: 2}

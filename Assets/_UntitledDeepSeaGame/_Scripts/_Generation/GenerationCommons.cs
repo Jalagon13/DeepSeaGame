@@ -10,6 +10,7 @@ namespace UntitledDeepSeaGame
         GeneratingSurface,
         FillingTerrain,
         CarvingCaves,
+        PlacingTitaniumOre,
         FinalizingSpawn,
         Completed
     }

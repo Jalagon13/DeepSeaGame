@@ -19,7 +19,7 @@ namespace UntitledDeepSeaGame
 
         [field: Header("MultiTileSO Properties")]
         [field: SerializeField] public bool IsMultiTile { get; private set; } = false;
-        [field: SerializeField] public Vector2Int Size { get; private set; } = new Vector2Int(1, 2);
+        [field: SerializeField] public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
         [field: SerializeField] public GameObject Prefab { get; private set; }
 
 
@@ -28,5 +28,7 @@ namespace UntitledDeepSeaGame
         // [field: SerializeField] public EventReference PlaceSound { get; private set; }
         // [field: SerializeField] public EventReference DestroySound { get; private set; }
         // [field: SerializeField] public List<Sprite> MiningParticleSprites { get; private set; }
+        
+        
     }
 }

@@ -20,10 +20,6 @@ namespace UntitledDeepSeaGame
         private const int _minimumHotbarSlotCount = 1;
         private const int _minimumTotalSlotCount = 8;
 
-        [SerializeField] private CraftingMenuUI _craftingMenuUI;
-        public CraftingMenuUI CraftingMenuUI => _craftingMenuUI;
-
-
         [Header("Inventory Layout")]
         [SerializeField, Min(_minimumTotalSlotCount), Tooltip("Total number of inventory slots available to the player, including the hotbar.")]
         private int _slotCount = 24;
