@@ -922,7 +922,7 @@ MonoBehaviour:
   <StringID>k__BackingField: titaniumore
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
-  <Hardness>k__BackingField: 0.65
+  <Hardness>k__BackingField: 1
   <LightValue>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 20f6484a2f616433f807f6edd3a4e7c5, type: 2}
   <ItemDropTable>k__BackingField:

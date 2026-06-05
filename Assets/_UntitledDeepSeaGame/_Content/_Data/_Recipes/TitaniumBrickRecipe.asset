@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4937f187e27eb410f9103f2d35a92555, type: 3}
-  m_Name: TestRecipe1
+  m_Name: TitaniumBrickRecipe
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.RecipeSO
   <OutputItem>k__BackingField: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
   <OutputAmount>k__BackingField: 1
