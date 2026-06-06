@@ -89,7 +89,7 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO));
+                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO), tileSO.TileType);
             }
             
             InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
@@ -129,7 +129,7 @@ namespace UntitledDeepSeaGame
                 return true;
             }
 
-            return worldDataStore.GetTileId(tilePosition.x, tilePosition.y) == GameDataRegistry.INVALID_ID;
+            return worldDataStore.GetTileId(tilePosition.x, tilePosition.y, tileSO.TileType) == GameDataRegistry.INVALID_ID;
         }
 
         private bool PlayerWithinPlacingRangeOfMouse()
