@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4937f187e27eb410f9103f2d35a92555, type: 3}
   m_Name: TitaniumBrickRecipe
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.RecipeSO
-  <OutputItem>k__BackingField: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
-  <OutputAmount>k__BackingField: 1
+  <OutputItem>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+  <OutputAmount>k__BackingField: 6
   <Requirements>k__BackingField:
-  - <Item>k__BackingField: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
-    <Amount>k__BackingField: 6
-  - <Item>k__BackingField: {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
-    <Amount>k__BackingField: 12
+  - <Item>k__BackingField: {fileID: 11400000, guid: 20f6484a2f616433f807f6edd3a4e7c5, type: 2}
+    <Amount>k__BackingField: 1
