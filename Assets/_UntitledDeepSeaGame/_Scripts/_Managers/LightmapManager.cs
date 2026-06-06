@@ -235,7 +235,9 @@ namespace UntitledDeepSeaGame
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
                     TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
 
-                    bool isOpenSky = fgId == GameDataRegistry.INVALID_ID && bgId == GameDataRegistry.INVALID_ID;
+                    bool isOpenSky = fgId == GameDataRegistry.INVALID_ID && bgId == GameDataRegistry.INVALID_ID && 
+                                     worldY > WorldManager.Instance.WorldGenerator.WorldGenerationData.UndergroundMaxYLevel;
+                                    
                     if (isOpenSky)
                     {
                         _lightGrid[localX, localY] = _fullBrightnessInterpretation;

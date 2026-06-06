@@ -13,13 +13,13 @@ namespace UntitledDeepSeaGame
         private int _belowSurfaceOffset = 3;
         
         [SerializeField, Range(0f, 1f)] 
-        private float _underGroundStartPercent = 0.45f;
+        private float _approxUnderGroundStartPercent = 0.45f;
 
         public override WorldGenerationState State => WorldGenerationState.FillingTerrain;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {
-            int undergroundStartHeight = Mathf.RoundToInt(context.Config.WorldHeight * _underGroundStartPercent);
+            int undergroundStartHeight = Mathf.RoundToInt(context.Config.WorldHeight * _approxUnderGroundStartPercent);
             int width = context.Config.WorldWidth;
             int height = context.Config.WorldHeight;
             ushort sandWallTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_sandWallTileSO);

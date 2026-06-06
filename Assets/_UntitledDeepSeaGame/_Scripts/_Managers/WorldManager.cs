@@ -19,6 +19,7 @@ namespace UntitledDeepSeaGame
         [Header("Ocean Visuals")]
         [SerializeField] private OceanRenderer _oceanRenderer;
         [SerializeField] private OceanSurfaceRenderer _oceanSurfaceRenderer;
+        [SerializeField] private ParallaxLayer _undergroundLayer;
 
         public event Action OnWorldReady;
         
@@ -67,12 +68,14 @@ namespace UntitledDeepSeaGame
 
             yield return new WaitUntil(() => Player.Instance != null);
 
-            _oceanRenderer.Initialize(generationData);
-            _oceanSurfaceRenderer.Initialize(generationData);
-
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
+            
+            _oceanRenderer.Initialize(generationData);
+            _oceanSurfaceRenderer.Initialize(generationData);
+            _undergroundLayer.Initialize(generationData);
+            
             StartCoroutine(InventoryManager.Instance.GiveStartingItems());
 
             IsWorldReady = true;

@@ -5,15 +5,28 @@ namespace UntitledDeepSeaGame
     public class WorldGenerationData : MonoBehaviour
     {
         [Header("World Size")]
-        [SerializeField] private int _worldWidth = 1024;
-        [SerializeField] private int _worldHeight = 384;
+        [SerializeField] 
+        private int _worldWidth = 1024;
+        
+        [SerializeField] 
+        private int _worldHeight = 384;
+        
         [SerializeField, Tooltip("Tiles at this y and above are atmosphere. Tiles below this y are ocean by default.")]
         private int _seaLevelY = 325;
 
         [Header("Seed")]
         [field: SerializeField]
         public string Seed { get; private set; }
-        [SerializeField] private string _defaultSeed = "prototype-world";
+        
+        [SerializeField] 
+        private string _defaultSeed = "prototype-world";
+
+        [field: Header("Underground")]
+        [field: SerializeField]
+        public int UndergroundMaxYLevel { get; private set; }
+        
+        [field: SerializeField]
+        public int UndergroundMinYLevel { get; private set; }
 
         [Header("Execution")]
         [SerializeField] private int _columnsPerFrame = 32;
