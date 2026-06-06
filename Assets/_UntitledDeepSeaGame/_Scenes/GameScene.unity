@@ -1767,7 +1767,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.465645, y: 25, z: 0}
+  m_LocalPosition: {x: 43.687496, y: 24.562496, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2864,6 +2864,7 @@ Transform:
   - {fileID: 1032539435}
   - {fileID: 1463938961}
   - {fileID: 2100002001}
+  - {fileID: 1640155994}
   - {fileID: 1702576617}
   - {fileID: 2100003001}
   m_Father: {fileID: 2143430848}
@@ -4985,6 +4986,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595356695}
   m_CullTransparentMesh: 1
+--- !u!1 &1640155993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1640155994}
+  - component: {fileID: 1640155995}
+  m_Layer: 0
+  m_Name: CarveCaveEntrancesStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1640155994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640155993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1640155995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640155993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db19a8eedce24fef917efc7dda7b850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CarveCaveEntrancesStep
+  <Description>k__BackingField: 
+  _minDistanceBetweenEntrances: 60
+  _maxDistanceBetweenEntrances: 120
+  _minEntranceWidth: 3
+  _maxEntranceWidth: 6
+  _horizontalJitter: 0.6
+  _depthToReachBelowSurface: 22
 --- !u!1 &1644403186
 GameObject:
   m_ObjectHideFlags: 0
@@ -6279,8 +6331,8 @@ MonoBehaviour:
   _tileAmountBeforeAttenuationBegins: 1
   _fullBrightnessInterpretation: 15
   _solidForegroundAttenuation: 3
-  _backgroundOnlyAttenuation: 1.5
-  _airOnlyAttenuation: 1
+  _backgroundOnlyAttenuation: 1
+  _airOnlyAttenuation: 0.5
   _lightmapFilterMode: 0
   _enableMultiplyBlending: 1
   _multiplyMaterial: {fileID: 0}

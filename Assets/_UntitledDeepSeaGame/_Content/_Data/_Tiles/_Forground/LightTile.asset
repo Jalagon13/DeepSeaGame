@@ -20,7 +20,7 @@ MonoBehaviour:
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
-  <LightValue>k__BackingField: 8
+  <LightValue>k__BackingField: 15
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
