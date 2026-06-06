@@ -18,6 +18,11 @@ namespace UntitledDeepSeaGame
         private RawImage _lightmapOverlay;
 
         [Header("Light Attenuation Settings")]
+
+        [Tooltip("The number of tiles light can traverse from its source before attenuation/dimming begins.")]
+        [SerializeField]
+        private int _tileAmountBeforeAttenuationBegins = 2;
+
         [Tooltip("How what value the brightest tile is")]
         [SerializeField]
         private float _fullBrightnessInterpretation = 15f;
@@ -58,6 +63,7 @@ namespace UntitledDeepSeaGame
         private RectInt _currentVisibleTileBounds;
         private RectInt _currentInflatedBounds;
         private float[,] _lightGrid;
+        private int[,] _distGrid;
         private int _gridWidth;
         private int _gridHeight;
         
@@ -177,6 +183,7 @@ namespace UntitledDeepSeaGame
             if (_lightGrid == null || _gridWidth != width || _gridHeight != height)
             {
                 _lightGrid = new float[width, height];
+                _distGrid = new int[width, height];
                 _gridWidth = width;
                 _gridHeight = height;
 
@@ -194,6 +201,15 @@ namespace UntitledDeepSeaGame
             {
                 // Reuse existing buffers — just zero out the light grid
                 Array.Clear(_lightGrid, 0, _lightGrid.Length);
+            }
+
+            // Initialize all distances to int.MaxValue
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    _distGrid[x, y] = int.MaxValue;
+                }
             }
 
             _bfsQueue.Clear();
@@ -223,6 +239,7 @@ namespace UntitledDeepSeaGame
                     if (isOpenSky)
                     {
                         _lightGrid[localX, localY] = _fullBrightnessInterpretation;
+                        _distGrid[localX, localY] = 0;
                         _bfsQueue.Enqueue(new Vector2Int(localX, localY));
                         continue;
                     }
@@ -234,6 +251,7 @@ namespace UntitledDeepSeaGame
                     if (fgTile.LightValue > 0)
                     {
                         _lightGrid[localX, localY] = fgTile.LightValue;
+                        _distGrid[localX, localY] = 0;
                         _bfsQueue.Enqueue(new Vector2Int(localX, localY));
                     }
                 }
@@ -257,6 +275,7 @@ namespace UntitledDeepSeaGame
             {
                 Vector2Int curr = _bfsQueue.Dequeue();
                 float currLight = _lightGrid[curr.x, curr.y];
+                int currDist = _distGrid[curr.x, curr.y];
 
                 foreach (Vector2Int dir in directions)
                 {
@@ -265,19 +284,40 @@ namespace UntitledDeepSeaGame
 
                     if (nextX < 0 || nextX >= width || nextY < 0 || nextY >= height) continue;
 
+                    int nextDist = currDist + 1;
+
                     int worldX = inflatedBounds.x + nextX;
                     int worldY = inflatedBounds.y + nextY;
 
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
 
-                    float attenuation = GetTileAttenuation(fgId, bgId);
+                    float attenuation = 0f;
+                    if (nextDist > _tileAmountBeforeAttenuationBegins)
+                    {
+                        attenuation = GetTileAttenuation(fgId, bgId);
+                    }
+
                     float newLight = currLight - attenuation;
 
-                    if (newLight > 0f && newLight > _lightGrid[nextX, nextY])
+                    if (newLight > 0f)
                     {
-                        _lightGrid[nextX, nextY] = newLight;
-                        _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
+                        bool shouldUpdate = false;
+                        if (newLight > _lightGrid[nextX, nextY])
+                        {
+                            shouldUpdate = true;
+                        }
+                        else if (newLight == _lightGrid[nextX, nextY] && nextDist < _distGrid[nextX, nextY])
+                        {
+                            shouldUpdate = true;
+                        }
+
+                        if (shouldUpdate)
+                        {
+                            _lightGrid[nextX, nextY] = newLight;
+                            _distGrid[nextX, nextY] = nextDist;
+                            _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
+                        }
                     }
                 }
             }

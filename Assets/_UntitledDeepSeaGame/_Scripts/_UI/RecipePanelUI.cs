@@ -15,7 +15,7 @@ namespace UntitledDeepSeaGame
 
         public void Setup(RecipeSO recipe, CraftingMenuUI craftingMenuUI)
         {
-            _nameText.text = recipe.OutputItem.ItemName;
+            _nameText.text = $"{recipe.OutputItem.ItemName} [x{recipe.OutputAmount}]";
             _iconImage.sprite = recipe.OutputItem.InventoryIcon;
             _recipe = recipe;
             _craftingMenuUI = craftingMenuUI;

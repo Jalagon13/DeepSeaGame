@@ -78,7 +78,7 @@ namespace UntitledDeepSeaGame
 
         private void TryToPlaceTile()
         {
-            if (!TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO))
+            if (!CanPlaceTile(out Vector2Int tilePosition, out TileSO tileSO))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace UntitledDeepSeaGame
             InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
         }
 
-        private bool TryGetPlaceableTile(out Vector2Int tilePosition, out TileSO tileSO)
+        private bool CanPlaceTile(out Vector2Int tilePosition, out TileSO tileSO)
         {
             tilePosition = GameManager.MouseTilePosition;
             tileSO = _currentTileItem == null ? null : _currentTileItem.PlaceableTile;
@@ -126,10 +126,38 @@ namespace UntitledDeepSeaGame
                         }
                     }
                 }
-                return true;
+            }
+            else
+            {
+                if (worldDataStore.GetTileId(tilePosition.x, tilePosition.y, tileSO.TileType) != GameDataRegistry.INVALID_ID)
+                {
+                    return false;
+                }
             }
 
-            return worldDataStore.GetTileId(tilePosition.x, tilePosition.y, tileSO.TileType) == GameDataRegistry.INVALID_ID;
+            return HasNonMultiTileForegroundNeighbor(tilePosition);
+        }
+
+        private bool HasNonMultiTileForegroundNeighbor(Vector2Int position)
+        {
+            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
+
+            // Check all 4 cardinal directions
+            return IsValidSupportTile(position.x, position.y + 1, dataStore) || // Up
+                   IsValidSupportTile(position.x, position.y - 1, dataStore) || // Down
+                   IsValidSupportTile(position.x - 1, position.y, dataStore) || // Left
+                   IsValidSupportTile(position.x + 1, position.y, dataStore);   // Right
+        }
+
+        private bool IsValidSupportTile(int x, int y, WorldDataStore dataStore)
+        {
+            if (!dataStore.IsInBounds(x, y)) return false;
+
+            ushort tileId = dataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
+            if (tileId == GameDataRegistry.INVALID_ID) return false;
+
+            TileSO tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
+            return tileSO != null && !tileSO.IsMultiTile;
         }
 
         private bool PlayerWithinPlacingRangeOfMouse()
