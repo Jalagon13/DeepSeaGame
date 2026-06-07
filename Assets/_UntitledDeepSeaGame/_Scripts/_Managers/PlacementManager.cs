@@ -89,7 +89,8 @@ namespace UntitledDeepSeaGame
             }
             else
             {
-                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO), tileSO.TileType);
+                ushort tileId = GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO);
+                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, tileId, tileSO.TileType);
             }
             
             InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
@@ -135,29 +136,35 @@ namespace UntitledDeepSeaGame
                 }
             }
 
-            return HasNonMultiTileForegroundNeighbor(tilePosition);
+            return HasAdjacentSupport(tilePosition, tileSO.TileType);
         }
 
-        private bool HasNonMultiTileForegroundNeighbor(Vector2Int position)
+        private bool HasAdjacentSupport(Vector2Int position, WorldTm placingMap)
         {
             WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
+            Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
-            // Check all 4 cardinal directions
-            return IsValidSupportTile(position.x, position.y + 1, dataStore) || // Up
-                   IsValidSupportTile(position.x, position.y - 1, dataStore) || // Down
-                   IsValidSupportTile(position.x - 1, position.y, dataStore) || // Left
-                   IsValidSupportTile(position.x + 1, position.y, dataStore);   // Right
-        }
+            foreach (var dir in neighbors)
+            {
+                Vector2Int neighbor = position + dir;
+                if (!dataStore.IsInBounds(neighbor.x, neighbor.y)) continue;
 
-        private bool IsValidSupportTile(int x, int y, WorldDataStore dataStore)
-        {
-            if (!dataStore.IsInBounds(x, y)) return false;
+                // 1. Solid Foreground is a valid support neighbor for both Foreground and Background placement
+                ushort fgId = dataStore.GetTileId(neighbor.x, neighbor.y, WorldTm.ForegroundTilemap);
+                if (fgId != GameDataRegistry.INVALID_ID)
+                {
+                    TileSO fgSO = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
+                    if (fgSO != null && !fgSO.IsMultiTile) return true;
+                }
 
-            ushort tileId = dataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
-            if (tileId == GameDataRegistry.INVALID_ID) return false;
+                // 2. Existing Background is a valid support neighbor ONLY if we are currently placing a Background tile (Wall)
+                if (placingMap == WorldTm.BackgroundTilemap && dataStore.GetTileId(neighbor.x, neighbor.y, WorldTm.BackgroundTilemap) != GameDataRegistry.INVALID_ID)
+                {
+                    return true;
+                }
+            }
 
-            TileSO tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
-            return tileSO != null && !tileSO.IsMultiTile;
+            return false;
         }
 
         private bool PlayerWithinPlacingRangeOfMouse()

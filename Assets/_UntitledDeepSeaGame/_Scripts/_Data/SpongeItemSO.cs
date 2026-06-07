@@ -18,8 +18,9 @@ namespace UntitledDeepSeaGame
 
             if (dataStore == null) return;
 
-            // 1. Initial check: sponge can only drain actual water cells.
-            if (!dataStore.IsWaterCell(startPos.x, startPos.y))
+            // 1. Initial check: sponge can only drain actual water cells in the ocean zone
+            // and only if they have a player-placed wall behind them.
+            if (!dataStore.IsWaterCell(startPos.x, startPos.y) || !dataStore.IsPlayerPlacedBackgroundAt(startPos.x, startPos.y))
             {
                 return;
             }
@@ -48,9 +49,18 @@ namespace UntitledDeepSeaGame
                         return;
                     }
 
-                    // If the neighbor is water, it belongs to the same drain candidate area.
-                    if (dataStore.IsWaterCell(next.x, next.y))
+                    // We traverse the connected void (water or air). 
+                    // If a cell in the void has a natural wall or no wall, it's a "leak".
+                    bool isSolidBoundary = dataStore.GetTileId(next.x, next.y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID;
+
+                    if (!isSolidBoundary)
                     {
+                        if (!dataStore.IsOceanZone(next.y) || !dataStore.IsPlayerPlacedBackgroundAt(next.x, next.y))
+                        {
+                            OnDrainFailure();
+                            return;
+                        }
+
                         if (!visited.Contains(next))
                         {
                             visited.Add(next);

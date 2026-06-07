@@ -12,6 +12,7 @@ namespace UntitledDeepSeaGame
 
         private ushort[,] _fgTileData;
         private ushort[,] _bgTileData;
+        private readonly HashSet<int> _naturalBackgroundTiles = new();
         private readonly HashSet<int> _underwaterAirTiles = new();
         private int _seaLevelY;
         
@@ -27,6 +28,7 @@ namespace UntitledDeepSeaGame
             _fgTileData = new ushort[width, height];
             _bgTileData = new ushort[width, height];
             _seaLevelY = Mathf.Clamp(seaLevelY, 1, Mathf.Max(1, height - 1));
+            _naturalBackgroundTiles.Clear();
             _underwaterAirTiles.Clear();
             _activeMultiTileObjects = new();
 
@@ -197,6 +199,21 @@ namespace UntitledDeepSeaGame
             }
 
             data[x, y] = tileId;
+
+            // Check for naturally generating walls if so register them if not remove it.
+            if (targetMap == WorldTm.BackgroundTilemap)
+            {
+                int index = GetTileIndex(x, y);
+                if (tileId != GameDataRegistry.INVALID_ID && !WorldManager.Instance.IsWorldReady)
+                {
+                    _naturalBackgroundTiles.Add(index);
+                }
+                else
+                {
+                    _naturalBackgroundTiles.Remove(index);
+                }
+            }
+
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
 
             if (targetMap == WorldTm.ForegroundTilemap && tileId != GameDataRegistry.INVALID_ID)
@@ -209,6 +226,17 @@ namespace UntitledDeepSeaGame
             {
                 CheckForExposedAir(x, y);
             }
+        }
+
+        public bool IsPlayerPlacedBackgroundAt(int x, int y)
+        {
+            if (!IsInBounds(x, y)) return false;
+            
+            ushort tileId = GetTileId(x, y, WorldTm.BackgroundTilemap);
+            if (tileId == GameDataRegistry.INVALID_ID) return false;
+            
+            int index = GetTileIndex(x, y);
+            return !_naturalBackgroundTiles.Contains(index);
         }
 
         public ushort GetTileId(int x, int y, WorldTm targetMap = WorldTm.ForegroundTilemap)
