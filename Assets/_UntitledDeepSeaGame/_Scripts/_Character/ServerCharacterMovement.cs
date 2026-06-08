@@ -10,12 +10,11 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private ServerCharacter _serverCharacter;
 
-        [SerializeField]
-        private Rigidbody2D _rigidbody2D;
-        public Rigidbody2D RigidBody2D => _rigidbody2D;
-        
         [SerializeField] 
-        private BoxCollider2D _feetCollider;
+        private GridCollider _gridCollider;
+
+        [SerializeField]
+        private float _terminalVelocity = -50f;
 
         private Vector2 _moveInput;
 
@@ -41,7 +40,6 @@ namespace UntitledDeepSeaGame
             {
                 _desiredDirection = Vector2.zero;
                 _velocity = Vector2.zero;
-                _rigidbody2D.linearVelocity = Vector2.zero;
                 return;
             }
 
@@ -58,8 +56,10 @@ namespace UntitledDeepSeaGame
             {
                 AirMovement();
             }
-            
-            _rigidbody2D.linearVelocity = _velocity;
+
+            // Use our custom grid collider to move the character and update our velocity
+            // based on any collisions (e.g. hitting a floor sets Y velocity to 0)
+            _velocity = _gridCollider.Move(_velocity, Time.fixedDeltaTime);
         }
 
         public void StartKnockback(Vector2 knockerPosition, float knockbackForce, bool inverse = false)
@@ -93,7 +93,7 @@ namespace UntitledDeepSeaGame
                     _desiredDirection = Vector2.zero;
                 }
 
-                _velocity = Vector2.Lerp(_rigidbody2D.linearVelocity, _desiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+                _velocity = Vector2.Lerp(_velocity, _desiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
             }
 
             if (_desiredDirection != Vector2.zero)
@@ -105,19 +105,19 @@ namespace UntitledDeepSeaGame
         private void AirMovement()
         {
             // Debug.Log($"Air Movement");
-            // 1. Grounded Check
-            _isGrounded = IsGrounded();
+            // 1. Grounded Check via our Grid Data
+            _isGrounded = _gridCollider.IsGrounded();
             
             if (_serverCharacter.CharacterData.CanMove)
             {
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
-                Vector2 currentVelocity = _rigidbody2D.linearVelocity;
 
                 // 2. Horizontal Movement (Lerp for that snappy control)
-                float targetX = Mathf.Lerp(currentVelocity.x, _desiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+                float targetX = Mathf.Lerp(_velocity.x, _desiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
 
                 // 3. Vertical Movement (Constant Gravity)
-                float targetY = currentVelocity.y + (_gravity * Time.fixedDeltaTime);
+                float targetY = _velocity.y + (_gravity * Time.fixedDeltaTime);
+                targetY = Mathf.Max(targetY, _terminalVelocity);
 
                 // 4. Jump Logic
                 if (_jumpRequested)
@@ -137,22 +137,6 @@ namespace UntitledDeepSeaGame
                     _serverCharacter.CurrentDirection.Value = _desiredDirection.x > 0 ? Direction.Right : Direction.Left;
                 }
             }
-        }
-
-        private bool IsGrounded()
-        {
-            Vector2 boxCastOrigin = new(_feetCollider.bounds.center.x, _feetCollider.bounds.center.y);
-            Vector2 boxCastSize = new(_feetCollider.bounds.size.x, _groundCheckDistance);
-            
-            _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, _groundCheckDistance, _groundLayer);
-            if(_groundHit.collider != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }        
         }
 
         public Direction GetCardinalDirectionFromVector2(Vector2 desiredDirection)
