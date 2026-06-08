@@ -27,19 +27,14 @@ namespace UntitledDeepSeaGame
         [Header("Air Movement Settings")]
         [SerializeField] private float _gravity = -30f;
         [SerializeField] private float _jumpPower = 12f;
-        [SerializeField] private float _groundCheckDistance = 0.6f;
-        [SerializeField] private LayerMask _groundLayer;
 
         private bool _isGrounded;
         private bool _jumpRequested;
-        private RaycastHit2D _groundHit;
 
         public void FixedUpdateMovement()
         {
             if (WorldManager.Instance != null && !WorldManager.Instance.IsWorldReady)
             {
-                _desiredDirection = Vector2.zero;
-                _velocity = Vector2.zero;
                 return;
             }
 

@@ -15,13 +15,13 @@ namespace UntitledDeepSeaGame
         public WorldDataStore WorldDataStore { get; private set; }
         public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
         public bool IsWorldReady { get; private set; }
+        public event Action OnWorldReady;
 
         [Header("Ocean Visuals")]
         [SerializeField] private OceanRenderer _oceanRenderer;
         [SerializeField] private OceanSurfaceRenderer _oceanSurfaceRenderer;
         [SerializeField] private ParallaxLayer _undergroundLayer;
 
-        public event Action OnWorldReady;
         
         private void Awake()
         {
@@ -71,6 +71,7 @@ namespace UntitledDeepSeaGame
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
+            Debug.Log($"Player spawned at {spawnPosition}");
             
             _oceanRenderer.Initialize(generationData);
             _oceanSurfaceRenderer.Initialize(generationData);
