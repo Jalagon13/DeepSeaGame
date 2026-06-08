@@ -732,6 +732,157 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 9}
   m_Constraint: 1
   m_ConstraintCount: 1
+--- !u!1 &238604133
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 238604134}
+  - component: {fileID: 238604135}
+  - component: {fileID: 238604139}
+  - component: {fileID: 238604138}
+  - component: {fileID: 238604137}
+  - component: {fileID: 238604140}
+  - component: {fileID: 238604136}
+  m_Layer: 0
+  m_Name: TestNpc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &238604134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 512, y: 320, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &238604135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 6276450
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &238604136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5ee74b3b9d44a4bac17e6ab39f3537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ServerCharacter
+  ShowTopMostFoldoutHeaderGroup: 1
+  _aiType: 1
+  _characterData: {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
+  _serverCharacterMovement: {fileID: 238604140}
+  _clientCharacter: {fileID: 0}
+  _clientFeedbacks: {fileID: 0}
+--- !u!114 &238604137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef712d44ecd3a4d1fb59fbe4e016ec3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
+  ShowTopMostFoldoutHeaderGroup: 1
+  _lifeState: {fileID: 238604138}
+--- !u!114 &238604138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590752a1436de41328ebbe3c0fd0026a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NetworkLifeState
+  ShowTopMostFoldoutHeaderGroup: 1
+  _lifeState:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+--- !u!114 &238604139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2337d3bcb8d46c9a9a74ab785501cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NetworkHealthState
+  ShowTopMostFoldoutHeaderGroup: 1
+  HitPoints:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+--- !u!114 &238604140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a456c80fbea834443b999317da686a06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ServerCharacterMovement
+  _serverCharacter: {fileID: 238604136}
+  _rigidbody2D: {fileID: 0}
+  _feetCollider: {fileID: 0}
+  _gravity: -30
+  _jumpPower: 12
+  _groundCheckDistance: 0.6
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &239637566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1780,7 +1931,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.687496, y: 24.562496, z: 0}
+  m_LocalPosition: {x: 42.68702, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6309,6 +6460,7 @@ GameObject:
   - component: {fileID: 1937983704}
   - component: {fileID: 1937983706}
   - component: {fileID: 1937983705}
+  - component: {fileID: 1937983707}
   m_Layer: 0
   m_Name: WORLD_MANAGERS
   m_TagString: Untagged
@@ -6370,6 +6522,24 @@ MonoBehaviour:
   _oceanRenderer: {fileID: 2134409142}
   _oceanSurfaceRenderer: {fileID: 1827668788}
   _undergroundLayer: {fileID: 116133566}
+--- !u!114 &1937983707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937983703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fce6fe9a0003442cbbb5d1b0984a132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  _enableSpawning: 1
+  _startSpawnDelay: 0
+  _maxNpcSlotAmount: 6
+  <SpawnsPerMinute>k__BackingField: 0
+  _spawnsPerMinute: 0
 --- !u!1 &1976162733
 GameObject:
   m_ObjectHideFlags: 0
@@ -7311,3 +7481,4 @@ SceneRoots:
   - {fileID: 654374647}
   - {fileID: 620709479}
   - {fileID: 2143430848}
+  - {fileID: 238604134}
