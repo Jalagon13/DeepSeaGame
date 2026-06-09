@@ -20,7 +20,7 @@ namespace UntitledDeepSeaGame
         {
             // Debug.Log("Player entering swing");
             _toolItemSO = _ctx.HeldItem as ToolItemSO;
-            _swingDirection = _ctx.PlayerRef.PlayerArmController.AimDirection.Value;
+            _swingDirection = Player.Instance.PlayerArmController.AimDirection.Value;
 
             ushort toolItemId = GameDataRegistry.Instance.GetItemIdFromItemSO(_toolItemSO);
             float duration = _toolItemSO.SwingDuration;
@@ -51,7 +51,7 @@ namespace UntitledDeepSeaGame
             Quaternion startRotation = Quaternion.Euler(0, 0, startAngle);
             Quaternion endRotation = Quaternion.Euler(0, 0, endAngle);
 
-            _ctx.PlayerRef.PlayerArmController.PerformSwing(startRotation, endRotation, duration, swingDirection, toolItemId);
+            Player.Instance.PlayerArmController.PerformSwing(startRotation, endRotation, duration, swingDirection, toolItemId);
         }
 
         public override void UpdateState()
@@ -61,7 +61,7 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (!_ctx.PlayerRef.PlayerArmController.IsSwinging)
+            if (!Player.Instance.PlayerArmController.IsSwinging)
             {
                 SwitchState(new AIStateData(AIState.Grounded, 0));
             }

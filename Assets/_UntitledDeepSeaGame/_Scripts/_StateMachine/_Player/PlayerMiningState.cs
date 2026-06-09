@@ -19,7 +19,7 @@ namespace UntitledDeepSeaGame
             // Debug.Log($"Player enter mining state");
             
             ushort itemId = GameDataRegistry.Instance.GetItemIdFromItemSO(_ctx.HeldItem);
-            _ctx.PlayerRef.PlayerArmController.StartAimHandRpc(itemId);
+            Player.Instance.PlayerArmController.StartAimHandRpc(itemId);
         }
 
         public override void UpdateState()
@@ -37,7 +37,7 @@ namespace UntitledDeepSeaGame
 
         public override void ExitState()
         {
-            _ctx.PlayerRef.PlayerArmController.EndAimHandRpc();
+            Player.Instance.PlayerArmController.EndAimHandRpc();
         }
 
         

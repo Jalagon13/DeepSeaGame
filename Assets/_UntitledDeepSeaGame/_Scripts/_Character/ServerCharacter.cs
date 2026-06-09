@@ -8,9 +8,9 @@ namespace UntitledDeepSeaGame
     [RequireComponent(typeof(NetworkHealthState), typeof(NetworkLifeState), typeof(DamageReceiver))]
     public class ServerCharacter : NetworkBehaviour
     {
-        [SerializeField]
-        private CharacterStateMachine _aiType;
-
+        [SerializeField] private StateMachineType _stateMachineType;
+        public StateMachineType StateMachineType => _stateMachineType;
+    
         [SerializeField]
         private CharacterSO _characterData;
         public CharacterSO CharacterData => _characterData;
@@ -44,7 +44,7 @@ namespace UntitledDeepSeaGame
         private CharacterStats _characterStats;
         public CharacterStats RuntimeStats => _characterStats;
 
-        private StateMachine _stateMachine;
+        protected StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
         private DamageReceiver _damageReceiver;
@@ -65,31 +65,15 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<Environment> CurrentEnvironment { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _damageReceiver = GetComponent<DamageReceiver>();
             _characterStats = new(_characterData);
 
             NetHealthState = GetComponent<NetworkHealthState>();
             NetLifeState = GetComponent<NetworkLifeState>();
-
-            switch (_aiType)
-            {
-                case CharacterStateMachine.BasicNpc:
-                    // _stateMachine = new BasicNpcStateMachine(this);
-                    break;
-                case CharacterStateMachine.Player:
-                    if(TryGetComponent(out Player player))
-                    {
-                        _stateMachine = new PlayerStateMachine(this, player);
-                    }
-                    else
-                    {
-                        Debug.LogError($"Ai type set to player but no player component found");
-                    }
-                    
-                    break;
-            }
+            
+            _stateMachine = StateMachineFactory.CreateStateMachine(this, _stateMachineType);
         }
 
         public override void OnDestroy()
@@ -101,7 +85,6 @@ namespace UntitledDeepSeaGame
         {
             if (IsOwner)
             {
-                NetLifeState.LifeState.OnValueChanged += OnLifeStateChanged;
                 HitPoints = _characterStats.MaxHealth.GetValue();
 
                 _damageReceiver.HpReceived += ReceiveHP;
@@ -114,8 +97,6 @@ namespace UntitledDeepSeaGame
         {
             if(IsOwner)
             {
-                NetLifeState.LifeState.OnValueChanged -= OnLifeStateChanged;
-
                 _damageReceiver.HpReceived -= ReceiveHP;
             }
         }
@@ -204,22 +185,8 @@ namespace UntitledDeepSeaGame
         public IEnumerator StartIFrameTimer()
         {
             LifeState = LifeState.IFrame;
-            PlayerCharacterSO playerCharacterSO = _characterData as PlayerCharacterSO;
-            yield return new WaitForSeconds(playerCharacterSO.IFrameDuration);
+            yield return new WaitForSeconds(_characterData.IFrameDuration);
             LifeState = LifeState.Alive;
-        }
-
-        // Probably delete this maybe later idk may be useful another time in this class
-        private void OnLifeStateChanged(LifeState previousValue, LifeState newValue)
-        {
-            if (previousValue == LifeState.Alive && newValue == LifeState.Dead)
-            {
-                // I already have a death state im not if im going to use this
-            }
-            else if (newValue == LifeState.IFrame)
-            {
-                // TODO: IFrame functionality for all servercharacters here... not sure what to do with this probably delete it
-            }
         }
     }
 }

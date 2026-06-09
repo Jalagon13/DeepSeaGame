@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class PlayerIdleState : BaseState
+    public class IdleState : BaseState
     {
         private PlayerStateMachine _ctx;
 
-        public PlayerIdleState(AIState key, StateMachine context) : base(key, context)
+        public IdleState(AIState key, StateMachine context) : base(key, context)
         {
             _ctx = Context as PlayerStateMachine;
         }

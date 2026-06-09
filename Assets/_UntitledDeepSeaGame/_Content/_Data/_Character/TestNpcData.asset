@@ -17,6 +17,7 @@ MonoBehaviour:
   BaseDefense: 0
   CanDie: 1
   CanBeKnockedBack: 1
+  IFrameDuration: 0.17
   CanMove: 1
   TurnSharpness: 5
-  IsNpc: 0
+  IsNpc: 1

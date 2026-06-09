@@ -4,21 +4,18 @@ namespace UntitledDeepSeaGame
 {
     public class PlayerStateMachine : StateMachine
     {
-        private readonly Player _playerRef;
-        public Player PlayerRef => _playerRef;
-
         private ItemSO _heldItem;
         public ItemSO HeldItem => _heldItem;
 
-        public PlayerStateMachine(ServerCharacter character, Player player)
+        public PlayerStateMachine(ServerCharacter character)
         {
             // This constructor gets played on all client machines
             _serverCharacter = character;
 
             // Sub States
-            _states[AIState.Idle] = new PlayerIdleState(AIState.Idle, this);
+            _states[AIState.Idle] = new IdleState(AIState.Idle, this);
             _states[AIState.Moving] = new PlayerMoveState(AIState.Moving, this);
-            _states[AIState.Knockbacked] = new PlayerKnockbackedState(AIState.Knockbacked, this);
+            _states[AIState.Knockbacked] = new KnockbackState(AIState.Knockbacked, this);
 
             // Super States
             _states[AIState.Grounded] = new PlayerGroundedState(AIState.Grounded, this);
@@ -28,8 +25,7 @@ namespace UntitledDeepSeaGame
 
             _currentState = _states[AIState.Grounded];
 
-            _playerRef = player;
-            _playerRef.SelectedItemID.OnValueChanged += OnSelectedItemIDChanged;
+            Player.Instance.SelectedItemID.OnValueChanged += OnSelectedItemIDChanged;
         }
 
         public override void OwnerInitialization()
@@ -39,7 +35,7 @@ namespace UntitledDeepSeaGame
 
         public override void Dispose()
         {
-            _playerRef.SelectedItemID.OnValueChanged -= OnSelectedItemIDChanged;
+            Player.Instance.SelectedItemID.OnValueChanged -= OnSelectedItemIDChanged;
         }
 
         private void OnSelectedItemIDChanged(ushort previousValue, ushort newValue)

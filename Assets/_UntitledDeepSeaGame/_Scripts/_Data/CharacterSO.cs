@@ -17,6 +17,8 @@ namespace UntitledDeepSeaGame
         public bool CanDie = true;
         [Tooltip("If true, the NPC can be knocked back")]
         public bool CanBeKnockedBack = true;
+        [Tooltip("Duration of invincibility frames when character is hit")]
+        public float IFrameDuration = 0.17f;
 
 
         [Space]

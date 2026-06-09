@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class PlayerKnockbackedState : BaseState
+    public class KnockbackState : BaseState
     {
         private PlayerStateMachine _ctx;
 
-        public PlayerKnockbackedState(AIState key, StateMachine context) : base(key, context)
+        public KnockbackState(AIState key, StateMachine context) : base(key, context)
         {
             _ctx = Context as PlayerStateMachine;
         }
