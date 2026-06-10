@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 238604140}
   - component: {fileID: 238604136}
   m_Layer: 0
-  m_Name: TestNpc
+  m_Name: FishNpc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -809,7 +809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ServerCharacter
   ShowTopMostFoldoutHeaderGroup: 1
-  _aiType: 1
+  _stateMachineType: 1
   _characterData: {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
   _serverCharacterMovement: {fileID: 238604140}
   _clientCharacter: {fileID: 1519829720}
@@ -2023,7 +2023,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.687496, y: 24.562496, z: 0}
+  m_LocalPosition: {x: 42.68702, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

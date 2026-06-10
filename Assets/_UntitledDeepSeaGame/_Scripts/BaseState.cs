@@ -39,8 +39,8 @@ namespace UntitledDeepSeaGame
         public virtual void ClientExitState(AIStateData stateData) { }
 
         protected abstract void EnterState(AIStateData stateData);
-        public abstract void UpdateState();
         public abstract void ExitState();
+        public abstract void UpdateState();
         public abstract void CheckSwitchStates();
 
         protected void SwitchState(AIStateData newStateData)

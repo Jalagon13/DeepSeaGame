@@ -38,7 +38,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            if(Player.Instance.Character.LifeState == LifeState.Dead)
+            if(_serverCharacter.LifeState == LifeState.Dead)
             {
                 return;
             }

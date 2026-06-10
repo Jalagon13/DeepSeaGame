@@ -13,9 +13,9 @@ namespace UntitledDeepSeaGame
             _serverCharacter = character;
 
             // Sub States
-            _states[AIState.Idle] = new IdleState(AIState.Idle, this);
+            _states[AIState.Idle] = new PlayerIdleState(AIState.Idle, this);
             _states[AIState.Moving] = new PlayerMoveState(AIState.Moving, this);
-            _states[AIState.Knockbacked] = new KnockbackState(AIState.Knockbacked, this);
+            _states[AIState.Knockbacked] = new PlayerKnockbackState(AIState.Knockbacked, this);
 
             // Super States
             _states[AIState.Grounded] = new PlayerGroundedState(AIState.Grounded, this);

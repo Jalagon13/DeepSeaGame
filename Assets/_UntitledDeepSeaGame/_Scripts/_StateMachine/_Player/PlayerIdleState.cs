@@ -5,13 +5,12 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class IdleState : BaseState
+    public class PlayerIdleState : BaseState
     {
-        private PlayerStateMachine _ctx;
 
-        public IdleState(AIState key, StateMachine context) : base(key, context)
+        public PlayerIdleState(AIState key, StateMachine context) : base(key, context)
         {
-            _ctx = Context as PlayerStateMachine;
+            
         }
 
         protected override void EnterState(AIStateData stateData)
@@ -26,11 +25,11 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (_ctx.ServerCharacter.MovementState.Value == MovementState.Moving)
+            if (Context.ServerCharacter.MovementState.Value == MovementState.Moving)
             {
                 SwitchState(new AIStateData(AIState.Moving));
             }
-            else if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
+            else if (Context.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
                 SwitchState(new AIStateData(AIState.Knockbacked));
             }

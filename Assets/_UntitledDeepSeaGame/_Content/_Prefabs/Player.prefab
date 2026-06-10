@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacter
   ShowTopMostFoldoutHeaderGroup: 1
-  _aiType: 0
+  _stateMachineType: 0
   _characterData: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
   _serverCharacterMovement: {fileID: 8316067687826058288}
   _clientCharacter: {fileID: 7738663476197840072}
