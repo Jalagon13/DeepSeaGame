@@ -24,13 +24,11 @@ namespace UntitledDeepSeaGame
             _states[AIState.Dead] = new PlayerDeadState(AIState.Dead, this);
 
             _currentState = _states[AIState.Grounded];
-
-            Player.Instance.SelectedItemID.OnValueChanged += OnSelectedItemIDChanged;
         }
 
         public override void OwnerInitialization()
         {
-
+            Player.Instance.SelectedItemID.OnValueChanged += OnSelectedItemIDChanged;
         }
 
         public override void Dispose()

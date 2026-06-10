@@ -79,8 +79,9 @@ namespace UntitledDeepSeaGame
             {
                 return;
             }
-
-            _character.Movement?.ReceiveJumpInput();
+            
+            PlayerCharacterMovement playerCharMove = _character.Movement as PlayerCharacterMovement;
+            playerCharMove?.ReceiveJumpInput();
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext context)

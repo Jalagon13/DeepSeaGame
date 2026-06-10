@@ -16,8 +16,8 @@ namespace UntitledDeepSeaGame
         public CharacterSO CharacterData => _characterData;
 
         [SerializeField]
-        private ServerCharacterMovement _serverCharacterMovement;
-        public ServerCharacterMovement Movement => _serverCharacterMovement;
+        private CharacterMovement _characterMovement;
+        public CharacterMovement Movement => _characterMovement;
 
         [SerializeField]
         private ClientCharacter _clientCharacter;
@@ -76,11 +76,6 @@ namespace UntitledDeepSeaGame
             _stateMachine = StateMachineFactory.CreateStateMachine(this, _stateMachineType);
         }
 
-        public override void OnDestroy()
-        {
-            _stateMachine?.Dispose();
-        }
-
         public override void OnNetworkSpawn()
         {
             if (IsOwner)
@@ -88,9 +83,19 @@ namespace UntitledDeepSeaGame
                 HitPoints = _characterStats.MaxHealth.GetValue();
 
                 _damageReceiver.HpReceived += ReceiveHP;
-                _stateMachine?.OwnerInitialization();
-                _stateMachine?.StartStateMachine();
             }
+        }
+
+        protected override void OnNetworkPostSpawn()
+        {
+            _stateMachine = StateMachineFactory.CreateStateMachine(this, _stateMachineType);
+            _stateMachine?.OwnerInitialization();
+            _stateMachine?.StartStateMachine();
+        }
+
+        public override void OnDestroy()
+        {
+            _stateMachine?.Dispose();
         }
 
         public override void OnNetworkDespawn()
@@ -121,7 +126,7 @@ namespace UntitledDeepSeaGame
                 bool isInAir = WorldManager.Instance.WorldDataStore.IsAirAt(gridPos.x, gridPos.y);
                 CurrentEnvironment.Value = isInAir ? Environment.Air : Environment.Water;
 
-                _serverCharacterMovement.FixedUpdateMovement();
+                _characterMovement.FixedUpdateMovement();
             }
         }
 
@@ -166,7 +171,7 @@ namespace UntitledDeepSeaGame
                     _clientFeedbacks.PlayDamageFeedbacksRpc(_inflicterToTargetDirection);
 
                 if (_characterData.CanBeKnockedBack && e.PlayKnockback)
-                    _serverCharacterMovement.StartKnockback(_inflicter.transform.position, e.KnockbackForce);
+                    _characterMovement.StartKnockback(_inflicter.transform.position, e.KnockbackForce);
 
                 if (HitPoints + hpReceived > 0)
                     StartCoroutine(StartIFrameTimer());

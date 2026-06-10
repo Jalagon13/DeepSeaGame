@@ -746,8 +746,8 @@ GameObject:
   - component: {fileID: 238604138}
   - component: {fileID: 238604137}
   - component: {fileID: 238604141}
-  - component: {fileID: 238604140}
   - component: {fileID: 238604136}
+  - component: {fileID: 238604142}
   m_Layer: 0
   m_Name: FishNpc
   m_TagString: Untagged
@@ -811,7 +811,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _stateMachineType: 1
   _characterData: {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
-  _serverCharacterMovement: {fileID: 238604140}
+  _characterMovement: {fileID: 238604142}
   _clientCharacter: {fileID: 1519829720}
   _clientFeedbacks: {fileID: 0}
 --- !u!114 &238604137
@@ -864,23 +864,6 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
---- !u!114 &238604140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 238604133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a456c80fbea834443b999317da686a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ServerCharacterMovement
-  _serverCharacter: {fileID: 238604136}
-  _gridCollider: {fileID: 238604141}
-  _terminalVelocity: -50
-  _gravity: -30
-  _jumpPower: 12
 --- !u!114 &238604141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,6 +880,20 @@ MonoBehaviour:
   _feetCollider: {fileID: 484554264}
   _skinWidth: 0.02
   _groundCheckDepth: 0.05
+--- !u!114 &238604142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238604133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34be32d01b5bf408aa81a9b8c58af131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FishCharacterMovement
+  _serverCharacter: {fileID: 238604136}
+  _gridCollider: {fileID: 238604141}
 --- !u!1 &239637566
 GameObject:
   m_ObjectHideFlags: 0
