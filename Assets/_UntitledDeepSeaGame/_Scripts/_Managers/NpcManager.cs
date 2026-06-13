@@ -19,10 +19,10 @@ namespace UntitledDeepSeaGame
         [SerializeField] private CharacterSO _testNpc;
 
         [Header("Spawning Range (in Tiles)")]
-        [SerializeField, Tooltip("Inner rectangle bounds where mobs CANNOT spawn (No-Spawn Zone).")]
+        [SerializeField, Tooltip("Inner rectangle bounds where mobs CANNOT spawn (No-Spawn Zone). Also used as the camera frustum zone for despawn timer.")]
         private Vector2Int _innerNoSpawnDimensions = new Vector2Int(124, 70);
 
-        [SerializeField, Tooltip("Outer rectangle bounds within which mobs CAN spawn.")]
+        [SerializeField, Tooltip("Outer rectangle bounds within which mobs CAN spawn. NPCs outside all players' outer zones are instantly despawned.")]
         private Vector2Int _outerSpawnDimensions = new Vector2Int(168, 94);
 
         [Header("Global Spawning Caps")]
@@ -33,10 +33,14 @@ namespace UntitledDeepSeaGame
         [SerializeField, Tooltip("How often the server checks and updates NPC visibility for clients (in seconds).")]
         private float _visibilityUpdateInterval = 0.2f;
 
-        [SerializeField, Tooltip("Buffer padding (in tiles) around player's rendered bounds to prevent NPC visibility flashing.")]
-        private int _visibilityBufferPadding = 5;
+        [Header("NPC Despawning")]
+        [SerializeField, Tooltip("How many seconds an NPC can remain off-screen (outside all inner zones) before being despawned.")]
+        private float _npcDespawnDuration = 14f;
 
         private readonly List<ServerCharacter> _activeNpcs = new();
+        
+        private readonly Dictionary<ServerCharacter, Timer> _despawnTimers = new();
+        private readonly List<Timer> _timerTickBuffer = new();
 
         private readonly float _tickTime = 1f / 60f; // 60 ticks per second
         private readonly int _maxSpawnAttempts = 50;
@@ -112,14 +116,19 @@ namespace UntitledDeepSeaGame
             _playerSpawnData.Remove(clientId);
         }
 
-        private int GetGlobalActiveNpcCount()
+        private void Update()
         {
-            int count = 0;
-            foreach (var kvp in _playerSpawnData)
+            if (!IsServer) return;
+
+            // Snapshot the timer list before ticking — Tick can fire OnTimerEnd → DespawnNpc →
+            // _despawnTimers.Remove(), which would mutate the dictionary mid-foreach.
+            _timerTickBuffer.Clear();
+            _timerTickBuffer.AddRange(_despawnTimers.Values);
+
+            foreach (var timer in _timerTickBuffer)
             {
-                count += kvp.Value.SpawnedNpcs.Count;
+                timer.Tick(Time.deltaTime);
             }
-            return count;
         }
 
         public void TryToSpawnNpc()
@@ -178,6 +187,16 @@ namespace UntitledDeepSeaGame
             }
         }
 
+        private int GetGlobalActiveNpcCount()
+        {
+            int count = 0;
+            foreach (var kvp in _playerSpawnData)
+            {
+                count += kvp.Value.SpawnedNpcs.Count;
+            }
+            return count;
+        }
+
         private void SpawnNpcOnServer(Vector2 position, CharacterSO npcToSpawn, ulong playerId)
         {
             if (!IsServer) return;
@@ -193,6 +212,12 @@ namespace UntitledDeepSeaGame
             {
                 _activeNpcs.Add(serverCharacter);
 
+                // Create a despawn timer for this NPC; it starts paused since it just spawned in the outer zone
+                var despawnTimer = new Timer(_npcDespawnDuration);
+                despawnTimer.IsPaused = true;
+                despawnTimer.OnTimerEnd += (_, _) => DespawnNpc(serverCharacter);
+                _despawnTimers[serverCharacter] = despawnTimer;
+
                 if (_playerSpawnData.TryGetValue(playerId, out PlayerSpawnData spawnData))
                 {
                     spawnData.SpawnedNpcs.Add(serverCharacter);
@@ -203,21 +228,11 @@ namespace UntitledDeepSeaGame
                 foreach (var client in NetworkManager.ConnectedClientsList)
                 {
                     if (client.PlayerObject == null) continue;
-                    if (client.PlayerObject.TryGetComponent<Player>(out var player))
-                    {
-                        RectInt playerBounds = player.RenderedBounds;
-                        RectInt expandedBounds = new RectInt(
-                            playerBounds.x - _visibilityBufferPadding,
-                            playerBounds.y - _visibilityBufferPadding,
-                            playerBounds.width + _visibilityBufferPadding * 2,
-                            playerBounds.height + _visibilityBufferPadding * 2
-                        );
+                    Vector2 playerPos = client.PlayerObject.transform.position;
 
-                        Vector2Int npcCoord = new Vector2Int(Mathf.FloorToInt(spawnPosition.x), Mathf.FloorToInt(spawnPosition.y));
-                        if (expandedBounds.Contains(npcCoord))
-                        {
-                            npcPrefabNetworkObject.NetworkShow(client.ClientId);
-                        }
+                    if (IsNpcInOuterZone(spawnPosition, playerPos))
+                    {
+                        npcPrefabNetworkObject.NetworkShow(client.ClientId);
                     }
                 }
             }
@@ -247,20 +262,20 @@ namespace UntitledDeepSeaGame
             return _testNpc;
         }
 
+        /// <summary>
+        /// Returns true if the potential spawn point is NOT inside any connected player's inner (no-spawn) zone.
+        /// We don't want to spawn an NPC directly under a player's nose.
+        /// </summary>
         private bool SpawnSpotIsValid(Vector2 potentialSpawnPoint)
         {
-            Vector2Int tileCoords = new Vector2Int(Mathf.FloorToInt(potentialSpawnPoint.x), Mathf.FloorToInt(potentialSpawnPoint.y));
-
             foreach (var client in NetworkManager.ConnectedClientsList)
             {
                 if (client.PlayerObject == null) continue;
 
-                if (client.PlayerObject.TryGetComponent<Player>(out var player))
+                Vector2 playerPos = client.PlayerObject.transform.position;
+                if (IsNpcInInnerZone(potentialSpawnPoint, playerPos))
                 {
-                    if (player.RenderedBounds.Contains(tileCoords))
-                    {
-                        return false; // Point is visible/rendered on this client's screen!
-                    }
+                    return false; // Point is visible/rendered on this client's screen!
                 }
             }
 
@@ -277,48 +292,153 @@ namespace UntitledDeepSeaGame
                 ServerCharacter npc = _activeNpcs[i];
                 if (npc == null || npc.LifeState == LifeState.Dead)
                 {
+                    _despawnTimers.Remove(npc);
                     _activeNpcs.RemoveAt(i);
                 }
             }
 
-            // 2. Update visibility for each connected client
+            // Build a snapshot of connected player positions once per visibility update
+            var playerPositions = new List<Vector2>(NetworkManager.ConnectedClientsList.Count);
             foreach (var client in NetworkManager.ConnectedClientsList)
             {
-                ulong clientId = client.ClientId;
-                if (client.PlayerObject == null) continue;
-
-                if (client.PlayerObject.TryGetComponent<Player>(out var player))
+                if (client.PlayerObject != null)
                 {
-                    // Expand the player's RenderedBounds by the visibility buffer padding
-                    RectInt playerBounds = player.RenderedBounds;
-                    RectInt expandedBounds = new RectInt(
-                        playerBounds.x - _visibilityBufferPadding,
-                        playerBounds.y - _visibilityBufferPadding,
-                        playerBounds.width + _visibilityBufferPadding * 2,
-                        playerBounds.height + _visibilityBufferPadding * 2
-                    );
+                    playerPositions.Add(client.PlayerObject.transform.position);
+                }
+            }
 
-                    foreach (var npc in _activeNpcs)
+            // 2. Evaluate each active NPC
+            var toInstantDespawn = new List<ServerCharacter>();
+            foreach (var npc in _activeNpcs)
+            {
+                if (npc == null) continue;
+
+                Vector2 npcPos = npc.transform.position;
+
+                bool isInsideAnyOuterZone = false;
+                bool isInsideAnyInnerZone = false;
+
+                foreach (var playerPos in playerPositions)
+                {
+                    if (IsNpcInOuterZone(npcPos, playerPos))
                     {
-                        if (npc == null) continue;
+                        isInsideAnyOuterZone = true;
+                    }
+                    if (IsNpcInInnerZone(npcPos, playerPos))
+                    {
+                        isInsideAnyInnerZone = true;
+                    }
 
-                        Vector3 npcPos = npc.transform.position;
-                        Vector2Int npcCoord = new Vector2Int(Mathf.FloorToInt(npcPos.x), Mathf.FloorToInt(npcPos.y));
+                    // Early exit — can't be more true than true
+                    if (isInsideAnyOuterZone && isInsideAnyInnerZone) break;
+                }
 
-                        bool shouldBeVisible = expandedBounds.Contains(npcCoord);
-                        bool isCurrentlyVisible = npc.NetworkObject.IsNetworkVisibleTo(clientId);
+                // Instant despawn if outside ALL players' outer zones
+                if (!isInsideAnyOuterZone)
+                {
+                    toInstantDespawn.Add(npc);
+                    continue;
+                }
 
-                        if (shouldBeVisible && !isCurrentlyVisible)
-                        {
-                            npc.NetworkObject.NetworkShow(clientId);
-                        }
-                        else if (!shouldBeVisible && isCurrentlyVisible)
-                        {
-                            npc.NetworkObject.NetworkHide(clientId);
-                        }
+                // Manage despawn timer:
+                // If any player can see this NPC (inner zone), pause and reset the timer.
+                // Otherwise let it count down.
+                if (_despawnTimers.TryGetValue(npc, out Timer timer))
+                {
+                    if (isInsideAnyInnerZone)
+                    {
+                        timer.IsPaused = true;
+                        timer.Reset();
+                    }
+                    else
+                    {
+                        timer.IsPaused = false;
+                    }
+                }
+
+                // 3. Update Netcode observer visibility per client based on outer zone
+                foreach (var client in NetworkManager.ConnectedClientsList)
+                {
+                    if (client.PlayerObject == null) continue;
+
+                    ulong clientId = client.ClientId;
+                    Vector2 playerPos = client.PlayerObject.transform.position;
+                    bool shouldBeVisible = IsNpcInOuterZone(npcPos, playerPos);
+                    bool isCurrentlyVisible = npc.NetworkObject.IsNetworkVisibleTo(clientId);
+
+                    if (shouldBeVisible && !isCurrentlyVisible)
+                    {
+                        npc.NetworkObject.NetworkShow(clientId);
+                    }
+                    else if (!shouldBeVisible && isCurrentlyVisible)
+                    {
+                        npc.NetworkObject.NetworkHide(clientId);
                     }
                 }
             }
+
+            // Process instant despawns after iteration to avoid mutating the list mid-loop
+            foreach (var npc in toInstantDespawn)
+            {
+                DespawnNpc(npc);
+            }
+        }
+
+        /// <summary>
+        /// Cleanly despawns an NPC on the server, removes it from all tracking structures,
+        /// and recalculates player NPC capacities.
+        /// </summary>
+        private void DespawnNpc(ServerCharacter npc)
+        {
+            if (npc == null) return;
+
+            // Remove from active list
+            _activeNpcs.Remove(npc);
+
+            // Remove and unsubscribe despawn timer
+            if (_despawnTimers.TryGetValue(npc, out Timer timer))
+            {
+                timer.IsPaused = true;
+                _despawnTimers.Remove(npc);
+            }
+
+            // Remove from every player's spawn data list and recalculate their capacity
+            foreach (var kvp in _playerSpawnData)
+            {
+                PlayerSpawnData spawnData = kvp.Value;
+                if (spawnData.SpawnedNpcs.Remove(npc))
+                {
+                    RecalculatePlayerCapacity(spawnData);
+                }
+            }
+
+            // Despawn the NetworkObject (true = destroy the GameObject)
+            if (npc.NetworkObject != null && npc.NetworkObject.IsSpawned)
+            {
+                npc.NetworkObject.Despawn(true);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given NPC position falls within the inner (camera frustum / no-spawn) zone
+        /// centered on the given player position.
+        /// </summary>
+        private bool IsNpcInInnerZone(Vector2 npcPos, Vector2 playerPos)
+        {
+            float dx = Mathf.Abs(npcPos.x - playerPos.x);
+            float dy = Mathf.Abs(npcPos.y - playerPos.y);
+            return dx <= _innerNoSpawnDimensions.x * 0.5f && dy <= _innerNoSpawnDimensions.y * 0.5f;
+        }
+
+        /// <summary>
+        /// Returns true if the given NPC position falls within the outer (spawn / visibility) zone
+        /// centered on the given player position.
+        /// </summary>
+        private bool IsNpcInOuterZone(Vector2 npcPos, Vector2 playerPos)
+        {
+            float dx = Mathf.Abs(npcPos.x - playerPos.x);
+            float dy = Mathf.Abs(npcPos.y - playerPos.y);
+            return dx <= _outerSpawnDimensions.x * 0.5f && dy <= _outerSpawnDimensions.y * 0.5f;
         }
 
         private Vector2 GetRandomTileInSpawnArea(Vector2 playerPos)

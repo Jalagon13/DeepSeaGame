@@ -6394,6 +6394,8 @@ MonoBehaviour:
   _innerNoSpawnDimensions: {x: 105, y: 60}
   _outerSpawnDimensions: {x: 168, y: 94}
   _globalMaxNpcCap: 200
+  _visibilityUpdateInterval: 0.2
+  _npcDespawnDuration: 14
 --- !u!1 &1976162733
 GameObject:
   m_ObjectHideFlags: 0
