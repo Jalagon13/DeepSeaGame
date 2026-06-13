@@ -16,8 +16,7 @@ namespace UntitledDeepSeaGame
         
         public static Player Instance { get; private set; }
 
-        [SerializeField]
-        private BoxCollider2D _playerCollider;
+        [SerializeField] private BoxCollider2D _playerCollider;
         public BoxCollider2D PlayerCollider => _playerCollider;
 
         private ServerCharacter _character;
@@ -31,6 +30,8 @@ namespace UntitledDeepSeaGame
 
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
+
+        public RectInt RenderedBounds { get; private set; } // Only exists on the server
 
         [HideInInspector]
         public Vector2 SpawnPoint;
@@ -49,11 +50,19 @@ namespace UntitledDeepSeaGame
                 Instance = null;
             }
 
-            GameInput.Instance.OnMove -= GameInput_OnMove;
-            GameInput.Instance.OnJump -= GameInput_OnJump;
+            if (GameInput.Instance != null)
+            {
+                GameInput.Instance.OnMove -= GameInput_OnMove;
+                GameInput.Instance.OnJump -= GameInput_OnJump;
+            }
             
-            InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
-            InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
+                InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
+            }
+
+            PlayerCamera.OnVisibleTileBoundsChanged -= HandleVisibleTileBoundsChanged;
         }
 
         public void OnNetworkSpawnLocalClientInitializations()
@@ -71,6 +80,23 @@ namespace UntitledDeepSeaGame
 
             InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+
+            PlayerCamera.OnVisibleTileBoundsChanged += HandleVisibleTileBoundsChanged;
+            if (PlayerCamera.Instance != null)
+            {
+                HandleVisibleTileBoundsChanged(PlayerCamera.Instance.CurrentVisibleTileBounds);
+            }
+        }
+
+        private void HandleVisibleTileBoundsChanged(RectInt bounds)
+        {
+            UpdateRenderedBoundsServerRpc(bounds.x, bounds.y, bounds.width, bounds.height);
+        }
+
+        [ServerRpc]
+        private void UpdateRenderedBoundsServerRpc(int x, int y, int width, int height)
+        {
+            RenderedBounds = new RectInt(x, y, width, height);
         }
 
         private void GameInput_OnJump(object sender, InputAction.CallbackContext e)

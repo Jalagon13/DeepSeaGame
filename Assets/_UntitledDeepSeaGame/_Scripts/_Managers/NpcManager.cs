@@ -8,21 +8,15 @@ namespace UntitledDeepSeaGame
     {
         public static NpcManager Instance { get; private set; }
 
-        [SerializeField]
-        private bool _enableSpawning = true;
-
-        [SerializeField]
-        private float _startSpawnDelay;
-        
-        [SerializeField] 
-        private int _maxNpcSlotAmount = 6;
+        [SerializeField] private bool _enableSpawning = true;
+        [SerializeField] private float _startSpawnDelay;
+        [SerializeField] private int _maxNpcSlotAmount = 6;
 
         [SerializeField, Tooltip("How many NPCs spawn per minute in this biome"), Range(0f, 60f)] 
         private float _spawnsPerMinute;
 
         [Header("Test Npc stuff")]
-        [SerializeField] 
-        private CharacterSO _testNpc;
+        [SerializeField] private CharacterSO _testNpc;
 
         [Header("Spawning Range (in Tiles)")]
         [SerializeField, Tooltip("Inner rectangle bounds where mobs CANNOT spawn (No-Spawn Zone).")]
@@ -35,6 +29,15 @@ namespace UntitledDeepSeaGame
         [SerializeField, Tooltip("Maximum number of NPCs that can exist in the world at once.")]
         private int _globalMaxNpcCap = 200;
 
+        [Header("NPC Observer Visibility")]
+        [SerializeField, Tooltip("How often the server checks and updates NPC visibility for clients (in seconds).")]
+        private float _visibilityUpdateInterval = 0.2f;
+
+        [SerializeField, Tooltip("Buffer padding (in tiles) around player's rendered bounds to prevent NPC visibility flashing.")]
+        private int _visibilityBufferPadding = 5;
+
+        private readonly List<ServerCharacter> _activeNpcs = new();
+
         private readonly float _tickTime = 1f / 60f; // 60 ticks per second
         private readonly int _maxSpawnAttempts = 50;
 
@@ -45,7 +48,6 @@ namespace UntitledDeepSeaGame
             public int MaxNpcSlotAmount;
             public readonly List<ServerCharacter> SpawnedNpcs = new();
         }
-
 
         private void Awake()
         {
@@ -72,21 +74,23 @@ namespace UntitledDeepSeaGame
                 }
 
                 InvokeRepeating(nameof(TryToSpawnNpc), _startSpawnDelay, _tickTime);
+                InvokeRepeating(nameof(UpdateNpcVisibility), _startSpawnDelay + 0.1f, _visibilityUpdateInterval);
             }
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer && NetworkManager != null)
+            if (IsServer)
             {
-                NetworkManager.OnClientConnectedCallback -= NetworkManager_OnClientConnectedCallback;
-                NetworkManager.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
-            }
-        }
+                CancelInvoke(nameof(TryToSpawnNpc));
+                CancelInvoke(nameof(UpdateNpcVisibility));
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
+                if (NetworkManager != null)
+                {
+                    NetworkManager.OnClientConnectedCallback -= NetworkManager_OnClientConnectedCallback;
+                    NetworkManager.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
+                }
+            }
         }
 
         private void NetworkManager_OnClientConnectedCallback(ulong clientId)
@@ -108,7 +112,6 @@ namespace UntitledDeepSeaGame
             _playerSpawnData.Remove(clientId);
         }
 
-        // I think this is totally local to the server right now not for other clients becareful
         private int GetGlobalActiveNpcCount()
         {
             int count = 0;
@@ -117,22 +120,6 @@ namespace UntitledDeepSeaGame
                 count += kvp.Value.SpawnedNpcs.Count;
             }
             return count;
-        }
-
-        private void RecalculatePlayerCapacity(PlayerSpawnData spawnData)
-        {
-            float cap = 0f;
-            for (int i = spawnData.SpawnedNpcs.Count - 1; i >= 0; i--)
-            {
-                ServerCharacter npc = spawnData.SpawnedNpcs[i];
-                if (npc == null || npc.LifeState == LifeState.Dead)
-                {
-                    spawnData.SpawnedNpcs.RemoveAt(i);
-                    continue;
-                }
-                cap += npc.CharacterData.SlotAmount;
-            }
-            spawnData.CurrentCapacity = cap;
         }
 
         public void TryToSpawnNpc()
@@ -204,14 +191,55 @@ namespace UntitledDeepSeaGame
 
             if (npcPrefab.TryGetComponent<ServerCharacter>(out var serverCharacter))
             {
+                _activeNpcs.Add(serverCharacter);
+
                 if (_playerSpawnData.TryGetValue(playerId, out PlayerSpawnData spawnData))
                 {
                     spawnData.SpawnedNpcs.Add(serverCharacter);
                     RecalculatePlayerCapacity(spawnData);
                 }
+
+                // Immediately run visibility check on spawn for all connected clients to prevent latency
+                foreach (var client in NetworkManager.ConnectedClientsList)
+                {
+                    if (client.PlayerObject == null) continue;
+                    if (client.PlayerObject.TryGetComponent<Player>(out var player))
+                    {
+                        RectInt playerBounds = player.RenderedBounds;
+                        RectInt expandedBounds = new RectInt(
+                            playerBounds.x - _visibilityBufferPadding,
+                            playerBounds.y - _visibilityBufferPadding,
+                            playerBounds.width + _visibilityBufferPadding * 2,
+                            playerBounds.height + _visibilityBufferPadding * 2
+                        );
+
+                        Vector2Int npcCoord = new Vector2Int(Mathf.FloorToInt(spawnPosition.x), Mathf.FloorToInt(spawnPosition.y));
+                        if (expandedBounds.Contains(npcCoord))
+                        {
+                            npcPrefabNetworkObject.NetworkShow(client.ClientId);
+                        }
+                    }
+                }
             }
 
-            Debug.Log($"SpawnNpcOnServer: {npcPrefab.name} at {position} for player {playerId}");
+            _playerSpawnData.TryGetValue(playerId, out PlayerSpawnData data);
+            Debug.Log($"Spawning NPC: {npcPrefab.name} at {position} for player {playerId}, with {data.CurrentCapacity}/{data.MaxNpcSlotAmount} capacity");
+        }
+
+        private void RecalculatePlayerCapacity(PlayerSpawnData spawnData)
+        {
+            float cap = 0f;
+            for (int i = spawnData.SpawnedNpcs.Count - 1; i >= 0; i--)
+            {
+                ServerCharacter npc = spawnData.SpawnedNpcs[i];
+                if (npc == null || npc.LifeState == LifeState.Dead)
+                {
+                    spawnData.SpawnedNpcs.RemoveAt(i);
+                    continue;
+                }
+                cap += npc.CharacterData.SlotAmount;
+            }
+            spawnData.CurrentCapacity = cap;
         }
 
         private CharacterSO GetNpcToSpawn()
@@ -221,18 +249,76 @@ namespace UntitledDeepSeaGame
 
         private bool SpawnSpotIsValid(Vector2 potentialSpawnPoint)
         {
-            // Check if the tile is within the camera's visible screen bounds to prevent pop-in
-            if (PlayerCamera.Instance != null)
-            {
-                Vector2Int tileCoords = new Vector2Int(Mathf.FloorToInt(potentialSpawnPoint.x), Mathf.FloorToInt(potentialSpawnPoint.y));
+            Vector2Int tileCoords = new Vector2Int(Mathf.FloorToInt(potentialSpawnPoint.x), Mathf.FloorToInt(potentialSpawnPoint.y));
 
-                if (PlayerCamera.Instance.CurrentVisibleTileBounds.Contains(tileCoords))
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                if (client.PlayerObject == null) continue;
+
+                if (client.PlayerObject.TryGetComponent<Player>(out var player))
                 {
-                    return false; // Point is visible on screen!
+                    if (player.RenderedBounds.Contains(tileCoords))
+                    {
+                        return false; // Point is visible/rendered on this client's screen!
+                    }
                 }
             }
 
             return true;
+        }
+
+        private void UpdateNpcVisibility()
+        {
+            if (!IsServer) return;
+
+            // 1. Clean up dead or null NPCs from active list
+            for (int i = _activeNpcs.Count - 1; i >= 0; i--)
+            {
+                ServerCharacter npc = _activeNpcs[i];
+                if (npc == null || npc.LifeState == LifeState.Dead)
+                {
+                    _activeNpcs.RemoveAt(i);
+                }
+            }
+
+            // 2. Update visibility for each connected client
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                ulong clientId = client.ClientId;
+                if (client.PlayerObject == null) continue;
+
+                if (client.PlayerObject.TryGetComponent<Player>(out var player))
+                {
+                    // Expand the player's RenderedBounds by the visibility buffer padding
+                    RectInt playerBounds = player.RenderedBounds;
+                    RectInt expandedBounds = new RectInt(
+                        playerBounds.x - _visibilityBufferPadding,
+                        playerBounds.y - _visibilityBufferPadding,
+                        playerBounds.width + _visibilityBufferPadding * 2,
+                        playerBounds.height + _visibilityBufferPadding * 2
+                    );
+
+                    foreach (var npc in _activeNpcs)
+                    {
+                        if (npc == null) continue;
+
+                        Vector3 npcPos = npc.transform.position;
+                        Vector2Int npcCoord = new Vector2Int(Mathf.FloorToInt(npcPos.x), Mathf.FloorToInt(npcPos.y));
+
+                        bool shouldBeVisible = expandedBounds.Contains(npcCoord);
+                        bool isCurrentlyVisible = npc.NetworkObject.IsNetworkVisibleTo(clientId);
+
+                        if (shouldBeVisible && !isCurrentlyVisible)
+                        {
+                            npc.NetworkObject.NetworkShow(clientId);
+                        }
+                        else if (!shouldBeVisible && isCurrentlyVisible)
+                        {
+                            npc.NetworkObject.NetworkHide(clientId);
+                        }
+                    }
+                }
+            }
         }
 
         private Vector2 GetRandomTileInSpawnArea(Vector2 playerPos)

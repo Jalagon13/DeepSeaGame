@@ -6387,11 +6387,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
   _enableSpawning: 1
-  _startSpawnDelay: 2
+  _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
-  _spawnsPerMinute: 29.5
+  _spawnsPerMinute: 60
   _testNpc: {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
-  _innerNoSpawnDimensions: {x: 124, y: 70}
+  _innerNoSpawnDimensions: {x: 105, y: 60}
   _outerSpawnDimensions: {x: 168, y: 94}
   _globalMaxNpcCap: 200
 --- !u!1 &1976162733
