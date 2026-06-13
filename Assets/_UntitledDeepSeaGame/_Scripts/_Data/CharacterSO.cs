@@ -30,8 +30,12 @@ namespace UntitledDeepSeaGame
         
 
         [Space]
-        [Header("AI Parameters")]
+        [Header("NPC Parameters")]
         [Tooltip("Indicates whether the character is an NPC")]
         public bool IsNpc;
+        [Tooltip("The amount of 'npc space' the NPC take up when spawned")]
+        public float SlotAmount;
+        [Tooltip("Prefab for the NPC")]
+        public ServerCharacter NpcPrefab;
     }
 }

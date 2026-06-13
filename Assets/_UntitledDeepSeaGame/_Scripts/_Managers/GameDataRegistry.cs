@@ -22,6 +22,11 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private List<TileSO> _tileData;
 
+        [Space(15)]
+
+        [SerializeField]
+        private List<CharacterSO> _characterData;
+
         private void Awake()
         {
             Instance = this;
@@ -114,6 +119,47 @@ namespace UntitledDeepSeaGame
 
         #endregion
 
+        #region Character Data Functions
 
+        public ushort GetCharacterIdFromCharacterSO(CharacterSO characterSO)
+        {
+            if (characterSO == null)
+            {
+                return INVALID_ID;
+            }
+
+            for (int i = 0; i < _characterData.Count; i++)
+            {
+                if (_characterData[i] == characterSO)
+                {
+                    return (ushort)i;
+                }
+            }
+
+            // Fallback by name comparison in case of instance clones/copies
+            for (int i = 0; i < _characterData.Count; i++)
+            {
+                if (_characterData[i].name == characterSO.name)
+                {
+                    return (ushort)i;
+                }
+            }
+
+            Debug.LogError($"CharacterSO '{characterSO}' not found!");
+            return ushort.MaxValue;
+        }
+
+        public CharacterSO GetCharacterSOFromCharacterId(ushort characterId)
+        {
+            if (characterId >= _characterData.Count || characterId < 0)
+            {
+                // Debug.LogError($"Invalid Character ID: {characterId}");
+                return null;
+            }
+
+            return _characterData[characterId];
+        }
+
+        #endregion
     }
 }
