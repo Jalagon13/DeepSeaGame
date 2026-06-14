@@ -53,6 +53,8 @@ namespace UntitledDeepSeaGame
             public readonly List<ServerCharacter> SpawnedNpcs = new();
         }
 
+        #region Start / Clean up
+
         private void Awake()
         {
             Instance = this;
@@ -130,6 +132,12 @@ namespace UntitledDeepSeaGame
                 timer.Tick(Time.deltaTime);
             }
         }
+
+        #endregion
+
+
+
+        #region Spawning
 
         public void TryToSpawnNpc()
         {
@@ -268,6 +276,31 @@ namespace UntitledDeepSeaGame
         /// </summary>
         private bool SpawnSpotIsValid(Vector2 potentialSpawnPoint)
         {
+            WorldDataStore worldDataStore = WorldManager.Instance.WorldDataStore;
+            Vector2Int spawnPosition = new(Mathf.FloorToInt(potentialSpawnPoint.x), Mathf.FloorToInt(potentialSpawnPoint.y));
+            
+            bool isThereForegroundTile = worldDataStore.IsThereForegroundTile(spawnPosition.x, spawnPosition.y);
+            if(isThereForegroundTile)
+            {
+                return false;
+            }
+
+            bool isInOceanZone = worldDataStore.IsOceanZone(spawnPosition.y);
+            if(!isInOceanZone)
+            {
+                return false;
+            }
+        
+            if(IsInAnyPlayerInnerZone(potentialSpawnPoint))
+            {
+                return false;
+            }
+        
+            return true;
+        }
+        
+        private bool IsInAnyPlayerInnerZone(Vector2 potentialSpawnPoint)
+        {
             foreach (var client in NetworkManager.ConnectedClientsList)
             {
                 if (client.PlayerObject == null) continue;
@@ -275,12 +308,73 @@ namespace UntitledDeepSeaGame
                 Vector2 playerPos = client.PlayerObject.transform.position;
                 if (IsNpcInInnerZone(potentialSpawnPoint, playerPos))
                 {
-                    return false; // Point is visible/rendered on this client's screen!
+                    return true; // Point is visible/rendered on this client's screen!
                 }
             }
-
-            return true;
+            
+            return false;
         }
+
+        private Vector2 GetRandomTileInSpawnArea(Vector2 playerPos)
+        {
+            float halfInnerX = _innerNoSpawnDimensions.x / 2f;
+            float halfInnerY = _innerNoSpawnDimensions.y / 2f;
+            float halfOuterX = _outerSpawnDimensions.x / 2f;
+            float halfOuterY = _outerSpawnDimensions.y / 2f;
+
+            // Attempt to find a point in the donut area
+            for (int i = 0; i < 10; i++)
+            {
+                float rx = Random.Range(-halfOuterX, halfOuterX);
+                float ry = Random.Range(-halfOuterY, halfOuterY);
+
+                // If it falls inside the inner no-spawn rectangle, re-roll
+                if (Mathf.Abs(rx) < halfInnerX && Mathf.Abs(ry) < halfInnerY)
+                {
+                    continue;
+                }
+
+                return new Vector2(playerPos.x + rx, playerPos.y + ry);
+            }
+
+            return default;
+        }
+
+        private float GetSpawnModifier(float currentCapacity, int maxCapacity)
+        {
+            if (maxCapacity <= 0) return 0.1f;
+            float activeRatio = currentCapacity / maxCapacity;
+
+            // Terraria-style: More mobs = lower spawn rate, fewer mobs = higher spawn rate
+            if (activeRatio < 0.2f)
+            {
+                return 1.5f; // 50% faster when area is mostly empty
+            }
+            else if (activeRatio < 0.4f)
+            {
+                return 1.3f; // 30% faster when area is 20-40% full
+            }
+            else if (activeRatio < 0.6f)
+            {
+                return 1.1f; // 10% faster when area is 40-60% full
+            }
+            else if (activeRatio < 0.8f)
+            {
+                return 0.9f; // 10% slower when area is 60-80% full
+            }
+            else if (activeRatio < 0.95f)
+            {
+                return 0.5f; // 50% slower when area is 80-95% full
+            }
+
+            return 0.1f; // 90% slower when area is nearly full
+        }
+
+        #endregion
+
+
+
+        #region Npc Rendering
 
         private void UpdateNpcVisibility()
         {
@@ -441,59 +535,12 @@ namespace UntitledDeepSeaGame
             return dx <= _outerSpawnDimensions.x * 0.5f && dy <= _outerSpawnDimensions.y * 0.5f;
         }
 
-        private Vector2 GetRandomTileInSpawnArea(Vector2 playerPos)
-        {
-            float halfInnerX = _innerNoSpawnDimensions.x / 2f;
-            float halfInnerY = _innerNoSpawnDimensions.y / 2f;
-            float halfOuterX = _outerSpawnDimensions.x / 2f;
-            float halfOuterY = _outerSpawnDimensions.y / 2f;
+        #endregion
 
-            // Attempt to find a point in the donut area
-            for (int i = 0; i < 10; i++)
-            {
-                float rx = Random.Range(-halfOuterX, halfOuterX);
-                float ry = Random.Range(-halfOuterY, halfOuterY);
 
-                // If it falls inside the inner no-spawn rectangle, re-roll
-                if (Mathf.Abs(rx) < halfInnerX && Mathf.Abs(ry) < halfInnerY)
-                {
-                    continue;
-                }
 
-                return new Vector2(playerPos.x + rx, playerPos.y + ry);
-            }
 
-            return default;
-        }
 
-        private float GetSpawnModifier(float currentCapacity, int maxCapacity)
-        {
-            if (maxCapacity <= 0) return 0.1f;
-            float activeRatio = currentCapacity / maxCapacity;
-
-            // Terraria-style: More mobs = lower spawn rate, fewer mobs = higher spawn rate
-            if (activeRatio < 0.2f)
-            {
-                return 1.5f; // 50% faster when area is mostly empty
-            }
-            else if (activeRatio < 0.4f)
-            {
-                return 1.3f; // 30% faster when area is 20-40% full
-            }
-            else if (activeRatio < 0.6f)
-            {
-                return 1.1f; // 10% faster when area is 40-60% full
-            }
-            else if (activeRatio < 0.8f)
-            {
-                return 0.9f; // 10% slower when area is 60-80% full
-            }
-            else if (activeRatio < 0.95f)
-            {
-                return 0.5f; // 50% slower when area is 80-95% full
-            }
-
-            return 0.1f; // 90% slower when area is nearly full
-        }
+        
     }
 }

@@ -47,6 +47,11 @@ namespace UntitledDeepSeaGame
         {
             return y >= _seaLevelY && y < Height;
         }
+        
+        public bool IsThereForegroundTile(int x, int y)
+        {
+            return GetTileId(x, y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID;
+        }
 
         public bool IsOceanZone(int y)
         {
