@@ -5,14 +5,15 @@ namespace UntitledDeepSeaGame
 {
     public abstract class CharacterMovement : MonoBehaviour
     {
-        [SerializeField]
-        protected ServerCharacter _serverCharacter;
+        [HideInInspector] public Vector2 DesiredDirection;
+        
+        [SerializeField] protected ServerCharacter _serverCharacter;
 
-        [SerializeField]
-        protected GridCollider _gridCollider;
-
-        protected Vector2 _desiredDirection;
-        public Vector2 DesiredDirection => _desiredDirection;
+        [SerializeField] protected GridCollider _gridCollider;
+        
+        [Header("Air Movement Settings (Base)")]
+        [SerializeField] protected float _gravity = -30f;
+        [SerializeField] protected float _terminalVelocity = -50f;
 
         protected Vector2 _velocity;
         public Vector2 Velocity => _velocity;
@@ -67,9 +68,9 @@ namespace UntitledDeepSeaGame
 
         public void ReceiveMoveInput(Vector2 moveInput)
         {
-            _desiredDirection = moveInput;
+            DesiredDirection = moveInput;
 
-            if (_desiredDirection.sqrMagnitude > 0.0001f)
+            if (DesiredDirection.sqrMagnitude > 0.0001f)
             {
                 StartMovement();
             }
@@ -79,14 +80,14 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        public void StartMovement()
+        public virtual void StartMovement()
         {
             if (_serverCharacter == null)
             {
                 return;
             }
 
-            _desiredDirection.Normalize();
+            DesiredDirection.Normalize();
 
             if (_serverCharacter.MovementState.Value != MovementState.Moving)
             {
@@ -94,14 +95,14 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        public void StartIdle()
+        public virtual void StartIdle()
         {
             if (_serverCharacter == null)
             {
                 return;
             }
 
-            _desiredDirection = Vector2.zero;
+            DesiredDirection = Vector2.zero;
 
             if (_serverCharacter.MovementState.Value != MovementState.Idle)
             {

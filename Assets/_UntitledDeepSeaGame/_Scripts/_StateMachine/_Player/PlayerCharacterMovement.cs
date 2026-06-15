@@ -6,9 +6,7 @@ namespace UntitledDeepSeaGame
     public class PlayerCharacterMovement : CharacterMovement
     {
         [Header("Air Movement Settings")]
-        [SerializeField] private float _jumpPower = 12f;
-        [SerializeField] private float _gravity = -30f;
-        [SerializeField] private float _terminalVelocity = -50f;
+        [SerializeField] private float _jumpPower = 12f; // This remains specific to the player's jump
 
         private bool _isGrounded;
         private bool _jumpRequested;
@@ -21,7 +19,7 @@ namespace UntitledDeepSeaGame
 
                 // In water mode, we treat the Jump button as a vertical 'Up' input override.
                 // We use an effective input vector so we don't overwrite the cached _desiredDirection.
-                Vector2 effectiveInput = _desiredDirection;
+                Vector2 effectiveInput = DesiredDirection;
                 if (GameInput.Instance.JumpHeldDown)
                 {
                     effectiveInput.y = 1f;
@@ -30,19 +28,19 @@ namespace UntitledDeepSeaGame
                 // Re-evaluate movement state and direction based on the combined input
                 if (effectiveInput.sqrMagnitude > 0.0001f)
                 {
-                    _desiredDirection = effectiveInput.normalized;
+                    DesiredDirection = effectiveInput.normalized;
                 }
                 else
                 {
-                    _desiredDirection = Vector2.zero;
+                    DesiredDirection = Vector2.zero;
                 }
 
-                _velocity = Vector2.Lerp(_velocity, _desiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+                _velocity = Vector2.Lerp(_velocity, DesiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
             }
 
-            if (_desiredDirection != Vector2.zero)
+            if (DesiredDirection != Vector2.zero)
             {
-                _serverCharacter.CurrentDirection.Value = GetCardinalDirectionFromVector2(_desiredDirection);
+                _serverCharacter.CurrentDirection.Value = GetCardinalDirectionFromVector2(DesiredDirection);
             }
         }
 
@@ -57,7 +55,7 @@ namespace UntitledDeepSeaGame
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
 
                 // 2. Horizontal Movement (Lerp for that snappy control)
-                float targetX = Mathf.Lerp(_velocity.x, _desiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
+                float targetX = Mathf.Lerp(_velocity.x, DesiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
 
                 // 3. Vertical Movement (Constant Gravity)
                 float targetY = _velocity.y + (_gravity * Time.fixedDeltaTime);
@@ -76,9 +74,9 @@ namespace UntitledDeepSeaGame
                 _velocity = new Vector2(targetX, targetY);
 
                 // 5. Update Direction (Horizontal only in air)
-                if (Mathf.Abs(_desiredDirection.x) > 0.01f)
+                if (Mathf.Abs(DesiredDirection.x) > 0.01f)
                 {
-                    _serverCharacter.CurrentDirection.Value = _desiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                    _serverCharacter.CurrentDirection.Value = DesiredDirection.x > 0 ? Direction.Right : Direction.Left;
                 }
             }
         }

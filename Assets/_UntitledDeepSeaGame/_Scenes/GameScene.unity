@@ -1780,7 +1780,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.68702, y: 24, z: 0}
+  m_LocalPosition: {x: 43.687496, y: 24.562496, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2005,6 +2005,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575014083}
   m_CullTransparentMesh: 1
+--- !u!1001 &598404387
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4193009179046351597, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 380971063
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193009179046351597, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2431297791
+      objectReference: {fileID: 0}
+    - target: {fileID: 4685659357211644810, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_Name
+      value: JellyfishNpc
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224274360569420902, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8054233521325832671, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
+      propertyPath: _propulsionPower
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -6386,7 +6455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
-  _enableSpawning: 1
+  _enableSpawning: 0
   _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 60
@@ -7224,3 +7293,4 @@ SceneRoots:
   - {fileID: 654374647}
   - {fileID: 620709479}
   - {fileID: 2143430848}
+  - {fileID: 598404387}

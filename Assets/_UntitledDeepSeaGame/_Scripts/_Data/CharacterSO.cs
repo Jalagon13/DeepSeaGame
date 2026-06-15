@@ -15,8 +15,10 @@ namespace UntitledDeepSeaGame
         [Header("Health & Survival")]
         [Tooltip("If true, character can die")]
         public bool CanDie = true;
+        
         [Tooltip("If true, the NPC can be knocked back")]
         public bool CanBeKnockedBack = true;
+        
         [Tooltip("Duration of invincibility frames when character is hit")]
         public float IFrameDuration = 0.17f;
 
@@ -25,6 +27,7 @@ namespace UntitledDeepSeaGame
         [Header("Movement & Physics")]
         [Tooltip("If false, the NPC will remain idle and not move")]
         public bool CanMove = true;
+        
         [Tooltip("Smaller values = slower transition to desired direction")]
         public int TurnSharpness = 5;
         
@@ -33,9 +36,17 @@ namespace UntitledDeepSeaGame
         [Header("NPC Parameters")]
         [Tooltip("Indicates whether the character is an NPC")]
         public bool IsNpc;
+        
         [Tooltip("The amount of 'npc space' the NPC take up when spawned")]
         public float SlotAmount;
+        
         [Tooltip("Prefab for the NPC")]
         public ServerCharacter NpcPrefab;
+
+        [Tooltip("Minimum time the NPC will stay idle before changing state")]
+        public float MinIdleDuration = 2.5f;
+        
+        [Tooltip("Maximum time the NPC will stay idle before changing state")]
+        public float MaxIdleDuration = 5f;
     }
 }
