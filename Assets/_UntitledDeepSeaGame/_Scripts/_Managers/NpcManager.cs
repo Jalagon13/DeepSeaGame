@@ -272,7 +272,6 @@ namespace UntitledDeepSeaGame
 
         /// <summary>
         /// Returns true if the potential spawn point is NOT inside any connected player's inner (no-spawn) zone.
-        /// We don't want to spawn an NPC directly under a player's nose.
         /// </summary>
         private bool SpawnSpotIsValid(Vector2 potentialSpawnPoint)
         {
@@ -537,10 +536,5 @@ namespace UntitledDeepSeaGame
 
         #endregion
 
-
-
-
-
-        
     }
 }

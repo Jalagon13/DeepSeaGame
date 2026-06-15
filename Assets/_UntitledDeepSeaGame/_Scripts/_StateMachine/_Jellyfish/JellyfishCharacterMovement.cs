@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class FishCharacterMovement : CharacterMovement
+    public class JellyfishCharacterMovement : CharacterMovement
     {
+        
+    
         protected override void AirMovement()
         {
             

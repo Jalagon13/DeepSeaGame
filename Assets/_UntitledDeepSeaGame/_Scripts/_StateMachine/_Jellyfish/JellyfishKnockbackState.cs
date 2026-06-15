@@ -1,13 +1,13 @@
 using UnityEngine;
 
-
 namespace UntitledDeepSeaGame
 {
-    public class FishDeadState : BaseState
+    public class JellyfishKnockbackState : BaseState
     {
-        public FishDeadState(AIState key, StateMachine context) : base(key, context)
+
+        public JellyfishKnockbackState(AIState key, StateMachine context) : base(key, context)
         {
-            IsSuperState = true; // This is a super state
+
         }
 
         protected override void EnterState(AIStateData stateData)
