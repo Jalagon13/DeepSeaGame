@@ -40,5 +40,11 @@ namespace UntitledDeepSeaGame
             DesiredDirection = direction;
             _velocity = direction * _propulsionPower;
         }
+
+        protected override void HandleCollision(CollisionResult result)
+        {
+            if (result.HitX) _velocity.x *= -1;
+            if (result.HitY) _velocity.y *= -1;
+        }
     }
 }

@@ -5,6 +5,8 @@ namespace UntitledDeepSeaGame
 {
     public abstract class CharacterMovement : MonoBehaviour
     {
+        public event Action<CollisionResult> CollisionDetected;
+        
         [HideInInspector] public Vector2 DesiredDirection;
         
         [SerializeField] protected ServerCharacter _serverCharacter;
@@ -40,12 +42,25 @@ namespace UntitledDeepSeaGame
             }
 
             // Use our custom grid collider to move the character and update our velocity
-            // based on any collisions (e.g. hitting a floor sets Y velocity to 0)
-            _velocity = _gridCollider.Move(_velocity, Time.fixedDeltaTime);
+            CollisionResult result = _gridCollider.Move(_velocity, Time.fixedDeltaTime);
+
+            if (result.HitX || result.HitY)
+            {
+                CollisionDetected?.Invoke(result);
+            }
+
+            HandleCollision(result);
         }
         
         protected abstract void WaterMovement();
         protected abstract void AirMovement();
+
+        protected virtual void HandleCollision(CollisionResult result)
+        {
+            // Default behavior is stop the velocity on collision
+            if (result.HitX) _velocity.x = 0;
+            if (result.HitY) _velocity.y = 0;
+        }
 
         public void StartKnockback(Vector2 knockerPosition, float knockbackForce, bool inverse = false)
         {

@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
+    public struct CollisionResult
+    {
+        public bool HitX;
+        public bool HitY;
+    }
+
     public class GridCollider : MonoBehaviour
     {
         [SerializeField] 
@@ -23,11 +29,12 @@ namespace UntitledDeepSeaGame
             _worldDataStore = WorldManager.Instance.WorldDataStore;
         }
 
-        public Vector2 Move(Vector2 velocity, float deltaTime)
+        public CollisionResult Move(Vector2 velocity, float deltaTime)
         {
-            if (_worldDataStore == null) return velocity;
+            if (_worldDataStore == null) return default;
 
             Vector2 currentPos = transform.position;
+            CollisionResult result = new CollisionResult();
             
             // Calculate AABB manually to avoid stale 'collider.bounds' data after teleports
             Vector2 size = _collider.size;
@@ -62,7 +69,7 @@ namespace UntitledDeepSeaGame
                     // Snap to the edge of the tile
                     currentPos.x = direction > 0 ? Mathf.Floor(xCheck) - halfSize.x - offset.x - _skinWidth 
                                                : Mathf.Ceil(xCheck) + halfSize.x - offset.x + _skinWidth;
-                    velocity.x = 0;
+                    result.HitX = true;
                 }
                 else currentPos.x += deltaX;
             }
@@ -94,13 +101,13 @@ namespace UntitledDeepSeaGame
                 {
                     currentPos.y = direction > 0 ? Mathf.Floor(yCheck) - halfSize.y - offset.y - _skinWidth 
                                                : Mathf.Ceil(yCheck) + halfSize.y - offset.y + _skinWidth;
-                    velocity.y = 0;
+                    result.HitY = true;
                 }
                 else currentPos.y += deltaY;
             }
 
             transform.position = new Vector3(currentPos.x, currentPos.y, 0f);
-            return velocity;
+            return result;
         }
 
         public bool IsGrounded()
