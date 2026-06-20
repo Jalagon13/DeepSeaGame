@@ -132,9 +132,9 @@ namespace UntitledDeepSeaGame
 
         private void ReceiveHP(object sender, DamageReceiver.HpReceivedEventArgs e)
         {
-            Debug.Log($"Receiving HP: {e.HpReceived}");
+            Debug.Log($"{gameObject.name}: Receiving HP: {e.HpReceived}");
             if (LifeState == LifeState.Dead) return;
-            Debug.Log($"1");
+            
             _inflicter = e.Inflicter;
             int hpReceived = e.HpReceived;
 
@@ -151,7 +151,7 @@ namespace UntitledDeepSeaGame
             {
                 if (LifeState == LifeState.IFrame)
                     return;
-                Debug.Log($"2");
+                
                 // Damage reduction mod functionality here
                 if (hpReceived + _characterStats.Defense.GetValue() > -1)
                 {
@@ -164,11 +164,16 @@ namespace UntitledDeepSeaGame
                 }
 
                 // Play damage numbers on client
-                _clientFeedbacks.PlayDamageNumbersRpc(hpReceived);
+                if(_clientFeedbacks != null)
+                {
+                    _clientFeedbacks.PlayDamageNumbersRpc(hpReceived);
 
-                // If not dead after taking damage, play character damaged feedbacks
-                if (HitPoints + hpReceived > 0 || !_characterData.CanDie)
-                    _clientFeedbacks.PlayDamageFeedbacksRpc(_inflicterToTargetDirection);
+                    // If not dead after taking damage, play character damaged feedbacks
+                    if (HitPoints + hpReceived > 0 || !_characterData.CanDie)
+                    {
+                        _clientFeedbacks.PlayDamageFeedbacksRpc(_inflicterToTargetDirection);
+                    }
+                }
 
                 if (_characterData.CanBeKnockedBack && e.PlayKnockback)
                     _characterMovement.StartKnockback(_inflicter.transform.position, e.KnockbackForce);
@@ -176,14 +181,20 @@ namespace UntitledDeepSeaGame
                 if (HitPoints + hpReceived > 0)
                     StartCoroutine(StartIFrameTimer());
             }
-            Debug.Log($"3");
+            
             HitPoints = Mathf.Clamp(HitPoints + hpReceived, 0, _characterData.BaseMaxHealth);
             _stateMachine?.ReceiveHP(_inflicter, hpReceived);
+            Debug.Log($"[{gameObject.name}] CurrentHP: {HitPoints}");
 
             if (HitPoints <= 0 && _characterData.CanDie)
             {
-                Debug.Log($"4 DEAD");
+                Debug.Log($"[{gameObject.name}] DEAD");
                 LifeState = LifeState.Dead;
+
+                if (_characterData.IsNpc && NpcManager.Instance != null)
+                {
+                    NpcManager.Instance.DespawnNpc(this);
+                }
             }
         }
 

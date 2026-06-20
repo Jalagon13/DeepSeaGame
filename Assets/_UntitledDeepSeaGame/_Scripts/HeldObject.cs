@@ -67,47 +67,16 @@ namespace UntitledDeepSeaGame
         private void OnTriggerEnter2D(Collider2D collision)
         {
             // Only process damage on the client who owns the player character during a swing
-            if (!_isSwinging)
+            if (!_isSwinging || _playerServerCharacter == null || !_playerServerCharacter.IsOwner)
             {
-                Debug.Log($"[{gameObject.name}] Trigger entered but not swinging, ignoring collision with: {collision.gameObject.name}");
                 return;
-            }
-
-            if (_playerServerCharacter == null)
-            {
-                Debug.LogWarning($"[{gameObject.name}] OnTriggerEnter2D ignored: player ServerCharacter is null!");
-                return;
-            }
-
-            if (!_playerServerCharacter.IsOwner)
-            {
-                Debug.Log($"[{gameObject.name}] Trigger entered but player is not owner, ignoring collision with: {collision.gameObject.name}");
-                return; // Only owner client runs hit detection
             }
 
             // Find ServerCharacter on the hit object, supporting child colliders
             ServerCharacter targetCharacter = collision.GetComponentInParent<ServerCharacter>();
-            if (targetCharacter == null)
+            
+            if (targetCharacter == null || targetCharacter.CharacterData == null || !targetCharacter.CharacterData.IsNpc)
             {
-                Debug.Log($"[{gameObject.name}] Trigger overlapped with non-character object: {collision.gameObject.name}");
-                return;
-            }
-
-            if (targetCharacter.CharacterData == null)
-            {
-                Debug.LogWarning($"[{gameObject.name}] Overlapped character has no CharacterData: {targetCharacter.gameObject.name}");
-                return;
-            }
-
-            if (!targetCharacter.CharacterData.IsNpc)
-            {
-                // Hit another player or self
-                return;
-            }
-
-            if (targetCharacter.DamageReceiver == null)
-            {
-                Debug.LogWarning($"[{gameObject.name}] Overlapped NPC has no DamageReceiver: {targetCharacter.gameObject.name}");
                 return;
             }
 

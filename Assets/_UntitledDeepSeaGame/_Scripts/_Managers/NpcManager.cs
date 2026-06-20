@@ -383,10 +383,15 @@ namespace UntitledDeepSeaGame
             for (int i = _activeNpcs.Count - 1; i >= 0; i--)
             {
                 ServerCharacter npc = _activeNpcs[i];
-                if (npc == null || npc.LifeState == LifeState.Dead)
+                if (npc == null)
                 {
-                    _despawnTimers.Remove(npc);
                     _activeNpcs.RemoveAt(i);
+                    continue;
+                }
+
+                if (npc.LifeState == LifeState.Dead)
+                {
+                    DespawnNpc(npc);
                 }
             }
 
@@ -481,9 +486,9 @@ namespace UntitledDeepSeaGame
         /// Cleanly despawns an NPC on the server, removes it from all tracking structures,
         /// and recalculates player NPC capacities.
         /// </summary>
-        private void DespawnNpc(ServerCharacter npc)
+        public void DespawnNpc(ServerCharacter npc)
         {
-            if (npc == null) return;
+            if (!IsServer || npc == null) return;
 
             // Remove from active list
             _activeNpcs.Remove(npc);
