@@ -12,7 +12,7 @@ namespace UntitledDeepSeaGame
         private ServerCharacter _serverCharacter;
 
         [SerializeField]
-        private NetworkLifeState _networkLifeState;
+        private NetworkHealthState _networkHealthState;
         [SerializeField]
         private List<ServerSpriteAnimHandler> _spriteAnimHandlers = new List<ServerSpriteAnimHandler>();
 
@@ -22,7 +22,7 @@ namespace UntitledDeepSeaGame
         {
             if (IsOwner)
             {
-                _networkLifeState.LifeState.OnValueChanged += OnLifeStateChanged;
+                _networkHealthState.LifeState.OnValueChanged += OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged += PlayCurrentMoveState;
                 _serverCharacter.CurrentDirection.OnValueChanged += OnCardinalDirectionChanged;
                 // if (_serverCharacter.TryGetComponent(out Player player))
@@ -35,9 +35,9 @@ namespace UntitledDeepSeaGame
 
         public override void OnNetworkDespawn()
         {
-            if (IsOwner && _networkLifeState != null)
+            if (IsOwner && _networkHealthState != null)
             {
-                _networkLifeState.LifeState.OnValueChanged -= OnLifeStateChanged;
+                _networkHealthState.LifeState.OnValueChanged -= OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged -= PlayCurrentMoveState;
                 _serverCharacter.CurrentDirection.OnValueChanged -= OnCardinalDirectionChanged;
                 // if (_serverCharacter.TryGetComponent(out Player player))

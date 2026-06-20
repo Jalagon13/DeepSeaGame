@@ -22,7 +22,7 @@ namespace UntitledDeepSeaGame
             Player.OnAnyPlayerSpawned -= RegisterDeathPanelLogic;
             if (Player.Instance != null)
             {
-                Player.Instance.Character.NetLifeState.LifeState.OnValueChanged -= OnPlayerLifeStateChanged;
+                Player.Instance.Character.NetHealthState.LifeState.OnValueChanged -= OnPlayerLifeStateChanged;
             }
         }
 
@@ -30,7 +30,7 @@ namespace UntitledDeepSeaGame
         {
             if (Player.Instance != null)
             {
-                Player.Instance.Character.NetLifeState.LifeState.OnValueChanged += OnPlayerLifeStateChanged;
+                Player.Instance.Character.NetHealthState.LifeState.OnValueChanged += OnPlayerLifeStateChanged;
             }
         }
 

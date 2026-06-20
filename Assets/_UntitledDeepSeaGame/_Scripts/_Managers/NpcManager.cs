@@ -488,7 +488,7 @@ namespace UntitledDeepSeaGame
         /// </summary>
         public void DespawnNpc(ServerCharacter npc)
         {
-            if (!IsServer || npc == null) return;
+            if (IsServer || npc == null) return;
 
             // Remove from active list
             _activeNpcs.Remove(npc);

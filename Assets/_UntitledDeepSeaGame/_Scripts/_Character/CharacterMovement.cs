@@ -1,16 +1,16 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public abstract class CharacterMovement : MonoBehaviour
+    public abstract class CharacterMovement : NetworkBehaviour
     {
         public event Action<CollisionResult> CollisionDetected;
         
         [HideInInspector] public Vector2 DesiredDirection;
         
         [SerializeField] protected ServerCharacter _serverCharacter;
-
         [SerializeField] protected GridCollider _gridCollider;
         
         [Header("Air Movement Settings (Base)")]
@@ -19,6 +19,16 @@ namespace UntitledDeepSeaGame
 
         protected Vector2 _velocity;
         public Vector2 Velocity => _velocity;
+        
+        private KnockbackHandler _knockback;
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer)
+            {
+                _knockback = new(_serverCharacter);
+            }
+        }
 
         public void FixedUpdateMovement()
         {

@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace UntitledDeepSeaGame
 {
-    [RequireComponent(typeof(NetworkHealthState), typeof(NetworkLifeState), typeof(DamageReceiver))]
+    [RequireComponent(typeof(NetworkHealthState), typeof(DamageReceiver))]
     public class ServerCharacter : NetworkBehaviour
     {
         [SerializeField] private StateMachineType _stateMachineType;
@@ -34,11 +34,10 @@ namespace UntitledDeepSeaGame
             private set => NetHealthState.HitPoints.Value = value;
         }
 
-        public NetworkLifeState NetLifeState { get; private set; }
         public LifeState LifeState
         {
-            get => NetLifeState.LifeState.Value;
-            private set => NetLifeState.LifeState.Value = value;
+            get => NetHealthState.LifeState.Value;
+            private set => NetHealthState.LifeState.Value = value;
         }
 
         private CharacterStats _characterStats;
@@ -71,7 +70,6 @@ namespace UntitledDeepSeaGame
             _characterStats = new(_characterData);
 
             NetHealthState = GetComponent<NetworkHealthState>();
-            NetLifeState = GetComponent<NetworkLifeState>();
             
             _stateMachine = StateMachineFactory.CreateStateMachine(this, _stateMachineType);
         }

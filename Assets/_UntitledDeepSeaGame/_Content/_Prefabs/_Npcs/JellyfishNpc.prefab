@@ -230,7 +230,6 @@ GameObject:
   - component: {fileID: 7224274360569420902}
   - component: {fileID: 4193009179046351597}
   - component: {fileID: 7751581453780027323}
-  - component: {fileID: 460302314144742751}
   - component: {fileID: 7003273749866864284}
   - component: {fileID: 4704644086379418733}
   - component: {fileID: 3431724271537848667}
@@ -270,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3725037719
+  GlobalObjectIdHash: 2431297791
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -301,24 +300,6 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
---- !u!114 &460302314144742751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4685659357211644810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 590752a1436de41328ebbe3c0fd0026a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NetworkLifeState
-  ShowTopMostFoldoutHeaderGroup: 1
-  _lifeState:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
 --- !u!114 &7003273749866864284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
-  _lifeState: {fileID: 460302314144742751}
+  _healthState: {fileID: 0}
 --- !u!114 &4704644086379418733
 MonoBehaviour:
   m_ObjectHideFlags: 0

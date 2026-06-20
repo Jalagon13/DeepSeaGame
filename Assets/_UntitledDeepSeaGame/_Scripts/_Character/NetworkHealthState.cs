@@ -22,6 +22,8 @@ namespace UntitledDeepSeaGame
         }
 
         private ServerCharacter _serverCharacter;
+        private NetworkVariable<LifeState> _lifeState = new NetworkVariable<LifeState>();
+        public NetworkVariable<LifeState> LifeState => _lifeState;
 
         private void Awake()
         {

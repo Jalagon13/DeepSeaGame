@@ -8,7 +8,7 @@ namespace UntitledDeepSeaGame
     public class DamageReceiver : NetworkBehaviour
     {
         [SerializeField]
-        private NetworkLifeState _lifeState;
+        private NetworkHealthState _healthState;
 
         public event EventHandler<HpReceivedEventArgs> HpReceived;
         public class HpReceivedEventArgs : EventArgs
@@ -46,7 +46,7 @@ namespace UntitledDeepSeaGame
 
         public bool IsAlive()
         {
-            return _lifeState.LifeState.Value != LifeState.Dead;
+            return _healthState.LifeState.Value != LifeState.Dead;
         }
     }
 }

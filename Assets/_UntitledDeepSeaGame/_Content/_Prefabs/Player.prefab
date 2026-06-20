@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 4937875723858935662}
   - component: {fileID: 7533987530183660109}
   - component: {fileID: 4586583695564191674}
-  - component: {fileID: 803792098292795098}
   - component: {fileID: 8924049036358242053}
   - component: {fileID: 2863469088550283713}
   - component: {fileID: 2251106055964076810}
@@ -114,24 +113,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _playerCollider: {fileID: 7189654115469789931}
   SpawnPoint: {x: 0, y: 0}
---- !u!114 &803792098292795098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120328430538976818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 590752a1436de41328ebbe3c0fd0026a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.NetworkLifeState
-  ShowTopMostFoldoutHeaderGroup: 1
-  _lifeState:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
 --- !u!114 &8924049036358242053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
-  _lifeState: {fileID: 803792098292795098}
+  _healthState: {fileID: 0}
 --- !u!114 &2251106055964076810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterAnimation
   ShowTopMostFoldoutHeaderGroup: 1
   _serverCharacter: {fileID: 1902777031516221210}
-  _networkLifeState: {fileID: 803792098292795098}
+  _networkHealthState: {fileID: 0}
   _spriteAnimHandlers:
   - {fileID: 6435305078094566520}
 --- !u!114 &5720560256968510660
