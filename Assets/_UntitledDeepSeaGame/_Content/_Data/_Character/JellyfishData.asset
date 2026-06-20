@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JellyfishData
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CharacterSO
   BaseSpeed: 3
-  BaseMaxHealth: 20
+  BaseMaxHealth: 12
   BaseDefense: 0
   CanDie: 1
   CanBeKnockedBack: 1

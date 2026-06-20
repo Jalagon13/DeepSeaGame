@@ -72,7 +72,7 @@ namespace UntitledDeepSeaGame
 
             _isAiming = true;
             _heldItemHolder.SetActive(true);
-            _currentHeldObject.OnStart();
+            _currentHeldObject.OnStart(tool, false);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -189,7 +189,7 @@ namespace UntitledDeepSeaGame
 
             _heldItemPivot.transform.rotation = startRotation;
             _heldItemHolder.SetActive(true);
-            _currentHeldObject.OnStart();
+            _currentHeldObject.OnStart(toolItemSO, true);
 
             _heldItemPivot.transform.DORotateQuaternion(endRotation, duration).SetEase(Ease.OutSine).OnComplete(() =>
             {

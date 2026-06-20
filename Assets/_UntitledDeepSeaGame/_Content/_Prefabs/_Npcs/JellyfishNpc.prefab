@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 6276450
+  GlobalObjectIdHash: 3725037719
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -379,5 +379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34be32d01b5bf408aa81a9b8c58af131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FishCharacterMovement
+  DesiredDirection: {x: 0, y: 0}
   _serverCharacter: {fileID: 3431724271537848667}
   _gridCollider: {fileID: 4704644086379418733}
+  _gravity: -30
+  _terminalVelocity: -50
+  _propulsionPower: 10
