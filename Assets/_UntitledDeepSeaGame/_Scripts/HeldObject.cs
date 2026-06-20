@@ -6,12 +6,12 @@ namespace UntitledDeepSeaGame
     {
         public void OnStart()
         {
-            // Debug.Log($"HeldObj Start: {gameObject.name}");
+            Debug.Log($"HeldObj Start: {gameObject.name}");
         }
         
         public void OnEnd()
         {
-            // Debug.Log($"HeldObj End: {gameObject.name}");
+            Debug.Log($"HeldObj End: {gameObject.name}");
         }
     }
 }

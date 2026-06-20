@@ -28,14 +28,14 @@ namespace UntitledDeepSeaGame
                 {
                     _isPropelling = false;
                     _velocity = Vector2.zero;
-                    Debug.Log($"Propulsion Ended");
+                    // Debug.Log($"Propulsion Ended");
                 }
             }
         }
         
         public void StartPropulsion(Vector2 direction)
         {
-            Debug.Log($"Propulsion Started");
+            // Debug.Log($"Propulsion Started");
             _isPropelling = true;
             DesiredDirection = direction;
             _velocity = direction * _propulsionPower;

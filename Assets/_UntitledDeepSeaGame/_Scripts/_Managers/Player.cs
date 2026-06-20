@@ -8,13 +8,13 @@ namespace UntitledDeepSeaGame
     [RequireComponent(typeof(ServerCharacter), typeof(PlayerArmController))]
     public class Player : NetworkBehaviour
     {
+        public static Player Instance { get; private set; }
+        
         public static event EventHandler<PlayerIdEventArgs> OnAnyPlayerSpawned;
         public class PlayerIdEventArgs : EventArgs
         {
             public ulong PlayerId;
         }
-        
-        public static Player Instance { get; private set; }
 
         [SerializeField] private BoxCollider2D _playerCollider;
         public BoxCollider2D PlayerCollider => _playerCollider;

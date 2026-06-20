@@ -8,7 +8,6 @@ namespace UntitledDeepSeaGame
     {
         private PlayerStateMachine _ctx;
         private ToolItemSO _toolItemSO;
-        private Direction _swingDirection;
 
         public PlayerAttackState(AIState key, StateMachine context) : base(key, context)
         {
@@ -18,40 +17,13 @@ namespace UntitledDeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            // Debug.Log("Player entering swing");
             _toolItemSO = _ctx.HeldItem as ToolItemSO;
-            _swingDirection = Player.Instance.PlayerArmController.AimDirection.Value;
+            if (_toolItemSO == null) return;
 
             ushort toolItemId = GameDataRegistry.Instance.GetItemIdFromItemSO(_toolItemSO);
             float duration = _toolItemSO.SwingDuration;
 
-            switch (_swingDirection)
-            {
-                case Direction.Up:
-                    Swing(160, 20, duration, true, Direction.Up, toolItemId);
-                    break;
-                case Direction.Down:
-                    Swing(340, 200, duration, false, Direction.Down, toolItemId);
-                    break;
-                case Direction.Left:
-                    Swing(110, 250, duration, false, Direction.Left, toolItemId);
-                    break;
-                case Direction.Right:
-                    Swing(70, 290, duration, true, Direction.Right, toolItemId);
-                    break;
-            }
-        }
-
-        private void Swing(int startAngle, int endAngle, float duration, bool clockwise, Direction swingDirection, ushort toolItemId)
-        {
-            // TODO: Melee Collider Data set up here
-            if (clockwise && endAngle > startAngle) startAngle += 360;
-            else if (!clockwise && startAngle > endAngle) endAngle += 360;
-
-            Quaternion startRotation = Quaternion.Euler(0, 0, startAngle);
-            Quaternion endRotation = Quaternion.Euler(0, 0, endAngle);
-
-            Player.Instance.PlayerArmController.PerformSwing(startRotation, endRotation, duration, swingDirection, toolItemId);
+            Player.Instance.PlayerArmController.ExecuteSwing(toolItemId, duration);
         }
 
         public override void UpdateState()
@@ -69,10 +41,7 @@ namespace UntitledDeepSeaGame
 
         public override void ExitState()
         {
-            if (_ctx.ServerCharacter.MovementState.Value == MovementState.Idle)
-            {
-                _ctx.ServerCharacter.CurrentDirection.Value = _swingDirection;
-            }
+            
         }
     }
 }

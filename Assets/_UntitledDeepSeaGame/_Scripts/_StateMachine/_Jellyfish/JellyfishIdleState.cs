@@ -23,7 +23,7 @@ namespace UntitledDeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log($"Jellyfish Idle State Entered");
+            // Debug.Log($"Jellyfish Idle State Entered");
             _idleComplete = false;
 
             float idleDuration = Random.Range(_ctx.ServerCharacter.CharacterData.MinIdleDuration, _ctx.ServerCharacter.CharacterData.MaxIdleDuration);

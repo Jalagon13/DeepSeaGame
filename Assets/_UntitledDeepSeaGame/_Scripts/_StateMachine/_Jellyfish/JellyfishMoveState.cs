@@ -21,7 +21,7 @@ namespace UntitledDeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log($"Jellyfish Move State Entered");
+            // Debug.Log($"Jellyfish Move State Entered");
             Vector2 direction = GetDirection();
             _jellyfishMovement.StartPropulsion(direction);
         }

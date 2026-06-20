@@ -246,7 +246,7 @@ namespace UntitledDeepSeaGame
             }
 
             _playerSpawnData.TryGetValue(playerId, out PlayerSpawnData data);
-            Debug.Log($"Spawning NPC: {npcPrefab.name} at {position} for player {playerId}, with {data.CurrentCapacity}/{data.MaxNpcSlotAmount} capacity");
+            // Debug.Log($"Spawning NPC: {npcPrefab.name} at {position} for player {playerId}, with {data.CurrentCapacity}/{data.MaxNpcSlotAmount} capacity");
         }
 
         private void RecalculatePlayerCapacity(PlayerSpawnData spawnData)

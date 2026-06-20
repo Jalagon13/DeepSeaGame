@@ -10,6 +10,12 @@ namespace UntitledDeepSeaGame
 
         private bool _isGrounded;
         private bool _jumpRequested;
+        private PlayerArmController _playerArmController;
+
+        private void Awake()
+        {
+            _playerArmController = GetComponent<PlayerArmController>();
+        }
 
         protected override void WaterMovement()
         {
@@ -38,18 +44,21 @@ namespace UntitledDeepSeaGame
                 _velocity = Vector2.Lerp(_velocity, DesiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
             }
 
-            if (DesiredDirection != Vector2.zero)
+            // Only allow changing facing direction if we are not currently swinging
+            if (_playerArmController == null || !_playerArmController.IsSwinging)
             {
-                _serverCharacter.CurrentDirection.Value = GetCardinalDirectionFromVector2(DesiredDirection);
+                if (Mathf.Abs(DesiredDirection.x) > 0.01f)
+                {
+                    _serverCharacter.CurrentDirection.Value = DesiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                }
             }
         }
 
         protected override void AirMovement()
         {
-            // Debug.Log($"Air Movement");
             // 1. Grounded Check via our Grid Data
             _isGrounded = _gridCollider.IsGrounded();
-            
+
             if (_serverCharacter.CharacterData.CanMove)
             {
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
@@ -73,10 +82,13 @@ namespace UntitledDeepSeaGame
 
                 _velocity = new Vector2(targetX, targetY);
 
-                // 5. Update Direction (Horizontal only in air)
-                if (Mathf.Abs(DesiredDirection.x) > 0.01f)
+                // 5. Update Direction (Horizontal only in air, only if not swinging)
+                if (_playerArmController == null || !_playerArmController.IsSwinging)
                 {
-                    _serverCharacter.CurrentDirection.Value = DesiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                    if (Mathf.Abs(DesiredDirection.x) > 0.01f)
+                    {
+                        _serverCharacter.CurrentDirection.Value = DesiredDirection.x > 0 ? Direction.Right : Direction.Left;
+                    }
                 }
             }
         }
