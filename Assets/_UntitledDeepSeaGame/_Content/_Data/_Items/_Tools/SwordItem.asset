@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7ee61e6155346dc844ca14364df86f, type: 3}
+  m_Name: SwordItem
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ToolItemSO
+  _itemName: Sword
+  _itemDescription: 
+  _inventoryIcon: {fileID: 21300000, guid: 109174f54ddf71a4fbe62bf30e9cf0e0, type: 3}
+  _isStackable: 0
+  <HarvestType>k__BackingField: 1
+  <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 9b2bb134625414610bd039dc8f3b1f23, type: 3}
+  <Damage>k__BackingField: 4
+  <Knockback>k__BackingField: 6
+  <SwingDuration>k__BackingField: 0.35
+  <MiningPower>k__BackingField: 1

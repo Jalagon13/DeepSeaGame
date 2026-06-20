@@ -12,13 +12,13 @@ namespace UntitledDeepSeaGame
         private GameObject _heldItemPivot;
         [SerializeField]
         private GameObject _heldItemHolder;
-
+        
         [Header("Pivots")]
         [SerializeField]
         private Transform _eastPivot;
         [SerializeField]
         private Transform _westPivot;
-
+        
         public bool IsSwinging { get; private set; }
         
         public NetworkVariable<Direction> AimDirection { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -28,7 +28,7 @@ namespace UntitledDeepSeaGame
         private HeldObject _currentHeldObject;
         private HeldObject _currentHeldPrefab;
         private bool _isAiming;
-
+        
         private void Awake()
         {
             _heldItemHolder.SetActive(false);

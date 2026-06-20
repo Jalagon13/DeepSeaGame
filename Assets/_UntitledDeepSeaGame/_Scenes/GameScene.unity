@@ -5678,6 +5678,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
   - {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
   - {fileID: 11400000, guid: cbd9d62d13e7c45f5bf9a4cf5aded907, type: 2}
+  - {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
@@ -5958,20 +5959,10 @@ MonoBehaviour:
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.2
   _startingItems:
-  - _item: {fileID: 11400000, guid: 20f6484a2f616433f807f6edd3a4e7c5, type: 2}
-    _amount: 99
   - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: cbd9d62d13e7c45f5bf9a4cf5aded907, type: 2}
-    _amount: 99
+  - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
+    _amount: 1
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

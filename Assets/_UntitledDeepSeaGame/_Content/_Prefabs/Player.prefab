@@ -51,7 +51,6 @@ GameObject:
   - component: {fileID: 7146354698580210200}
   - component: {fileID: 5720560256968510660}
   - component: {fileID: 534220837259839922}
-  - component: {fileID: 7807344152892952825}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -211,11 +210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a456c80fbea834443b999317da686a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterMovement
+  DesiredDirection: {x: 0, y: 0}
   _serverCharacter: {fileID: 1902777031516221210}
   _gridCollider: {fileID: 2251106055964076810}
-  _jumpPower: 25
   _gravity: -50
   _terminalVelocity: -50
+  _jumpPower: 25
 --- !u!114 &7146354698580210200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,18 +265,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _playerSO: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
   _headPoint: {fileID: 409362107588107734}
---- !u!114 &7807344152892952825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120328430538976818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d434d7e9a8940a19a9d1979c59aa0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageTest
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0

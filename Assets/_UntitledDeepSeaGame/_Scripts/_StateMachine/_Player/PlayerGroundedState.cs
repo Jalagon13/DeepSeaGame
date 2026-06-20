@@ -26,9 +26,16 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType == ToolType.Drill && GameInput.Instance.PrimaryActionHeldDown)
+            if (_ctx.HeldItem is ToolItemSO tool && GameInput.Instance.PrimaryActionHeldDown)
             {
-                SwitchState(new AIStateData(AIState.Mining));
+                if(tool.HarvestType == ToolType.Drill)
+                {
+                    SwitchState(new AIStateData(AIState.Mining));
+                }
+                else if(tool.HarvestType == ToolType.Sword)
+                {
+                    SwitchState(new AIStateData(AIState.Attacking));
+                }
             }
             else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
             {

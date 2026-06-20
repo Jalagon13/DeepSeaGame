@@ -44,6 +44,7 @@ namespace UntitledDeepSeaGame
     public enum ToolType
     {
         Drill,
+        Sword
     }
     
     public enum MiningState
