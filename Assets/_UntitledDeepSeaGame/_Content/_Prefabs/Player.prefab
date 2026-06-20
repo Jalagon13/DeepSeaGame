@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
-  _healthState: {fileID: 0}
+  _healthState: {fileID: 8924049036358242053}
 --- !u!114 &2251106055964076810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a456c80fbea834443b999317da686a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterMovement
+  ShowTopMostFoldoutHeaderGroup: 1
   DesiredDirection: {x: 0, y: 0}
   _serverCharacter: {fileID: 1902777031516221210}
   _gridCollider: {fileID: 2251106055964076810}
@@ -211,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterAnimation
   ShowTopMostFoldoutHeaderGroup: 1
   _serverCharacter: {fileID: 1902777031516221210}
-  _networkHealthState: {fileID: 0}
+  _networkHealthState: {fileID: 8924049036358242053}
   _spriteAnimHandlers:
   - {fileID: 6435305078094566520}
 --- !u!114 &5720560256968510660

@@ -18,7 +18,11 @@ namespace UntitledDeepSeaGame
         
         [Tooltip("If true, the NPC can be knocked back")]
         public bool CanBeKnockedBack = true;
-        
+
+        [Tooltip("Resistance to knockback effects (0 = no resistance, 1 = full resistance)")]
+        [Range(0f, 1f)]
+        public float KnockbackResist = 0f;
+
         [Tooltip("Duration of invincibility frames when character is hit")]
         public float IFrameDuration = 0.17f;
 

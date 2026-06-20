@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
-  _healthState: {fileID: 0}
+  _healthState: {fileID: 7751581453780027323}
 --- !u!114 &4704644086379418733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34be32d01b5bf408aa81a9b8c58af131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FishCharacterMovement
+  ShowTopMostFoldoutHeaderGroup: 1
   DesiredDirection: {x: 0, y: 0}
   _serverCharacter: {fileID: 3431724271537848667}
   _gridCollider: {fileID: 4704644086379418733}

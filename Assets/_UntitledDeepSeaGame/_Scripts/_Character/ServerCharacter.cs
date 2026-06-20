@@ -174,10 +174,14 @@ namespace UntitledDeepSeaGame
                 }
 
                 if (_characterData.CanBeKnockedBack && e.PlayKnockback)
+                {
                     _characterMovement.StartKnockback(_inflicter.transform.position, e.KnockbackForce);
+                }
 
                 if (HitPoints + hpReceived > 0)
+                {
                     StartCoroutine(StartIFrameTimer());
+                }
             }
             
             HitPoints = Mathf.Clamp(HitPoints + hpReceived, 0, _characterData.BaseMaxHealth);

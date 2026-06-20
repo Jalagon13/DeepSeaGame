@@ -42,6 +42,12 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
+            if (_knockback != null && _knockback.IsActive)
+            {
+                FixedUpdateKnockback();
+                return;
+            }
+
             if (_serverCharacter.CurrentEnvironment.Value == Environment.Water)
             {
                 WaterMovement();
@@ -61,6 +67,26 @@ namespace UntitledDeepSeaGame
 
             HandleCollision(result);
         }
+
+        private void FixedUpdateKnockback()
+        {
+            _knockback.Tick(Time.fixedDeltaTime);
+            _velocity = _knockback.Velocity;
+
+            CollisionResult result = _gridCollider.Move(_velocity, Time.fixedDeltaTime);
+
+            if (result.HitX || result.HitY)
+            {
+                CollisionDetected?.Invoke(result);
+                _knockback.HandleCollision(result);
+                _velocity = _knockback.Velocity;
+            }
+
+            if (!_knockback.IsActive)
+            {
+                EndKnockback();
+            }
+        }
         
         protected abstract void WaterMovement();
         protected abstract void AirMovement();
@@ -74,9 +100,33 @@ namespace UntitledDeepSeaGame
 
         public void StartKnockback(Vector2 knockerPosition, float knockbackForce, bool inverse = false)
         {
-            Vector2 knockbackDirection = ((Vector2)_serverCharacter.transform.position - knockerPosition).normalized;
+            if (_knockback == null)
+            {
+                _knockback = new(_serverCharacter);
+            }
+
+            _knockback.Apply(knockerPosition, knockbackForce, inverse);
+
+            if (!_knockback.IsActive)
+            {
+                return;
+            }
+
             _serverCharacter.MovementState.Value = MovementState.Knockback;
-            // _knockback.ApplyKnockback(knockerPosition, knockbackForce, inverse);
+        }
+
+        private void EndKnockback()
+        {
+            _velocity = Vector2.zero;
+
+            if (DesiredDirection.sqrMagnitude > 0.0001f && _serverCharacter.CharacterData.CanMove)
+            {
+                _serverCharacter.MovementState.Value = MovementState.Moving;
+            }
+            else
+            {
+                _serverCharacter.MovementState.Value = MovementState.Idle;
+            }
         }
 
         public Direction GetCardinalDirectionFromVector2(Vector2 desiredDirection)
@@ -114,6 +164,11 @@ namespace UntitledDeepSeaGame
 
             DesiredDirection.Normalize();
 
+            if (_knockback != null && _knockback.IsActive)
+            {
+                return;
+            }
+
             if (_serverCharacter.MovementState.Value != MovementState.Moving)
             {
                 _serverCharacter.MovementState.Value = MovementState.Moving;
@@ -128,6 +183,11 @@ namespace UntitledDeepSeaGame
             }
 
             DesiredDirection = Vector2.zero;
+
+            if (_knockback != null && _knockback.IsActive)
+            {
+                return;
+            }
 
             if (_serverCharacter.MovementState.Value != MovementState.Idle)
             {
