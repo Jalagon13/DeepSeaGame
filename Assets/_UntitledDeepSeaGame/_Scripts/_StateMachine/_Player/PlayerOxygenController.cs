@@ -47,16 +47,16 @@ namespace UntitledDeepSeaGame
             
             if(Player.Instance.Character.LifeState == LifeState.Dead) return;
 
-            Environment env = _serverCharacter.CurrentEnvironment.Value;
+            Status env = _serverCharacter.CurrentStatus.Value;
 
             Vector2Int headGridPos = new(Mathf.FloorToInt(_headPoint.position.x), Mathf.FloorToInt(_headPoint.position.y + 1));
             bool headInAir = WorldManager.Instance.WorldDataStore.IsAirAt(headGridPos.x, headGridPos.y);
 
-            if(headInAir || env == Environment.Air)
+            if(headInAir || env == Status.InAir)
             {
                 HandleAirOxygen();
             }
-            else if (env == Environment.Water)
+            else if (env == Status.InWater)
             {
                 HandleWaterOxygen();
             }

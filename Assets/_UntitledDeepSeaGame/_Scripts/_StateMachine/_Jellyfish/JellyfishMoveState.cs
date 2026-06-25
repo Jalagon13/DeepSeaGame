@@ -49,7 +49,7 @@ namespace UntitledDeepSeaGame
                 SwitchState(new AIStateData(AIState.Knockbacked));
                 return;
             }
-            else if(!_jellyfishMovement.IsPropelling || _ctx.ServerCharacter.CurrentEnvironment.Value == Environment.Air)
+            else if(!_jellyfishMovement.IsPropelling || _ctx.ServerCharacter.CurrentStatus.Value == Status.InAir)
             {
                 SwitchState(new AIStateData(AIState.Idle));
                 return;

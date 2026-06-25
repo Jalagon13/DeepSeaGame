@@ -56,6 +56,7 @@ namespace UntitledDeepSeaGame
             }
             else
             {
+                ExitState();
                 newState.EnterStateWithNetworkSync(newStateData); // Only call EnterState directly for substates
                 _currentSuperState?.SetSubState(newStateData.CurrentState);
             }

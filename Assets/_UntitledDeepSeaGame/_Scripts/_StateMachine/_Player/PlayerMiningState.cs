@@ -29,7 +29,11 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if(!GameInput.Instance.PrimaryActionHeldDown || _ctx.HeldItem is not ToolItemSO || (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType != ToolType.Drill))
+            if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
+            {
+                SwitchState(new AIStateData(AIState.Grounded));
+            }
+            else if(!GameInput.Instance.PrimaryActionHeldDown || _ctx.HeldItem is not ToolItemSO || (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType != ToolType.Drill))
             {
                 SwitchState(new AIStateData(AIState.Grounded));
             }

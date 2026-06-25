@@ -11,20 +11,16 @@ namespace UntitledDeepSeaGame
         [SerializeField] private StateMachineType _stateMachineType;
         public StateMachineType StateMachineType => _stateMachineType;
     
-        [SerializeField]
-        private CharacterSO _characterData;
+        [SerializeField] private CharacterSO _characterData;
         public CharacterSO CharacterData => _characterData;
 
-        [SerializeField]
-        private CharacterMovement _characterMovement;
+        [SerializeField] private CharacterMovement _characterMovement;
         public CharacterMovement Movement => _characterMovement;
 
-        [SerializeField]
-        private ClientCharacter _clientCharacter;
+        [SerializeField] private ClientCharacter _clientCharacter;
         public ClientCharacter ClientCharacter => _clientCharacter;
 
-        [SerializeField]
-        private ClientCharacterFeedbacks _clientFeedbacks;
+        [SerializeField] private ClientCharacterFeedbacks _clientFeedbacks;
         public ClientCharacterFeedbacks ClientFeedbacks => _clientFeedbacks;
 
         public NetworkHealthState NetHealthState { get; private set; }
@@ -62,7 +58,7 @@ namespace UntitledDeepSeaGame
         public NetworkVariable<Direction> CurrentDirection { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SuperAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<Environment> CurrentEnvironment { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Status> CurrentStatus { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         protected virtual void Awake()
         {
@@ -76,7 +72,7 @@ namespace UntitledDeepSeaGame
 
         public override void OnNetworkSpawn()
         {
-            if (IsOwner)
+            if (IsServer)
             {
                 HitPoints = _characterStats.MaxHealth.GetValue();
 
@@ -98,7 +94,7 @@ namespace UntitledDeepSeaGame
 
         public override void OnNetworkDespawn()
         {
-            if(IsOwner)
+            if(IsServer)
             {
                 _damageReceiver.HpReceived -= ReceiveHP;
             }
@@ -122,7 +118,7 @@ namespace UntitledDeepSeaGame
             {
                 Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y + 1));
                 bool isInAir = WorldManager.Instance.WorldDataStore.IsAirAt(gridPos.x, gridPos.y);
-                CurrentEnvironment.Value = isInAir ? Environment.Air : Environment.Water;
+                CurrentStatus.Value = isInAir ? Status.InAir : Status.InWater;
 
                 _characterMovement.FixedUpdateMovement();
             }

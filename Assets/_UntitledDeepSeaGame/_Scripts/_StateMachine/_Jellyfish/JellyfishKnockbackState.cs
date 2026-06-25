@@ -27,13 +27,9 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (Context.ServerCharacter.MovementState.Value == MovementState.Idle)
+            if (Context.ServerCharacter.MovementState.Value != MovementState.Knockback)
             {
                 SwitchState(new AIStateData(AIState.Idle));
-            }
-            else if (Context.ServerCharacter.MovementState.Value == MovementState.Moving)
-            {
-                SwitchState(new AIStateData(AIState.Moving));
             }
         }
     }

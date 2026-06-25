@@ -19,10 +19,10 @@ namespace UntitledDeepSeaGame
         Right
     }
     
-    public enum Environment
+    public enum Status
     {
-        Water,
-        Air
+        InWater,
+        InAir
     }
 
     public enum MovementState

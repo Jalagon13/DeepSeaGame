@@ -48,7 +48,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            if (_serverCharacter.CurrentEnvironment.Value == Environment.Water)
+            if (_serverCharacter.CurrentStatus.Value == Status.InWater)
             {
                 WaterMovement();
             }

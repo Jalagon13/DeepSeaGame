@@ -33,7 +33,11 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (!Player.Instance.PlayerArmController.IsSwinging)
+            if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
+            {
+                SwitchState(new AIStateData(AIState.Grounded));
+            }
+            else if (!Player.Instance.PlayerArmController.IsSwinging)
             {
                 SwitchState(new AIStateData(AIState.Grounded, 0));
             }

@@ -56,13 +56,13 @@ namespace UntitledDeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            if (_idleComplete && _ctx.ServerCharacter.CharacterData.CanMove && _ctx.ServerCharacter.CharacterData.BaseSpeed != 0)
-            {
-                SwitchState(new AIStateData(AIState.Moving));
-            }
-            else if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
+            if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
                 SwitchState(new AIStateData(AIState.Knockbacked));
+            }
+            else if (_idleComplete && _ctx.ServerCharacter.CharacterData.CanMove && _ctx.ServerCharacter.CharacterData.BaseSpeed != 0)
+            {
+                SwitchState(new AIStateData(AIState.Moving));
             }
         }
     }
