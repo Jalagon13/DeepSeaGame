@@ -15,8 +15,12 @@ MonoBehaviour:
   BaseSpeed: 3
   BaseMaxHealth: 12
   BaseDefense: 0
+  Damage: 1
+  KnockbackForce: 50
+  PlayKnockback: 1
   CanDie: 1
   CanBeKnockedBack: 1
+  KnockbackResist: 0
   IFrameDuration: 0.17
   CanMove: 1
   TurnSharpness: 2
@@ -25,3 +29,8 @@ MonoBehaviour:
   NpcPrefab: {fileID: 3431724271537848667, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
   MinIdleDuration: 1.25
   MaxIdleDuration: 2.25
+  LootDrops:
+  - Item: {fileID: 11400000, guid: 4c3c63d0c5696412e985db38294588c0, type: 2}
+    Min: 1
+    Max: 2
+    Chance: 100

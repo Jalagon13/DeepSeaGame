@@ -5,10 +5,6 @@ namespace UntitledDeepSeaGame
 {
     public class ContactDamageDealer : NetworkBehaviour
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private float _knockbackForce = 6f;
-        [SerializeField] private bool _playKnockback = true;
-
         private ServerCharacter _source;
 
         private void Awake()
@@ -33,8 +29,8 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            ServerCharacter target = collision.GetComponentInParent<ServerCharacter>();
-            if (target == null || target == _source || target.CharacterData == null || target.CharacterData.IsNpc)
+            ServerCharacter target = collision.transform.root.GetComponent<ServerCharacter>();
+            if (target == null || target == _source || target.CharacterData == null || target.CharacterData.IsNpc || target.GridCollider.BodyCollider != collision)
             {
                 return;
             }
@@ -44,8 +40,8 @@ namespace UntitledDeepSeaGame
             {
                 return;
             }
-            Debug.Log($"[{_source.name}] ContactDamageDealer: Dealing {_damage} damage to [{target.name}]");
-            damageReceiver.ReceiveHP(_source, -_damage, _playKnockback, _knockbackForce);
+            Debug.Log($"[{_source.name}] ContactDamageDealer: Dealing {_source.CharacterData.Damage} damage to [{target.name}]");
+            damageReceiver.ReceiveHP(_source, -_source.CharacterData.Damage, _source.CharacterData.PlayKnockback, _source.CharacterData.KnockbackForce);
         }
     }
 }

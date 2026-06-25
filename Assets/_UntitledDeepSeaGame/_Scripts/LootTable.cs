@@ -20,6 +20,11 @@ namespace UntitledDeepSeaGame
     {
         public static void SpawnLoot(List<Loot> lootTable, Vector2 spawnPos)
         {
+            if (lootTable == null || lootTable.Count == 0)
+            {
+                return;
+            }
+
             var itemsToSpawn = GetItemsToSpawn(lootTable);
 
             if (itemsToSpawn.Count > 0)
@@ -41,7 +46,7 @@ namespace UntitledDeepSeaGame
 
             foreach (Loot loot in lootTable)
             {
-                if (Random.Range(0, 100) < loot.Chance)
+                if (Random.Range(0f, 100f) < loot.Chance)
                 {
                     int dropAmount = Random.Range(loot.Min, loot.Max + 1);
 
@@ -59,5 +64,5 @@ namespace UntitledDeepSeaGame
             return lootToDrop;
         }
     }
-}
+} 
 

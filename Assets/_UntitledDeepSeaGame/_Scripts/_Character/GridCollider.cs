@@ -11,7 +11,8 @@ namespace UntitledDeepSeaGame
     public class GridCollider : MonoBehaviour
     {
         [SerializeField] 
-        private BoxCollider2D _collider;
+        private BoxCollider2D _bodyCollider;
+        public BoxCollider2D BodyCollider => _bodyCollider;
 
         [SerializeField, Tooltip("Optional: Use a specific collider for ground detection. If null, uses the main collider.")]
         private BoxCollider2D _feetCollider;
@@ -37,8 +38,8 @@ namespace UntitledDeepSeaGame
             CollisionResult result = new CollisionResult();
             
             // Calculate AABB manually to avoid stale 'collider.bounds' data after teleports
-            Vector2 size = _collider.size;
-            Vector2 offset = _collider.offset;
+            Vector2 size = _bodyCollider.size;
+            Vector2 offset = _bodyCollider.offset;
             Vector2 halfSize = size * 0.5f;
 
             // 1. Resolve X Axis
@@ -115,7 +116,7 @@ namespace UntitledDeepSeaGame
             if (_worldDataStore == null) return false;
 
             // Use feet collider if available, otherwise fallback to main body collider
-            BoxCollider2D target = (_feetCollider != null) ? _feetCollider : _collider;
+            BoxCollider2D target = (_feetCollider != null) ? _feetCollider : _bodyCollider;
             Vector2 pos = transform.position;
             Vector2 halfSize = target.size * 0.5f;
 

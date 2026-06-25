@@ -19,6 +19,6 @@ MonoBehaviour:
   <HarvestType>k__BackingField: 1
   <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 9b2bb134625414610bd039dc8f3b1f23, type: 3}
   <Damage>k__BackingField: 4
-  <Knockback>k__BackingField: 50
+  <Knockback>k__BackingField: 25
   <SwingDuration>k__BackingField: 0.575
   <MiningPower>k__BackingField: 1

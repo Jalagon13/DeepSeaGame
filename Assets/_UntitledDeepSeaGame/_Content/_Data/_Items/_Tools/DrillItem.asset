@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ToolItemSO
   _itemName: Drill
   _itemDescription: 
-  _inventoryIcon: {fileID: 21300000, guid: 6fd0b649401ca5b419a5ebf5df170c0f, type: 3}
+  _inventoryIcon: {fileID: 21300000, guid: bdd6c77f3b6358b4797992581e75bd64, type: 3}
   _isStackable: 1
   <HarvestType>k__BackingField: 0
   <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UntitledDeepSeaGame
@@ -10,6 +11,9 @@ namespace UntitledDeepSeaGame
         public int BaseSpeed;
         public int BaseMaxHealth;
         public int BaseDefense;
+        public int Damage = 1;
+        public float KnockbackForce = 6f;
+        public bool PlayKnockback = true;
 
         [Space]
         [Header("Health & Survival")]
@@ -22,7 +26,7 @@ namespace UntitledDeepSeaGame
         [Tooltip("Resistance to knockback effects (0 = no resistance, 1 = full resistance)")]
         [Range(0f, 1f)]
         public float KnockbackResist = 0f;
-
+        
         [Tooltip("Duration of invincibility frames when character is hit")]
         public float IFrameDuration = 0.17f;
 
@@ -52,5 +56,8 @@ namespace UntitledDeepSeaGame
         
         [Tooltip("Maximum time the NPC will stay idle before changing state")]
         public float MaxIdleDuration = 5f;
+
+        [Tooltip("Loot entries to spawn when this character dies")]
+        public List<Loot> LootDrops = new();
     }
-}
+} 

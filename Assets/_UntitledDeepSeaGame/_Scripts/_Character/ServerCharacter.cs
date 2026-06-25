@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace UntitledDeepSeaGame
 {
-    [RequireComponent(typeof(NetworkHealthState), typeof(DamageReceiver))]
+    [RequireComponent(typeof(NetworkHealthState), typeof(DamageReceiver), typeof(GridCollider))]
     public class ServerCharacter : NetworkBehaviour
     {
         [SerializeField] private StateMachineType _stateMachineType;
@@ -50,6 +50,9 @@ namespace UntitledDeepSeaGame
         
         private Vector2 _inflicterToTargetDirection;
         public Vector2 InflicterToTargetDirection => _inflicterToTargetDirection;
+        
+        private GridCollider _gridCollider;
+        public GridCollider GridCollider => _gridCollider;
 
         private float _knockbackForceFromInflicter;
         public float KnockbackForceFromInflicter => _knockbackForceFromInflicter;
@@ -63,6 +66,7 @@ namespace UntitledDeepSeaGame
         protected virtual void Awake()
         {
             _damageReceiver = GetComponent<DamageReceiver>();
+            _gridCollider = GetComponent<GridCollider>();
             _characterStats = new(_characterData);
 
             NetHealthState = GetComponent<NetworkHealthState>();
@@ -132,8 +136,16 @@ namespace UntitledDeepSeaGame
             _inflicter = e.Inflicter;
             int hpReceived = e.HpReceived;
 
-            _inflicterToTargetDirection = (Vector2)(transform.position - _inflicter.transform.position).normalized;
-            _knockbackForceFromInflicter = e.KnockbackForce;
+            if (_inflicter != null)
+            {
+                _inflicterToTargetDirection = (Vector2)(transform.position - _inflicter.transform.position).normalized;
+                _knockbackForceFromInflicter = e.KnockbackForce;
+            }
+            else
+            {
+                _inflicterToTargetDirection = Vector2.zero;
+                _knockbackForceFromInflicter = 0f;
+            }
 
             if (hpReceived > 0)
             {
@@ -169,7 +181,7 @@ namespace UntitledDeepSeaGame
                     }
                 }
 
-                if (_characterData.CanBeKnockedBack && e.PlayKnockback)
+                if (_characterData.CanBeKnockedBack && e.PlayKnockback && _inflicter != null && _characterMovement != null)
                 {
                     _characterMovement.StartKnockback(_inflicter.transform.position, e.KnockbackForce);
                 }
@@ -188,6 +200,11 @@ namespace UntitledDeepSeaGame
             {
                 Debug.Log($"[{gameObject.name}] DEAD");
                 LifeState = LifeState.Dead;
+
+                if (_characterData.IsNpc)
+                {
+                    LootTable.SpawnLoot(_characterData.LootDrops, transform.position);
+                }
 
                 if (_characterData.IsNpc && NpcManager.Instance != null)
                 {

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4937f187e27eb410f9103f2d35a92555, type: 3}
-  m_Name: TestRecipe2
+  m_Name: SeaLanternRecipe
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.RecipeSO
-  <OutputItem>k__BackingField: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+  <OutputItem>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   <OutputAmount>k__BackingField: 1
   <Requirements>k__BackingField:
-  - <Item>k__BackingField: {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
-    <Amount>k__BackingField: 6
-  - <Item>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    <Amount>k__BackingField: 16
+  - <Item>k__BackingField: {fileID: 11400000, guid: 4c3c63d0c5696412e985db38294588c0, type: 2}
+    <Amount>k__BackingField: 1
+  - <Item>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    <Amount>k__BackingField: 1
