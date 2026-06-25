@@ -18,8 +18,8 @@ namespace UntitledDeepSeaGame
 
         private bool _isGameplayInputBlocked, _primaryHeldDown, _jumpHeldDown;
 
-        public bool JumpHeldDown => _jumpHeldDown;
-        public bool PrimaryActionHeldDown => _primaryHeldDown;
+        public bool JumpHeldDown => !_isGameplayInputBlocked && _jumpHeldDown;
+        public bool PrimaryActionHeldDown => !_isGameplayInputBlocked && _primaryHeldDown;
 
         public bool IsGameplayInputBlocked 
         {
@@ -97,7 +97,14 @@ namespace UntitledDeepSeaGame
 
         private void PlayerInput_OnPrimaryAction(InputAction.CallbackContext context)
         {
-            _primaryHeldDown = context.performed || context.started;
+            if (context.canceled || _isGameplayInputBlocked)
+            {
+                _primaryHeldDown = false;
+            }
+            else
+            {
+                _primaryHeldDown = context.performed || context.started;
+            }
             
             if(_isGameplayInputBlocked) return;
 
