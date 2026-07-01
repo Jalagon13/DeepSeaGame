@@ -1,35 +1,130 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
     public class HabitatCore : MonoBehaviour
     {
-        [field: SerializeField]
-        public int MaxTileDetection { get; private set; } = 40;
+        [SerializeField] private int _maxTileDetection = 40;
+        [SerializeField] private float _drainInterval = 5f;
+
+        private float _timer = 0f;
+
+        private void Update()
+        {
+            if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+            
+            if (WorldManager.Instance == null) return;
+            
+            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
+            if (dataStore == null || !WorldManager.Instance.IsWorldReady) return;
+
+            if (IsInWater())
+            {
+                _timer += Time.deltaTime;
+                if (_timer >= _drainInterval)
+                {
+                    _timer = 0f;
+                    TryDrainAttempt();
+                }
+            }
+        }
+
+        private bool IsInWater()
+        {
+            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
+            if (dataStore == null) return false;
+
+            Vector2Int anchor = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
+            Vector2Int size = new Vector2Int(2, 2);
+            if (dataStore.ActiveMultiTileObjects.TryGetValue(anchor, out TileSO tileSO))
+            {
+                size = tileSO.Size;
+            }
+
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    Vector2Int pos = new Vector2Int(anchor.x + i, anchor.y + j);
+                    Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                    foreach (Vector2Int dir in directions)
+                    {
+                        Vector2Int neighbor = pos + dir;
+                        // Skip if it's within the footprint itself
+                        if (neighbor.x >= anchor.x && neighbor.x < anchor.x + size.x &&
+                            neighbor.y >= anchor.y && neighbor.y < anchor.y + size.y)
+                        {
+                            continue;
+                        }
+
+                        if (dataStore.IsWaterCell(neighbor.x, neighbor.y))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
         private void TryDrainAttempt()
         {
-            Debug.Log($"Attempting drain attempt");
+            Debug.Log($"Attempting drain attempt from habitat core position");
 
-            Vector2Int startPos = GameManager.MouseTilePosition;
             WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
 
             if (dataStore == null) return;
 
-            // 1. Initial check: sponge can only drain actual water cells in the ocean zone
-            // and only if they have a player-placed wall behind them.
-            if (!dataStore.IsWaterCell(startPos.x, startPos.y) || !dataStore.IsPlayerPlacedBackgroundAt(startPos.x, startPos.y))
+            Vector2Int anchor = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
+            Vector2Int size = new Vector2Int(2, 2);
+            if (dataStore.ActiveMultiTileObjects.TryGetValue(anchor, out TileSO tileSO))
             {
-                return;
+                size = tileSO.Size;
             }
 
-            // 2. Initialize BFS flood fill
+            // 1. Initialize BFS flood fill
             Queue<Vector2Int> queue = new();
             HashSet<Vector2Int> visited = new();
 
-            queue.Enqueue(startPos);
-            visited.Add(startPos);
+            // Add footprint to visited so we don't traverse into the core itself
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    visited.Add(new Vector2Int(anchor.x + i, anchor.y + j));
+                }
+            }
+
+            // 2. Enqueue all adjacent water cells in the ocean zone that have player-placed background
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    Vector2Int pos = new Vector2Int(anchor.x + i, anchor.y + j);
+                    Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                    foreach (Vector2Int dir in directions)
+                    {
+                        Vector2Int neighbor = pos + dir;
+                        if (!visited.Contains(neighbor))
+                        {
+                            if (dataStore.IsWaterCell(neighbor.x, neighbor.y) && dataStore.IsPlayerPlacedBackgroundAt(neighbor.x, neighbor.y))
+                            {
+                                visited.Add(neighbor);
+                                queue.Enqueue(neighbor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // If no valid water cell adjacent, return
+            if (queue.Count == 0)
+            {
+                return;
+            }
 
             Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
@@ -64,8 +159,10 @@ namespace UntitledDeepSeaGame
                         {
                             visited.Add(next);
 
-                            // If we exceed the sponge's capacity, it's a failure
-                            if (visited.Count > MaxTileDetection)
+                            // If we exceed the capacity, it's a failure.
+                            // Note: we subtract the footprint tiles from visited.Count to get the actual empty cells detected.
+                            int nonFootprintCount = visited.Count - size.x * size.y;
+                            if (nonFootprintCount > _maxTileDetection)
                             {
                                 OnDrainFailure();
                                 return;
@@ -98,7 +195,6 @@ namespace UntitledDeepSeaGame
             }
 
             Debug.Log($"Sponge Success: Enclosed area found. {count} air tiles created.");
-
         }
 
         private void OnDrainFailure()

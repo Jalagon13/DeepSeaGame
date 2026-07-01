@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e9dee84a7d046f89484eab8c9d2c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HabitatCore
+  _maxTileDetection: 40
+  _drainInterval: 1.5
 --- !u!1 &2634538427065896137
 GameObject:
   m_ObjectHideFlags: 0
