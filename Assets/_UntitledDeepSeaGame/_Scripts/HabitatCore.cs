@@ -3,16 +3,15 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    [CreateAssetMenu(fileName = "New Sponge Data", menuName = "Data/SpongeData")]
-    public class SpongeItemSO : ItemSO
+    public class HabitatCore : MonoBehaviour
     {
         [field: SerializeField]
         public int MaxTileDetection { get; private set; } = 40;
-        
-        public void TryDrainAttempt()
+
+        private void TryDrainAttempt()
         {
             Debug.Log($"Attempting drain attempt");
-            
+
             Vector2Int startPos = GameManager.MouseTilePosition;
             WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
 
@@ -32,7 +31,7 @@ namespace UntitledDeepSeaGame
             queue.Enqueue(startPos);
             visited.Add(startPos);
 
-            Vector2Int[] neighbors = {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
+            Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
             while (queue.Count > 0)
             {

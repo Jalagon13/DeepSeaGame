@@ -1755,7 +1755,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 24.5625
+  orthographic size: 19.78125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1780,7 +1780,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.68702, y: 24, z: 0}
+  m_LocalPosition: {x: 35.15625, y: 19.781248, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5605,7 +5605,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 20f6484a2f616433f807f6edd3a4e7c5, type: 2}
   - {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
   - {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-  - {fileID: 11400000, guid: c798080c7fd904945bcf2bec6160249b, type: 2}
+  - {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
   - {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
   - {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
   - {fileID: 11400000, guid: cbd9d62d13e7c45f5bf9a4cf5aded907, type: 2}
@@ -5620,6 +5620,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d209e9899a4134876ba9bda8e49ace6a, type: 2}
   - {fileID: 11400000, guid: 1494d5cfbad214fb4832cec258458aa0, type: 2}
   - {fileID: 11400000, guid: af06510070e3947f1b1d4d97bbff9cc5, type: 2}
+  - {fileID: 11400000, guid: 902d8a554dd1541988ed71d202546f19, type: 2}
   _characterData:
   - {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
 --- !u!114 &1760391186
@@ -5895,6 +5896,12 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 22
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 22
+  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    _amount: 99
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

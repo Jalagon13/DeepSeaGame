@@ -29,10 +29,10 @@ namespace UntitledDeepSeaGame
             
             ItemSO heldItem = InventoryManager.Instance.SelectedHotbarStack.Item;
             
-            if(heldItem is SpongeItemSO sponge)
-            {
-                sponge.TryDrainAttempt();
-            }
+            // if(heldItem is SpongeItemSO sponge)
+            // {
+            //     sponge.TryDrainAttempt();
+            // }
 
         }
     }

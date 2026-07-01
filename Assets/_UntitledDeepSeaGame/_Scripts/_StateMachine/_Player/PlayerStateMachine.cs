@@ -33,7 +33,10 @@ namespace UntitledDeepSeaGame
 
         public override void Dispose()
         {
-            Player.Instance.SelectedItemID.OnValueChanged -= OnSelectedItemIDChanged;
+            if (Player.Instance != null)
+            {
+                Player.Instance.SelectedItemID.OnValueChanged -= OnSelectedItemIDChanged;
+            }
         }
 
         private void OnSelectedItemIDChanged(ushort previousValue, ushort newValue)
