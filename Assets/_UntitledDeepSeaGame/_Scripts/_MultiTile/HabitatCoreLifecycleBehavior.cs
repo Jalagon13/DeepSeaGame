@@ -1,47 +1,41 @@
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class HabitatCore : MonoBehaviour
+    [CreateAssetMenu(fileName = "Habitat Core Behavior", menuName = "MultiTile/Lifecycle/HabitatCore")]
+    public class HabitatCoreLifecycleBehavior : MultiTileLifecycleBehavior
     {
         [SerializeField] private int _maxTileDetection = 40;
         [SerializeField] private float _drainInterval = 5f;
 
-        private float _timer = 0f;
-
-        private void Update()
+        public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
         {
-            if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
-            
-            if (WorldManager.Instance == null) return;
-            
-            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
-            if (dataStore == null || !WorldManager.Instance.IsWorldReady) return;
-
-            if (IsInWater())
+            if (instance == null || dataStore == null)
             {
-                _timer += Time.deltaTime;
-                if (_timer >= _drainInterval)
-                {
-                    _timer = 0f;
-                    TryDrainAttempt();
-                }
+                return;
             }
+
+            instance.Timer += deltaTime;
+            if (instance.Timer < _drainInterval)
+            {
+                return;
+            }
+
+            instance.Timer = 0f;
+
+            if (!IsInWater(instance, dataStore))
+            {
+                return;
+            }
+
+            TryDrainAttempt(instance, dataStore);
         }
 
-        private bool IsInWater()
+        private bool IsInWater(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
-            if (dataStore == null) return false;
-
-            Vector2Int anchor = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
-            Vector2Int size = new Vector2Int(2, 2);
-            if (dataStore.ActiveMultiTileObjects.TryGetValue(anchor, out TileSO tileSO))
-            {
-                size = tileSO.Size;
-            }
+            Vector2Int anchor = instance.Anchor;
+            Vector2Int size = instance.TileSO?.Size ?? new Vector2Int(2, 2);
 
             for (int i = 0; i < size.x; i++)
             {
@@ -52,7 +46,6 @@ namespace UntitledDeepSeaGame
                     foreach (Vector2Int dir in directions)
                     {
                         Vector2Int neighbor = pos + dir;
-                        // Skip if it's within the footprint itself
                         if (neighbor.x >= anchor.x && neighbor.x < anchor.x + size.x &&
                             neighbor.y >= anchor.y && neighbor.y < anchor.y + size.y)
                         {
@@ -70,26 +63,16 @@ namespace UntitledDeepSeaGame
             return false;
         }
 
-        private void TryDrainAttempt()
+        private void TryDrainAttempt(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            Debug.Log($"Attempting drain attempt from habitat core position");
+            Debug.Log($"Attempting drain attempt from habitat core position {instance.Anchor}");
 
-            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
+            Vector2Int anchor = instance.Anchor;
+            Vector2Int size = instance.TileSO?.Size ?? new Vector2Int(2, 2);
 
-            if (dataStore == null) return;
+            var queue = new Queue<Vector2Int>();
+            var visited = new HashSet<Vector2Int>();
 
-            Vector2Int anchor = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
-            Vector2Int size = new Vector2Int(2, 2);
-            if (dataStore.ActiveMultiTileObjects.TryGetValue(anchor, out TileSO tileSO))
-            {
-                size = tileSO.Size;
-            }
-
-            // 1. Initialize BFS flood fill
-            Queue<Vector2Int> queue = new();
-            HashSet<Vector2Int> visited = new();
-
-            // Add footprint to visited so we don't traverse into the core itself
             for (int i = 0; i < size.x; i++)
             {
                 for (int j = 0; j < size.y; j++)
@@ -98,7 +81,6 @@ namespace UntitledDeepSeaGame
                 }
             }
 
-            // 2. Enqueue all adjacent water cells in the ocean zone that have player-placed background
             for (int i = 0; i < size.x; i++)
             {
                 for (int j = 0; j < size.y; j++)
@@ -108,19 +90,15 @@ namespace UntitledDeepSeaGame
                     foreach (Vector2Int dir in directions)
                     {
                         Vector2Int neighbor = pos + dir;
-                        if (!visited.Contains(neighbor))
+                        if (!visited.Contains(neighbor) && dataStore.IsWaterCell(neighbor.x, neighbor.y) && dataStore.IsPlayerPlacedBackgroundAt(neighbor.x, neighbor.y))
                         {
-                            if (dataStore.IsWaterCell(neighbor.x, neighbor.y) && dataStore.IsPlayerPlacedBackgroundAt(neighbor.x, neighbor.y))
-                            {
-                                visited.Add(neighbor);
-                                queue.Enqueue(neighbor);
-                            }
+                            visited.Add(neighbor);
+                            queue.Enqueue(neighbor);
                         }
                     }
                 }
             }
 
-            // If no valid water cell adjacent, return
             if (queue.Count == 0)
             {
                 return;
@@ -136,15 +114,12 @@ namespace UntitledDeepSeaGame
                 {
                     Vector2Int next = current + dir;
 
-                    // If we hit the bounds of the world, we assume it's not an enclosed pocket
                     if (!dataStore.IsInBounds(next.x, next.y))
                     {
                         OnDrainFailure();
                         return;
                     }
 
-                    // We traverse the connected void (water or air). 
-                    // If a cell in the void has a natural wall or no wall, it's a "leak".
                     bool isSolidBoundary = dataStore.GetTileId(next.x, next.y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID;
 
                     if (!isSolidBoundary)
@@ -158,9 +133,6 @@ namespace UntitledDeepSeaGame
                         if (!visited.Contains(next))
                         {
                             visited.Add(next);
-
-                            // If we exceed the capacity, it's a failure.
-                            // Note: we subtract the footprint tiles from visited.Count to get the actual empty cells detected.
                             int nonFootprintCount = visited.Count - size.x * size.y;
                             if (nonFootprintCount > _maxTileDetection)
                             {
@@ -174,15 +146,12 @@ namespace UntitledDeepSeaGame
                 }
             }
 
-            // BFS finished and the entire area is within capacity
-            OnDrainSuccess(visited);
+            OnDrainSuccess(visited, dataStore);
         }
 
-        private void OnDrainSuccess(IEnumerable<Vector2Int> visited)
+        private void OnDrainSuccess(HashSet<Vector2Int> visited, WorldDataStore dataStore)
         {
             Debug.Log("Sponge Success: Enclosed area found within capacity.");
-
-            WorldDataStore dataStore = WorldManager.Instance.WorldDataStore;
             int count = 0;
 
             foreach (Vector2Int pos in visited)
@@ -200,6 +169,59 @@ namespace UntitledDeepSeaGame
         private void OnDrainFailure()
         {
             Debug.Log("Sponge Failure: Area too large or not fully enclosed.");
+        }
+
+        public override void OnRemoved(MultiTileInstance instance, WorldDataStore dataStore)
+        {
+            if (instance == null || dataStore == null)
+            {
+                return;
+            }
+
+            Vector2Int anchor = instance.Anchor;
+            Vector2Int size = instance.TileSO?.Size ?? new Vector2Int(2, 2);
+            var visited = new HashSet<Vector2Int>();
+            var queue = new Queue<Vector2Int>();
+
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    Vector2Int pos = new Vector2Int(anchor.x + i, anchor.y + j);
+                    Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                    foreach (Vector2Int dir in directions)
+                    {
+                        Vector2Int neighbor = pos + dir;
+                        if (visited.Contains(neighbor))
+                        {
+                            continue;
+                        }
+
+                        if (dataStore.IsUnderwaterAirAt(neighbor.x, neighbor.y))
+                        {
+                            visited.Add(neighbor);
+                            queue.Enqueue(neighbor);
+                        }
+                    }
+                }
+            }
+
+            while (queue.Count > 0)
+            {
+                Vector2Int current = queue.Dequeue();
+                dataStore.SetUnderwaterAir(current.x, current.y, false);
+
+                Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                foreach (Vector2Int dir in directions)
+                {
+                    Vector2Int next = current + dir;
+                    if (!visited.Contains(next) && dataStore.IsUnderwaterAirAt(next.x, next.y) && dataStore.GetTileId(next.x, next.y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID)
+                    {
+                        visited.Add(next);
+                        queue.Enqueue(next);
+                    }
+                }
+            }
         }
     }
 }

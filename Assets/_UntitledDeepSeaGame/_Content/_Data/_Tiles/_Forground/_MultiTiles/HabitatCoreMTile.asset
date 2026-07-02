@@ -30,3 +30,4 @@ MonoBehaviour:
   <IsMultiTile>k__BackingField: 1
   <Size>k__BackingField: {x: 2, y: 2}
   <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: c2dc0b5bcb6f0415b97289c71de35557, type: 3}
+  <MultiTileLifecycleBehavior>k__BackingField: {fileID: 11400000, guid: aaa20288816b5447d82b07eb022366fc, type: 2}

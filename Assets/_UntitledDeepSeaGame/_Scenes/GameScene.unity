@@ -1780,7 +1780,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.15625, y: 19.781248, z: 0}
+  m_LocalPosition: {x: 42.65403, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2851,8 +2851,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 885515390}
-  - component: {fileID: 885515395}
   - component: {fileID: 885515394}
+  - component: {fileID: 885515396}
+  - component: {fileID: 885515395}
   - component: {fileID: 885515392}
   - component: {fileID: 885515393}
   m_Layer: 0
@@ -2946,6 +2947,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
   _airMaskStencilMaterial: {fileID: 0}
   _airMaskSortingOrder: 98
+--- !u!114 &885515396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885515389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e758ae762ea9f4495b888b7de37359a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.MultiTileLifecycleManager
 --- !u!1 &890717787
 GameObject:
   m_ObjectHideFlags: 0
@@ -5811,7 +5824,6 @@ GameObject:
   - component: {fileID: 1794183286}
   - component: {fileID: 1794183285}
   - component: {fileID: 1794183284}
-  - component: {fileID: 1794183283}
   m_Layer: 0
   m_Name: PLAYER_MANAGERS
   m_TagString: Untagged
@@ -5834,18 +5846,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1760391178}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1794183283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794183281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aded76ac5c5b441d871e0efc3393518, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ActionManager
 --- !u!114 &1794183284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6389,7 +6389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
-  _enableSpawning: 1
+  _enableSpawning: 0
   _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 60

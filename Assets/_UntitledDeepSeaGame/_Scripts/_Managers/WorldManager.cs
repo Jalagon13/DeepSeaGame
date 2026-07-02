@@ -14,6 +14,7 @@ namespace UntitledDeepSeaGame
 
         public WorldDataStore WorldDataStore { get; private set; }
         public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
+        public MultiTileLifecycleManager MultiTileLifecycleManager { get; private set; }
         public bool IsWorldReady { get; private set; }
         public event Action OnWorldReady;
 
@@ -29,6 +30,11 @@ namespace UntitledDeepSeaGame
             
             WorldDataStore = WorldGenerator.GetComponent<WorldDataStore>();
             TileStreamingRenderer = WorldGenerator.GetComponent<WorldTileStreamingRenderer>();
+            MultiTileLifecycleManager = GetComponent<MultiTileLifecycleManager>();
+            if (MultiTileLifecycleManager == null)
+            {
+                MultiTileLifecycleManager = gameObject.AddComponent<MultiTileLifecycleManager>();
+            }
 
             if (NetworkManager != null)
             {
@@ -65,6 +71,7 @@ namespace UntitledDeepSeaGame
             }
 
             TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap, WorldGenerator.BackgroundTilemap, WorldGenerator.AirTilemap, WorldGenerator.MultiTileRenderingTransform);
+            MultiTileLifecycleManager?.Initialize(WorldDataStore);
 
             yield return new WaitUntil(() => Player.Instance != null);
 
