@@ -31,25 +31,19 @@ namespace UntitledDeepSeaGame
         private void Start()
         {
             HideCraftingMenu();
-
-            InventoryManager.Instance.OnInventoryOpenChanged += SetCraftingMenuVisible;
         }
 
-        private void OnDestroy()
+        private void OnEnable()
         {
-            InventoryManager.Instance.OnInventoryOpenChanged -= SetCraftingMenuVisible;
+            ClearRecipeListPanelUI();
+            PopulateRecipeListPanelUI();
+            CraftingMenuUIOpen = true;
         }
 
-        private void SetCraftingMenuVisible(bool isVisible)
+        private void OnDisable()
         {
-            if (isVisible)
-            {
-                ShowCraftingMenu();
-            }
-            else
-            {
-                HideCraftingMenu();
-            }
+            ClearRecipeListPanelUI();
+            CraftingMenuUIOpen = false;
         }
 
         private void ShowCraftingMenu()

@@ -55,7 +55,7 @@ namespace UntitledDeepSeaGame
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
-            _playerInput.UI.ToggleInventory.started += GameInput_OnToggleInventory;
+            _playerInput.UI.ToggleInventory.started += GameInput_OnToggleCraftingMenu;
         }
 
         private void OnDestroy()
@@ -73,7 +73,7 @@ namespace UntitledDeepSeaGame
 
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
-            _playerInput.UI.ToggleInventory.started -= GameInput_OnToggleInventory;
+            _playerInput.UI.ToggleInventory.started -= GameInput_OnToggleCraftingMenu;
 
             _playerInput.Disable();
             _playerInput.Dispose();
@@ -125,7 +125,7 @@ namespace UntitledDeepSeaGame
             OnSelectSlot?.Invoke(this, context);
         }
 
-        private void GameInput_OnToggleInventory(InputAction.CallbackContext context)
+        private void GameInput_OnToggleCraftingMenu(InputAction.CallbackContext context)
         {
             OnToggleInventory?.Invoke(this, context);
         }
