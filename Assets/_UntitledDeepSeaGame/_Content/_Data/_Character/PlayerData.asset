@@ -15,8 +15,12 @@ MonoBehaviour:
   BaseSpeed: 10
   BaseMaxHealth: 100
   BaseDefense: 0
+  Damage: 1
+  KnockbackForce: 6
+  PlayKnockback: 1
   CanDie: 1
   CanBeKnockedBack: 1
+  KnockbackResist: 0
   IFrameDuration: 0.17
   CanMove: 1
   TurnSharpness: 6
@@ -25,7 +29,8 @@ MonoBehaviour:
   NpcPrefab: {fileID: 0}
   MinIdleDuration: 2.5
   MaxIdleDuration: 5
-  BaseOxygenDuration: 600
+  LootDrops: []
+  BaseOxygenDuration: 60
   OxygenRefillDuration: 2
   OxygenDepletedTimeBetweenDamage: 5
   OxygenDepletedDamage: 10

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    [CreateAssetMenu(fileName = "New Tool Data", menuName = "Data/ToolItemData")]
+    [CreateAssetMenu(fileName = "New Tool Data", menuName = "Data/Items/ToolItemData")]
     public class ToolItemSO : ItemSO
     {
         [field: Header("Tool Parameters")]

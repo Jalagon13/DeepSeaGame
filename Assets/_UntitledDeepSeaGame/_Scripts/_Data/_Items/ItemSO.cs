@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    [CreateAssetMenu(fileName = "New Item Data", menuName = "Data/ItemData")]
+    [CreateAssetMenu(fileName = "New Item Data", menuName = "Data/Items/ItemData")]
     public class ItemSO : ScriptableObject
     {
         [Header("Identity")]
