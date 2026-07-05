@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,18 +15,21 @@ namespace UntitledDeepSeaGame
     {
         [SerializeField]
         private PlayerCharacterSO _playerSO;
-        
-        [SerializeField] 
+
+        [SerializeField]
         private Transform _headPoint;
-        
+
         private ServerCharacter _serverCharacter;
-        
+        private OxygenTankItemSO _equippedOxygenTank;
+        public OxygenTankItemSO EquippedOxygenTank => _equippedOxygenTank;
+        public float MaxOxygenCapacity => GetMaxOxygenCapacity();
+
         public NetworkVariable<OxygenState> StateOfOxygen { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> CurrentOxygen { get; private set; } = new(default, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Owner);
         private float _drowningTimer;
 
 
-        private void Awake() 
+        private void Awake()
         {
             _serverCharacter = GetComponent<ServerCharacter>();
         }
@@ -36,7 +38,7 @@ namespace UntitledDeepSeaGame
         {
             if (IsOwner)
             {
-                CurrentOxygen.Value = _playerSO.BaseOxygenDuration;
+                CurrentOxygen.Value = GetMaxOxygenCapacity();
                 StateOfOxygen.Value = OxygenState.Full;
             }
         }
@@ -44,15 +46,15 @@ namespace UntitledDeepSeaGame
         private void Update()
         {
             if (!IsOwner) return;
-            
-            if(Player.Instance.Character.LifeState == LifeState.Dead) return;
+
+            if (Player.Instance.Character.LifeState == LifeState.Dead) return;
 
             Status env = _serverCharacter.CurrentStatus.Value;
 
             Vector2Int headGridPos = new(Mathf.FloorToInt(_headPoint.position.x), Mathf.FloorToInt(_headPoint.position.y + 1));
             bool headInAir = WorldManager.Instance.WorldDataStore.IsAirAt(headGridPos.x, headGridPos.y);
 
-            if(headInAir || env == Status.InAir)
+            if (headInAir || env == Status.InAir)
             {
                 HandleAirOxygen();
             }
@@ -75,11 +77,49 @@ namespace UntitledDeepSeaGame
                 _drowningTimer = 0f;
             }
         }
-        
+
         public void OnRespawn()
         {
-            CurrentOxygen.Value = _playerSO.BaseOxygenDuration;
+            CurrentOxygen.Value = GetMaxOxygenCapacity();
             StateOfOxygen.Value = OxygenState.Full;
+        }
+
+        public void EquipOxygenTank(OxygenTankItemSO oxygenTank)
+        {
+            if (!IsOwner) return;
+
+            float previousCapacity = GetMaxOxygenCapacity();
+            _equippedOxygenTank = oxygenTank;
+            RecalculateOxygenCapacity(previousCapacity);
+        }
+
+        public void UnequipOxygenTank()
+        {
+            if (!IsOwner) return;
+
+            float previousCapacity = GetMaxOxygenCapacity();
+            _equippedOxygenTank = null;
+            RecalculateOxygenCapacity(previousCapacity);
+        }
+
+        private void RecalculateOxygenCapacity(float previousCapacity)
+        {
+            float newCapacity = GetMaxOxygenCapacity();
+            if (newCapacity <= 0f)
+            {
+                CurrentOxygen.Value = 0f;
+                return;
+            }
+
+            if (previousCapacity <= 0f || CurrentOxygen.Value <= 0f)
+            {
+                CurrentOxygen.Value = Mathf.Min(CurrentOxygen.Value, newCapacity);
+                return;
+            }
+
+            float remainingRatio = Mathf.Clamp01(CurrentOxygen.Value / previousCapacity);
+            CurrentOxygen.Value = remainingRatio * newCapacity;
+            CurrentOxygen.Value = Mathf.Min(CurrentOxygen.Value, newCapacity);
         }
 
         private void HandleWaterOxygen()
@@ -103,17 +143,18 @@ namespace UntitledDeepSeaGame
 
         private void HandleAirOxygen()
         {
-            if (CurrentOxygen.Value < _playerSO.BaseOxygenDuration)
+            float maxCapacity = GetMaxOxygenCapacity();
+            if (CurrentOxygen.Value < maxCapacity)
             {
                 StateOfOxygen.Value = OxygenState.Refilling;
 
                 // Total Capacity / Seconds to Refill = Units per second
-                float refillRate = (float)_playerSO.BaseOxygenDuration / _playerSO.OxygenRefillDuration;
+                float refillRate = maxCapacity / _playerSO.OxygenRefillDuration;
                 CurrentOxygen.Value += refillRate * Time.deltaTime;
 
-                if (CurrentOxygen.Value >= _playerSO.BaseOxygenDuration)
+                if (CurrentOxygen.Value >= maxCapacity)
                 {
-                    CurrentOxygen.Value = _playerSO.BaseOxygenDuration;
+                    CurrentOxygen.Value = maxCapacity;
                     StateOfOxygen.Value = OxygenState.Full;
                 }
             }
@@ -123,6 +164,15 @@ namespace UntitledDeepSeaGame
             }
         }
 
+        private float GetMaxOxygenCapacity()
+        {
+            if (_playerSO == null)
+            {
+                return 0f;
+            }
 
+            int extraOxygen = _equippedOxygenTank != null ? _equippedOxygenTank.AdditionalOxygen : 0;
+            return _playerSO.BaseOxygenDuration + extraOxygen;
+        }
     }
 }

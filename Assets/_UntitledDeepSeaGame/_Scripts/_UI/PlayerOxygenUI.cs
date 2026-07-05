@@ -28,21 +28,16 @@ namespace UntitledDeepSeaGame
             if (Player.Instance != null)
             {
                 Player.Instance.PlayerOxygenController.CurrentOxygen.OnValueChanged += OnOxygenChanged;
-                
-                PlayerCharacterSO playerSO = Player.Instance.Character.CharacterData as PlayerCharacterSO;
-                if (playerSO != null)
-                {
-                    UpdateView(Player.Instance.PlayerOxygenController.CurrentOxygen.Value, playerSO.BaseOxygenDuration);
-                }
+
+                UpdateView(Player.Instance.PlayerOxygenController.CurrentOxygen.Value, Player.Instance.PlayerOxygenController.MaxOxygenCapacity);
             }
         }
 
         private void OnOxygenChanged(float previousValue, float newValue)
         {
-            PlayerCharacterSO playerSO = Player.Instance.Character.CharacterData as PlayerCharacterSO;
-            if (playerSO != null)
+            if (Player.Instance != null)
             {
-                UpdateView(newValue, playerSO.BaseOxygenDuration);
+                UpdateView(newValue, Player.Instance.PlayerOxygenController.MaxOxygenCapacity);
             }
         }
 
