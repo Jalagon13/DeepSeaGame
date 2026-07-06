@@ -15,6 +15,7 @@ namespace UntitledDeepSeaGame
         public event EventHandler<InputAction.CallbackContext> OnToggleInventory;
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
+        public event EventHandler<InputAction.CallbackContext> OnInteract;
 
         private bool _isGameplayInputBlocked, _primaryHeldDown, _jumpHeldDown;
 
@@ -52,6 +53,8 @@ namespace UntitledDeepSeaGame
             
             _playerInput.Player.Jump.started += PlayerInput_OnJump;
             _playerInput.Player.Jump.canceled += PlayerInput_OnJump;
+            
+            _playerInput.Player.Interact.started += PlayerInput_OnInteract;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -71,12 +74,21 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.Jump.started -= PlayerInput_OnJump;
             _playerInput.Player.Jump.canceled -= PlayerInput_OnJump;
 
+            _playerInput.Player.Interact.started -= PlayerInput_OnInteract;
+
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
             _playerInput.UI.ToggleInventory.started -= GameInput_OnToggleCraftingMenu;
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnInteract(InputAction.CallbackContext context)
+        {
+            if (_isGameplayInputBlocked) return;
+
+            OnInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_OnJump(InputAction.CallbackContext context)

@@ -6524,6 +6524,8 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 1
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0
