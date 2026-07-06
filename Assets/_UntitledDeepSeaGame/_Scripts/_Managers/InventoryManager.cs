@@ -38,11 +38,8 @@ namespace UntitledDeepSeaGame
         public int SelectedHotbarSlotIndex { get; private set; } = -1;
 
 
-        [SerializeField] 
-        private ItemCollectWorldUI _itemCollectPlatePrefab;
-        
-        [SerializeField]
-        private float _timeBetweenCollections = 0.1f;
+        [SerializeField] private ItemCollectWorldUI _itemCollectPlatePrefab;
+        [SerializeField] private float _timeBetweenCollections = 0.1f;
 
         [Header("Starting Items")]
         [SerializeField] private float _initialDelay;
