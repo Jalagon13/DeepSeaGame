@@ -65,7 +65,7 @@ namespace UntitledDeepSeaGame
 
         private void TryDrainAttempt(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            Debug.Log($"Attempting drain attempt from habitat core position {instance.Anchor}");
+            // Debug.Log($"Attempting drain attempt from habitat core position {instance.Anchor}");
 
             Vector2Int anchor = instance.Anchor;
             Vector2Int size = instance.TileSO?.Size ?? new Vector2Int(2, 2);
