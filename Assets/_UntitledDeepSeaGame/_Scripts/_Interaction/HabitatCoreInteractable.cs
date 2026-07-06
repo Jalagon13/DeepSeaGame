@@ -11,7 +11,8 @@ namespace UntitledDeepSeaGame
 
         public void Interact()
         {
-            Debug.Log($"Habitat core interacted: {name}");
+            Debug.Log($"Interacting with {gameObject.name}");
+            InventoryManager.Instance?.OpenInventory(_availableRecipes);
         }
     }
 }

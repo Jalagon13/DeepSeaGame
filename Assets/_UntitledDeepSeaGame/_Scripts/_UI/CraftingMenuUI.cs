@@ -6,6 +6,8 @@ namespace UntitledDeepSeaGame
 {
     public class CraftingMenuUI : MonoBehaviour
     {
+        public static CraftingMenuUI Instance { get; private set; }
+
         [SerializeField] private GameObject _recipeListPanelUI;
         [SerializeField] private RecipePanelUI _recipePanelUIPrefab;
 
@@ -15,6 +17,7 @@ namespace UntitledDeepSeaGame
         [SerializeField] private List<RecipeSO> _defaultRecipes;
 
         private RecipeSO _selectedRecipe;
+        private List<RecipeSO> _activeRecipes;
 
         public bool CraftingMenuUIOpen { get; private set; }
 
@@ -28,8 +31,20 @@ namespace UntitledDeepSeaGame
             }
         }
 
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+        }
+
         private void Start()
         {
+            _activeRecipes = _defaultRecipes;
             HideCraftingMenu();
         }
 
@@ -46,8 +61,20 @@ namespace UntitledDeepSeaGame
             CraftingMenuUIOpen = false;
         }
 
-        private void ShowCraftingMenu()
+        public void ShowCraftingMenu(List<RecipeSO> recipes = null)
         {
+            Debug.Log("ShowCraftingMenu called");
+            if (recipes != null)
+            {
+                Debug.Log($"Setting active recipes to provided list with {recipes.Count} recipes.");
+                _activeRecipes = recipes;
+            }
+            else
+            {
+                Debug.Log("No recipes provided, using default recipes.");
+                _activeRecipes = _defaultRecipes;
+            }
+
             gameObject.SetActive(true);
             ClearRecipeListPanelUI();
             PopulateRecipeListPanelUI();
@@ -55,8 +82,9 @@ namespace UntitledDeepSeaGame
             CraftingMenuUIOpen = true;
         }
 
-        private void HideCraftingMenu()
+        public void HideCraftingMenu()
         {
+            _activeRecipes = _defaultRecipes;
             gameObject.SetActive(false);
 
             CraftingMenuUIOpen = false;
@@ -72,9 +100,14 @@ namespace UntitledDeepSeaGame
 
         private void PopulateRecipeListPanelUI()
         {
-            for (int i = 0; i < _defaultRecipes.Count; i++)
+            if (_activeRecipes == null)
             {
-                RecipeSO recipe = _defaultRecipes[i];
+                return;
+            }
+
+            for (int i = 0; i < _activeRecipes.Count; i++)
+            {
+                RecipeSO recipe = _activeRecipes[i];
                 RecipePanelUI recipePanelUI = Instantiate(_recipePanelUIPrefab.gameObject, _recipeListPanelUI.transform).GetComponent<RecipePanelUI>();
                 recipePanelUI.Setup(recipe, this);
             }

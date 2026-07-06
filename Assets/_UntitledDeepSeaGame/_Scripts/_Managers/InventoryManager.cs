@@ -126,7 +126,7 @@ namespace UntitledDeepSeaGame
             OpenInventory();
         }
 
-        private void OpenInventory()
+        public void OpenInventory(List<RecipeSO> recipes = null)
         {
             if (IsInventoryOpen || !CanOpenInventory())
             {
@@ -138,6 +138,7 @@ namespace UntitledDeepSeaGame
             OnInventoryChanged?.Invoke();
             OnCursorStackChanged?.Invoke(CursorStack.Clone());
 
+            CraftingMenuUI.Instance?.ShowCraftingMenu(recipes);
             GameInput.Instance.IsGameplayInputBlocked = true;
         }
 
@@ -152,6 +153,7 @@ namespace UntitledDeepSeaGame
             OnInventoryOpenChanged?.Invoke(false);
             OnInventoryChanged?.Invoke();
 
+            CraftingMenuUI.Instance?.HideCraftingMenu();
             GameInput.Instance.IsGameplayInputBlocked = false;
         }
 
