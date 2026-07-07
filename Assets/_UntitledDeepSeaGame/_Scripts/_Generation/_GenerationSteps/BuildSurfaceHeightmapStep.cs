@@ -5,67 +5,44 @@ namespace UntitledDeepSeaGame
 {
     public class BuildSurfaceHeightmapStep : GenerationStep
     {
-        [Header("Surface Shape")]
-        [SerializeField, Range(0f, 1f)] private float _surfaceBaseHeightPercent = 0.6f;
-        [SerializeField] private int _surfaceAmplitude = 18;
-        [SerializeField] private float _primarySurfaceNoiseScale = 72f;
-        [SerializeField] private float _secondarySurfaceNoiseScale = 28f;
-        [SerializeField, Range(0f, 1f)] private float _secondarySurfaceNoiseStrength = 0.35f;
-        [SerializeField] private bool _applyThreePointSmoothing = true;
+        [Header("Safe Shallows Surface")]
+        [SerializeField] private float _baseHeight = 18f;
+        [SerializeField, Range(0.001f, 0.1f)] private float _largeShapeNoiseScale = 0.03f;
+        [SerializeField] private float _largeShapeAmplitude = 6f;
+        [SerializeField, Range(0.01f, 0.5f)] private float _detailNoiseScale = 0.16f;
+        [SerializeField] private float _detailAmplitude = 1.4f;
 
         public override WorldGenerationState State => WorldGenerationState.GeneratingSurface;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {
             int width = context.Config.WorldWidth;
-            int baseSurfaceHeight = Mathf.RoundToInt(context.Config.WorldHeight * _surfaceBaseHeightPercent);
-            int surfaceAmplitude = Mathf.Max(1, _surfaceAmplitude);
-            int minHeight = baseSurfaceHeight - surfaceAmplitude;
-            int maxHeight = baseSurfaceHeight + surfaceAmplitude;
-            float primaryScale = Mathf.Max(1f, _primarySurfaceNoiseScale);
-            float secondaryScale = Mathf.Max(1f, _secondarySurfaceNoiseScale);
-            float primaryOffset = Mathf.Abs(context.SeedHash % 10000) + 0.137f;
-            float secondaryOffset = Mathf.Abs((context.SeedHash * 31) % 10000) + 91.713f;
+            int maxHeight = Mathf.Max(1, context.Config.WorldHeight);
+            int columnsPerFrame = Mathf.Max(1, context.Config.ColumnsPerFrame);
+
+            // Seed the sampling so each world seed creates a distinct rolling seabed silhouette.
+            float seedOffset = Mathf.Abs(context.SeedHash % 10000) * 0.01f + 0.5f;
 
             for (int x = 0; x < width; x++)
             {
-                float primarySample = Mathf.PerlinNoise((x + primaryOffset) / primaryScale, primaryOffset);
-                float secondarySample = Mathf.PerlinNoise((x + secondaryOffset) / secondaryScale, secondaryOffset);
-                float combinedSample = Mathf.Lerp(primarySample, secondarySample, _secondarySurfaceNoiseStrength);
-                int surfaceHeight = Mathf.RoundToInt(Mathf.Lerp(minHeight, maxHeight, combinedSample));
-                context.SurfaceHeights[x] = Mathf.Clamp(surfaceHeight, minHeight, maxHeight);
+                // The large-shape layer uses a low frequency and a larger amplitude to create
+                // gentle, wide rolling hills that define the overall floor contour for the biome.
+                float largeShapeSample = Mathf.PerlinNoise((x + seedOffset) * _largeShapeNoiseScale, 0f);
+                float largeShapeOffset = (largeShapeSample * 2f - 1f) * _largeShapeAmplitude;
 
-                if ((x + 1) % context.Config.ColumnsPerFrame == 0)
+                // The detail layer adds a higher-frequency, lower-amplitude pass on top of the
+                // broad hills so the seafloor feels a bit rougher and more natural without becoming jagged.
+                float detailSample = Mathf.PerlinNoise((x + seedOffset * 2f + 17f) * _detailNoiseScale, 0f);
+                float detailOffset = (detailSample * 2f - 1f) * _detailAmplitude;
+
+                float combinedHeight = _baseHeight + largeShapeOffset + detailOffset;
+                context.SurfaceHeights[x] = Mathf.RoundToInt(Mathf.Clamp(combinedHeight, 0f, maxHeight));
+
+                if ((x + 1) % columnsPerFrame == 0)
                 {
                     context.SetStepProgress((x + 1f) / width);
                     yield return null;
                 }
-            }
-
-            if (!_applyThreePointSmoothing)
-            {
-                context.SetStepProgress(1f);
-                yield break;
-            }
-
-            int[] smoothedHeights = new int[width];
-            for (int x = 0; x < width; x++)
-            {
-                int left = context.SurfaceHeights[Mathf.Max(0, x - 1)];
-                int center = context.SurfaceHeights[x];
-                int right = context.SurfaceHeights[Mathf.Min(width - 1, x + 1)];
-                smoothedHeights[x] = Mathf.RoundToInt((left + center + right) / 3f);
-
-                if ((x + 1) % context.Config.ColumnsPerFrame == 0)
-                {
-                    context.SetStepProgress((x + 1f) / width);
-                    yield return null;
-                }
-            }
-
-            for (int x = 0; x < width; x++)
-            {
-                context.SurfaceHeights[x] = smoothedHeights[x];
             }
 
             context.SetStepProgress(1f);

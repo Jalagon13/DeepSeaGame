@@ -1,0 +1,130 @@
+using System.Collections;
+using UnityEngine;
+
+namespace UntitledDeepSeaGame
+{
+    public class GenerateCavesStep : GenerationStep
+    {
+        [Header("Caves")]
+        [SerializeField, Range(0f, 1f)]
+        // Chance that a cell starts as a wall during initial random fill. Higher = denser caves (more solid).
+        private float _fillProbability = 0.52f;
+
+        [SerializeField, Range(0, 8)]
+        // Number of smoothing passes. More iterations -> larger, more connected pockets; fewer -> many small pockets.
+        private int _smoothingIterations = 3;
+
+        public override WorldGenerationState State => WorldGenerationState.CarvingCaves;
+
+        public override IEnumerator Execute(WorldGenerationContext context)
+        {
+            int width = context.Config.WorldWidth;
+            int height = context.Config.WorldHeight;
+            int columnsPerFrame = Mathf.Max(1, context.Config.ColumnsPerFrame);
+
+            bool[,] grid = new bool[width, height];
+
+            // Initial random fill below the surface heights using the seeded RNG from the context.
+            for (int x = 0; x < width; x++)
+            {
+                int surface = context.SurfaceHeights[x];
+                for (int y = 0; y < height; y++)
+                {
+                    // Cells above the surface are treated as solid/unaffected and considered walls for CA purposes.
+                    if (y > surface)
+                    {
+                        grid[x, y] = true;
+                    }
+                    else
+                    {
+                        // Below (or at) the surface: random fill based on probability (true = wall)
+                        grid[x, y] = context.Random.NextDouble() < _fillProbability;
+                    }
+                }
+
+                if ((x + 1) % columnsPerFrame == 0)
+                {
+                    context.SetStepProgress((x + 1f) / width);
+                    yield return null;
+                }
+            }
+
+            // Smoothing passes using the 8-neighbour rule: count neighbors (>4 -> wall, <4 -> open, ==4 -> keep)
+            for (int iter = 0; iter < _smoothingIterations; iter++)
+            {
+                bool[,] next = new bool[width, height];
+
+                for (int x = 0; x < width; x++)
+                {
+                    int surface = context.SurfaceHeights[x];
+                    for (int y = 0; y < height; y++)
+                    {
+                        // Keep above-surface cells as walls/solid and do not alter them.
+                        if (y > surface)
+                        {
+                            next[x, y] = true;
+                            continue;
+                        }
+
+                        int wallCount = 0;
+                        for (int nx = x - 1; nx <= x + 1; nx++)
+                        {
+                            for (int ny = y - 1; ny <= y + 1; ny++)
+                            {
+                                if (nx == x && ny == y) continue;
+
+                                // Out-of-bounds counts as wall
+                                if (nx < 0 || nx >= width || ny < 0 || ny >= height)
+                                {
+                                    wallCount++;
+                                    continue;
+                                }
+
+                                // Treat cells that are above their column surface as walls for neighbor counting
+                                if (ny > context.SurfaceHeights[nx])
+                                {
+                                    wallCount++;
+                                    continue;
+                                }
+
+                                if (grid[nx, ny]) wallCount++;
+                            }
+                        }
+
+                        if (wallCount > 4) next[x, y] = true;
+                        else if (wallCount < 4) next[x, y] = false;
+                        else next[x, y] = grid[x, y];
+                    }
+                }
+
+                grid = next;
+                // yield between iterations so editor stays responsive on large worlds
+                yield return null;
+            }
+
+            // Apply final grid to the foreground tilemap: wall -> solid tile, open -> empty (air)
+            // We intentionally only modify the foreground here so this step controls cave shape only.
+            for (int x = 0; x < width; x++)
+            {
+                int surface = context.SurfaceHeights[x];
+                for (int y = 0; y < height; y++)
+                {
+                    // Do not modify tiles above the surface; they're considered regular ground and left alone.
+                    if (y > surface) continue;
+
+                    // For solid cells we set the foreground to the world's configured solid tile id.
+                    ushort tileId = grid[x, y] ? context.SolidTileId : GameDataRegistry.INVALID_ID;
+                    context.DataStore.SetTileId(x, y, tileId, WorldTm.ForegroundTilemap);
+                }
+
+                if ((x + 1) % columnsPerFrame == 0)
+                {
+                    context.SetStepProgress((x + 1f) / width);
+                    yield return null;
+                }
+            }
+
+            context.SetStepProgress(1f);
+        }
+    }
+}
