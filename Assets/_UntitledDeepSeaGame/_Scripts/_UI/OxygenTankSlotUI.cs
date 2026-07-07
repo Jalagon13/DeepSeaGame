@@ -11,6 +11,10 @@ namespace UntitledDeepSeaGame
         [SerializeField] private Image _iconImage;
         [SerializeField] private TextMeshProUGUI _countText;
 
+        private void OnEnable()
+        {
+            RefreshUI();
+        }
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -53,6 +57,11 @@ namespace UntitledDeepSeaGame
 
         public void RefreshUI()
         {
+            if(Player.Instance == null)
+            {
+                return;
+            }
+        
             OxygenTankItemSO equippedTank = Player.Instance.PlayerOxygenController.EquippedOxygenTank;
 
             if (equippedTank != null && equippedTank.InventoryIcon != null)

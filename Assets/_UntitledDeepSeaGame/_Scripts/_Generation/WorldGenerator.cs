@@ -72,6 +72,12 @@ namespace UntitledDeepSeaGame
 
             for (int i = 0; i < orderedSteps.Count; i++)
             {
+                if(!orderedSteps[i].ExecuteStep)
+                {
+                    Debug.Log($"Skipping world gen step: {orderedSteps[i].GetType().Name} ({orderedSteps[i].State})");
+                    continue;
+                }
+                
                 GenerationStep step = orderedSteps[i];
                 float stepStartTime = Time.realtimeSinceStartup;
                 context.BeginStep(step.State, i);

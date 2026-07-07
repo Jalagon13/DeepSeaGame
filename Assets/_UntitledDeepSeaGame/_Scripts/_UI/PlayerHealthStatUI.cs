@@ -45,9 +45,9 @@ namespace UntitledDeepSeaGame
         private void UpdateView(int currentAmount, int maxAmount)
         {
             float fill = maxAmount > 0 ? (float)currentAmount / maxAmount : 0f;
-            Debug.Log($"currentAmount: {currentAmount}, maxAmount: {maxAmount}, fill amount {fill}");
+            // Debug.Log($"currentAmount: {currentAmount}, maxAmount: {maxAmount}, fill amount {fill}");
             _healthBarFg.fillAmount = fill;
-            _amountText.text = $"{currentAmount}/{maxAmount}";
+            _amountText.text = $"HP: {currentAmount}/{maxAmount}";
         }
     }
 }

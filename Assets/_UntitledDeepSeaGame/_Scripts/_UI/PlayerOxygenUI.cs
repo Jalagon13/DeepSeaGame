@@ -45,7 +45,7 @@ namespace UntitledDeepSeaGame
         {
             float fill = maxAmount > 0 ? currentAmount / maxAmount : 0f;
             _oxygenBarFg.fillAmount = fill;
-            _amountText.text = $"{Mathf.CeilToInt(currentAmount)}/{maxAmount}";
+            _amountText.text = $"Oxygen: {Mathf.CeilToInt(currentAmount)}/{maxAmount}";
         }
     }
 }

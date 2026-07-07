@@ -2523,7 +2523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 828880607
+  GlobalObjectIdHash: 238464246
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3062,7 +3062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3660877605
+  GlobalObjectIdHash: 71353368
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -3286,6 +3286,8 @@ Transform:
   - {fileID: 2100001001}
   - {fileID: 1032539435}
   - {fileID: 1463938961}
+  - {fileID: 2100002001}
+  - {fileID: 1640155994}
   - {fileID: 1702576617}
   - {fileID: 2100003001}
   m_Father: {fileID: 2143430848}
@@ -3705,7 +3707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235c2bacfa59409497f016fb22bd9648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FillSandTerrainStep
-  <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _sandTileSO: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
 --- !u!1 &1059519058
@@ -5291,7 +5292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db73786479954a249107d97224e81b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FillSandBackgroundStep
-  <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _sandWallTileSO: {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}
   _belowSurfaceOffset: 3
@@ -5545,6 +5545,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595356695}
   m_CullTransparentMesh: 1
+--- !u!1 &1640155993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1640155994}
+  - component: {fileID: 1640155995}
+  m_Layer: 0
+  m_Name: CarveCaveEntrancesStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1640155994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640155993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1640155995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640155993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db19a8eedce24fef917efc7dda7b850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CarveCaveEntrancesStep
+  <Description>k__BackingField: 
+  _minDistanceBetweenEntrances: 60
+  _maxDistanceBetweenEntrances: 120
+  _minEntranceWidth: 3
+  _maxEntranceWidth: 6
+  _horizontalJitter: 0.6
+  _depthToReachBelowSurface: 30
 --- !u!1 &1644403186
 GameObject:
   m_ObjectHideFlags: 0
@@ -5883,7 +5934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c966cd5f06a8f4908a2210176fa4f177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlaceTitaniumOreStep
-  <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _titaniumOreTileSO: {fileID: 11400000, guid: d209e9899a4134876ba9bda8e49ace6a, type: 2}
   _minTilesPerClump: 3
@@ -6224,7 +6274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 293770351
+  GlobalObjectIdHash: 2684578417
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -6462,7 +6512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.InventoryManager
   _slotCount: 40
   _hotbarSlotCount: 10
-  _startingSelectedHotbarSlotIndex: 2
+  _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
   _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
   _timeBetweenCollections: 0.1
@@ -6473,8 +6523,10 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    _amount: 99
+  - _item: {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
+    _amount: 1
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 1
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7690,14 +7742,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b04c5fd3a274bd3b188258cb1e6744c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.BuildSurfaceHeightmapStep
-  <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _surfaceBaseHeightPercent: 0.75
-  _surfaceAmplitude: 25
-  _primarySurfaceNoiseScale: 15
-  _secondarySurfaceNoiseScale: 5
+  _surfaceAmplitude: 18
+  _primarySurfaceNoiseScale: 72
+  _secondarySurfaceNoiseScale: 28
   _secondarySurfaceNoiseStrength: 0.35
   _applyThreePointSmoothing: 1
+--- !u!1 &2100002000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100002001}
+  - component: {fileID: 2100002002}
+  m_Layer: 0
+  m_Name: CarveCavesStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100002001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100002000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100002002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100002000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cce4ccce364bc98d2d662b357db77b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CarveCavesStep
+  <Description>k__BackingField: 
+  _minimumCaveY: 8
+  _surfaceClearanceForCaves: 8
+  _noiseCaveStartBelowSurface: 16
+  _caveNoiseScale: 22
+  _verticalStretch: 0.75
+  _octaves: 4
+  _persistence: 0.6
+  _lacunarity: 2
+  _caveThreshold: 0.5
 --- !u!1 &2100003000
 GameObject:
   m_ObjectHideFlags: 0
@@ -7742,7 +7847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33cd993c5cc4d8ba4203f674fdb1152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ResolveSpawnPointStep
-  <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
 --- !u!1 &2134409140
 GameObject:
