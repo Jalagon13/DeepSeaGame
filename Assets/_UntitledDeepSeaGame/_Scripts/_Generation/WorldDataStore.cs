@@ -10,8 +10,8 @@ namespace UntitledDeepSeaGame
         public event Action<Vector2Int, ushort, ushort, WorldTm> TileChanged;
         public event Action<Vector2Int, TileSO, bool> MultiTileChanged;
 
-        private ushort[,] _fgTileData;
-        private ushort[,] _bgTileData;
+        public ushort[,] FgTileData { get; private set; }
+        public ushort[,] BgTileData { get; private set; }
         private readonly HashSet<int> _naturalBackgroundTiles = new();
         private readonly HashSet<int> _underwaterAirTiles = new();
         private int _seaLevelY;
@@ -19,14 +19,14 @@ namespace UntitledDeepSeaGame
         private Dictionary<Vector2Int, TileSO> _activeMultiTileObjects;
         public IReadOnlyDictionary<Vector2Int, TileSO> ActiveMultiTileObjects => _activeMultiTileObjects;
 
-        public int Width => _fgTileData?.GetLength(0) ?? 0;
-        public int Height => _fgTileData?.GetLength(1) ?? 0;
+        public int Width => FgTileData?.GetLength(0) ?? 0;
+        public int Height => FgTileData?.GetLength(1) ?? 0;
         public int SeaLevelY => _seaLevelY;
 
         public void Initialize(int width, int height, int seaLevelY)
         {
-            _fgTileData = new ushort[width, height];
-            _bgTileData = new ushort[width, height];
+            FgTileData = new ushort[width, height];
+            BgTileData = new ushort[width, height];
             _seaLevelY = Mathf.Clamp(seaLevelY, 1, Mathf.Max(1, height - 1));
             _naturalBackgroundTiles.Clear();
             _underwaterAirTiles.Clear();
@@ -37,8 +37,8 @@ namespace UntitledDeepSeaGame
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    _fgTileData[x, y] = GameDataRegistry.INVALID_ID;
-                    _bgTileData[x, y] = GameDataRegistry.INVALID_ID;
+                    FgTileData[x, y] = GameDataRegistry.INVALID_ID;
+                    BgTileData[x, y] = GameDataRegistry.INVALID_ID;
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace UntitledDeepSeaGame
                 return;
             }
 
-            ushort[,] data = targetMap == WorldTm.ForegroundTilemap ? _fgTileData : _bgTileData;
+            ushort[,] data = targetMap == WorldTm.ForegroundTilemap ? FgTileData : BgTileData;
             ushort previousTileId = data[x, y];
             if (previousTileId == tileId)
             {
@@ -251,7 +251,7 @@ namespace UntitledDeepSeaGame
                 return GameDataRegistry.INVALID_ID;
             }
 
-            return targetMap == WorldTm.ForegroundTilemap ? _fgTileData[x, y] : _bgTileData[x, y];
+            return targetMap == WorldTm.ForegroundTilemap ? FgTileData[x, y] : BgTileData[x, y];
         }
 
         private void CheckForExposedAir(int x, int y)

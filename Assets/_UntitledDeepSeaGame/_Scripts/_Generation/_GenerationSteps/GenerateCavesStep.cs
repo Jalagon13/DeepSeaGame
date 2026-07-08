@@ -7,12 +7,10 @@ namespace UntitledDeepSeaGame
     {
         [Header("Caves")]
         [SerializeField, Range(0f, 1f)]
-        // Chance that a cell starts as a wall during initial random fill. Higher = denser caves (more solid).
-        private float _fillProbability = 0.52f;
+        private float _fillProbability = 0.52f; // Chance that a cell starts as a wall during initial random fill. Higher = denser caves (more solid).
 
         [SerializeField, Range(0, 8)]
-        // Number of smoothing passes. More iterations -> larger, more connected pockets; fewer -> many small pockets.
-        private int _smoothingIterations = 3;
+        private int _smoothingIterations = 3; // Number of smoothing passes. More iterations -> larger, more connected pockets; fewer -> many small pockets.
 
         public override WorldGenerationState State => WorldGenerationState.CarvingCaves;
 
@@ -30,14 +28,14 @@ namespace UntitledDeepSeaGame
                 int surface = context.SurfaceHeights[x];
                 for (int y = 0; y < height; y++)
                 {
-                    // Cells above the surface are treated as solid/unaffected and considered walls for CA purposes.
-                    if (y > surface)
+                    // Cells above the sea level are treated as air for CA purposes.
+                    if (y > surface )
                     {
-                        grid[x, y] = true;
+                        grid[x, y] = false;
                     }
-                    else
+                    else if (y <= surface)
                     {
-                        // Below (or at) the surface: random fill based on probability (true = wall)
+                        // Below (or at) the sea level: random fill based on probability (true = wall)
                         grid[x, y] = context.Random.NextDouble() < _fillProbability;
                     }
                 }
@@ -56,11 +54,11 @@ namespace UntitledDeepSeaGame
 
                 for (int x = 0; x < width; x++)
                 {
-                    int surface = context.SurfaceHeights[x];
+                    // int surface = context.SurfaceHeights[x];
                     for (int y = 0; y < height; y++)
                     {
-                        // Keep above-surface cells as walls/solid and do not alter them.
-                        if (y > surface)
+                        // Keep above-sea level cells as walls/solid and do not alter them.
+                        if (y >= context.Config.SeaLevelY)
                         {
                             next[x, y] = true;
                             continue;
@@ -81,7 +79,7 @@ namespace UntitledDeepSeaGame
                                 }
 
                                 // Treat cells that are above their column surface as walls for neighbor counting
-                                if (ny > context.SurfaceHeights[nx])
+                                if (ny >= context.Config.SeaLevelY)
                                 {
                                     wallCount++;
                                     continue;
@@ -106,11 +104,11 @@ namespace UntitledDeepSeaGame
             // We intentionally only modify the foreground here so this step controls cave shape only.
             for (int x = 0; x < width; x++)
             {
-                int surface = context.SurfaceHeights[x];
+                // int surface = context.SurfaceHeights[x];
                 for (int y = 0; y < height; y++)
                 {
-                    // Do not modify tiles above the surface; they're considered regular ground and left alone.
-                    if (y > surface) continue;
+                    // Do not modify tiles above the sea level; they're considered regular ground and left alone.
+                    if (y >= context.Config.SeaLevelY) continue;
 
                     // For solid cells we set the foreground to the world's configured solid tile id.
                     ushort tileId = grid[x, y] ? context.SolidTileId : GameDataRegistry.INVALID_ID;

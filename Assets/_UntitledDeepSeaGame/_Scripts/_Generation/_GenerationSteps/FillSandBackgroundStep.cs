@@ -6,12 +6,8 @@ namespace UntitledDeepSeaGame
     public class FillSandBackgroundStep : GenerationStep
     {
         [Header("Terrain")]
-        [SerializeField] 
-        private TileSO _sandWallTileSO;
-        
-        [SerializeField] 
-        private int _belowSurfaceOffset = 3;
-        
+        [SerializeField] private TileSO _sandWallTileSO;
+        [SerializeField] private int _belowSurfaceOffset = 3;
         [SerializeField, Range(0f, 1f)] 
         private float _approxUnderGroundStartPercent = 0.45f;
 

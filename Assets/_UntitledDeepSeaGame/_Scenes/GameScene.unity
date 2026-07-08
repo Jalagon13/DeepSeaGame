@@ -1874,7 +1874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.GenerateCavesStep
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
-  _fillProbability: 0.4975
+  _fillProbability: 0.51
   _smoothingIterations: 7
 --- !u!1 &519420028
 GameObject:
@@ -3333,8 +3333,8 @@ Transform:
   m_Children:
   - {fileID: 2100001001}
   - {fileID: 1032539435}
-  - {fileID: 1463938961}
   - {fileID: 511521756}
+  - {fileID: 1463938961}
   - {fileID: 1702576617}
   - {fileID: 2100003001}
   m_Father: {fileID: 2143430848}
@@ -7161,7 +7161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
-  _enableSpawning: 0
+  _enableSpawning: 1
   _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 60
