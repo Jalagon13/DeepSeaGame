@@ -1875,7 +1875,7 @@ MonoBehaviour:
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _fillProbability: 0.51
-  _smoothingIterations: 7
+  _smoothingIterations: 8
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5343,7 +5343,9 @@ MonoBehaviour:
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _sandWallTileSO: {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}
-  _belowSurfaceOffset: 3
+  _belowSurfaceOffset: 1
+  _minWallPlacementYOffset: 9
+  _maxWallPlacementYOffset: 12
   _approxUnderGroundStartPercent: 0.6
 --- !u!1 &1500566742
 GameObject:
