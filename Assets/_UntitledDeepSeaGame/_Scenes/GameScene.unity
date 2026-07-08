@@ -1875,6 +1875,9 @@ MonoBehaviour:
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _fillProbability: 0.51
+  _minFillProbability: 0.43
+  _maxFillProbability: 0.65
+  _noiseScale: 0.022
   _smoothingIterations: 8
 --- !u!1 &519420028
 GameObject:
@@ -2002,7 +2005,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.00001, y: 22.500006, z: 0}
+  m_LocalPosition: {x: 42.666668, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3370,7 +3373,7 @@ MonoBehaviour:
   _worldWidth: 256
   _worldHeight: 384
   _seaLevelY: 326
-  <Seed>k__BackingField: 
+  <Seed>k__BackingField: 123
   _defaultSeed: prototype-world
   <UndergroundMaxYLevel>k__BackingField: 238
   <UndergroundMinYLevel>k__BackingField: 0
@@ -7744,7 +7747,7 @@ MonoBehaviour:
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
   _baseHeight: 294
-  _largeShapeNoiseScale: 0.06
+  _largeShapeNoiseScale: 0.05
   _largeShapeAmplitude: 12
   _detailNoiseScale: 0.15
   _detailAmplitude: 2

@@ -9,6 +9,15 @@ namespace UntitledDeepSeaGame
         [SerializeField, Range(0f, 1f)]
         private float _fillProbability = 0.52f; // Chance that a cell starts as a wall during initial random fill. Higher = denser caves (more solid).
 
+        [SerializeField, Range(0f, 1f)]
+        private float _minFillProbability = 0.465f; // Lower bound for the noise-based local fill probability.
+
+        [SerializeField, Range(0f, 1f)]
+        private float _maxFillProbability = 0.525f; // Upper bound for the noise-based local fill probability.
+
+        [SerializeField, Range(0.0001f, 0.05f)]
+        private float _noiseScale = 0.008f; // Lower values make the noise blobs larger and smoother.
+
         [SerializeField, Range(0, 8)]
         private int _smoothingIterations = 3; // Number of smoothing passes. More iterations -> larger, more connected pockets; fewer -> many small pockets.
 
@@ -21,6 +30,16 @@ namespace UntitledDeepSeaGame
             int columnsPerFrame = Mathf.Max(1, context.Config.ColumnsPerFrame);
 
             bool[,] grid = new bool[width, height];
+            float[,] noiseMap = new float[width, height];
+
+            // Build a low-frequency noise map so different regions get slightly different initial fill probabilities.
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    noiseMap[x, y] = Mathf.PerlinNoise(x * _noiseScale, y * _noiseScale);
+                }
+            }
 
             // Initial random fill below the surface heights using the seeded RNG from the context.
             for (int x = 0; x < width; x++)
@@ -29,14 +48,18 @@ namespace UntitledDeepSeaGame
                 for (int y = 0; y < height; y++)
                 {
                     // Cells above the sea level are treated as air for CA purposes.
-                    if (y > surface )
+                    if (y > surface)
                     {
                         grid[x, y] = false;
                     }
                     else if (y <= surface)
                     {
-                        // Below (or at) the sea level: random fill based on probability (true = wall)
-                        grid[x, y] = context.Random.NextDouble() < _fillProbability;
+                        float localFillProbability = Mathf.Lerp(_minFillProbability, _maxFillProbability, noiseMap[x, y]);
+                        localFillProbability = Mathf.Clamp01(localFillProbability);
+
+                        // Below (or at) the sea level: random fill based on the local noise-driven probability (true = wall)
+                        grid[x, y] = context.Random.NextDouble() < localFillProbability;
+                        // Debug.Log($"localFillProbability = {localFillProbability:F3}, filled = {grid[x, y]}");
                     }
                 }
 
