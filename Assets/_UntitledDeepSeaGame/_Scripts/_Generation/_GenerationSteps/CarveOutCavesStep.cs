@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class GenerateCavesStep : GenerationStep
+    public class CarveOutCavesStep : GenerationStep
     {
         [Header("Caves")]
-        [SerializeField, Range(0f, 1f)]
-        private float _fillProbability = 0.52f; // Chance that a cell starts as a wall during initial random fill. Higher = denser caves (more solid).
-
+        [SerializeField] private TileSO _limeStoneTileSO;
         [SerializeField, Range(0f, 1f)]
         private float _minFillProbability = 0.465f; // Lower bound for the noise-based local fill probability.
 
@@ -134,8 +132,10 @@ namespace UntitledDeepSeaGame
                     if (y >= context.Config.SeaLevelY) continue;
 
                     // For solid cells we set the foreground to the world's configured solid tile id.
-                    ushort tileId = grid[x, y] ? context.SolidTileId : GameDataRegistry.INVALID_ID;
-                    context.DataStore.SetTileId(x, y, tileId, WorldTm.ForegroundTilemap);
+                    if(grid[x, y] == false)
+                    {
+                        context.DataStore.SetTileId(x, y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
+                    }
                 }
 
                 if ((x + 1) % columnsPerFrame == 0)

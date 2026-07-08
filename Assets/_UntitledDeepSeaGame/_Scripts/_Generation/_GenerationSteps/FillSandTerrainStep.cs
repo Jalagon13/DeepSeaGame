@@ -7,6 +7,7 @@ namespace UntitledDeepSeaGame
     {
         [Header("Terrain")]
         [SerializeField] private TileSO _sandTileSO;
+        [SerializeField] private TileSO _limestoneTileSO;
 
         public override WorldGenerationState State => WorldGenerationState.FillingTerrain;
 
@@ -14,15 +15,14 @@ namespace UntitledDeepSeaGame
         {
             int width = context.Config.WorldWidth;
             int height = context.Config.WorldHeight;
-            ushort sandTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_sandTileSO);
-            context.SolidTileId = sandTileId;
+            ushort limeStoneTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_limestoneTileSO);
 
             for (int x = 0; x < width; x++)
             {
                 int surfaceHeight = context.SurfaceHeights[x];
                 for (int y = 0; y < height; y++)
                 {
-                    ushort tileId = y <= surfaceHeight ? sandTileId : GameDataRegistry.INVALID_ID;
+                    ushort tileId = y <= surfaceHeight ? limeStoneTileId : GameDataRegistry.INVALID_ID;
                     context.DataStore.SetTileId(x, y, tileId);
                 }
 

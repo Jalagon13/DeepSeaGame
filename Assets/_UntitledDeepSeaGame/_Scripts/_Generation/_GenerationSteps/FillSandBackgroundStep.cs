@@ -63,12 +63,9 @@ namespace UntitledDeepSeaGame
         
         private int GetFlankedTopSandY(WorldGenerationContext context, int x, int height)
         {
-            ushort foregroundSolidId = context.SolidTileId;
-            if (foregroundSolidId == GameDataRegistry.INVALID_ID) return -1;
-
             for (int y = height - 1; y >= 0; y--)
             {
-                if (context.DataStore.GetTileId(x, y, WorldTm.ForegroundTilemap) != foregroundSolidId)
+                if (context.DataStore.GetTileId(x, y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID)
                 {
                     continue;
                 }
@@ -78,7 +75,7 @@ namespace UntitledDeepSeaGame
                 int rightX = x + 1;
                 if (leftX < 0 || rightX >= context.Config.WorldWidth) continue;
 
-                if (context.DataStore.GetTileId(leftX, y, WorldTm.ForegroundTilemap) == foregroundSolidId && context.DataStore.GetTileId(rightX, y, WorldTm.ForegroundTilemap) == foregroundSolidId)
+                if (context.DataStore.GetTileId(leftX, y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID && context.DataStore.GetTileId(rightX, y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID)
                 {
                     return y;
                 }

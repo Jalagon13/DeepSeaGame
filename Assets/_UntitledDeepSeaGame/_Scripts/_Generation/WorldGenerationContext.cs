@@ -19,7 +19,6 @@ namespace UntitledDeepSeaGame
             Random = new System.Random(seedHash);
             SurfaceHeights = new int[config.WorldWidth];
             SpawnTile = new Vector3Int(config.WorldWidth / 2, (config.WorldHeight / 2) + 1, 0);
-            SolidTileId = GameDataRegistry.INVALID_ID;
             _progressChanged = progressChanged;
         }
 
@@ -27,7 +26,6 @@ namespace UntitledDeepSeaGame
         public WorldDataStore DataStore { get; }
         public int SeedHash { get; }
         public string ResolvedSeed { get; }
-        public ushort SolidTileId { get; set; }
         public System.Random Random { get; }
         public int[] SurfaceHeights { get; }
         public Vector3Int SpawnTile { get; set; }
