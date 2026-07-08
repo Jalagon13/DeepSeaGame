@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class FillSandTerrainStep : GenerationStep
+    public class FillLimestoneTerrainStep : GenerationStep
     {
         [Header("Terrain")]
-        [SerializeField] private TileSO _sandTileSO;
         [SerializeField] private TileSO _limestoneTileSO;
 
         public override WorldGenerationState State => WorldGenerationState.FillingTerrain;

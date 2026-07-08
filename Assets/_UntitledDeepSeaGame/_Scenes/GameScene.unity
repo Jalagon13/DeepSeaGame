@@ -2005,7 +2005,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.666668, y: 24, z: 0}
+  m_LocalPosition: {x: 40.00001, y: 22.500006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3338,6 +3338,7 @@ Transform:
   - {fileID: 1032539435}
   - {fileID: 511521756}
   - {fileID: 1463938961}
+  - {fileID: 2017195977}
   - {fileID: 1702576617}
   - {fileID: 2100003001}
   m_Father: {fileID: 2143430848}
@@ -3724,7 +3725,7 @@ GameObject:
   - component: {fileID: 1032539435}
   - component: {fileID: 1032539436}
   m_Layer: 0
-  m_Name: FillSandTerrainStep
+  m_Name: FillLimestoneTerrainStep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7219,6 +7220,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2017195976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2017195977}
+  - component: {fileID: 2017195978}
+  m_Layer: 0
+  m_Name: SetSandLayerStep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2017195977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017195976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885515390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2017195978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017195976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4d0ce4ea1eb49cf80b6ec13af09811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.SetSandLayerStep
+  <ExecuteStep>k__BackingField: 1
+  <Description>k__BackingField: 
+  _sandTileSO: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
+  _depthOfSandLayer: 2
+  _minYForSand: 250
 --- !u!1 &2039596629
 GameObject:
   m_ObjectHideFlags: 0
