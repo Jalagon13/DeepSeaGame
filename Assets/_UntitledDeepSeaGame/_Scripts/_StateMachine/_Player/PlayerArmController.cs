@@ -9,6 +9,8 @@ namespace UntitledDeepSeaGame
 {
     public class PlayerArmController : NetworkBehaviour
     {
+        public event Action<bool> AimingStateChanged;
+
         [SerializeField]
         private GameObject _heldItemPivot;
         [SerializeField]
@@ -24,6 +26,7 @@ namespace UntitledDeepSeaGame
         [SerializeField] private SwingConfig _leftSwing = new SwingConfig { StartAngle = 110, EndAngle = 250 };
         [SerializeField] private SwingConfig _rightSwing = new SwingConfig { StartAngle = 70, EndAngle = 290 };
         [SerializeField] private SwingConfig _downSwing = new SwingConfig { StartAngle = 340, EndAngle = 200 };
+        
         [Serializable]
         public struct SwingConfig
         {
@@ -33,10 +36,11 @@ namespace UntitledDeepSeaGame
 
         private HeldObject _currentHeldObject;
         private HeldObject _currentHeldPrefab;
-        private bool _isAiming;
         private ServerCharacter _serverCharacter;
 
         public bool IsSwinging { get; private set; }
+        private bool _isAiming;
+        public bool IsAiming => _isAiming;
         
         public NetworkVariable<Direction> AimDirection { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> AngleToMouse { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -73,6 +77,7 @@ namespace UntitledDeepSeaGame
             _isAiming = true;
             _heldItemHolder.SetActive(true);
             _currentHeldObject.OnStart(tool, false);
+            AimingStateChanged?.Invoke(_isAiming);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -81,6 +86,7 @@ namespace UntitledDeepSeaGame
             _isAiming = false;
             _heldItemHolder.SetActive(false);
             _currentHeldObject.OnEnd();
+            AimingStateChanged?.Invoke(_isAiming);
         }
 
         public SwingConfig GetSwingConfig(Direction direction)

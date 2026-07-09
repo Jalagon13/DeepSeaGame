@@ -29,6 +29,7 @@ namespace UntitledDeepSeaGame
                 if (_serverCharacter.TryGetComponent(out Player player))
                 {
                     player.PlayerArmController.AimDirection.OnValueChanged += OnActionDirectionChanged;
+                    player.PlayerArmController.AimingStateChanged += OnAimingStateChanged;
                 }
             }
         }
@@ -44,6 +45,7 @@ namespace UntitledDeepSeaGame
                 if (_serverCharacter.TryGetComponent(out Player player))
                 {
                     player.PlayerArmController.AimDirection.OnValueChanged -= OnActionDirectionChanged;
+                    player.PlayerArmController.AimingStateChanged -= OnAimingStateChanged;
                 }
             }
         }
@@ -54,7 +56,7 @@ namespace UntitledDeepSeaGame
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? _serverCharacter.CurrentDirection.Value : _actionDirection);
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, GetAnimationDirection(_serverCharacter.CurrentDirection.Value));
             }
         }
 
@@ -62,7 +64,7 @@ namespace UntitledDeepSeaGame
         {
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(_serverCharacter.MovementState.Value, _actionDirection == Direction.None ? newValue : _actionDirection);
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, GetAnimationDirection(newValue));
             }
         }
 
@@ -72,7 +74,25 @@ namespace UntitledDeepSeaGame
 
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {
-                handler.PlayAnimation(newMovementState, _actionDirection == Direction.None ? direction : _actionDirection);
+                handler.PlayAnimation(newMovementState, GetAnimationDirection(direction));
+            }
+        }
+
+        private Direction GetAnimationDirection(Direction fallbackDirection)
+        {
+            if (_serverCharacter.TryGetComponent(out Player player) && player.PlayerArmController != null && player.PlayerArmController.IsAiming)
+            {
+                return _actionDirection == Direction.None ? fallbackDirection : _actionDirection;
+            }
+
+            return fallbackDirection;
+        }
+
+        private void OnAimingStateChanged(bool isAiming)
+        {
+            foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
+            {
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, GetAnimationDirection(_serverCharacter.CurrentDirection.Value));
             }
         }
 
