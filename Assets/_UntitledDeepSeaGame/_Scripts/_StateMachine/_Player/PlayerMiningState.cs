@@ -33,7 +33,7 @@ namespace UntitledDeepSeaGame
             {
                 SwitchState(new AIStateData(AIState.Grounded));
             }
-            else if(!GameInput.Instance.PrimaryActionHeldDown || _ctx.HeldItem is not ToolItemSO || (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType != ToolType.Drill))
+            else if((!GameInput.Instance.PrimaryActionHeldDown && !GameInput.Instance.SecondaryActionHeldDown) || _ctx.HeldItem is not ToolItemSO || (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType != ToolType.Drill))
             {
                 SwitchState(new AIStateData(AIState.Grounded));
             }

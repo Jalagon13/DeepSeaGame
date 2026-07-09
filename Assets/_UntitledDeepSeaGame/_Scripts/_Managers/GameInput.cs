@@ -9,6 +9,8 @@ namespace UntitledDeepSeaGame
         public static GameInput Instance { get; private set; }
 
         public event EventHandler<InputAction.CallbackContext> OnPrimaryActionStarted;
+        public event EventHandler<InputAction.CallbackContext> OnSecondaryActionStarted;
+        
         public event EventHandler<InputAction.CallbackContext> OnMove;
         public event EventHandler<InputAction.CallbackContext> OnJump;
 
@@ -17,10 +19,11 @@ namespace UntitledDeepSeaGame
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnInteract;
 
-        private bool _isGameplayInputBlocked, _primaryHeldDown, _jumpHeldDown;
+        private bool _isGameplayInputBlocked, _primaryHeldDown, _secondaryHeldDown, _jumpHeldDown;
 
         public bool JumpHeldDown => !_isGameplayInputBlocked && _jumpHeldDown;
         public bool PrimaryActionHeldDown => !_isGameplayInputBlocked && _primaryHeldDown;
+        public bool SecondaryActionHeldDown => !_isGameplayInputBlocked && _secondaryHeldDown;
 
         public bool IsGameplayInputBlocked 
         {
@@ -46,6 +49,10 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.PrimaryAction.started += PlayerInput_OnPrimaryAction;
             _playerInput.Player.PrimaryAction.performed += PlayerInput_OnPrimaryAction;
             _playerInput.Player.PrimaryAction.canceled += PlayerInput_OnPrimaryAction;
+            
+            _playerInput.Player.SecondaryAction.started += PlayerInput_OnSecondaryAction;
+            _playerInput.Player.SecondaryAction.performed += PlayerInput_OnSecondaryAction;
+            _playerInput.Player.SecondaryAction.canceled += PlayerInput_OnSecondaryAction;
 
             _playerInput.Player.Move.started += PlayerInput_OnMove;
             _playerInput.Player.Move.performed += PlayerInput_OnMove;
@@ -67,6 +74,10 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.PrimaryAction.performed -= PlayerInput_OnPrimaryAction;
             _playerInput.Player.PrimaryAction.canceled -= PlayerInput_OnPrimaryAction;
 
+            _playerInput.Player.SecondaryAction.started -= PlayerInput_OnSecondaryAction;
+            _playerInput.Player.SecondaryAction.performed -= PlayerInput_OnSecondaryAction;
+            _playerInput.Player.SecondaryAction.canceled -= PlayerInput_OnSecondaryAction;
+
             _playerInput.Player.Move.started -= PlayerInput_OnMove;
             _playerInput.Player.Move.performed -= PlayerInput_OnMove;
             _playerInput.Player.Move.canceled -= PlayerInput_OnMove;
@@ -82,6 +93,22 @@ namespace UntitledDeepSeaGame
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnSecondaryAction(InputAction.CallbackContext context)
+        {
+            if (context.canceled || _isGameplayInputBlocked)
+            {
+                _secondaryHeldDown = false;
+            }
+            else
+            {
+                _secondaryHeldDown = context.performed || context.started;
+            }
+
+            if (_isGameplayInputBlocked) return;
+
+            OnSecondaryActionStarted?.Invoke(this, context);
         }
 
         private void PlayerInput_OnInteract(InputAction.CallbackContext context)

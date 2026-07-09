@@ -28,7 +28,7 @@ namespace UntitledDeepSeaGame
         {
             if (!GameInput.Instance.IsGameplayInputBlocked)
             {
-                if (_ctx.HeldItem is ToolItemSO tool && GameInput.Instance.PrimaryActionHeldDown)
+                if (_ctx.HeldItem is ToolItemSO tool && (GameInput.Instance.PrimaryActionHeldDown || GameInput.Instance.SecondaryActionHeldDown))
                 {
                     if (tool.HarvestType == ToolType.Drill)
                     {

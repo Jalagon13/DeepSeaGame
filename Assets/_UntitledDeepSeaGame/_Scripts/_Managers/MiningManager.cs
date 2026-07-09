@@ -6,6 +6,12 @@ namespace UntitledDeepSeaGame
 {
     public class MiningManager : MonoBehaviour
     {
+        private enum MiningActionType
+        {
+            Primary,
+            Secondary
+        }
+
         public static MiningManager Instance { get; private set; }
 
         [SerializeField]
@@ -18,10 +24,13 @@ namespace UntitledDeepSeaGame
         private MiningState _miningState;
         public MiningState MiningState => _miningState;
 
-        private Coroutine _currentMiningCoroutine;
+        private Coroutine _primaryMiningCoroutine;
+        private Coroutine _secondaryMiningCoroutine;
         private ToolItemSO _currentTool;
-        private Vector2Int _currentTargetTilePosition;
-        private TileSO _currentTargetTile;
+        private Vector2Int _primaryTargetTilePosition;
+        private TileSO _primaryTargetTile;
+        private Vector2Int _secondaryTargetTilePosition;
+        private TileSO _secondaryTargetTile;
 
         public ToolItemSO CurrentTool => _currentTool;
 
@@ -32,8 +41,16 @@ namespace UntitledDeepSeaGame
 
         private void Start()
         {
-            GameInput.Instance.OnPrimaryActionStarted += OnPrimaryActionStarted;
-            InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+            if (GameInput.Instance != null)
+            {
+                GameInput.Instance.OnPrimaryActionStarted += OnPrimaryActionStarted;
+                GameInput.Instance.OnSecondaryActionStarted += OnSecondaryActionStarted;
+            }
+
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+            }
         }
 
         private void OnDestroy()
@@ -41,6 +58,7 @@ namespace UntitledDeepSeaGame
             if (GameInput.Instance != null)
             {
                 GameInput.Instance.OnPrimaryActionStarted -= OnPrimaryActionStarted;
+                GameInput.Instance.OnSecondaryActionStarted -= OnSecondaryActionStarted;
             }
 
             if (InventoryManager.Instance != null)
@@ -51,68 +69,104 @@ namespace UntitledDeepSeaGame
 
         private void Update()
         {
-            if (_currentMiningCoroutine != null && !CanContinueMiningCurrentTarget())
-            {
-                StopMiningRoutine();
-            }
-
-            TryToMineTile();
+            UpdateMiningActivity();
         }
 
         private void OnSelectedHotbarSlotChanged(int arg1, InventoryStack stack)
         {
             _currentTool = !stack.IsEmpty && stack.Item is ToolItemSO toolItemSO ? toolItemSO : null;
-
-            if (_currentTool == null)
-            {
-                _miningState = MiningState.Idle;
-                StopMiningRoutine();
-            }
+            UpdateMiningActivity();
         }
 
         private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
         {
-            if (_currentTool == null)
+            UpdateMiningActivity();
+        }
+
+        private void OnSecondaryActionStarted(object sender, InputAction.CallbackContext e)
+        {
+            UpdateMiningActivity();
+        }
+
+        private void UpdateMiningActivity()
+        {
+            bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
+            bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
+
+            if (_currentTool == null || (!primaryHeld && !secondaryHeld))
             {
                 _miningState = MiningState.Idle;
-                StopMiningRoutine();
+                StopMiningRoutine(MiningActionType.Primary);
+                StopMiningRoutine(MiningActionType.Secondary);
                 return;
             }
 
-            MiningState newState = (e.started || e.performed) ? MiningState.Detecting : MiningState.Idle;
-            if (_miningState == newState)
+            _miningState = MiningState.Detecting;
+
+            if (primaryHeld)
             {
-                return;
+                if (_primaryMiningCoroutine == null)
+                {
+                    TryStartMiningRoutine(MiningActionType.Primary);
+                }
+            }
+            else
+            {
+                StopMiningRoutine(MiningActionType.Primary);
             }
 
-            _miningState = newState;
-
-            if (_miningState == MiningState.Idle)
+            if (secondaryHeld)
             {
-                StopMiningRoutine();
+                if (_secondaryMiningCoroutine == null)
+                {
+                    TryStartMiningRoutine(MiningActionType.Secondary);
+                }
+            }
+            else
+            {
+                StopMiningRoutine(MiningActionType.Secondary);
             }
         }
 
-        private void TryToMineTile()
+        private void TryStartMiningRoutine(MiningActionType actionType)
         {
-            if (_miningState != MiningState.Detecting || _currentMiningCoroutine != null)
+            if (_currentTool == null || WorldManager.Instance?.WorldDataStore == null)
             {
                 return;
             }
 
-            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO))
+            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO, actionType))
             {
                 return;
             }
 
-            _currentTargetTilePosition = tilePosition;
-            _currentTargetTile = tileSO;
-            _currentMiningCoroutine = StartCoroutine(MiningRoutine());
+            switch (actionType)
+            {
+                case MiningActionType.Primary:
+                    _primaryTargetTilePosition = tilePosition;
+                    _primaryTargetTile = tileSO;
+                    _primaryMiningCoroutine = StartCoroutine(MiningRoutine(actionType));
+                    break;
+                case MiningActionType.Secondary:
+                    _secondaryTargetTilePosition = tilePosition;
+                    _secondaryTargetTile = tileSO;
+                    _secondaryMiningCoroutine = StartCoroutine(MiningRoutine(actionType));
+                    break;
+            }
         }
 
-        private IEnumerator MiningRoutine()
+        private IEnumerator MiningRoutine(MiningActionType actionType)
         {
-            float totalTicks = _currentTargetTile.Hardness * 30f / Mathf.Max(_currentTool.MiningPower, 0.1f);
+            TileSO targetTile = GetMiningTargetTile(actionType);
+            Vector2Int targetTilePosition = GetMiningTargetTilePosition(actionType);
+
+            if (targetTile == null)
+            {
+                StopMiningRoutine(actionType);
+                yield break;
+            }
+
+            float totalTicks = targetTile.Hardness * 30f / Mathf.Max(_currentTool.MiningPower, 0.1f);
             float totalMiningTime = totalTicks * 0.05f;
             float elapsedTime = 0f;
             float nextSoundTime = _timeBetweenMiningSounds;
@@ -121,9 +175,9 @@ namespace UntitledDeepSeaGame
 
             while (elapsedTime < totalMiningTime)
             {
-                if (!CanContinueMiningCurrentTarget())
+                if (!CanContinueMiningCurrentTarget(actionType))
                 {
-                    StopMiningRoutine();
+                    StopMiningRoutine(actionType);
                     yield break;
                 }
 
@@ -138,43 +192,62 @@ namespace UntitledDeepSeaGame
                 yield return null;
             }
 
-            HandleDestruction();
+            HandleDestruction(actionType);
         }
 
-        private void HandleDestruction()
+        private void HandleDestruction(MiningActionType actionType)
         {
-            if (WorldManager.Instance?.WorldDataStore == null || _currentTargetTile == null)
+            TileSO targetTile = GetMiningTargetTile(actionType);
+            Vector2Int targetTilePosition = GetMiningTargetTilePosition(actionType);
+
+            if (WorldManager.Instance?.WorldDataStore == null || targetTile == null)
             {
-                StopMiningRoutine();
+                StopMiningRoutine(actionType);
                 return;
             }
 
-            if(_currentTargetTile.IsMultiTile)
+            if (actionType == MiningActionType.Primary)
             {
-                WorldManager.Instance.WorldDataStore.DestroyMultiTile(_currentTargetTilePosition.x, _currentTargetTilePosition.y);
+                if (targetTile.IsMultiTile)
+                {
+                    WorldManager.Instance.WorldDataStore.DestroyMultiTile(targetTilePosition.x, targetTilePosition.y);
+                }
+                else
+                {
+                    WorldManager.Instance.WorldDataStore.SetTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap, true);
+                }
             }
             else
             {
-                WorldManager.Instance.WorldDataStore.SetTileId(_currentTargetTilePosition.x, _currentTargetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap, true);
+                WorldManager.Instance.WorldDataStore.SetTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.BackgroundTilemap, true);
             }
-            
-            SpawnTileDrops(_currentTargetTile, _currentTargetTilePosition);
-            StopMiningRoutine();
+
+            SpawnTileDrops(targetTile, targetTilePosition);
+            StopMiningRoutine(actionType);
         }
 
         private void PlayMiningSound()
         {
         }
 
-        private void StopMiningRoutine()
+        private void StopMiningRoutine(MiningActionType actionType)
         {
-            if (_currentMiningCoroutine != null)
+            Coroutine miningCoroutine = actionType == MiningActionType.Primary ? _primaryMiningCoroutine : _secondaryMiningCoroutine;
+            if (miningCoroutine != null)
             {
-                StopCoroutine(_currentMiningCoroutine);
+                StopCoroutine(miningCoroutine);
             }
 
-            _currentMiningCoroutine = null;
-            _currentTargetTile = null;
+            if (actionType == MiningActionType.Primary)
+            {
+                _primaryMiningCoroutine = null;
+                _primaryTargetTile = null;
+            }
+            else
+            {
+                _secondaryMiningCoroutine = null;
+                _secondaryTargetTile = null;
+            }
         }
 
         private bool PlayerWithinMiningRangeOfMouse()
@@ -182,7 +255,7 @@ namespace UntitledDeepSeaGame
             return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _miningRange;
         }
 
-        private bool TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO)
+        private bool TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO, MiningActionType actionType)
         {
             tilePosition = GameManager.MouseTilePosition;
             tileSO = null;
@@ -198,7 +271,8 @@ namespace UntitledDeepSeaGame
                 return false;
             }
 
-            ushort tileId = worldDataStore.GetTileId(tilePosition.x, tilePosition.y);
+            WorldTm targetMap = actionType == MiningActionType.Primary ? WorldTm.ForegroundTilemap : WorldTm.BackgroundTilemap;
+            ushort tileId = worldDataStore.GetTileId(tilePosition.x, tilePosition.y, targetMap);
             if (tileId == GameDataRegistry.INVALID_ID)
             {
                 return false;
@@ -208,24 +282,39 @@ namespace UntitledDeepSeaGame
             return tileSO != null && tileSO.RequiredToolType == _currentTool.HarvestType;
         }
 
-        private bool CanContinueMiningCurrentTarget()
+        private bool CanContinueMiningCurrentTarget(MiningActionType actionType)
         {
-            if (_currentTargetTile == null)
+            TileSO targetTile = GetMiningTargetTile(actionType);
+            if (targetTile == null)
             {
                 return false;
             }
 
-            if (!GameInput.Instance.PrimaryActionHeldDown)
+            bool actionHeld = actionType == MiningActionType.Primary
+                ? GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown
+                : GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
+                
+            if (!actionHeld)
             {
                 return false;
             }
 
-            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO))
+            if (!TryGetMineableTile(out Vector2Int tilePosition, out TileSO tileSO, actionType))
             {
                 return false;
             }
 
-            return tilePosition == _currentTargetTilePosition && tileSO == _currentTargetTile;
+            return tilePosition == GetMiningTargetTilePosition(actionType) && tileSO == targetTile;
+        }
+
+        private TileSO GetMiningTargetTile(MiningActionType actionType)
+        {
+            return actionType == MiningActionType.Primary ? _primaryTargetTile : _secondaryTargetTile;
+        }
+
+        private Vector2Int GetMiningTargetTilePosition(MiningActionType actionType)
+        {
+            return actionType == MiningActionType.Primary ? _primaryTargetTilePosition : _secondaryTargetTilePosition;
         }
 
         private void SpawnTileDrops(TileSO tileSO, Vector2Int tilePosition)

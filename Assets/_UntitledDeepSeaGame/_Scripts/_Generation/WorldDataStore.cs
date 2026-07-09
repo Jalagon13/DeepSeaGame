@@ -225,12 +225,6 @@ namespace UntitledDeepSeaGame
             {
                 ClearUnderwaterAirSilently(x, y, true);
             }
-
-            // Check for exposed air tiles if a foreground tile was broken
-            if (checkForExposedAir && targetMap == WorldTm.ForegroundTilemap && tileId == GameDataRegistry.INVALID_ID && !IsAirAt(x, y))
-            {
-                CheckForExposedAir(x, y);
-            }
         }
 
         public bool IsPlayerPlacedBackgroundAt(int x, int y)
@@ -254,73 +248,9 @@ namespace UntitledDeepSeaGame
             return targetMap == WorldTm.ForegroundTilemap ? FgTileData[x, y] : BgTileData[x, y];
         }
 
-        private void CheckForExposedAir(int x, int y)
-        {
-            Vector2Int[] neighbors = { new(x, y + 1), new(x, y - 1), new(x - 1, y), new(x + 1, y) };
-            bool hasWaterNeighbor = false;
-
-            foreach (var pos in neighbors)
-            {
-                if (IsWaterCell(pos.x, pos.y))
-                {
-                    hasWaterNeighbor = true;
-                    break;
-                }
-            }
-
-            if (hasWaterNeighbor)
-            {
-                foreach (var pos in neighbors)
-                {
-                    if (IsFloodableUnderwaterAirCell(pos.x, pos.y))
-                    {
-                        OnAirTileExposed(pos.x, pos.y);
-                    }
-                }
-            }
-            else
-            {
-                SetUnderwaterAir(x, y, true);
-            }
-        }
-
-        private void OnAirTileExposed(int startX, int startY)
-        {
-            Debug.Log($"Air pocket exposed at ({startX}, {startY})! Filling with water...");
-
-            Queue<Vector2Int> queue = new();
-            
-            // Start the flood fill by clearing the first detected air tile
-            SetUnderwaterAir(startX, startY, false);
-            queue.Enqueue(new Vector2Int(startX, startY));
-
-            while (queue.Count > 0)
-            {
-                Vector2Int current = queue.Dequeue();
-                Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-
-                foreach (var dir in neighbors)
-                {
-                    Vector2Int next = current + dir;
-                    
-                    if (IsFloodableUnderwaterAirCell(next.x, next.y))
-                    {
-                        // Setting to false immediately prevents the tile from being re-added to the queue
-                        SetUnderwaterAir(next.x, next.y, false);
-                        queue.Enqueue(next);
-                    }
-                }
-            }
-        }
-
         public bool IsInBounds(int x, int y)
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
-        }
-
-        private bool IsFloodableUnderwaterAirCell(int x, int y)
-        {
-            return IsUnderwaterAirAt(x, y) && GetTileId(x, y, WorldTm.ForegroundTilemap) == GameDataRegistry.INVALID_ID;
         }
 
         private bool ClearUnderwaterAirSilently(int x, int y, bool notify)

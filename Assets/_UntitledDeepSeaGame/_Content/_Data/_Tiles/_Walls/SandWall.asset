@@ -293,8 +293,13 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 0}
-  <ItemDropTable>k__BackingField: []
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: a6ed8073f176544b5aa1bba639bb4c1a, type: 2}
+  <ItemDropTable>k__BackingField:
+  - Item: {fileID: 11400000, guid: a6ed8073f176544b5aa1bba639bb4c1a, type: 2}
+    Min: 1
+    Max: 1
+    Chance: 100
   <IsMultiTile>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 2}
   <Prefab>k__BackingField: {fileID: 0}
+  <MultiTileLifecycleBehavior>k__BackingField: {fileID: 0}
