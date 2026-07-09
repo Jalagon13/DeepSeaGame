@@ -2005,7 +2005,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.00001, y: 22.500006, z: 0}
+  m_LocalPosition: {x: 42.666668, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3760,7 +3760,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FillSandTerrainStep
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
-  _sandTileSO: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
   _limestoneTileSO: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
 --- !u!1 &1059519058
 GameObject:
@@ -6520,7 +6519,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.InventoryManager
   _slotCount: 40
   _hotbarSlotCount: 10
-  _startingSelectedHotbarSlotIndex: 2
+  _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
   _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
   _timeBetweenCollections: 0.1
