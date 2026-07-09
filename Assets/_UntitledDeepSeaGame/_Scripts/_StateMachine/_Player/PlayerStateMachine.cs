@@ -29,6 +29,7 @@ namespace UntitledDeepSeaGame
         public override void OwnerInitialization()
         {
             Player.Instance.SelectedItemID.OnValueChanged += OnSelectedItemIDChanged;
+            OnSelectedItemIDChanged(default, Player.Instance.SelectedItemID.Value);
         }
 
         public override void Dispose()

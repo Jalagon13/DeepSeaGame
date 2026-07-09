@@ -24,12 +24,12 @@ namespace UntitledDeepSeaGame
             {
                 _networkHealthState.LifeState.OnValueChanged += OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged += PlayCurrentMoveState;
-                _serverCharacter.CurrentDirection.OnValueChanged += OnCardinalDirectionChanged;
-                // if (_serverCharacter.TryGetComponent(out Player player))
-                // {
-                //     player.PlayerHand.SwingDirection.OnValueChanged += OnActionDirectionChanged;
-                //     player.PlayerHand.CastingDirection.OnValueChanged += OnActionDirectionChanged;
-                // }
+                _serverCharacter.CurrentDirection.OnValueChanged += OnDirectionChanged;
+                
+                if (_serverCharacter.TryGetComponent(out Player player))
+                {
+                    player.PlayerArmController.AimDirection.OnValueChanged += OnActionDirectionChanged;
+                }
             }
         }
 
@@ -39,12 +39,12 @@ namespace UntitledDeepSeaGame
             {
                 _networkHealthState.LifeState.OnValueChanged -= OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged -= PlayCurrentMoveState;
-                _serverCharacter.CurrentDirection.OnValueChanged -= OnCardinalDirectionChanged;
-                // if (_serverCharacter.TryGetComponent(out Player player))
-                // {
-                //     player.PlayerHand.SwingDirection.OnValueChanged -= OnActionDirectionChanged;
-                //     player.PlayerHand.CastingDirection.OnValueChanged -= OnActionDirectionChanged;
-                // }
+                _serverCharacter.CurrentDirection.OnValueChanged -= OnDirectionChanged;
+                
+                if (_serverCharacter.TryGetComponent(out Player player))
+                {
+                    player.PlayerArmController.AimDirection.OnValueChanged -= OnActionDirectionChanged;
+                }
             }
         }
 
@@ -58,7 +58,7 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void OnCardinalDirectionChanged(Direction previousValue, Direction newValue)
+        private void OnDirectionChanged(Direction previousValue, Direction newValue)
         {
             foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
             {

@@ -22,9 +22,9 @@ namespace UntitledDeepSeaGame
             _animator = GetComponent<Animator>();
         }
 
-        public void PlayAnimation(MovementState movementState, Direction cardinalDirection)
+        public void PlayAnimation(MovementState movementState, Direction direction)
         {
-            UpdateSpriteOrientationClientRpc(cardinalDirection);
+            UpdateSpriteOrientationClientRpc(direction);
             AnimationClip clip = null;
 
             if (movementState == MovementState.Idle)

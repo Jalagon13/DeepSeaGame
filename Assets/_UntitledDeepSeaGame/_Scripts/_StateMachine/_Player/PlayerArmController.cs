@@ -52,7 +52,7 @@ namespace UntitledDeepSeaGame
         {
             if(IsOwner)
             {
-                Vector3 direction = GameManager.MouseWorldPosition - (Vector2)transform.position;
+                Vector3 direction = GameManager.MouseWorldPosition - (Vector2)_heldItemPivot.transform.position;
                 AngleToMouse.Value = NormalizeAngle(Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
                 AimDirection.Value = DetermineCardinalDirection(AngleToMouse.Value);
             }

@@ -76,6 +76,7 @@ namespace UntitledDeepSeaGame
 
             InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+            SyncSelectedItemToCurrentHotbarSelection();
         }
 
         private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
@@ -110,6 +111,20 @@ namespace UntitledDeepSeaGame
                 }
                 // Debug.Log($"Changed Selected Item ID: {hotBatSlotStackItemID}");
                 SelectedItemID.Value = hotBatSlotStackItemID;
+            }
+        }
+
+        private void SyncSelectedItemToCurrentHotbarSelection()
+        {
+            if (!IsOwner || InventoryManager.Instance == null)
+            {
+                return;
+            }
+
+            ushort hotbarItemId = GameDataRegistry.Instance.GetItemIdFromItemSO(InventoryManager.Instance.SelectedHotbarStack.Item);
+            if (SelectedItemID.Value != hotbarItemId)
+            {
+                SelectedItemID.Value = hotbarItemId;
             }
         }
 
