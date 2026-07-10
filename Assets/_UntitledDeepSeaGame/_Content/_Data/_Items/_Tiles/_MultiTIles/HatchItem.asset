@@ -16,4 +16,5 @@ MonoBehaviour:
   _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}
   _isStackable: 1
-  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}
+  <PrimaryTile>k__BackingField: {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}
+  <SecondaryTile>k__BackingField: {fileID: 0}
