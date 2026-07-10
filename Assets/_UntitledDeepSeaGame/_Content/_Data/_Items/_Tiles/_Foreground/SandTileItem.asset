@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e03f7e5b0d4d4e9585753833c883e350, type: 3}
-  m_Name: TitaniumPlateItem
+  m_Name: SandTileItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
-  _itemName: 'Titanium Plate '
-  _itemDescription: Building
-  _inventoryIcon: {fileID: -893114918391402929, guid: f87cb156056bc466d817f94b8424db48, type: 3}
+  _itemName: Sand Block
+  _itemDescription: 
+  _inventoryIcon: {fileID: -212160175407610149, guid: 814e31fe4b9e44fadbfeb7e1b5f7a746, type: 3}
   _isStackable: 1
-  <PlaceableTile>k__BackingField: {fileID: 11400000, guid: 1494d5cfbad214fb4832cec258458aa0, type: 2}
+  <PrimaryTile>k__BackingField: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
+  <SecondaryTile>k__BackingField: {fileID: 11400000, guid: 8336f4473b3004a59973613b5bd60afe, type: 2}

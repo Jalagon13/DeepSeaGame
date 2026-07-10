@@ -293,9 +293,9 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: a6ed8073f176544b5aa1bba639bb4c1a, type: 2}
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
   <ItemDropTable>k__BackingField:
-  - Item: {fileID: 11400000, guid: a6ed8073f176544b5aa1bba639bb4c1a, type: 2}
+  - Item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
     Min: 1
     Max: 1
     Chance: 100

@@ -25,6 +25,7 @@ namespace UntitledDeepSeaGame
         private void Start()
         {
             GameInput.Instance.OnPrimaryActionStarted += OnPrimaryActionStarted;
+            GameInput.Instance.OnSecondaryActionStarted += OnSecondaryActionStarted;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
         }
 
@@ -33,6 +34,7 @@ namespace UntitledDeepSeaGame
             if (GameInput.Instance != null)
             {
                 GameInput.Instance.OnPrimaryActionStarted -= OnPrimaryActionStarted;
+                GameInput.Instance.OnSecondaryActionStarted -= OnSecondaryActionStarted;
             }
 
             if (InventoryManager.Instance != null)
@@ -45,40 +47,53 @@ namespace UntitledDeepSeaGame
         {
             if (_placingState == PlacingState.Placing)
             {
-                TryToPlaceTile();
+                bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
+                bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
+
+                if (primaryHeld)
+                {
+                    TryToPlaceTile(true);
+                }
+                else if (secondaryHeld)
+                {
+                    TryToPlaceTile(false);
+                }
             }
         }
 
         private void OnSelectedHotbarSlotChanged(int arg1, InventoryStack stack)
         {
             _currentTileItem = !stack.IsEmpty && stack.Item is TileItemSO tileItemSO ? tileItemSO : null;
-
-            if (_currentTileItem == null)
-            {
-                _placingState = PlacingState.Idle;
-            }
+            UpdatePlacingState();
         }
 
         private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
         {
+            UpdatePlacingState();
+        }
+
+        private void OnSecondaryActionStarted(object sender, InputAction.CallbackContext e)
+        {
+            UpdatePlacingState();
+        }
+
+        private void UpdatePlacingState()
+        {
             if (_currentTileItem == null)
             {
                 _placingState = PlacingState.Idle;
                 return;
             }
 
-            PlacingState newState = (e.started || e.performed) ? PlacingState.Placing : PlacingState.Idle;
-            if (_placingState == newState)
-            {
-                return;
-            }
+            bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
+            bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
 
-            _placingState = newState;
+            _placingState = (primaryHeld || secondaryHeld) ? PlacingState.Placing : PlacingState.Idle;
         }
 
-        private void TryToPlaceTile()
+        private void TryToPlaceTile(bool isPrimary)
         {
-            if (!CanPlaceTile(out Vector2Int tilePosition, out TileSO tileSO))
+            if (!CanPlaceTile(isPrimary, out Vector2Int tilePosition, out TileSO tileSO))
             {
                 return;
             }
@@ -96,12 +111,24 @@ namespace UntitledDeepSeaGame
             InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();
         }
 
-        private bool CanPlaceTile(out Vector2Int tilePosition, out TileSO tileSO)
+        private bool CanPlaceTile(bool isPrimary, out Vector2Int tilePosition, out TileSO tileSO)
         {
             tilePosition = GameManager.MouseTilePosition;
-            tileSO = _currentTileItem == null ? null : _currentTileItem.PlaceableTile;
+            
+            if (_currentTileItem == null)
+            {
+                tileSO = null;
+                return false;
+            }
+
+            tileSO = isPrimary ? _currentTileItem.PrimaryTile : _currentTileItem.SecondaryTile;
 
             if (tileSO == null || WorldManager.Instance?.WorldDataStore == null || !PlayerWithinPlacingRangeOfMouse())
+            {
+                return false;
+            }
+
+            if (!isPrimary && _currentTileItem.PrimaryTile != null && _currentTileItem.PrimaryTile.IsMultiTile)
             {
                 return false;
             }
