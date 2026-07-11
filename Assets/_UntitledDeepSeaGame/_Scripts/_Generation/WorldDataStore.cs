@@ -27,6 +27,7 @@ namespace UntitledDeepSeaGame
         {
             FgTileData = new ushort[width, height];
             BgTileData = new ushort[width, height];
+            
             _seaLevelY = Mathf.Clamp(seaLevelY, 1, Mathf.Max(1, height - 1));
             _naturalBackgroundTiles.Clear();
             _underwaterAirTiles.Clear();
@@ -56,11 +57,6 @@ namespace UntitledDeepSeaGame
         public bool IsOceanZone(int y)
         {
             return y >= 0 && y < _seaLevelY;
-        }
-
-        public void SetAirValue(int x, int y, bool value)
-        {
-            SetUnderwaterAir(x, y, value);
         }
 
         public void SetUnderwaterAir(int x, int y, bool value)
