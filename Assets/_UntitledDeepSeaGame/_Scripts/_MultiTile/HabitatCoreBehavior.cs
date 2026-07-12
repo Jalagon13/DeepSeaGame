@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UntitledDeepSeaGame
 {
     [CreateAssetMenu(fileName = "Habitat Core Behavior", menuName = "MultiTile/Lifecycle/HabitatCore")]
-    public class HabitatCoreLifecycleBehavior : MultiTileLifecycleBehavior
+    public class HabitatCoreBehavior : MultiTileBehavior
     {
         [SerializeField] private int _maxTileDetection = 40;
         [SerializeField] private float _drainInterval = 5f;

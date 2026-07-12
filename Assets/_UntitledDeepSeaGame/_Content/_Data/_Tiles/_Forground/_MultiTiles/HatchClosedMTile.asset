@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 135491153db834b08a4ff0a655a9d735, type: 3}
-  m_Name: SeaLanternTile
+  m_Name: HatchClosedMTile
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileSO
-  m_DefaultSprite: {fileID: -212160175407610149, guid: 814e31fe4b9e44fadbfeb7e1b5f7a746, type: 3}
+  m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
-  <StringID>k__BackingField: light
+  <StringID>k__BackingField: hatchClosed
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
-  <LightValue>k__BackingField: 15
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+  <LightValue>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
   <ItemDropTable>k__BackingField:
-  - Item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+  - Item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
     Min: 1
     Max: 1
     Chance: 100
-  <IsMultiTile>k__BackingField: 0
-  <Size>k__BackingField: {x: 1, y: 1}
-  <Prefab>k__BackingField: {fileID: 0}
+  <IsMultiTile>k__BackingField: 1
+  <Size>k__BackingField: {x: 1, y: 3}
+  <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: b6dc908c6c3334b249999b255b85ab14, type: 3}
   <MultiTileLifecycleBehavior>k__BackingField: {fileID: 0}
-  <IsSolid>k__BackingField: 0
-  <SwappedTile>k__BackingField: {fileID: 0}
+  <IsSolid>k__BackingField: 1
+  <SwappedTile>k__BackingField: {fileID: 11400000, guid: 98a07bb80ec3944cf81ca478bf105955, type: 2}

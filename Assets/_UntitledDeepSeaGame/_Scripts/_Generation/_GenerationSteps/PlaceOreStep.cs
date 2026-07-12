@@ -343,7 +343,6 @@ namespace UntitledDeepSeaGame
             }
 
             context.DataStore.SetTileId(position.x, position.y, oreTileId, WorldTm.ForegroundTilemap);
-            Debug.Log($"Placed ore tile {oreTileId} at {position.x}, {position.y}");
             veinCells.Add(position);
             return true;
         }

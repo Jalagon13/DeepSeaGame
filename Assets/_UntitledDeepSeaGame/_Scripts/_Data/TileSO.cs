@@ -21,7 +21,11 @@ namespace UntitledDeepSeaGame
         [field: SerializeField] public bool IsMultiTile { get; private set; } = false;
         [field: SerializeField] public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
         [field: SerializeField] public GameObject Prefab { get; private set; }
-        [field: SerializeField] public MultiTileLifecycleBehavior MultiTileLifecycleBehavior { get; private set; }
+        [field: SerializeField] public MultiTileBehavior MultiTileLifecycleBehavior { get; private set; }
+
+        [field: Header("Swapping & Physics Properties")]
+        [field: SerializeField] public bool IsSolid { get; private set; } = true;
+        [field: SerializeField] public TileSO SwappedTile { get; private set; }
 
 
         // [field: Header("Game Feel")]

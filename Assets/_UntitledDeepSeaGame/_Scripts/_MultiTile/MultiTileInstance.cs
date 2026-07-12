@@ -6,10 +6,10 @@ namespace UntitledDeepSeaGame
     {
         public Vector2Int Anchor { get; }
         public TileSO TileSO { get; }
-        public MultiTileLifecycleBehavior Behavior { get; }
+        public MultiTileBehavior Behavior { get; }
         public float Timer { get; set; }
 
-        public MultiTileInstance(Vector2Int anchor, TileSO tileSO, MultiTileLifecycleBehavior behavior)
+        public MultiTileInstance(Vector2Int anchor, TileSO tileSO, MultiTileBehavior behavior)
         {
             Anchor = anchor;
             TileSO = tileSO;

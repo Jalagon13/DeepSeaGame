@@ -137,7 +137,11 @@ namespace UntitledDeepSeaGame
         private bool IsTileSolid(int x, int y)
         {
             if (!_worldDataStore.IsInBounds(x, y)) return true; // World bounds are solid
-            return _worldDataStore.GetTileId(x, y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID;
+            ushort tileId = _worldDataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
+            if (tileId == GameDataRegistry.INVALID_ID) return false;
+
+            TileSO tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
+            return tileSO == null || tileSO.IsSolid;
         }
     }
 }

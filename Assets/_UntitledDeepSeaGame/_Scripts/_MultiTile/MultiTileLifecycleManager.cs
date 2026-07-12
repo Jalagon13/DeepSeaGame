@@ -77,7 +77,7 @@ namespace UntitledDeepSeaGame
         {
             if (!_activeInstances.ContainsKey(anchor))
             {
-                MultiTileLifecycleBehavior behavior = tileSO?.MultiTileLifecycleBehavior;
+                MultiTileBehavior behavior = tileSO?.MultiTileLifecycleBehavior;
                 var instance = new MultiTileInstance(anchor, tileSO, behavior);
                 _activeInstances.Add(anchor, instance);
                 behavior?.OnPlaced(instance, _worldDataStore);

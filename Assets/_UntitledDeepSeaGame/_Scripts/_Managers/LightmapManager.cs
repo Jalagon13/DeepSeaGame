@@ -330,6 +330,12 @@ namespace UntitledDeepSeaGame
         /// </summary>
         private float GetTileAttenuation(ushort fgId, ushort bgId)
         {
+            TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
+            if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
+            {
+                return _airOnlyAttenuation;
+            }
+        
             if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
             if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation;
             return _airOnlyAttenuation;
