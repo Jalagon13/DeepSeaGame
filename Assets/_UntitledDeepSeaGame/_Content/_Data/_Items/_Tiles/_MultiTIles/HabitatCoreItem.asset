@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
   _itemName: Habitat Core
   _itemDescription: 
-  _inventoryIcon: {fileID: -8121766140965501267, guid: 72f7a32ac9c7676409eb438757bc6b4a, type: 3}
+  _inventoryIcon: {fileID: 795840818453011249, guid: 1b897c9e6bd6b4869986940e995657c8, type: 3}
   _isStackable: 1
   <PrimaryTile>k__BackingField: {fileID: 11400000, guid: 902d8a554dd1541988ed71d202546f19, type: 2}
   <SecondaryTile>k__BackingField: {fileID: 0}

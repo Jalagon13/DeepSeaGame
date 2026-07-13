@@ -8,6 +8,7 @@ namespace UntitledDeepSeaGame
     {
         [SerializeField] private int _maxTileDetection = 40;
         [SerializeField] private float _drainInterval = 5f;
+        [SerializeField] private int _minYHeightToWork = 250;
 
         public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
         {
@@ -24,9 +25,9 @@ namespace UntitledDeepSeaGame
 
             instance.Timer = 0f;
 
-            if (!IsInWater(instance, dataStore))
+            if (!IsInWater(instance, dataStore) || instance.Anchor.y < _minYHeightToWork)
             {
-                return;
+                return; 
             }
 
             TryDrainAttempt(instance, dataStore);
