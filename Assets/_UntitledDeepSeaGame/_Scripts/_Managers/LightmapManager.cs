@@ -67,34 +67,9 @@ namespace UntitledDeepSeaGame
         private int _gridWidth;
         private int _gridHeight;
         
-        // Ambient-only snapshot of the light grid (after BFS, before flashlight injection).
-        // Used by RequestFlashlightUpdate() to restore the clean ambient state before
-        // re-applying the flashlight each frame, preventing old flashlight values from persisting.
-        private float[,] _ambientLightGrid;
-        
         private Texture2D _lightmapTexture;
         private Color32[] _colorBuffer;
         private readonly Queue<Vector2Int> _bfsQueue = new();
-
-        /// <summary>
-        /// Fired just before the light grid is converted to a texture and applied to the overlay.
-        /// Allows external systems (e.g. FlashlightController) to inject additional light values
-        /// into _lightGrid after the ambient BFS pass but before final texture upload.
-        /// </summary>
-        public event Action<RectInt> OnBeforeApplyLightmap;
-
-        /// <summary>
-        /// Public read-only access to the internal light grid so FlashlightController 
-        /// (and other external systems) can write into it via the OnBeforeApplyLightmap event.
-        /// Indexed as [localX, localY] relative to CurrentInflatedBounds.
-        /// </summary>
-        public float[,] LightGrid => _lightGrid;
-
-        /// <summary>
-        /// The current inflated tile bounds that the light grid covers.
-        /// Used by external systems to convert world-space tile coords into grid-local indices.
-        /// </summary>
-        public RectInt CurrentInflatedBounds => _currentInflatedBounds;
 
         private void Awake()
         {
@@ -159,8 +134,7 @@ namespace UntitledDeepSeaGame
 
         /// <summary>
         /// Main lightmap recalculation entry point. Orchestrates the full pipeline:
-        /// bounds inflation → buffer preparation → daylight seeding → BFS propagation → 
-        /// external flashlight pass → texture upload.
+        /// bounds inflation → buffer preparation → daylight seeding → BFS propagation → texture upload.
         /// </summary>
         /// <param name="currentVisibleTileBounds">The RectInt defining the current camera frustum in tile coords.</param>
         private void UpdateLightmap(RectInt currentVisibleTileBounds)
@@ -180,15 +154,6 @@ namespace UntitledDeepSeaGame
             PrepareLightmap(inflatedBounds.width, inflatedBounds.height);
             SeedLightSources(inflatedBounds);
             RunBFSPropagation(inflatedBounds);
-
-            // Save a snapshot of the ambient-only light grid (before flashlight injection)
-            // so RequestFlashlightUpdate() can restore it and re-apply only the flashlight
-            // each frame without accumulating stale values.
-            SaveAmbientSnapshot(inflatedBounds);
-            
-            // Allow external systems (e.g. FlashlightController) to write into _lightGrid
-            OnBeforeApplyLightmap?.Invoke(inflatedBounds);
-            
             ApplyLightmapToOverlay(inflatedBounds);
         }
 
@@ -368,7 +333,7 @@ namespace UntitledDeepSeaGame
             TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
             if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
             {
-                return _airOnlyAttenuation;
+                return _backgroundOnlyAttenuation;
             }
         
             if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
@@ -435,54 +400,6 @@ namespace UntitledDeepSeaGame
             {
                 Debug.LogWarning("LightmapManager: Shader 'UI/MultiplyBlend' not found. Make sure MultiplyUI.shader is imported.");
             }
-        }
-
-        /// <summary>
-        /// Triggers a fast flashlight-only repaint: restores the ambient-only light grid,
-        /// re-invokes external light injectors (e.g. FlashlightController), and re-uploads 
-        /// the texture without re-running the expensive BFS flood-fill.
-        /// Safe to call every frame — the restore prevents old flashlight values from persisting.
-        /// The light grid must already be populated from a prior full UpdateLightmap() call.
-        /// </summary>
-        public void RequestFlashlightUpdate()
-        {
-            if (_lightGrid == null || _gridWidth <= 0 || _gridHeight <= 0) return;
-            
-            // Restore ambient-only snapshot to strip any stale flashlight values from the grid
-            RestoreAmbientSnapshot();
-            
-            // Re-invoke flashlight/other injectors on the fresh ambient grid
-            OnBeforeApplyLightmap?.Invoke(_currentInflatedBounds);
-            
-            // Re-upload the texture with new flashlight values blended in
-            ApplyLightmapToOverlay(_currentInflatedBounds);
-        }
-
-        /// <summary>
-        /// Copies the current (ambient-only) _lightGrid into the _ambientLightGrid snapshot
-        /// after the BFS pass completes, so it can be restored on subsequent flashlight-only frames.
-        /// </summary>
-        private void SaveAmbientSnapshot(RectInt inflatedBounds)
-        {
-            int width = inflatedBounds.width;
-            int height = inflatedBounds.height;
-
-            if (_ambientLightGrid == null || _ambientLightGrid.GetLength(0) != width || _ambientLightGrid.GetLength(1) != height)
-            {
-                _ambientLightGrid = new float[width, height];
-            }
-
-            Buffer.BlockCopy(_lightGrid, 0, _ambientLightGrid, 0, sizeof(float) * width * height);
-        }
-
-        /// <summary>
-        /// Copies the _ambientLightGrid snapshot back into _lightGrid, wiping any 
-        /// flashlight values that were injected in the previous frame.
-        /// </summary>
-        private void RestoreAmbientSnapshot()
-        {
-            if (_ambientLightGrid == null) return;
-            Buffer.BlockCopy(_ambientLightGrid, 0, _lightGrid, 0, sizeof(float) * _gridWidth * _gridHeight);
         }
 
         /// <summary>

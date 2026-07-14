@@ -156,6 +156,15 @@ namespace UntitledDeepSeaGame
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.01)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleFlashlight"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ac8975f-e55f-402e-b27d-728ea45c588e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -398,6 +407,17 @@ namespace UntitledDeepSeaGame
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e3a7f2c-f3be-4128-9dbd-c49a2b3259a4"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleFlashlight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1120,6 +1140,7 @@ namespace UntitledDeepSeaGame
             m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
             m_Player_PrimaryAction = m_Player.FindAction("PrimaryAction", throwIfNotFound: true);
             m_Player_SecondaryAction = m_Player.FindAction("SecondaryAction", throwIfNotFound: true);
+            m_Player_ToggleFlashlight = m_Player.FindAction("ToggleFlashlight", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1222,6 +1243,7 @@ namespace UntitledDeepSeaGame
         private readonly InputAction m_Player_Next;
         private readonly InputAction m_Player_PrimaryAction;
         private readonly InputAction m_Player_SecondaryAction;
+        private readonly InputAction m_Player_ToggleFlashlight;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1261,6 +1283,10 @@ namespace UntitledDeepSeaGame
             /// Provides access to the underlying input action "Player/SecondaryAction".
             /// </summary>
             public InputAction @SecondaryAction => m_Wrapper.m_Player_SecondaryAction;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/ToggleFlashlight".
+            /// </summary>
+            public InputAction @ToggleFlashlight => m_Wrapper.m_Player_ToggleFlashlight;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1308,6 +1334,9 @@ namespace UntitledDeepSeaGame
                 @SecondaryAction.started += instance.OnSecondaryAction;
                 @SecondaryAction.performed += instance.OnSecondaryAction;
                 @SecondaryAction.canceled += instance.OnSecondaryAction;
+                @ToggleFlashlight.started += instance.OnToggleFlashlight;
+                @ToggleFlashlight.performed += instance.OnToggleFlashlight;
+                @ToggleFlashlight.canceled += instance.OnToggleFlashlight;
             }
 
             /// <summary>
@@ -1340,6 +1369,9 @@ namespace UntitledDeepSeaGame
                 @SecondaryAction.started -= instance.OnSecondaryAction;
                 @SecondaryAction.performed -= instance.OnSecondaryAction;
                 @SecondaryAction.canceled -= instance.OnSecondaryAction;
+                @ToggleFlashlight.started -= instance.OnToggleFlashlight;
+                @ToggleFlashlight.performed -= instance.OnToggleFlashlight;
+                @ToggleFlashlight.canceled -= instance.OnToggleFlashlight;
             }
 
             /// <summary>
@@ -1711,6 +1743,13 @@ namespace UntitledDeepSeaGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSecondaryAction(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "ToggleFlashlight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnToggleFlashlight(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

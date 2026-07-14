@@ -10,6 +10,7 @@ namespace UntitledDeepSeaGame
 
         public event EventHandler<InputAction.CallbackContext> OnPrimaryActionStarted;
         public event EventHandler<InputAction.CallbackContext> OnSecondaryActionStarted;
+        public event EventHandler<InputAction.CallbackContext> OnToggleFlashlight;
         
         public event EventHandler<InputAction.CallbackContext> OnMove;
         public event EventHandler<InputAction.CallbackContext> OnJump;
@@ -62,6 +63,8 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.Jump.canceled += PlayerInput_OnJump;
             
             _playerInput.Player.Interact.started += PlayerInput_OnInteract;
+            
+            _playerInput.Player.ToggleFlashlight.started += PlayerInput_OnToggleFlashlight;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -86,6 +89,8 @@ namespace UntitledDeepSeaGame
             _playerInput.Player.Jump.canceled -= PlayerInput_OnJump;
 
             _playerInput.Player.Interact.started -= PlayerInput_OnInteract;
+            
+            _playerInput.Player.ToggleFlashlight.started -= PlayerInput_OnToggleFlashlight;
 
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
@@ -93,6 +98,14 @@ namespace UntitledDeepSeaGame
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnToggleFlashlight(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                OnToggleFlashlight?.Invoke(this, context);
+            }
         }
 
         private void PlayerInput_OnSecondaryAction(InputAction.CallbackContext context)
