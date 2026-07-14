@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 7146354698580210200}
   - component: {fileID: 5720560256968510660}
   - component: {fileID: 534220837259839922}
+  - component: {fileID: 8728156811781325584}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -113,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -284,6 +285,26 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _playerSO: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
   _headPoint: {fileID: 409362107588107734}
+--- !u!114 &8728156811781325584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a53be21c2df4b85b856e363d46035e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FlashlightController
+  _coneHalfAngle: 30
+  _range: 48
+  _brightness: 15
+  _falloffPerTile: 0.85
+  _rayCount: 24
+  _toggleKey: 20
+  _flashlightOn: 1
+  _drawDebugRays: 1
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0

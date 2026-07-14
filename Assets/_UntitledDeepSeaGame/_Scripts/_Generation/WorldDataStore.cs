@@ -175,7 +175,7 @@ namespace UntitledDeepSeaGame
                 for (int j = 0; j < multiTileSO.Size.y; j++)
                 {
                     // SetTileId will trigger the TileChanged event and clean up the anchor registry automatically
-                    SetTileId(anchor.x + i, anchor.y + j, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap, true);
+                    SetTileId(anchor.x + i, anchor.y + j, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
                 }
             }
 
@@ -184,7 +184,7 @@ namespace UntitledDeepSeaGame
             _activeMultiTileObjects.Remove(anchor);
         }
 
-        public void SetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap, bool checkForExposedAir = false)
+        public void SetTileId(int x, int y, ushort tileId, WorldTm targetMap = WorldTm.ForegroundTilemap)
         {
             if (!IsInBounds(x, y))
             {
@@ -217,10 +217,149 @@ namespace UntitledDeepSeaGame
 
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, targetMap);
 
-            if (targetMap == WorldTm.ForegroundTilemap && tileId != GameDataRegistry.INVALID_ID)
+            if (targetMap == WorldTm.ForegroundTilemap)
             {
-                ClearUnderwaterAirSilently(x, y, true);
+                if(tileId != GameDataRegistry.INVALID_ID)
+                {
+                    ClearUnderwaterAirSilently(x, y, true);
+                }
+                else
+                {
+                    TryFloodConnectedAirPockets(x, y);
+                }
             }
+        }
+
+        private void TryFloodConnectedAirPockets(int x, int y)
+        {
+            // Only relevant in the ocean zone
+            if (!IsOceanZone(y))
+            {
+                return;
+            }
+
+            // Check the 4 cardinal neighbors for an air tile touching a water tile
+            Vector2Int[] neighbors = new Vector2Int[]
+            {
+                new Vector2Int(x, y - 1), // down
+                new Vector2Int(x, y + 1), // up
+                new Vector2Int(x - 1, y), // left
+                new Vector2Int(x + 1, y)  // right
+            };
+
+            bool foundAirTouchingWater = false;
+            Vector2Int startAirCell = Vector2Int.zero;
+
+            foreach (Vector2Int n in neighbors)
+            {
+                if (!IsInBounds(n.x, n.y) || !IsOceanZone(n.y))
+                {
+                    continue;
+                }
+
+                // Check if this neighbor is an air tile
+                if (IsUnderwaterAirAt(n.x, n.y))
+                {
+                    // Check if any of *its* neighbors is a water cell (open water, not air)
+                    Vector2Int[] subNeighbors = new Vector2Int[]
+                    {
+                        new Vector2Int(n.x, n.y - 1),
+                        new Vector2Int(n.x, n.y + 1),
+                        new Vector2Int(n.x - 1, n.y),
+                        new Vector2Int(n.x + 1, n.y)
+                    };
+
+                    foreach (Vector2Int sn in subNeighbors)
+                    {
+                        if (!IsInBounds(sn.x, sn.y) || !IsOceanZone(sn.y))
+                        {
+                            continue;
+                        }
+
+                        if (IsWaterCell(sn.x, sn.y))
+                        {
+                            foundAirTouchingWater = true;
+                            startAirCell = n;
+                            break;
+                        }
+                    }
+
+                    if (foundAirTouchingWater)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (!foundAirTouchingWater)
+            {
+                return;
+            }
+
+            // BFS flood fill from the start air cell to fill the entire connected air pocket with water
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            HashSet<int> visited = new HashSet<int>();
+
+            queue.Enqueue(startAirCell);
+            visited.Add(GetTileIndex(startAirCell.x, startAirCell.y));
+
+            while (queue.Count > 0)
+            {
+                Vector2Int current = queue.Dequeue();
+
+                // Convert this air cell to water by removing it from the underwater air set
+                int index = GetTileIndex(current.x, current.y);
+                if (_underwaterAirTiles.Remove(index))
+                {
+                    TileChanged?.Invoke(new Vector2Int(current.x, current.y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+                }
+
+                // Check 4 cardinal neighbors for more air cells to flood
+                Vector2Int[] dirs = new Vector2Int[]
+                {
+                    new Vector2Int(current.x, current.y - 1),
+                    new Vector2Int(current.x, current.y + 1),
+                    new Vector2Int(current.x - 1, current.y),
+                    new Vector2Int(current.x + 1, current.y)
+                };
+
+                foreach (Vector2Int next in dirs)
+                {
+                    if (!IsInBounds(next.x, next.y) || !IsOceanZone(next.y))
+                    {
+                        continue;
+                    }
+
+                    int nextIndex = GetTileIndex(next.x, next.y);
+                    if (visited.Contains(nextIndex))
+                    {
+                        continue;
+                    }
+
+                    // Only flood cells that are underwater air (not solid foreground tiles)
+                    if (_underwaterAirTiles.Contains(nextIndex))
+                    {
+                        visited.Add(nextIndex);
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+        }
+
+        private bool ClearUnderwaterAirSilently(int x, int y, bool notify)
+        {
+            if (!IsInBounds(x, y) || !IsOceanZone(y))
+            {
+                return false;
+            }
+
+            bool removed = _underwaterAirTiles.Remove(GetTileIndex(x, y));
+            if (removed && notify)
+            {
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            }
+
+            return removed;
         }
 
         public bool IsPlayerPlacedBackgroundAt(int x, int y)
@@ -247,22 +386,6 @@ namespace UntitledDeepSeaGame
         public bool IsInBounds(int x, int y)
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
-        }
-
-        private bool ClearUnderwaterAirSilently(int x, int y, bool notify)
-        {
-            if (!IsInBounds(x, y) || !IsOceanZone(y))
-            {
-                return false;
-            }
-
-            bool removed = _underwaterAirTiles.Remove(GetTileIndex(x, y));
-            if (removed && notify)
-            {
-                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
-            }
-
-            return removed;
         }
 
         private int GetTileIndex(int x, int y)
