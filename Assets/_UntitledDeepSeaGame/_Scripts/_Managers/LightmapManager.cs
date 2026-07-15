@@ -39,6 +39,11 @@ namespace UntitledDeepSeaGame
         [SerializeField] 
         private float _airOnlyAttenuation = 0.5f;
 
+        [Header("Flashlight Settings")]
+        [Tooltip("Controls how sharply the flashlight cone fades toward its edges. 1 = linear, 2+ = brighter core with sharper falloff.")]
+        [SerializeField] 
+        private float _coneEdgeFalloffPower = 2f;
+
         [Header("Texture Settings")]
         [Tooltip("The filter mode for the lightmap overlay texture (Point for pixelated tiles, Bilinear for smooth).")]
         [SerializeField] 
@@ -81,6 +86,9 @@ namespace UntitledDeepSeaGame
             // Subscribe to the camera visible tile bounds change event
             PlayerCamera.OnVisibleTileBoundsChanged += UpdateLightmap;
 
+            // Subscribe to flashlight state/direction changes for real-time cone updates
+            FlashlightController.OnFlashlightStateChanged += OnFlashlightStateChanged;
+
             // Subscribe to tile changes in the world data store to update lighting when blocks are broken/placed
             if (WorldManager.Instance.IsWorldReady)
             {
@@ -95,6 +103,7 @@ namespace UntitledDeepSeaGame
         private void OnDestroy() 
         {
             PlayerCamera.OnVisibleTileBoundsChanged -= UpdateLightmap;
+            FlashlightController.OnFlashlightStateChanged -= OnFlashlightStateChanged;
             WorldManager.Instance.OnWorldReady -= SubscribeToTileChanges;
 
             if (_worldDataStore != null)
@@ -107,6 +116,16 @@ namespace UntitledDeepSeaGame
             {
                 Destroy(_lightmapTexture);
             }
+        }
+
+        /// <summary>
+        /// Called when the flashlight is toggled on/off or the cone direction changes.
+        /// Triggers a full lightmap recalculation to update the cone on screen.
+        /// </summary>
+        private void OnFlashlightStateChanged()
+        {
+            // Use the last known visible bounds to trigger a recalculation
+            UpdateLightmap(_currentVisibleTileBounds);
         }
 
         private void SubscribeToTileChanges()
@@ -153,7 +172,8 @@ namespace UntitledDeepSeaGame
 
             PrepareLightmap(inflatedBounds.width, inflatedBounds.height);
             SeedLightSources(inflatedBounds);
-            RunBFSPropagation(inflatedBounds);
+            RunLightSourceBFSPropagation(inflatedBounds);
+            RunFlashlightBFSPropagation(inflatedBounds);
             ApplyLightmapToOverlay(inflatedBounds);
         }
 
@@ -235,8 +255,7 @@ namespace UntitledDeepSeaGame
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
                     TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
 
-                    bool isOpenSky = fgId == GameDataRegistry.INVALID_ID && bgId == GameDataRegistry.INVALID_ID && 
-                                     worldY > WorldManager.Instance.WorldGenerator.WorldGenerationData.UndergroundMaxYLevel;
+                    bool isOpenSky = fgId == GameDataRegistry.INVALID_ID && bgId == GameDataRegistry.INVALID_ID && worldY > WorldManager.Instance.WorldGenerator.WorldGenerationData.UndergroundMaxYLevel;
                                     
                     if (isOpenSky)
                     {
@@ -265,7 +284,7 @@ namespace UntitledDeepSeaGame
         /// Each step applies per-tile attenuation based on whether the neighbor is solid, background-only, or open air.
         /// A neighbor is only enqueued if the new brightness strictly improves on its current stored value.
         /// </summary>
-        private void RunBFSPropagation(RectInt inflatedBounds)
+        private void RunLightSourceBFSPropagation(RectInt inflatedBounds)
         {
             int width  = inflatedBounds.width;
             int height = inflatedBounds.height;
@@ -321,6 +340,142 @@ namespace UntitledDeepSeaGame
                             _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
                         }
                     }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Second BFS pass for the flashlight. Runs after ambient light propagation.
+        /// 
+        /// Step 1: Runs a standard BFS from the player tile (same as ambient light) so the
+        ///         flashlight light propagates through tiles with normal attenuation rules.
+        /// Step 2: Applies a cone mask as a post-process — tiles outside the cone angle
+        ///         keep their ambient light value, tiles inside get the brighter of ambient vs.
+        ///         flashlight. Also applies angle-based edge falloff for a softer cone edge.
+        /// </summary>
+        private void RunFlashlightBFSPropagation(RectInt inflatedBounds)
+        {
+            // Early out: no player or flashlight is off
+            if (Player.Instance == null || Player.Instance.FlashlightController == null || !Player.Instance.FlashlightController.IsFlashlightOn)
+                return;
+
+            FlashlightController fc = Player.Instance.FlashlightController;
+
+            // Convert player world position to local grid coords within the inflated bounds
+            Vector2Int playerTile = fc.PlayerTilePosition;
+            int originLocalX = playerTile.x - inflatedBounds.x;
+            int originLocalY = playerTile.y - inflatedBounds.y;
+
+            // If the player is outside the inflated bounds, nothing to do
+            if (originLocalX < 0 || originLocalX >= inflatedBounds.width || originLocalY < 0 || originLocalY >= inflatedBounds.height)
+                return;
+
+            int width = inflatedBounds.width;
+            int height = inflatedBounds.height;
+
+            // ============================================================
+            // Step 1: Run a standard BFS from the player (no cone check)
+            //         Store results in a temporary grid so we don't pollute
+            //         the ambient light grid during propagation.
+            // ============================================================
+
+            // Use a separate distance grid for the flashlight BFS so it doesn't
+            // conflict with the ambient light distances already in _distGrid.
+            // We'll store flashlight-only light values in a local copy.
+            float[,] flashlightGrid = new float[width, height];
+            int[,] flashlightDist = new int[width, height];
+
+            // Initialise distances
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    flashlightDist[x, y] = int.MaxValue;
+                }
+            }
+
+            // Seed the player tile
+            flashlightGrid[originLocalX, originLocalY] = fc.FlashlightIntensity;
+            flashlightDist[originLocalX, originLocalY] = 0;
+            _bfsQueue.Enqueue(new Vector2Int(originLocalX, originLocalY));
+
+            // Static cardinal directions: Up, Down, Left, Right
+            Vector2Int[] directions = { new(0, 1), new(0, -1), new(-1, 0), new(1, 0) };
+
+            while (_bfsQueue.Count > 0)
+            {
+                Vector2Int curr = _bfsQueue.Dequeue();
+                float currLight = flashlightGrid[curr.x, curr.y];
+                int currDist = flashlightDist[curr.x, curr.y];
+
+                foreach (Vector2Int dir in directions)
+                {
+                    int nextX = curr.x + dir.x;
+                    int nextY = curr.y + dir.y;
+
+                    if (nextX < 0 || nextX >= width || nextY < 0 || nextY >= height) continue;
+
+                    int nextDist = currDist + 1;
+
+                    int worldX = inflatedBounds.x + nextX;
+                    int worldY = inflatedBounds.y + nextY;
+
+                    ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
+                    ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
+
+                    float attenuation = 0f;
+                    if (nextDist > _tileAmountBeforeAttenuationBegins)
+                    {
+                        attenuation = GetTileAttenuation(fgId, bgId);
+                    }
+
+                    float newLight = currLight - attenuation;
+
+                    if (newLight > 0f && newLight > flashlightGrid[nextX, nextY])
+                    {
+                        flashlightGrid[nextX, nextY] = newLight;
+                        flashlightDist[nextX, nextY] = nextDist;
+                        _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
+                    }
+                }
+            }
+
+            // ============================================================
+            // Step 2: Post-process cone mask
+            //         For each tile, check if it falls within the cone angle.
+            //         If yes, blend flashlight light with ambient (take max).
+            //         If no, leave the ambient light as-is.
+            // ============================================================
+
+            Vector2 coneDir = fc.ConeDirection;
+            Vector2 playerWorldPos = fc.PlayerWorldPosition;
+
+            for (int localX = 0; localX < width; localX++)
+            {
+                for (int localY = 0; localY < height; localY++)
+                {
+                    float flashlightValue = flashlightGrid[localX, localY];
+                    if (flashlightValue <= 0f) continue;
+
+                    // World position of this tile's center
+                    int worldX = inflatedBounds.x + localX;
+                    int worldY = inflatedBounds.y + localY;
+                    Vector2 toTile = new Vector2(worldX + 0.5f, worldY + 0.5f) - playerWorldPos;
+
+                    // Angle from cone center axis to this tile
+                    float angleToTile = Vector2.Angle(coneDir, toTile);
+
+                    // Skip tiles outside the cone
+                    if (angleToTile > fc.ConeHalfAngle) continue;
+
+                    // Apply angle-based edge falloff (1.0 at center, 0.0 at edge)
+                    float angleFraction = Mathf.Clamp01(1f - (angleToTile / fc.ConeHalfAngle));
+                    float edgeFalloff = Mathf.Pow(angleFraction, _coneEdgeFalloffPower);
+
+                    float finalFlashlightValue = flashlightValue * edgeFalloff;
+
+                    // Blend with ambient: take the brighter of the two
+                    _lightGrid[localX, localY] = Mathf.Max(_lightGrid[localX, localY], finalFlashlightValue);
                 }
             }
         }

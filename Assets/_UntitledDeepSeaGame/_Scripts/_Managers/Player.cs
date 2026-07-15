@@ -28,6 +28,9 @@ namespace UntitledDeepSeaGame
         private PlayerOxygenController _playerOxygenController;
         public PlayerOxygenController PlayerOxygenController => _playerOxygenController;
 
+        private FlashlightController _flashlightController;
+        public FlashlightController FlashlightController => _flashlightController;
+
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public Vector3 PlayerCenter => transform.position + new Vector3(0f, _playerCollider.offset.y, 0f);
 
@@ -39,6 +42,7 @@ namespace UntitledDeepSeaGame
             _character = GetComponent<ServerCharacter>();
             _playerArmController = GetComponent<PlayerArmController>();
             _playerOxygenController = GetComponent<PlayerOxygenController>();
+            _flashlightController = GetComponent<FlashlightController>();
         }
 
         public override void OnDestroy()

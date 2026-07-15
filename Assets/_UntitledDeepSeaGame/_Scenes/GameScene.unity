@@ -7140,7 +7140,8 @@ MonoBehaviour:
   _solidForegroundAttenuation: 3
   _backgroundOnlyAttenuation: 1
   _airOnlyAttenuation: 0.5
-  _lightmapFilterMode: 0
+  _coneEdgeFalloffPower: 2
+  _lightmapFilterMode: 1
   _enableMultiplyBlending: 1
   _multiplyMaterial: {fileID: 0}
   _extraLightmapPadding: 5
