@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ToolItemSO
   _itemName: Spear
   _itemDescription: 
-  _inventoryIcon: {fileID: 21300000, guid: 109174f54ddf71a4fbe62bf30e9cf0e0, type: 3}
+  _inventoryIcon: {fileID: 310057666705439893, guid: f808ecc7617114e75ba4fad147d14471, type: 3}
   _isStackable: 0
   <HarvestType>k__BackingField: 1
   <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 9b2bb134625414610bd039dc8f3b1f23, type: 3}
