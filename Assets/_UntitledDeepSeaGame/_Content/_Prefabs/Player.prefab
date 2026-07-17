@@ -297,9 +297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2672ba6b10743f7bd5aea4979d5a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FlashlightController
-  _coneHalfAngle: 60
+  _coneHalfAngle: 70
   _flashlightIntensity: 15
-  _flashlightRange: 25
+  _flashlightRange: 20
   _recalcAngleThreshold: 2
 --- !u!1 &298901437459232130
 GameObject:

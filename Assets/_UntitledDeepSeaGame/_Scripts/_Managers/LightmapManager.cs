@@ -329,7 +329,10 @@ namespace UntitledDeepSeaGame
         }
         
         /// <summary>
-        /// Second BFS pass for the flashlight. Runs after ambient light propagation.
+        /// Ray-casts the flashlight beam outward from the player within the cone angle.
+        /// For each tile, a straight-line ray is marched tile-by-tile from the player,
+        /// accumulating per-tile attenuation. This avoids the light-wrapping artifacts
+        /// inherent to flood-fill algorithms.
         /// </summary>
         private void RunFlashlightBFSPropagation(RectInt inflatedBounds)
         {
@@ -350,96 +353,30 @@ namespace UntitledDeepSeaGame
 
             int width = inflatedBounds.width;
             int height = inflatedBounds.height;
-
-            // ============================================================
-            // Step 1: Run a standard BFS from the player (no cone check)
-            //         Store results in a temporary grid so we don't pollute
-            //         the ambient light grid during propagation.
-            // ============================================================
-            float[,] flashlightGrid = new float[width, height];
-            int[,] flashlightDist = new int[width, height];
-
-            // Initialise distances
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    flashlightDist[x, y] = int.MaxValue;
-                }
-            }
-
             int maxRange = fc.FlashlightRange;
-
-            // Seed the player tile
-            flashlightGrid[originLocalX, originLocalY] = fc.FlashlightIntensity;
-            flashlightDist[originLocalX, originLocalY] = 0;
-            _bfsQueue.Enqueue(new Vector2Int(originLocalX, originLocalY));
-
-            // Static cardinal directions: Up, Down, Left, Right
-            Vector2Int[] directions = { new(0, 1), new(0, -1), new(-1, 0), new(1, 0) };
-
-            while (_bfsQueue.Count > 0)
-            {
-                Vector2Int curr = _bfsQueue.Dequeue();
-                float currLight = flashlightGrid[curr.x, curr.y];
-                int currDist = flashlightDist[curr.x, curr.y];
-
-                foreach (Vector2Int dir in directions)
-                {
-                    int nextX = curr.x + dir.x;
-                    int nextY = curr.y + dir.y;
-
-                    if (nextX < 0 || nextX >= width || nextY < 0 || nextY >= height) continue;
-
-                    int nextDist = currDist + 1;
-
-                    // Enforce maximum range
-                    if (nextDist > maxRange) continue;
-
-                    int worldX = inflatedBounds.x + nextX;
-                    int worldY = inflatedBounds.y + nextY;
-
-                    ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
-                    ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
-
-                    float attenuation = 0f;
-                    if (nextDist > _tileAmountBeforeAttenuationBegins)
-                    {
-                        attenuation = GetFlashlightTileAttenuation(fgId, bgId);
-                    }
-
-                    float newLight = currLight - attenuation;
-
-                    if (newLight > 0f && newLight > flashlightGrid[nextX, nextY])
-                    {
-                        flashlightGrid[nextX, nextY] = newLight;
-                        flashlightDist[nextX, nextY] = nextDist;
-                        _bfsQueue.Enqueue(new Vector2Int(nextX, nextY));
-                    }
-                }
-            }
-
-            // ============================================================
-            // Step 2: Post-process cone mask
-            //         For each tile, check if it falls within the cone angle.
-            //         If yes, blend flashlight light with ambient (take max).
-            //         If no, leave the ambient light as-is.
-            // ============================================================
-
+            float flashlightIntensity = fc.FlashlightIntensity;
             Vector2 coneDir = fc.ConeDirection;
             Vector2 playerWorldPos = fc.CenterOfPlayerPosition;
 
+            // Pre-compute world position of player tile center for ray origin
+            Vector2 rayOrigin = new Vector2(playerWorldPos.x, playerWorldPos.y);
+
+            // Iterate over every tile in the inflated bounds
             for (int localX = 0; localX < width; localX++)
             {
                 for (int localY = 0; localY < height; localY++)
                 {
-                    float flashlightValue = flashlightGrid[localX, localY];
-                    if (flashlightValue <= 0f) continue;
-
-                    // World position of this tile's center
                     int worldX = inflatedBounds.x + localX;
                     int worldY = inflatedBounds.y + localY;
-                    Vector2 toTile = new Vector2(worldX + 0.5f, worldY + 0.5f) - playerWorldPos;
+
+                    // Tile center in world space
+                    Vector2 tileCenter = new Vector2(worldX + 0.5f, worldY + 0.5f);
+                    float distToTile = Vector2.Distance(rayOrigin, tileCenter);
+
+                    // Skip if beyond max range
+                    if (distToTile > maxRange) continue;
+
+                    Vector2 toTile = tileCenter - rayOrigin;
 
                     // Angle from cone center axis to this tile
                     float angleToTile = Vector2.Angle(coneDir, toTile);
@@ -447,16 +384,159 @@ namespace UntitledDeepSeaGame
                     // Skip tiles outside the cone
                     if (angleToTile > fc.ConeHalfAngle) continue;
 
-                    // Apply angle-based edge falloff (1.0 at center, 0.0 at edge)
-                    float angleFraction = Mathf.Clamp01(1f - (angleToTile / fc.ConeHalfAngle));
-                    float edgeFalloff = Mathf.Pow(angleFraction, _coneEdgeFalloffPower);
+                    // March a ray from the player to this tile's center, stepping tile-by-tile
+                    float totalAttenuation = MarchRay(rayOrigin, tileCenter, inflatedBounds, out int tileCount);
 
-                    float finalFlashlightValue = flashlightValue * edgeFalloff;
+                    if (totalAttenuation < 0f)
+                    {
+                        // Ray went out of bounds, skip this tile
+                        continue;
+                    }
 
-                    // Blend with ambient: take the brighter of the two
-                    _lightGrid[localX, localY] = Mathf.Max(_lightGrid[localX, localY], finalFlashlightValue);
+                    // The first tile (player tile) gets no attenuation.
+                    // Attenuation begins after _tileAmountBeforeAttenuationBegins tiles.
+                    // MarchRay already computed the per-tile attenuation total.
+                    float lightValue = flashlightIntensity - totalAttenuation;
+
+                    if (lightValue > 0f)
+                    {
+                        // Apply angle-based edge falloff (1.0 at center, 0.0 at edge)
+                        float angleFraction = Mathf.Clamp01(1f - (angleToTile / fc.ConeHalfAngle));
+                        float edgeFalloff = Mathf.Pow(angleFraction, _coneEdgeFalloffPower);
+
+                        float finalFlashlightValue = lightValue * edgeFalloff;
+
+                        // Blend with ambient: take the brighter of the two
+                        _lightGrid[localX, localY] = Mathf.Max(_lightGrid[localX, localY], finalFlashlightValue);
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Walks a straight ray from <paramref name="origin"/> to <paramref name="target"/>
+        /// in tile-sized steps using a DDA-style algorithm.
+        /// For each tile stepped over (excluding the start tile), accumulates attenuation
+        /// based on the tile's foreground/background composition, but only for tiles beyond
+        /// <paramref name="_tileAmountBeforeAttenuationBegins"/> steps from the origin.
+        /// </summary>
+        /// <param name="origin">World-space ray origin (player center).</param>
+        /// <param name="target">World-space tile center to cast toward.</param>
+        /// <param name="inflatedBounds">The active bounds for grid-local coordinate conversion.</param>
+        /// <param name="tileCount">Outputs the number of tiles the ray traversed (excluding start).</param>
+        /// <returns>The total accumulated attenuation along the ray, or -1 if the ray left the inflated bounds.</returns>
+        private float MarchRay(Vector2 origin, Vector2 target, RectInt inflatedBounds, out int tileCount)
+        {
+            tileCount = 0;
+            float totalAttenuation = 0f;
+
+            Vector2 dir = target - origin;
+            float totalDist = dir.magnitude;
+            if (totalDist < 0.001f) return 0f;
+
+            dir /= totalDist;
+
+            // DDA-style tile marching: step through each tile boundary
+            // Start at the origin tile (player tile)
+            int currentTileX = Mathf.FloorToInt(origin.x);
+            int currentTileY = Mathf.FloorToInt(origin.y);
+
+            // Determine step direction
+            int stepX = dir.x >= 0 ? 1 : -1;
+            int stepY = dir.y >= 0 ? 1 : -1;
+
+            // tMax: distance to next tile boundary along each axis
+            // tDelta: distance to traverse one full tile along each axis
+            float tMaxX, tMaxY, tDeltaX, tDeltaY;
+
+            // Calculate fractional position within the current tile
+            float fracX = dir.x >= 0 ? (currentTileX + 1 - origin.x) : (origin.x - currentTileX);
+            float fracY = dir.y >= 0 ? (currentTileY + 1 - origin.y) : (origin.y - currentTileY);
+
+            // If direction component is near zero, set a very large tMax so it never triggers
+            if (Mathf.Abs(dir.x) > 0.0001f)
+            {
+                tDeltaX = 1f / Mathf.Abs(dir.x);
+                tMaxX = fracX * tDeltaX;
+            }
+            else
+            {
+                tDeltaX = float.MaxValue;
+                tMaxX = float.MaxValue;
+            }
+
+            if (Mathf.Abs(dir.y) > 0.0001f)
+            {
+                tDeltaY = 1f / Mathf.Abs(dir.y);
+                tMaxY = fracY * tDeltaY;
+            }
+            else
+            {
+                tDeltaY = float.MaxValue;
+                tMaxY = float.MaxValue;
+            }
+
+            // Track distance along the ray for the initial no-attenuation zone
+            float distTraveled = 0f;
+
+            // March until we reach or pass the target
+            while (true)
+            {
+                // Check if we've reached the target tile
+                if (currentTileX == Mathf.FloorToInt(target.x) && currentTileY == Mathf.FloorToInt(target.y))
+                {
+                    // We've arrived at the destination tile. Break after processing.
+                    break;
+                }
+
+                // Advance to the next tile boundary
+                if (tMaxX < tMaxY)
+                {
+                    distTraveled = tMaxX;
+                    currentTileX += stepX;
+                    tMaxX += tDeltaX;
+                }
+                else
+                {
+                    distTraveled = tMaxY;
+                    currentTileY += stepY;
+                    tMaxY += tDeltaY;
+                }
+
+                // If we've gone past the target along the ray, we're done
+                if (distTraveled >= totalDist) break;
+
+                // Increment tile count (we've stepped into a new tile)
+                tileCount++;
+
+                // Convert current tile to world coords to look up tile data
+                int worldX = currentTileX;
+                int worldY = currentTileY;
+
+                // Check bounds
+                if (worldX < inflatedBounds.x || worldX >= inflatedBounds.xMax ||
+                    worldY < inflatedBounds.y || worldY >= inflatedBounds.yMax)
+                {
+                    // Ray left the calculated bounds
+                    tileCount = 0;
+                    return -1f;
+                }
+
+                // Check if we're past the initial no-attenuation zone
+                // tileCount starts at 0 for the first tile after origin, so
+                // attenuation starts when tileCount > _tileAmountBeforeAttenuationBegins
+                // (matching the original BFS condition: nextDist > _tileAmountBeforeAttenuationBegins)
+                if (tileCount > _tileAmountBeforeAttenuationBegins)
+                {
+                    ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
+                    ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
+
+                    float attenuation = GetFlashlightTileAttenuation(fgId, bgId);
+                    totalAttenuation += attenuation;
+                }
+            }
+
+            return totalAttenuation;
         }
 
         private float GetTileAttenuation(ushort fgId, ushort bgId)
@@ -480,7 +560,7 @@ namespace UntitledDeepSeaGame
                 return _backgroundOnlyAttenuation * 0.5f;
             }
         
-            if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation * 1;
+            if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
             if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation * 0.5f;
             return _airOnlyAttenuation * 0.5f;
         }
@@ -524,9 +604,6 @@ namespace UntitledDeepSeaGame
             UpdateOverlayRectTf(inflatedBounds);
         }
 
-        /// <summary>
-        /// Instantiates the multiply blend material dynamically if none was provided in the Inspector.
-        /// </summary>
         private void InitializeMultiplyMaterial()
         {
             if (_multiplyMaterial != null) return;
@@ -542,9 +619,6 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Positions and sizes the Canvas RawImage overlay to exactly cover the inflated tile bounds in world space.
-        /// </summary>
         private void UpdateOverlayRectTf(RectInt bounds)
         {
             Vector2 center = new Vector2(bounds.xMin + bounds.xMax, bounds.yMin + bounds.yMax) * 0.5f;
