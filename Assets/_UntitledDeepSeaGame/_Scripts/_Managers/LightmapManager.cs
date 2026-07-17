@@ -83,28 +83,18 @@ namespace UntitledDeepSeaGame
         
         private void Start() 
         {
-            // Subscribe to the camera visible tile bounds change event
-            PlayerCamera.OnVisibleTileBoundsChanged += UpdateLightmap;
-
-            // Subscribe to flashlight state/direction changes for real-time cone updates
-            FlashlightController.OnFlashlightStateChanged += OnFlashlightStateChanged;
-
-            // Subscribe to tile changes in the world data store to update lighting when blocks are broken/placed
-            if (WorldManager.Instance.IsWorldReady)
-            {
-                SubscribeToTileChanges();
-            }
-            else
-            {
-                WorldManager.Instance.OnWorldReady += SubscribeToTileChanges;
-            }
+            WorldManager.Instance.OnWorldReady += SubscribeToTileChanges;
         }
         
         private void OnDestroy() 
         {
             PlayerCamera.OnVisibleTileBoundsChanged -= UpdateLightmap;
-            FlashlightController.OnFlashlightStateChanged -= OnFlashlightStateChanged;
             WorldManager.Instance.OnWorldReady -= SubscribeToTileChanges;
+            
+            if(Player.Instance != null)
+            {
+                Player.Instance.FlashlightController.OnFlashlightStateChanged -= OnFlashlightStateChanged;
+            }
 
             if (_worldDataStore != null)
             {
@@ -118,18 +108,11 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Called when the flashlight is toggled on/off or the cone direction changes.
-        /// Triggers a full lightmap recalculation to update the cone on screen.
-        /// </summary>
-        private void OnFlashlightStateChanged()
-        {
-            // Use the last known visible bounds to trigger a recalculation
-            UpdateLightmap(_currentVisibleTileBounds);
-        }
-
         private void SubscribeToTileChanges()
         {
+            PlayerCamera.OnVisibleTileBoundsChanged += UpdateLightmap;
+            Player.Instance.FlashlightController.OnFlashlightStateChanged += OnFlashlightStateChanged;
+
             if (_worldDataStore == null && WorldManager.Instance != null)
             {
                 _worldDataStore = WorldManager.Instance.WorldDataStore;
@@ -142,6 +125,12 @@ namespace UntitledDeepSeaGame
             }
         }
 
+        private void OnFlashlightStateChanged()
+        {
+            // Use the last known visible bounds to trigger a recalculation
+            UpdateLightmap(_currentVisibleTileBounds);
+        }
+
         private void HandleTileChanged(Vector2Int tilePosition, ushort previousTileId, ushort newTileId, WorldTm targetMap)
         {
             // Only trigger recalculation if the modified tile falls inside the active inflated calculations boundary
@@ -151,11 +140,6 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Main lightmap recalculation entry point. Orchestrates the full pipeline:
-        /// bounds inflation → buffer preparation → daylight seeding → BFS propagation → texture upload.
-        /// </summary>
-        /// <param name="currentVisibleTileBounds">The RectInt defining the current camera frustum in tile coords.</param>
         private void UpdateLightmap(RectInt currentVisibleTileBounds)
         {
             if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady) return;
@@ -346,12 +330,6 @@ namespace UntitledDeepSeaGame
         
         /// <summary>
         /// Second BFS pass for the flashlight. Runs after ambient light propagation.
-        /// 
-        /// Step 1: Runs a standard BFS from the player tile (same as ambient light) so the
-        ///         flashlight light propagates through tiles with normal attenuation rules.
-        /// Step 2: Applies a cone mask as a post-process — tiles outside the cone angle
-        ///         keep their ambient light value, tiles inside get the brighter of ambient vs.
-        ///         flashlight. Also applies angle-based edge falloff for a softer cone edge.
         /// </summary>
         private void RunFlashlightBFSPropagation(RectInt inflatedBounds)
         {
@@ -362,7 +340,7 @@ namespace UntitledDeepSeaGame
             FlashlightController fc = Player.Instance.FlashlightController;
 
             // Convert player world position to local grid coords within the inflated bounds
-            Vector2Int playerTile = fc.PlayerTilePosition;
+            Vector2Int playerTile = fc.PlayerCenterTilePosition;
             int originLocalX = playerTile.x - inflatedBounds.x;
             int originLocalY = playerTile.y - inflatedBounds.y;
 
@@ -378,10 +356,6 @@ namespace UntitledDeepSeaGame
             //         Store results in a temporary grid so we don't pollute
             //         the ambient light grid during propagation.
             // ============================================================
-
-            // Use a separate distance grid for the flashlight BFS so it doesn't
-            // conflict with the ambient light distances already in _distGrid.
-            // We'll store flashlight-only light values in a local copy.
             float[,] flashlightGrid = new float[width, height];
             int[,] flashlightDist = new int[width, height];
 
@@ -393,6 +367,8 @@ namespace UntitledDeepSeaGame
                     flashlightDist[x, y] = int.MaxValue;
                 }
             }
+
+            int maxRange = fc.FlashlightRange;
 
             // Seed the player tile
             flashlightGrid[originLocalX, originLocalY] = fc.FlashlightIntensity;
@@ -417,6 +393,9 @@ namespace UntitledDeepSeaGame
 
                     int nextDist = currDist + 1;
 
+                    // Enforce maximum range
+                    if (nextDist > maxRange) continue;
+
                     int worldX = inflatedBounds.x + nextX;
                     int worldY = inflatedBounds.y + nextY;
 
@@ -426,7 +405,7 @@ namespace UntitledDeepSeaGame
                     float attenuation = 0f;
                     if (nextDist > _tileAmountBeforeAttenuationBegins)
                     {
-                        attenuation = GetTileAttenuation(fgId, bgId);
+                        attenuation = GetFlashlightTileAttenuation(fgId, bgId);
                     }
 
                     float newLight = currLight - attenuation;
@@ -448,7 +427,7 @@ namespace UntitledDeepSeaGame
             // ============================================================
 
             Vector2 coneDir = fc.ConeDirection;
-            Vector2 playerWorldPos = fc.PlayerWorldPosition;
+            Vector2 playerWorldPos = fc.CenterOfPlayerPosition;
 
             for (int localX = 0; localX < width; localX++)
             {
@@ -480,9 +459,6 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Returns the correct light attenuation value for a given tile based on its layer state.
-        /// </summary>
         private float GetTileAttenuation(ushort fgId, ushort bgId)
         {
             TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
@@ -495,11 +471,20 @@ namespace UntitledDeepSeaGame
             if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation;
             return _airOnlyAttenuation;
         }
+        
+        private float GetFlashlightTileAttenuation(ushort fgId, ushort bgId)
+        {
+            TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
+            if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
+            {
+                return _backgroundOnlyAttenuation * 0.5f;
+            }
+        
+            if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation * 1;
+            if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation * 0.5f;
+            return _airOnlyAttenuation * 0.5f;
+        }
 
-        /// <summary>
-        /// Converts the finished float light grid into a grayscale Texture2D and uploads it
-        /// to the RawImage overlay, applying the multiply material if blending is enabled.
-        /// </summary>
         private void ApplyLightmapToOverlay(RectInt inflatedBounds)
         {
             int width  = inflatedBounds.width;

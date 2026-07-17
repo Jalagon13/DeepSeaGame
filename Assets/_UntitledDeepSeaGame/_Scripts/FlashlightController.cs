@@ -13,7 +13,7 @@ namespace UntitledDeepSeaGame
     public class FlashlightController : MonoBehaviour
     {
         /// <summary>Fired when the flashlight is toggled on/off or the cone direction changes significantly.</summary>
-        public static event Action OnFlashlightStateChanged;
+        public event Action OnFlashlightStateChanged;
 
         [Header("Flashlight Settings")]
         [Tooltip("Half-angle of the cone in degrees. Total cone = 2x this value.")]
@@ -22,20 +22,18 @@ namespace UntitledDeepSeaGame
         [Tooltip("Brightness value seeded at the player tile (analogous to _fullBrightnessInterpretation for ambient light).")]
         [SerializeField] private float _flashlightIntensity = 12f;
 
+        [Tooltip("Maximum range of the flashlight in tiles. Light will not propagate beyond this distance from the player.")]
+        [SerializeField] private int _flashlightRange = 12;
+
         [Tooltip("Minimum mouse movement angle (in degrees) that triggers a lightmap recalculation. Prevents excessive CPU usage.")]
         [SerializeField] private float _recalcAngleThreshold = 2f;
 
         private bool _isFlashlightOn;
-        private Vector2 _lastDirection;
-
-        /// <summary>Whether the flashlight is currently active.</summary>
         public bool IsFlashlightOn => _isFlashlightOn;
-
-        /// <summary>The player's position in world coordinates.</summary>
-        public Vector2 PlayerWorldPosition => transform.position;
-
-        /// <summary>Tile-aligned integer position of the player.</summary>
-        public Vector2Int PlayerTilePosition => Vector2Int.FloorToInt(transform.position);
+        
+        private Vector2 _lastDirection;
+        public Vector2 CenterOfPlayerPosition => Player.Instance.PlayerCollider.bounds.center;
+        public Vector2Int PlayerCenterTilePosition => Vector2Int.FloorToInt(CenterOfPlayerPosition);
 
         /// <summary>
         /// Normalised direction from the player toward the mouse cursor in world space.
@@ -45,7 +43,7 @@ namespace UntitledDeepSeaGame
         {
             get
             {
-                Vector2 dir = GameManager.MouseWorldPosition - PlayerWorldPosition;
+                Vector2 dir = GameManager.MouseWorldPosition - CenterOfPlayerPosition;
                 if (dir.sqrMagnitude < 0.0001f)
                 {
                     // Fallback: if mouse is right on top of player, point right
@@ -55,16 +53,19 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        /// <summary>Half-angle of the cone in degrees.</summary>
         public float ConeHalfAngle => _coneHalfAngle;
-
-        /// <summary>Brightness seeded at the flashlight origin tile.</summary>
         public float FlashlightIntensity => _flashlightIntensity;
+        public int FlashlightRange => _flashlightRange;
 
         private void Start()
         {
             GameInput.Instance.OnToggleFlashlight += GameInput_OnToggleFlashlight;
             _lastDirection = ConeDirection;
+        }
+
+        private void OnDestroy()
+        {
+            GameInput.Instance.OnToggleFlashlight -= GameInput_OnToggleFlashlight;
         }
 
         private void Update()
@@ -80,11 +81,6 @@ namespace UntitledDeepSeaGame
                 _lastDirection = currentDir;
                 OnFlashlightStateChanged?.Invoke();
             }
-        }
-
-        private void OnDestroy()
-        {
-            GameInput.Instance.OnToggleFlashlight -= GameInput_OnToggleFlashlight;
         }
 
         private void GameInput_OnToggleFlashlight(object sender, InputAction.CallbackContext e)
