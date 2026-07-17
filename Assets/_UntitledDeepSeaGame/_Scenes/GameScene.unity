@@ -5948,7 +5948,7 @@ MonoBehaviour:
     _minVeinSize: 6
     _maxVeinSize: 12
     _blobRoundness: 1
-    _requiredHostMaterial: {fileID: 0}
+    _requiredHostMaterial: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
   _maxCandidateRejectionsPerPoint: 32
   _maxSeedPlacementAttempts: 80
 --- !u!1 &1703393330
@@ -6535,8 +6535,6 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    _amount: 999
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0

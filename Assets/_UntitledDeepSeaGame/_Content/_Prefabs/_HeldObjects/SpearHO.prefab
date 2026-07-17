@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8196967562198568353}
   - component: {fileID: 5679233240984726865}
   m_Layer: 0
-  m_Name: SwordHO
+  m_Name: SpearHO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

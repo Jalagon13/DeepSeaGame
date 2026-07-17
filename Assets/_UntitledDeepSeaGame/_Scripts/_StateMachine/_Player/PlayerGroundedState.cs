@@ -34,7 +34,7 @@ namespace UntitledDeepSeaGame
                     {
                         SwitchState(new AIStateData(AIState.Mining));
                     }
-                    else if (tool.HarvestType == ToolType.Sword)
+                    else if (tool.HarvestType == ToolType.Spear)
                     {
                         SwitchState(new AIStateData(AIState.Attacking));
                     }
