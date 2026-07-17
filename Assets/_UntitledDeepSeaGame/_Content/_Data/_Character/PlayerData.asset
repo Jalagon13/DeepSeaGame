@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68c1d19919ba46029cc519a6ee1b15e, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlayerCharacterSO
-  BaseSpeed: 20
+  BaseSpeed: 15
   BaseMaxHealth: 100
   BaseDefense: 0
   Damage: 1

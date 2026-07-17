@@ -531,7 +531,7 @@ namespace UntitledDeepSeaGame
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
 
-                    float attenuation = GetFlashlightTileAttenuation(fgId, bgId);
+                    float attenuation = GetTileAttenuation(fgId, bgId);
                     totalAttenuation += attenuation;
                 }
             }
@@ -552,18 +552,18 @@ namespace UntitledDeepSeaGame
             return _airOnlyAttenuation;
         }
         
-        private float GetFlashlightTileAttenuation(ushort fgId, ushort bgId)
-        {
-            TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
-            if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
-            {
-                return _backgroundOnlyAttenuation * 0.5f;
-            }
+        // private float GetFlashlightTileAttenuation(ushort fgId, ushort bgId)
+        // {
+        //     TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
+        //     if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
+        //     {
+        //         return _backgroundOnlyAttenuation * 0.5f;
+        //     }
         
-            if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
-            if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation * 0.5f;
-            return _airOnlyAttenuation * 0.5f;
-        }
+        //     if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
+        //     if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation * 0.5f;
+        //     return _airOnlyAttenuation;
+        // }
 
         private void ApplyLightmapToOverlay(RectInt inflatedBounds)
         {
