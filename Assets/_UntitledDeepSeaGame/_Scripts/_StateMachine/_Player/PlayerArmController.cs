@@ -22,29 +22,19 @@ namespace UntitledDeepSeaGame
         [SerializeField]
         private Transform _leftPivot;
         
-        [Header("Swing Configuration")]
-        [SerializeField] private SwingConfig _leftSwing = new SwingConfig { StartAngle = 110, EndAngle = 250 };
-        [SerializeField] private SwingConfig _rightSwing = new SwingConfig { StartAngle = 70, EndAngle = 290 };
-        [SerializeField] private SwingConfig _downSwing = new SwingConfig { StartAngle = 340, EndAngle = 200 };
-        
-        [Serializable]
-        public struct SwingConfig
-        {
-            public int StartAngle;
-            public int EndAngle;
-        }
-
         private HeldObject _currentHeldObject;
         private HeldObject _currentHeldPrefab;
         private ServerCharacter _serverCharacter;
 
-        public bool IsSwinging { get; private set; }
+        public bool IsAttacking { get; private set; }
         private bool _isAiming;
         public bool IsAiming => _isAiming;
         
         public NetworkVariable<Direction> AimDirection { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> AngleToMouse { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<Direction> SwingDirection { get; private set; } = new(Direction.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Direction> AttackDirection { get; private set; } = new(Direction.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        
+        public Transform HeldItemPivot => _heldItemPivot.transform;
         
         private void Awake()
         {
@@ -89,32 +79,11 @@ namespace UntitledDeepSeaGame
             AimingStateChanged?.Invoke(_isAiming);
         }
 
-        public SwingConfig GetSwingConfig(Direction direction)
+        public void ExecuteAttack(ushort toolItemId)
         {
-            switch (direction)
-            {
-                case Direction.Left:
-                    return _leftSwing;
-                case Direction.Right:
-                    return _rightSwing;
-                case Direction.Down:
-                    return _downSwing;
-                default:
-                    return _rightSwing;
-            }
-        }
+            if (IsAttacking) return;
+            IsAttacking = true;
 
-        private int MirrorAngle(int angle)
-        {
-            return (180 - angle % 360 + 360) % 360;
-        }
-
-        public void ExecuteSwing(ushort toolItemId, float duration)
-        {
-            if (IsSwinging) return;
-            IsSwinging = true;
-
-            // 1. Determine swing direction & facing direction based on AngleToMouse
             float angle = AngleToMouse.Value;
             Direction facingDir;
             Direction swingDir;
@@ -135,76 +104,36 @@ namespace UntitledDeepSeaGame
                 facingDir = Direction.Right;
             }
 
-            // 2. Set the player's facing direction
             if (_serverCharacter != null)
             {
                 _serverCharacter.CurrentDirection.Value = facingDir;
             }
 
-            // 3. Set swing direction state
-            SwingDirection.Value = swingDir;
+            AttackDirection.Value = swingDir;
 
-            // 4. Retrieve swing config and determine start/end angles and clockwise rotation
-            int startAngle;
-            int endAngle;
-            bool clockwise;
-
-            if (swingDir == Direction.Down)
-            {
-                SwingConfig config = GetSwingConfig(Direction.Down);
-                if (facingDir == Direction.Right)
-                {
-                    startAngle = config.StartAngle;
-                    endAngle = config.EndAngle;
-                    clockwise = true;
-                }
-                else
-                {
-                    startAngle = MirrorAngle(config.StartAngle);
-                    endAngle = MirrorAngle(config.EndAngle);
-                    clockwise = false;
-                }
-            }
-            else
-            {
-                SwingConfig config = GetSwingConfig(swingDir);
-                startAngle = config.StartAngle;
-                endAngle = config.EndAngle;
-                clockwise = (facingDir == Direction.Right);
-            }
-
-            if (clockwise && endAngle > startAngle) startAngle += 360;
-            else if (!clockwise && startAngle > endAngle) endAngle += 360;
-
-            Quaternion startRotation = Quaternion.Euler(0, 0, startAngle);
-            Quaternion endRotation = Quaternion.Euler(0, 0, endAngle);
-
-            // 5. Trigger the RPC (passing the facingDir so pivot is placed correctly)
-            PerformSwingClientRpc(startRotation, endRotation, duration, facingDir, toolItemId);
+            PerformAttackClientRpc(swingDir, facingDir, toolItemId);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        private void PerformSwingClientRpc(Quaternion startRotation, Quaternion endRotation, float duration, Direction facingDir, ushort toolItemId)
+        private void PerformAttackClientRpc(Direction swingDir, Direction facingDir, ushort toolItemId)
         {
-            IsSwinging = true;
+            IsAttacking = true;
             
             ToolItemSO toolItemSO = GameDataRegistry.Instance.GetItemSOFromItemId(toolItemId) as ToolItemSO;
 
             EnsureCurrentHeldObject(toolItemSO.HeldObject);
             SetPivotPosition(facingDir);
 
-            _heldItemPivot.transform.rotation = startRotation;
             _heldItemHolder.SetActive(true);
             _currentHeldObject.OnStart(toolItemSO, true);
 
-            _heldItemPivot.transform.DORotateQuaternion(endRotation, duration).SetEase(Ease.OutSine).OnComplete(() =>
+            _currentHeldObject.ExecuteAttack(this, swingDir, facingDir, toolItemSO, () =>
             {
-                _heldItemPivot.transform.rotation = endRotation;
                 _heldItemHolder.SetActive(false);
                 _currentHeldObject.OnEnd();
                 
-                SwingDirection.Value = Direction.None;
-                IsSwinging = false;
+                AttackDirection.Value = Direction.None;
+                IsAttacking = false;
             });
         }
 

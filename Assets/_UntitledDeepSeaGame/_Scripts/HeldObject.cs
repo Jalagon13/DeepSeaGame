@@ -9,7 +9,7 @@ namespace UntitledDeepSeaGame
         private List<DamageReceiver> _targetsHit = new();
         private ServerCharacter _playerServerCharacter;
         private ToolItemSO _currentToolItem;
-        private bool _isSwinging;
+        protected bool _isAttacking;
 
         protected virtual void Awake()
         {
@@ -39,12 +39,12 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        public virtual void OnStart(ToolItemSO toolItem = null, bool isSwinging = false)
+        public virtual void OnStart(ToolItemSO toolItem = null, bool isAttacking = false)
         {
             _currentToolItem = toolItem;
-            _isSwinging = isSwinging;
+            _isAttacking = isAttacking;
 
-            if (_isSwinging)
+            if (_isAttacking)
             {
                 _targetsHit.Clear();
                 if (_collider != null)
@@ -61,13 +61,19 @@ namespace UntitledDeepSeaGame
                 _collider.enabled = false;
             }
             _targetsHit.Clear();
-            _isSwinging = false;
+            _isAttacking = false;
+        }
+
+        public virtual void ExecuteAttack(PlayerArmController armController, Direction swingDir, Direction facingDir, ToolItemSO tool, System.Action onComplete)
+        {
+            // Default implementation just completes immediately.
+            onComplete?.Invoke();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             // Only process damage on the client who owns the player character during a swing
-            if (!_isSwinging || _playerServerCharacter == null || !_playerServerCharacter.IsOwner)
+            if (!_isAttacking || _playerServerCharacter == null || !_playerServerCharacter.IsOwner)
             {
                 return;
             }

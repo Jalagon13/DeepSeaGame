@@ -54,13 +54,13 @@ namespace UntitledDeepSeaGame
             if (closestPlayer != null && _canCollect)
             {
                 Vector2 currentPosition = _rb.position;
-                Vector2 targetPosition = closestPlayer.transform.position;
+                Vector2 targetPosition = closestPlayer.PlayerCollider.bounds.center;
                 _direction = (targetPosition - currentPosition).normalized;
                 _velocity = Vector2.Lerp(_velocity, _direction * _attractSpeed, _turnSharpness * Time.fixedDeltaTime);
                 _rb.linearVelocity = _velocity;
 
                 // Check if the item is within the bounds of any CollectTag collider
-                if (Vector2.Distance(currentPosition, targetPosition) < 0.25f)
+                if (Vector2.Distance(currentPosition, targetPosition) < 1f)
                 {
                     if (/* closestValidCollectCollider.transform.root.GetComponent<Player>().OwnerClientId == NetworkManager.LocalClientId && */ _canCollect && !_itemCollected /* && !InventoryFull() */)
                     {

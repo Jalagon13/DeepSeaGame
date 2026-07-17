@@ -45,7 +45,7 @@ namespace UntitledDeepSeaGame
             }
 
             // Only allow changing facing direction if we are not currently swinging
-            if (_playerArmController == null || !_playerArmController.IsSwinging)
+            if (_playerArmController == null || !_playerArmController.IsAttacking)
             {
                 if (Mathf.Abs(DesiredDirection.x) > 0.01f)
                 {
@@ -83,7 +83,7 @@ namespace UntitledDeepSeaGame
                 _velocity = new Vector2(targetX, targetY);
 
                 // 5. Update Direction (Horizontal only in air, only if not swinging)
-                if (_playerArmController == null || !_playerArmController.IsSwinging)
+                if (_playerArmController == null || !_playerArmController.IsAttacking)
                 {
                     if (Mathf.Abs(DesiredDirection.x) > 0.01f)
                     {

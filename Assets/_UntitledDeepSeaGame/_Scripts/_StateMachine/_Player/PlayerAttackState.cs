@@ -21,9 +21,8 @@ namespace UntitledDeepSeaGame
             if (_toolItemSO == null) return;
 
             ushort toolItemId = GameDataRegistry.Instance.GetItemIdFromItemSO(_toolItemSO);
-            float duration = _toolItemSO.SwingDuration;
 
-            Player.Instance.PlayerArmController.ExecuteSwing(toolItemId, duration);
+            Player.Instance.PlayerArmController.ExecuteAttack(toolItemId);
         }
 
         public override void UpdateState()
@@ -37,7 +36,7 @@ namespace UntitledDeepSeaGame
             {
                 SwitchState(new AIStateData(AIState.Grounded));
             }
-            else if (!Player.Instance.PlayerArmController.IsSwinging)
+            else if (!Player.Instance.PlayerArmController.IsAttacking)
             {
                 SwitchState(new AIStateData(AIState.Grounded, 0));
             }
