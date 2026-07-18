@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e03f7e5b0d4d4e9585753833c883e350, type: 3}
-  m_Name: HabitatCoreItem
+  m_Name: ShelterCoreItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
-  _itemName: Habitat Core
+  _itemName: Shelter Core
   _itemDescription: 
   _inventoryIcon: {fileID: 795840818453011249, guid: 1b897c9e6bd6b4869986940e995657c8, type: 3}
   _isStackable: 1

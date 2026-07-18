@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class HabitatCoreInteractable : MonoBehaviour, IInteractable
+    public class ShelterCoreInteractable : MonoBehaviour, IInteractable
     {
         [SerializeField] private List<RecipeSO> _availableRecipes;
 

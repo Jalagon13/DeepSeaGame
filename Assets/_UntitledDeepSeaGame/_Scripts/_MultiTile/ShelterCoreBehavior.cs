@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    [CreateAssetMenu(fileName = "Habitat Core Behavior", menuName = "MultiTile/Lifecycle/HabitatCore")]
-    public class HabitatCoreBehavior : MultiTileBehavior
+    [CreateAssetMenu(fileName = "Shelter Core Behavior", menuName = "MultiTile/Lifecycle/ShelterCore")]
+    public class ShelterCoreBehavior : MultiTileBehavior
     {
         [SerializeField] private int _maxTileDetection = 40;
         [SerializeField] private float _drainInterval = 5f;
@@ -47,8 +47,7 @@ namespace UntitledDeepSeaGame
                     foreach (Vector2Int dir in directions)
                     {
                         Vector2Int neighbor = pos + dir;
-                        if (neighbor.x >= anchor.x && neighbor.x < anchor.x + size.x &&
-                            neighbor.y >= anchor.y && neighbor.y < anchor.y + size.y)
+                        if (neighbor.x >= anchor.x && neighbor.x < anchor.x + size.x && neighbor.y >= anchor.y && neighbor.y < anchor.y + size.y)
                         {
                             continue;
                         }

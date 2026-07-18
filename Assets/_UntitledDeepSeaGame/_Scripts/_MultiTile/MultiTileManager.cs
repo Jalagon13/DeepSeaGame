@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    public class MultiTileLifecycleManager : MonoBehaviour
+    public class MultiTileManager : MonoBehaviour
     {
         private WorldDataStore _worldDataStore;
         private readonly Dictionary<Vector2Int, MultiTileInstance> _activeInstances = new();
