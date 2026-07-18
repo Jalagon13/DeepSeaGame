@@ -3309,11 +3309,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 885515390}
-  - component: {fileID: 885515394}
-  - component: {fileID: 885515396}
-  - component: {fileID: 885515395}
   - component: {fileID: 885515392}
   - component: {fileID: 885515393}
+  - component: {fileID: 885515395}
   m_Layer: 0
   m_Name: WorldGenerator
   m_TagString: Untagged
@@ -3379,18 +3377,6 @@ MonoBehaviour:
   <UndergroundMaxYLevel>k__BackingField: 238
   <UndergroundMinYLevel>k__BackingField: 0
   _columnsPerFrame: 32
---- !u!114 &885515394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 885515389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d0578168a8645fa88fdf552808a9253, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldDataStore
 --- !u!114 &885515395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3405,18 +3391,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
   _airMaskStencilMaterial: {fileID: 0}
   _airMaskSortingOrder: 98
---- !u!114 &885515396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 885515389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e758ae762ea9f4495b888b7de37359a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.MultiTileLifecycleManager
 --- !u!1 &890717787
 GameObject:
   m_ObjectHideFlags: 0
@@ -7104,6 +7078,7 @@ GameObject:
   - component: {fileID: 1937983706}
   - component: {fileID: 1937983705}
   - component: {fileID: 1937983707}
+  - component: {fileID: 1937983708}
   m_Layer: 0
   m_Name: WORLD_MANAGERS
   m_TagString: Untagged
@@ -7189,6 +7164,18 @@ MonoBehaviour:
   _globalMaxNpcCap: 200
   _visibilityUpdateInterval: 0.2
   _npcDespawnDuration: 14
+--- !u!114 &1937983708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937983703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e758ae762ea9f4495b888b7de37359a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.MultiTileManager
 --- !u!1 &1976162733
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 namespace UntitledDeepSeaGame
 {
-    [RequireComponent(typeof(WorldGenerationData), typeof(WorldDataStore), typeof(WorldTileStreamingRenderer))]
+    [RequireComponent(typeof(WorldGenerationData), typeof(WorldTileStreamingRenderer))]
     public class WorldGenerator : MonoBehaviour
     {
         [SerializeField]

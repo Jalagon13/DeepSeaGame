@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UntitledDeepSeaGame
 {
     // The source of truth for the entire world
-    public class WorldDataStore : MonoBehaviour
+    public class WorldDataStore
     {
         public event Action<Vector2Int, ushort, ushort, WorldTm> TileChanged;
         public event Action<Vector2Int, TileSO, bool> MultiTileChanged;
@@ -14,25 +14,26 @@ namespace UntitledDeepSeaGame
         public ushort[,] BgTileData { get; private set; }
         private readonly HashSet<int> _naturalBackgroundTiles = new();
         private readonly HashSet<int> _underwaterAirTiles = new();
-        private int _seaLevelY;
         
         private Dictionary<Vector2Int, TileSO> _activeMultiTileObjects;
         public IReadOnlyDictionary<Vector2Int, TileSO> ActiveMultiTileObjects => _activeMultiTileObjects;
 
         public int Width => FgTileData?.GetLength(0) ?? 0;
         public int Height => FgTileData?.GetLength(1) ?? 0;
+        
+        private int _seaLevelY;
         public int SeaLevelY => _seaLevelY;
-
-        public void Initialize(int width, int height, int seaLevelY)
+        
+        
+        public WorldDataStore(WorldGenerationData data)
         {
-            FgTileData = new ushort[width, height];
-            BgTileData = new ushort[width, height];
-            
-            _seaLevelY = Mathf.Clamp(seaLevelY, 1, Mathf.Max(1, height - 1));
+            FgTileData = new ushort[data.WorldWidth, data.WorldHeight];
+            BgTileData = new ushort[data.WorldWidth, data.WorldHeight];
+
+            _seaLevelY = Mathf.Clamp(data.SeaLevelY, 1, Mathf.Max(1, data.WorldHeight - 1));
             _naturalBackgroundTiles.Clear();
             _underwaterAirTiles.Clear();
             _activeMultiTileObjects = new();
-
 
             for (int x = 0; x < Width; x++)
             {

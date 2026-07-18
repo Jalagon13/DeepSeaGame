@@ -11,11 +11,10 @@ namespace UntitledDeepSeaGame
 
         [field: SerializeField] 
         public WorldGenerator WorldGenerator { get; private set; }
-
         public WorldDataStore WorldDataStore { get; private set; }
         public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
-        public MultiTileManager MultiTileLifecycleManager { get; private set; }
         public bool IsWorldReady { get; private set; }
+        
         public event Action OnWorldReady;
 
         [Header("Ocean Visuals")]
@@ -23,18 +22,15 @@ namespace UntitledDeepSeaGame
         [SerializeField] private OceanSurfaceRenderer _oceanSurfaceRenderer;
         [SerializeField] private ParallaxLayer _undergroundLayer;
 
-        
+        private WorldGenerationData _worldGenerationData;
+
         private void Awake()
         {
             Instance = this;
-            
-            WorldDataStore = WorldGenerator.GetComponent<WorldDataStore>();
+
+            _worldGenerationData = WorldGenerator.GetComponent<WorldGenerationData>();
             TileStreamingRenderer = WorldGenerator.GetComponent<WorldTileStreamingRenderer>();
-            MultiTileLifecycleManager = GetComponent<MultiTileManager>();
-            if (MultiTileLifecycleManager == null)
-            {
-                MultiTileLifecycleManager = gameObject.AddComponent<MultiTileManager>();
-            }
+            WorldDataStore = new(_worldGenerationData);
 
             if (NetworkManager != null)
             {
@@ -59,10 +55,7 @@ namespace UntitledDeepSeaGame
 
         private IEnumerator InitializeRuntimeWorldRoutine()
         {
-            WorldGenerationData generationData = WorldGenerator.GetComponent<WorldGenerationData>();
-
             IsWorldReady = false;
-            WorldDataStore.Initialize(generationData.WorldWidth, generationData.WorldHeight, generationData.SeaLevelY);
             WorldGenerator.StartGeneration();
 
             while (!WorldGenerator.IsGenerationComplete)
@@ -71,20 +64,16 @@ namespace UntitledDeepSeaGame
             }
 
             TileStreamingRenderer.Initialize(WorldDataStore, WorldGenerator.ForegroundTilemap, WorldGenerator.BackgroundTilemap, WorldGenerator.AirTilemap, WorldGenerator.MultiTileRenderingTransform);
-            MultiTileLifecycleManager?.Initialize(WorldDataStore);
 
             yield return new WaitUntil(() => Player.Instance != null);
 
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
-            Debug.Log($"Player spawned at {spawnPosition}");
             
-            _oceanRenderer.Initialize(generationData);
-            _oceanSurfaceRenderer.Initialize(generationData);
-            _undergroundLayer.Initialize(generationData);
-            
-            StartCoroutine(InventoryManager.Instance.GiveStartingItems());
+            _oceanRenderer.Initialize(_worldGenerationData);
+            _oceanSurfaceRenderer.Initialize(_worldGenerationData);
+            _undergroundLayer.Initialize(_worldGenerationData);
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();
@@ -100,6 +89,5 @@ namespace UntitledDeepSeaGame
 
             return spawnTile;
         }
-
     }
 }

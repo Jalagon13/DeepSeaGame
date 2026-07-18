@@ -74,12 +74,24 @@ namespace UntitledDeepSeaGame
             GameInput.Instance.OnSelectSlot += GameInput_OnSelectSlot;
             GameInput.Instance.OnScrollWheel += GameInput_OnScrollWheel;
             GameInput.Instance.OnToggleInventory += GameInput_OnToggleInventory;
-            // HealthManager.Instance.OnDeath += HandleDeath;
+            WorldManager.Instance.OnWorldReady += HandleWorldReady;
 
             CloseInventory(force: true);
         }
-        
-        public IEnumerator GiveStartingItems()
+
+        private void OnDestroy()
+        {
+            if (GameInput.Instance != null)
+            {
+                GameInput.Instance.OnSelectSlot -= GameInput_OnSelectSlot;
+                GameInput.Instance.OnScrollWheel -= GameInput_OnScrollWheel;
+                GameInput.Instance.OnToggleInventory -= GameInput_OnToggleInventory;
+            }
+
+            WorldManager.Instance.OnWorldReady -= HandleWorldReady;
+        }
+
+        private IEnumerator GiveStartingItems()
         {
             yield return new WaitForSeconds(_initialDelay);
 
@@ -90,17 +102,9 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void OnDestroy()
+        private void HandleWorldReady()
         {
-            if(GameInput.Instance != null)
-            {
-                GameInput.Instance.OnSelectSlot -= GameInput_OnSelectSlot;
-                GameInput.Instance.OnScrollWheel -= GameInput_OnScrollWheel;
-                GameInput.Instance.OnToggleInventory -= GameInput_OnToggleInventory;
-            }
-            
-            // HealthManager.Instance.OnDeath -= HandleDeath;
-
+            StartCoroutine(GiveStartingItems());
         }
 
         private void OnValidate()
