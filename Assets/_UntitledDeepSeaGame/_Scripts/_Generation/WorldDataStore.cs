@@ -107,7 +107,6 @@ namespace UntitledDeepSeaGame
             ActiveMultiTileObjects[anchor] = tile;
 
             // Fill the entire footprint in the tile data array with the actual Tile ID.
-            // This allows the Mini-Map to render the full shape and ensures placement logic sees the space as occupied.
             ushort tileId = GameDataRegistry.Instance.GetTileIdFromTileSO(tile);
             for (int i = 0; i < tile.Size.x; i++)
             {
@@ -179,6 +178,16 @@ namespace UntitledDeepSeaGame
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
+        
+        public bool IsInWater(int x, int y)
+        {
+            if(!IsInBounds(x, y))
+            {
+                return false;
+            }
+            
+            return IsBelowSeaLevel(y) && !IsUnderwaterAirAt(x, y);
+        }
 
         public bool IsBelowSeaLevel(int y)
         {
@@ -193,6 +202,19 @@ namespace UntitledDeepSeaGame
             }
 
             return _underwaterAirTiles.Contains(GetTileIndex(x, y));
+        }
+
+        public void AddUnderwaterAirTile(int x, int y)
+        {
+            if (!IsInBounds(x, y) || !IsBelowSeaLevel(y))
+            {
+                return;
+            }
+
+            if (_underwaterAirTiles.Add(GetTileIndex(x, y)))
+            {
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            }
         }
         
         private int GetTileIndex(int x, int y)

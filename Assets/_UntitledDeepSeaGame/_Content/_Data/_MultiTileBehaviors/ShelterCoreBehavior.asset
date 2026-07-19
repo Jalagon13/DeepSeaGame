@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ShelterCoreBehavior
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HabitatCoreLifecycleBehavior
   _maxTileDetection: 800
-  _drainInterval: 1.5
+  _drainInterval: 2
+  _minYHeightToWork: 250
