@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
   _itemName: Limestone Block
   _itemDescription: 
-  _inventoryIcon: {fileID: -893114918391402929, guid: f87cb156056bc466d817f94b8424db48, type: 3}
+  _inventoryIcon: {fileID: -3821191175773184012, guid: b0a9ab53d70da4b7fadeb1b9880021ab, type: 3}
   _isStackable: 1
   <PrimaryTile>k__BackingField: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
   <SecondaryTile>k__BackingField: {fileID: 0}

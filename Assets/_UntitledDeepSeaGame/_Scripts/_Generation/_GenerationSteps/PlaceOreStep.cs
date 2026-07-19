@@ -342,7 +342,7 @@ namespace UntitledDeepSeaGame
                 return false;
             }
 
-            context.DataStore.SetTileId(position.x, position.y, oreTileId, WorldTm.ForegroundTilemap);
+            context.DataStore.SetForegroundTileId(position.x, position.y, oreTileId);
             veinCells.Add(position);
             return true;
         }

@@ -45,7 +45,7 @@ namespace UntitledDeepSeaGame
                             break;
                         }
 
-                        context.DataStore.SetTileId(x, fillY, sandTileId, WorldTm.ForegroundTilemap);
+                        context.DataStore.SetForegroundTileId(x, fillY, sandTileId);
                     }
 
                     y -= sandDepth - 1;

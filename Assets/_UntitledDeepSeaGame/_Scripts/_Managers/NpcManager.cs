@@ -278,13 +278,13 @@ namespace UntitledDeepSeaGame
             WorldDataStore worldDataStore = WorldManager.Instance.WorldDataStore;
             Vector2Int spawnPosition = new(Mathf.FloorToInt(potentialSpawnPoint.x), Mathf.FloorToInt(potentialSpawnPoint.y));
             
-            bool isThereForegroundTile = worldDataStore.IsThereForegroundTile(spawnPosition.x, spawnPosition.y);
+            bool isThereForegroundTile = worldDataStore.GetTileId(spawnPosition.x, spawnPosition.y, WorldTm.ForegroundTilemap) != GameDataRegistry.INVALID_ID;
             if(isThereForegroundTile)
             {
                 return false;
             }
 
-            bool isInOceanZone = worldDataStore.IsOceanZone(spawnPosition.y);
+            bool isInOceanZone = worldDataStore.IsBelowSeaLevel(spawnPosition.y);
             if(!isInOceanZone)
             {
                 return false;

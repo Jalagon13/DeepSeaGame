@@ -38,16 +38,16 @@ namespace UntitledDeepSeaGame
                 {
                     if (y > undergroundStartHeight && y < upperBound)
                     {
-                        context.DataStore.SetTileId(x, y, sandWallTileId, WorldTm.BackgroundTilemap);
+                        context.DataStore.SetBackgroundTileId(x, y, sandWallTileId);
                     }
                     else
                     {
-                        context.DataStore.SetTileId(x, y, GameDataRegistry.INVALID_ID, WorldTm.BackgroundTilemap);
+                        context.DataStore.SetBackgroundTileId(x, y, GameDataRegistry.INVALID_ID);
                     }
                     
                     if(y <= minWallPlacementY)
                     {
-                        context.DataStore.SetTileId(x, y, sandWallTileId, WorldTm.BackgroundTilemap);
+                        context.DataStore.SetBackgroundTileId(x, y, sandWallTileId);
                     }
                 }
 

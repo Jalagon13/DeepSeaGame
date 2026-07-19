@@ -6509,7 +6509,7 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
+  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
     _amount: 999
   - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
     _amount: 99

@@ -52,7 +52,7 @@ namespace UntitledDeepSeaGame
             Status env = _serverCharacter.CurrentStatus.Value;
 
             Vector2Int headGridPos = new(Mathf.FloorToInt(_headPoint.position.x), Mathf.FloorToInt(_headPoint.position.y + 1));
-            bool headInAir = WorldManager.Instance.WorldDataStore.IsAirAt(headGridPos.x, headGridPos.y);
+            bool headInAir = !WorldManager.Instance.WorldDataStore.IsBelowSeaLevel(headGridPos.y) || WorldManager.Instance.WorldDataStore.IsUnderwaterAirAt(headGridPos.x, headGridPos.y);
 
             if (headInAir || env == Status.InAir)
             {

@@ -22,7 +22,7 @@ namespace UntitledDeepSeaGame
                 for (int y = 0; y < height; y++)
                 {
                     ushort tileId = y <= surfaceHeight ? limeStoneTileId : GameDataRegistry.INVALID_ID;
-                    context.DataStore.SetTileId(x, y, tileId);
+                    context.DataStore.SetForegroundTileId(x, y, tileId);
                 }
 
                 if ((x + 1) % context.Config.ColumnsPerFrame == 0)

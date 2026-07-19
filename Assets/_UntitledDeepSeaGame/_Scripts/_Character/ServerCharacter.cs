@@ -121,7 +121,8 @@ namespace UntitledDeepSeaGame
             if (IsOwner /* || (_characterData.IsNpc && IsServer) */)
             {
                 Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y + 1));
-                bool isInAir = WorldManager.Instance.WorldDataStore.IsAirAt(gridPos.x, gridPos.y);
+                WorldDataStore worldData = WorldManager.Instance.WorldDataStore;
+                bool isInAir = !worldData.IsBelowSeaLevel(gridPos.y) || worldData.IsUnderwaterAirAt(gridPos.x, gridPos.y);
                 CurrentStatus.Value = isInAir ? Status.InAir : Status.InWater;
 
                 _characterMovement.FixedUpdateMovement();

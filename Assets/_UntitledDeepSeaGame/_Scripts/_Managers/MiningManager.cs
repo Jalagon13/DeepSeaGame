@@ -214,12 +214,12 @@ namespace UntitledDeepSeaGame
                 }
                 else
                 {
-                    WorldManager.Instance.WorldDataStore.SetTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
+                    WorldManager.Instance.WorldDataStore.SetForegroundTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID);
                 }
             }
             else
             {
-                WorldManager.Instance.WorldDataStore.SetTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID, WorldTm.BackgroundTilemap);
+                WorldManager.Instance.WorldDataStore.SetBackgroundTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID);
             }
 
             SpawnTileDrops(targetTile, targetTilePosition);

@@ -35,13 +35,11 @@ namespace UntitledDeepSeaGame
         private WorldGenerationData _worldGenerationData;
         public WorldGenerationData WorldGenerationData => _worldGenerationData;
         
-        private WorldDataStore _worldDataStore;
         private Coroutine _generationCoroutine;
 
         private void Awake() 
         {
             _worldGenerationData = GetComponent<WorldGenerationData>();
-            _worldDataStore = GetComponent<WorldDataStore>();
         }
 
         public void StartGeneration()
@@ -67,7 +65,7 @@ namespace UntitledDeepSeaGame
             OnGenerationProgressChanged?.Invoke(CurrentState, Progress);
 
             List<GenerationStep> orderedSteps = GetOrderedSteps();
-            WorldGenerationContext context = new(_worldGenerationData, _worldDataStore, seedHash, resolvedSeed, HandleProgressChanged);
+            WorldGenerationContext context = new(_worldGenerationData, WorldManager.Instance.WorldDataStore, seedHash, resolvedSeed, HandleProgressChanged);
             context.Begin(orderedSteps.Count);
 
             for (int i = 0; i < orderedSteps.Count; i++)

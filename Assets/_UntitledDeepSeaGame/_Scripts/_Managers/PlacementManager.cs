@@ -105,7 +105,15 @@ namespace UntitledDeepSeaGame
             else
             {
                 ushort tileId = GameDataRegistry.Instance.GetTileIdFromTileSO(tileSO);
-                WorldManager.Instance.WorldDataStore.SetTileId(tilePosition.x, tilePosition.y, tileId, tileSO.TileType);
+                switch (tileSO.TileType)
+                {
+                    case WorldTm.ForegroundTilemap:
+                        WorldManager.Instance.WorldDataStore.SetForegroundTileId(tilePosition.x, tilePosition.y, tileId);
+                        break;
+                    case WorldTm.BackgroundTilemap:
+                        WorldManager.Instance.WorldDataStore.SetBackgroundTileId(tilePosition.x, tilePosition.y, tileId);
+                        break;
+                }
             }
             
             InventoryManager.Instance.SubtractOneFromHotbarSelectedSlot();

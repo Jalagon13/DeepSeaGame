@@ -24,7 +24,6 @@ namespace UntitledDeepSeaGame
         {
             WorldManager.Instance.WorldDataStore.MultiTileChanged -= HandleMultiTileChanged;
         }
-        
 
         private void Update()
         {
@@ -35,7 +34,7 @@ namespace UntitledDeepSeaGame
 
             foreach (MultiTileInstance instance in _activeInstances.Values)
             {
-                // instance.Behavior?.Update(instance, _worldDataStore, Time.deltaTime);
+                instance.Behavior.Update(instance, WorldManager.Instance.WorldDataStore, Time.deltaTime);
             }
         }
 
@@ -58,7 +57,7 @@ namespace UntitledDeepSeaGame
                 MultiTileBehavior behavior = tileSO.Behavior;
                 MultiTileInstance instance = new(anchor, tileSO, behavior);
                 _activeInstances.Add(anchor, instance);
-                // behavior.OnPlaced(instance, _worldDataStore);
+                behavior.OnPlaced(instance, WorldManager.Instance.WorldDataStore);
             }
         }
 
@@ -66,7 +65,7 @@ namespace UntitledDeepSeaGame
         {
             if (_activeInstances.TryGetValue(anchor, out MultiTileInstance instance))
             {
-                // instance.Behavior?.OnRemoved(instance, _worldDataStore);
+                instance.Behavior.OnRemoved(instance, WorldManager.Instance.WorldDataStore);
                 _activeInstances.Remove(anchor);
             }
         }

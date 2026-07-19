@@ -134,7 +134,7 @@ namespace UntitledDeepSeaGame
                     // For solid cells we set the foreground to the world's configured solid tile id.
                     if(grid[x, y] == false)
                     {
-                        context.DataStore.SetTileId(x, y, GameDataRegistry.INVALID_ID, WorldTm.ForegroundTilemap);
+                        context.DataStore.SetForegroundTileId(x, y, GameDataRegistry.INVALID_ID);
                     }
                 }
 

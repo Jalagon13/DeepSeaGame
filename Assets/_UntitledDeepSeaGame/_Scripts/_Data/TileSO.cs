@@ -22,7 +22,6 @@ namespace UntitledDeepSeaGame
         [field: SerializeField] public Vector2Int Size { get; private set; } = new Vector2Int(1, 1);
         [field: SerializeField] public GameObject Prefab { get; private set; }
         [field: SerializeField] public MultiTileBehavior Behavior { get; private set; }
-        [field: SerializeField] public Test Test123 { get; private set; }
         
 
         [field: Header("Swapping & Physics Properties")]
