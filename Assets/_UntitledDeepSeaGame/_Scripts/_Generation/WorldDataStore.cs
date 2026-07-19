@@ -69,10 +69,6 @@ namespace UntitledDeepSeaGame
                     TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
                 }
             }
-            else
-            {
-                // TryFloodConnectedAirPockets(x, y);
-            }
         }
 
         public void SetBackgroundTileId(int x, int y, ushort tileId)
@@ -212,6 +208,19 @@ namespace UntitledDeepSeaGame
             }
 
             if (_underwaterAirTiles.Add(GetTileIndex(x, y)))
+            {
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+            }
+        }
+
+        public void RemoveUnderwaterAirTile(int x, int y)
+        {
+            if (!IsInBounds(x, y) || !IsBelowSeaLevel(y))
+            {
+                return;
+            }
+
+            if (_underwaterAirTiles.Remove(GetTileIndex(x, y)))
             {
                 TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
             }

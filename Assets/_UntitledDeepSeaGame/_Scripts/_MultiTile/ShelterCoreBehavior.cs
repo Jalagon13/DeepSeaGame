@@ -12,7 +12,7 @@ namespace UntitledDeepSeaGame
 
         public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
         {
-            if(!dataStore.IsInWater(instance.Anchor.x, instance.Anchor.y) || instance.Anchor.y < _minYHeightToWork)
+            if(/* !dataStore.IsInWater(instance.Anchor.x, instance.Anchor.y) || */ instance.Anchor.y < _minYHeightToWork)
             {
                 return;
             }
@@ -30,6 +30,10 @@ namespace UntitledDeepSeaGame
             if (IsSpaceClosedOff(instance.Anchor, dataStore, out HashSet<Vector2Int> visited))
             {
                 DrainWater(instance.Anchor, dataStore, visited);
+            }
+            else if(!dataStore.IsInWater(instance.Anchor.x, instance.Anchor.y))
+            {
+                FillWater(instance.Anchor, dataStore, visited);
             }
         }
 
@@ -91,6 +95,15 @@ namespace UntitledDeepSeaGame
                 dataStore.AddUnderwaterAirTile(pos.x, pos.y);
             }
             Debug.Log($"ShelterCore valid space detected at {anchor}. Drained {visited.Count} tiles.");
+        }
+
+        private void FillWater(Vector2Int anchor, WorldDataStore dataStore, HashSet<Vector2Int> visited)
+        {
+            foreach (Vector2Int pos in visited)
+            {
+                dataStore.RemoveUnderwaterAirTile(pos.x, pos.y);
+            }
+            Debug.Log($"ShelterCore exposed at {anchor}. Filled {visited.Count} tiles with water.");
         }
     }
 }

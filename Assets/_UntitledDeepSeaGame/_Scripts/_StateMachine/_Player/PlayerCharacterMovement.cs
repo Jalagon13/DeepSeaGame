@@ -67,8 +67,16 @@ namespace UntitledDeepSeaGame
                 float targetX = Mathf.Lerp(_velocity.x, DesiredDirection.x * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
 
                 // 3. Vertical Movement (Constant Gravity)
-                float targetY = _velocity.y + (_gravity * Time.fixedDeltaTime);
-                targetY = Mathf.Max(targetY, _terminalVelocity);
+                float targetY = _velocity.y;
+                if (!_isGrounded || targetY > 0)
+                {
+                    targetY += (_gravity * Time.fixedDeltaTime);
+                    targetY = Mathf.Max(targetY, _terminalVelocity);
+                }
+                else
+                {
+                    targetY = 0f;
+                }
 
                 // 4. Jump Logic
                 if (_jumpRequested)

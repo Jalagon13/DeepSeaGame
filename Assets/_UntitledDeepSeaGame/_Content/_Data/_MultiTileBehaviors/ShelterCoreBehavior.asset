@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 310adfda56246465792f7a8e239ff8c9, type: 3}
   m_Name: ShelterCoreBehavior
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HabitatCoreLifecycleBehavior
-  _maxTileDetection: 800
-  _drainInterval: 2
+  _maxTileDetection: 200
+  _drainInterval: 1
   _minYHeightToWork: 250

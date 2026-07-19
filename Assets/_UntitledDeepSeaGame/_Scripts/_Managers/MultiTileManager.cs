@@ -52,7 +52,7 @@ namespace UntitledDeepSeaGame
 
         private void CreateInstance(Vector2Int anchor, TileSO tileSO)
         {
-            if (!_activeInstances.ContainsKey(anchor))
+            if (!_activeInstances.ContainsKey(anchor) && tileSO != null && tileSO.IsMultiTile && tileSO.Behavior != null)
             {
                 MultiTileBehavior behavior = tileSO.Behavior;
                 MultiTileInstance instance = new(anchor, tileSO, behavior);
