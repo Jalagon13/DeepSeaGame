@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 208390489025757630}
   - component: {fileID: 5497636646361203721}
   m_Layer: 6
-  m_Name: ShelterCorePrefab
+  m_Name: WaterDrainMT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

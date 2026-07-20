@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 310adfda56246465792f7a8e239ff8c9, type: 3}
-  m_Name: ShelterCoreBehavior
+  m_Name: WaterDrainBehavior
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HabitatCoreLifecycleBehavior
   _maxTileDetection: 200
   _drainInterval: 1

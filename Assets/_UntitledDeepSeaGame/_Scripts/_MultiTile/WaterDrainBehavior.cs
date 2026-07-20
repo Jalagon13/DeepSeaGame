@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
-    [CreateAssetMenu(fileName = "Shelter Core Behavior", menuName = "MultiTile/Lifecycle/ShelterCore")]
-    public class ShelterCoreBehavior : MultiTileBehavior
+    [CreateAssetMenu(fileName = "Water Drain Behavior", menuName = "MultiTile/Lifecycle/WaterDrain")]
+    public class WaterDrainBehavior : MultiTileBehavior
     {
         [SerializeField] private int _maxTileDetection = 40;
         [SerializeField] private float _drainInterval = 5f;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5299251680101628474}
   - component: {fileID: 1234671045261918175}
   m_Layer: 6
-  m_Name: HatchClosedPrefab
+  m_Name: HatchClosedMT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

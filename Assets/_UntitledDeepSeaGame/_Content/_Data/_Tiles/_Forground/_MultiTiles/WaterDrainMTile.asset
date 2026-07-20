@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 135491153db834b08a4ff0a655a9d735, type: 3}
-  m_Name: ShelterCoreMTile
+  m_Name: WaterDrainMTile
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileSO
   m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
-  <StringID>k__BackingField: sheltercore
+  <StringID>k__BackingField: WaterDrain
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
+  <IsSolid>k__BackingField: 0
+  <ActsAsEnclosure>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
@@ -31,5 +33,3 @@ MonoBehaviour:
   <Size>k__BackingField: {x: 2, y: 2}
   <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: c2dc0b5bcb6f0415b97289c71de35557, type: 3}
   <Behavior>k__BackingField: {fileID: 11400000, guid: aaa20288816b5447d82b07eb022366fc, type: 2}
-  <IsSolid>k__BackingField: 0
-  <SwappedTile>k__BackingField: {fileID: 0}
