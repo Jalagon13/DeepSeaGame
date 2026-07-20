@@ -6,5 +6,6 @@ namespace UntitledDeepSeaGame
     {
         bool CanInteract { get; }
         void Interact();
+        void OnFlipX();
     }
 }

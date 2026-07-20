@@ -38,7 +38,7 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void HandleMultiTileChanged(Vector2Int anchor, TileSO multiTile, bool isPlacingMultiTile)
+        private void HandleMultiTileChanged(Vector2Int anchor, TileSO multiTile, bool isPlacingMultiTile, bool flipX)
         {
             if (isPlacingMultiTile)
             {

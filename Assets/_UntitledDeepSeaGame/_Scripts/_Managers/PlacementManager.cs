@@ -100,7 +100,8 @@ namespace UntitledDeepSeaGame
 
             if(tileSO.IsMultiTile)
             {
-                WorldManager.Instance.WorldDataStore.SetMultiTile(tilePosition.x, tilePosition.y, tileSO);
+                bool flipX = GameManager.MouseWorldPosition.x < Player.Instance.PlayerCenter.x;
+                WorldManager.Instance.WorldDataStore.SetMultiTile(tilePosition.x, tilePosition.y, tileSO, flipX);
             }
             else
             {

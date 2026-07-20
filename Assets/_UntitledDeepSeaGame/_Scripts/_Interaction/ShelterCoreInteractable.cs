@@ -14,5 +14,10 @@ namespace UntitledDeepSeaGame
             Debug.Log($"Interacting with {gameObject.name}");
             InventoryManager.Instance?.OpenInventory(_availableRecipes);
         }
+
+        public void OnFlipX()
+        {
+            
+        }
     }
 }

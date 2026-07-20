@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3748130004720400735}
-  - component: {fileID: 6238513454857814330}
+  - component: {fileID: 218516969316237303}
   - component: {fileID: 6545258958432222642}
   m_Layer: 6
   m_Name: HatchOpenPrefab
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 2320019168900781372}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &6238513454857814330
+--- !u!61 &218516969316237303
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,6 +93,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HatchInteractable
   _swappedTile: {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}
+  _collider: {fileID: 218516969316237303}
+  _sr: {fileID: 4047937707972132206}
+  _isOpenHatch: 1
 --- !u!1 &2634538427065896137
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,8 +121,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2634538427065896137}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

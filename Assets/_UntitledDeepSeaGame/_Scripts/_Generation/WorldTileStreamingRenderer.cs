@@ -107,14 +107,14 @@ namespace UntitledDeepSeaGame
             _airTilemapRenderer.sortingOrder = _airMaskSortingOrder;
         }
 
-        private void HandleMultiTileChanged(Vector2Int anchorPosition, TileSO multiTile, bool isPlacingMultiTile)
+        private void HandleMultiTileChanged(Vector2Int anchorPosition, TileSO multiTile, bool isPlacingMultiTile, bool flipX)
         {
             if (isPlacingMultiTile)
             {
                 // Only spawn if it's within the currently rendered view
                 if (_renderedBounds.Contains(anchorPosition))
                 {
-                    SpawnMultiTile(anchorPosition, multiTile);
+                    SpawnMultiTile(anchorPosition, multiTile, flipX);
                 }
             }
             else
@@ -123,7 +123,7 @@ namespace UntitledDeepSeaGame
             }
         }
 
-        private void SpawnMultiTile(Vector2Int anchorPosition, TileSO multiTile)
+        private void SpawnMultiTile(Vector2Int anchorPosition, TileSO multiTile, bool flipX = false)
         {
             if (_spawnedMultiTileObjects.ContainsKey(anchorPosition) || multiTile.Prefab == null)
             {
@@ -131,6 +131,15 @@ namespace UntitledDeepSeaGame
             }
 
             GameObject go = Instantiate(multiTile.Prefab, new Vector3(anchorPosition.x, anchorPosition.y, 0), Quaternion.identity, _multiTileRenderingTf);
+            
+            if (flipX)
+            {
+                if(go.TryGetComponent(out IInteractable interactable))
+                {
+                    interactable.OnFlipX();
+                }
+            }
+            
             _spawnedMultiTileObjects.Add(anchorPosition, go);
         }
 
@@ -304,12 +313,13 @@ namespace UntitledDeepSeaGame
             }
 
             // Render Multi-Tiles found within these bounds
-            foreach (var kvp in _worldDataStore.ActiveMultiTileObjects)
+            foreach (var kvp in _worldDataStore.ActiveMultiTiles)
             {
                 Vector2Int anchor = kvp.Key;
                 if (bounds.Contains(anchor))
                 {
-                    SpawnMultiTile(anchor, kvp.Value);
+                    bool flipX = kvp.Value.FlipX;
+                    SpawnMultiTile(anchor, kvp.Value.TileSO, flipX);
                 }
             }
         }

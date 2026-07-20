@@ -4,17 +4,29 @@ using UnityEngine;
 
 namespace UntitledDeepSeaGame
 {
+    public struct MultiTileData
+    {
+        public TileSO TileSO;
+        public bool FlipX;
+
+        public MultiTileData(TileSO tileSO, bool flipX)
+        {
+            TileSO = tileSO;
+            FlipX = flipX;
+        }
+    }
+
     // The source of truth for the entire world
     public class WorldDataStore
     {
         public event Action<Vector2Int, ushort, ushort, WorldTm> TileChanged;
-        public event Action<Vector2Int, TileSO, bool> MultiTileChanged;
+        public event Action<Vector2Int, TileSO, bool, bool> MultiTileChanged;
 
         public ushort[,] FgTileData { get; private set; }
         public ushort[,] BgTileData { get; private set; }
         
         private readonly HashSet<int> _underwaterAirTiles = new();
-        public Dictionary<Vector2Int, TileSO> ActiveMultiTileObjects { get; private set; }
+        public Dictionary<Vector2Int, MultiTileData> ActiveMultiTiles { get; private set; }
 
         public int Width => FgTileData.GetLength(0);
         public int Height => FgTileData.GetLength(1);
@@ -29,7 +41,7 @@ namespace UntitledDeepSeaGame
 
             _seaLevelY = Mathf.Clamp(data.SeaLevelY, 1, Mathf.Max(1, data.WorldHeight - 1));
             _underwaterAirTiles.Clear();
-            ActiveMultiTileObjects = new();
+            ActiveMultiTiles = new();
 
             for (int x = 0; x < Width; x++)
             {
@@ -91,7 +103,7 @@ namespace UntitledDeepSeaGame
             TileChanged?.Invoke(new Vector2Int(x, y), previousTileId, tileId, WorldTm.BackgroundTilemap);
         }
 
-        public void SetMultiTile(int x, int y, TileSO tile)
+        public void SetMultiTile(int x, int y, TileSO tile, bool flipX = false)
         {
             if (!IsInBounds(x, y))
             {
@@ -100,7 +112,7 @@ namespace UntitledDeepSeaGame
 
             // Register the anchor so the renderer knows where to spawn the multi-tile entity
             Vector2Int anchor = new Vector2Int(x, y);
-            ActiveMultiTileObjects[anchor] = tile;
+            ActiveMultiTiles[anchor] = new MultiTileData(tile, flipX);
 
             // Fill the entire footprint in the tile data array with the actual Tile ID.
             ushort tileId = GameDataRegistry.Instance.GetTileIdFromTileSO(tile);
@@ -114,7 +126,7 @@ namespace UntitledDeepSeaGame
             }
 
             // Notify the renderer to spawn the GameObject at the anchor
-            MultiTileChanged?.Invoke(anchor, tile, true);
+            MultiTileChanged?.Invoke(anchor, tile, true, flipX);
         }
 
         public void DestroyMultiTile(int x, int y)
@@ -126,10 +138,10 @@ namespace UntitledDeepSeaGame
             bool found = false;
 
             // Search the registry to find which multi-tile footprint contains these coordinates
-            foreach (var kvp in ActiveMultiTileObjects)
+            foreach (var kvp in ActiveMultiTiles)
             {
                 Vector2Int pos = kvp.Key;
-                TileSO so = kvp.Value;
+                TileSO so = kvp.Value.TileSO;
                 if (x >= pos.x && x < pos.x + so.Size.x && y >= pos.y && y < pos.y + so.Size.y)
                 {
                     anchor = pos;
@@ -156,8 +168,8 @@ namespace UntitledDeepSeaGame
             }
 
             // Notify the renderer to remove the GameObject and clean up the registry
-            MultiTileChanged?.Invoke(anchor, multiTileSO, false);
-            ActiveMultiTileObjects.Remove(anchor);
+            MultiTileChanged?.Invoke(anchor, multiTileSO, false, false);
+            ActiveMultiTiles.Remove(anchor);
         }
 
         public ushort GetTileId(int x, int y, WorldTm targetMap = WorldTm.ForegroundTilemap)

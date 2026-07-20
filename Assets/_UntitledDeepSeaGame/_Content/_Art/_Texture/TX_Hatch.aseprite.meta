@@ -151,8 +151,8 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: TX_Hatch_Closed
     originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -172,8 +172,8 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: TX_Hatch_Open
     originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
+    pivot: {x: 0.25, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
