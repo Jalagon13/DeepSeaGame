@@ -15,6 +15,8 @@ namespace UntitledDeepSeaGame
         [field: SerializeField] public float Hardness { get; private set; } = 0.65f;
         [field: SerializeField, Min(0)] public float LightValue { get; private set; }
         [field: SerializeField] public bool IsSolid { get; private set; } = true;
+        [field: SerializeField, Tooltip("If true, acts as a boundary for enclosed spaces (like for the Shelter Core) even if IsSolid is false.")] 
+        public bool ActsAsEnclosure { get; private set; } = false;
         [field: SerializeField] public TileItemSO TileItemSO { get; private set; }
         [field: SerializeField] public List<Loot> ItemDropTable { get; private set; }
 

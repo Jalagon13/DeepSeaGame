@@ -10,9 +10,19 @@ namespace UntitledDeepSeaGame
         [SerializeField] private float _drainInterval = 5f;
         [SerializeField] private int _minYHeightToWork = 250;
 
+        public override void OnPlaced(MultiTileInstance instance, WorldDataStore dataStore)
+        {
+            
+        }
+
+        public override void OnRemoved(MultiTileInstance instance, WorldDataStore dataStore)
+        {
+            
+        }
+
         public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
         {
-            if(/* !dataStore.IsInWater(instance.Anchor.x, instance.Anchor.y) || */ instance.Anchor.y < _minYHeightToWork)
+            if(instance.Anchor.y < _minYHeightToWork)
             {
                 return;
             }
@@ -68,11 +78,15 @@ namespace UntitledDeepSeaGame
                         return false;
                     }
 
-                    // If there is a valid solid foreground tile, it acts as a boundary wall
+                    // If there is a valid solid foreground tile (or one marked as an enclosure), it acts as a boundary wall
                     ushort tileId = dataStore.GetTileId(neighbor.x, neighbor.y);
-                    if (tileId != GameDataRegistry.INVALID_ID && GameDataRegistry.Instance.GetTileSOFromTileId(tileId).IsSolid)
+                    if (tileId != GameDataRegistry.INVALID_ID)
                     {
-                        continue;
+                        var tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
+                        if (tileSO.IsSolid || tileSO.ActsAsEnclosure)
+                        {
+                            continue;
+                        }
                     }
 
                     // If it is empty space and we haven't visited it yet, keep filling
