@@ -380,7 +380,7 @@ namespace UntitledDeepSeaGame
                 {
                     ""name"": """",
                     ""id"": ""1c04ea5f-b012-41d1-a6f7-02e963b52893"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -958,7 +958,7 @@ namespace UntitledDeepSeaGame
                 {
                     ""name"": """",
                     ""id"": ""80891c6b-d18c-4d3f-9379-7eed37d741a3"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",

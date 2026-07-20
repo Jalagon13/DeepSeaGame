@@ -7154,7 +7154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
-  _enableSpawning: 1
+  _enableSpawning: 0
   _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 60
@@ -7945,7 +7945,7 @@ SpriteRenderer:
   m_SortingOrder: 99
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 0.050980393, g: 0.41960785, b: 0.72156864, a: 0.5019608}
+  m_Color: {r: 0.4022784, g: 0.5945176, b: 0.754717, a: 0.30588236}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
