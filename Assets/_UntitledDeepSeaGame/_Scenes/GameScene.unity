@@ -2972,6 +2972,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 41ae9fd3b7c154a24a7b90aee470e95f, type: 2}
   - {fileID: 11400000, guid: 62126974a8a414359ae6200988553ea3, type: 2}
   - {fileID: 11400000, guid: f4589fc18525f4cca897b167d4544d9d, type: 2}
+  - {fileID: 11400000, guid: d6c086e4798aa4788bcee9fb656573e8, type: 2}
 --- !u!1 &798450420
 GameObject:
   m_ObjectHideFlags: 0
@@ -6233,6 +6234,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c3c63d0c5696412e985db38294588c0, type: 2}
   - {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
   - {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
+  - {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
@@ -6246,6 +6248,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 902d8a554dd1541988ed71d202546f19, type: 2}
   - {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
   - {fileID: 11400000, guid: 98a07bb80ec3944cf81ca478bf105955, type: 2}
+  - {fileID: 11400000, guid: 0e2fe160f0fb1483f85dbfd48f3c4b45, type: 2}
   _characterData:
   - {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
 --- !u!114 &1760391186
@@ -6514,6 +6517,8 @@ MonoBehaviour:
   - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
     _amount: 99
   - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
     _amount: 99
 --- !u!114 &1794183287
 MonoBehaviour:

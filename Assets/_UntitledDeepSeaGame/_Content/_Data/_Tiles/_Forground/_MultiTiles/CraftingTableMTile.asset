@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 135491153db834b08a4ff0a655a9d735, type: 3}
+  m_Name: CraftingTableMTile
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileSO
+  m_DefaultSprite: {fileID: 0}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_TilingRules: []
+  <StringID>k__BackingField: CraftingTable
+  <TileType>k__BackingField: 0
+  <RequiredToolType>k__BackingField: 0
+  <Hardness>k__BackingField: 0.65
+  <LightValue>k__BackingField: 0
+  <IsSolid>k__BackingField: 0
+  <ActsAsEnclosure>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
+  <ItemDropTable>k__BackingField:
+  - Item: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
+    Min: 1
+    Max: 1
+    Chance: 100
+  <IsMultiTile>k__BackingField: 1
+  <Size>k__BackingField: {x: 2, y: 2}
+  <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: 90657db0ba6ab4c6391548b16d3a7496, type: 3}
+  <Behavior>k__BackingField: {fileID: 0}
