@@ -12,12 +12,42 @@ namespace UntitledDeepSeaGame
 
         public override void OnPlaced(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            
+            if (IsSpaceClosedOff(instance.Anchor, dataStore, out HashSet<Vector2Int> visited))
+            {
+                DrainWater(instance.Anchor, dataStore, visited);
+            }
         }
 
         public override void OnRemoved(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            
+            if (dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
+            {
+                Queue<Vector2Int> queue = new Queue<Vector2Int>();
+                HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+                
+                queue.Enqueue(instance.Anchor);
+                visited.Add(instance.Anchor);
+                
+                Vector2Int[] directions = new Vector2Int[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                
+                while (queue.Count > 0)
+                {
+                    Vector2Int current = queue.Dequeue();
+                    
+                    foreach (Vector2Int dir in directions)
+                    {
+                        Vector2Int neighbor = current + dir;
+                        
+                        if (dataStore.IsInBounds(neighbor.x, neighbor.y) && !visited.Contains(neighbor) && dataStore.IsUnderwaterAirAt(neighbor.x, neighbor.y))
+                        {
+                            visited.Add(neighbor);
+                            queue.Enqueue(neighbor);
+                        }
+                    }
+                }
+                
+                FillWater(instance.Anchor, dataStore, visited);
+            }
         }
 
         public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
