@@ -4,6 +4,8 @@ namespace UntitledDeepSeaGame
 {
     public class HatchInteractable : MonoBehaviour, IInteractable
     {
+        [SerializeField] private TileSO _swappedTile;
+    
         public bool CanInteract => true;
 
         public void Interact()
@@ -17,13 +19,12 @@ namespace UntitledDeepSeaGame
 
             Debug.Log($"Interacting with {gameObject.name}");
 
-            var activeMultiTiles = WorldManager.Instance.WorldDataStore.ActiveMultiTileObjects;
-            if (activeMultiTiles.TryGetValue(anchor, out TileSO currentTile))
+            if (WorldManager.Instance.WorldDataStore.ActiveMultiTileObjects.TryGetValue(anchor, out TileSO currentTile))
             {
-                if (currentTile.SwappedTile != null)
+                if (_swappedTile != null)
                 {
                     WorldManager.Instance.WorldDataStore.DestroyMultiTile(anchor.x, anchor.y);
-                    WorldManager.Instance.WorldDataStore.SetMultiTile(anchor.x, anchor.y, currentTile.SwappedTile);
+                    WorldManager.Instance.WorldDataStore.SetMultiTile(anchor.x, anchor.y, _swappedTile);
                 }
             }
         }

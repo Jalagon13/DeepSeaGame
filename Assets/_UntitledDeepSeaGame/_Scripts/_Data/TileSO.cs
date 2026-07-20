@@ -14,6 +14,7 @@ namespace UntitledDeepSeaGame
         [field: SerializeField] public ToolType RequiredToolType { get; private set; } = ToolType.Drill;
         [field: SerializeField] public float Hardness { get; private set; } = 0.65f;
         [field: SerializeField, Min(0)] public float LightValue { get; private set; }
+        [field: SerializeField] public bool IsSolid { get; private set; } = true;
         [field: SerializeField] public TileItemSO TileItemSO { get; private set; }
         [field: SerializeField] public List<Loot> ItemDropTable { get; private set; }
 
@@ -23,12 +24,6 @@ namespace UntitledDeepSeaGame
         [field: SerializeField] public GameObject Prefab { get; private set; }
         [field: SerializeField] public MultiTileBehavior Behavior { get; private set; }
         
-
-        [field: Header("Swapping & Physics Properties")]
-        [field: SerializeField] public bool IsSolid { get; private set; } = true;
-        [field: SerializeField] public TileSO SwappedTile { get; private set; }
-
-
         // [field: Header("Game Feel")]
         // [field: SerializeField] public EventReference MiningSound { get; private set; }
         // [field: SerializeField] public EventReference PlaceSound { get; private set; }

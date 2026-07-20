@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77cbcf14e7a46c19a97bcada6cd90ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HatchInteractable
+  _swappedTile: {fileID: 11400000, guid: 4d0c1374f63b24dd28bc075bcabd5a1a, type: 2}
 --- !u!1 &2634538427065896137
 GameObject:
   m_ObjectHideFlags: 0
