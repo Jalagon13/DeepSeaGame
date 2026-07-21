@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7ee61e6155346dc844ca14364df86f, type: 3}
-  m_Name: SpearItem
+  m_Name: IronSpearItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ToolItemSO
-  _itemName: Spear
+  _itemName: Iron Spear
   _itemDescription: 
   _inventoryIcon: {fileID: 310057666705439893, guid: f808ecc7617114e75ba4fad147d14471, type: 3}
   _isStackable: 0

@@ -1150,7 +1150,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Tileset_TitaniumOre
+    - name: TX_Tileset_IronOre
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:

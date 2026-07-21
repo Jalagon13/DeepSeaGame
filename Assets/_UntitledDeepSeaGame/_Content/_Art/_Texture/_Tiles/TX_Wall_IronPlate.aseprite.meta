@@ -499,7 +499,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Wall_TitaniumPlate
+    - name: TX_Wall_IronPlate
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 135491153db834b08a4ff0a655a9d735, type: 3}
-  m_Name: TitaniumPlateTile
+  m_Name: IronPlateTile
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileSO
   m_DefaultSprite: {fileID: -893114918391402929, guid: f87cb156056bc466d817f94b8424db48, type: 3}
   m_DefaultGameObject: {fileID: 0}
@@ -919,11 +919,13 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  <StringID>k__BackingField: titaniumplate
+  <StringID>k__BackingField: IronPlate
   <TileType>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 1
   <LightValue>k__BackingField: 0
+  <IsSolid>k__BackingField: 1
+  <ActsAsEnclosure>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
@@ -933,3 +935,4 @@ MonoBehaviour:
   <IsMultiTile>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 1}
   <Prefab>k__BackingField: {fileID: 0}
+  <Behavior>k__BackingField: {fileID: 0}
