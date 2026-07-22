@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerCamera : NetworkBehaviour
     {

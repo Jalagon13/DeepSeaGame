@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class ThrustWeapon : HeldObject
     {

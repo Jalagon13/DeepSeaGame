@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [ExecuteInEditMode]
     public class ParallaxCamera : MonoBehaviour

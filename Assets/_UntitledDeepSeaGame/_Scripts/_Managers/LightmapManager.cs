@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     /// <summary>
     /// Manages a CPU-based 2D lightmap using a Breadth-First Search (BFS) flood fill algorithm.

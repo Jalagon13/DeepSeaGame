@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerArmController : NetworkBehaviour
     {

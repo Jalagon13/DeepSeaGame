@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public abstract class BaseState
     {

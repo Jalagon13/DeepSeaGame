@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class StateMachineFactory
     {
@@ -11,8 +11,8 @@ namespace UntitledDeepSeaGame
             {
                 case StateMachineType.Player:
                     return new PlayerStateMachine(serverCharacter);
-                case StateMachineType.Jellyfish:
-                    return new JellyfishStateMachine(serverCharacter);
+                case StateMachineType.Fish:
+                    return new FishStateMachine(serverCharacter);
                 default:
                     throw new NotSupportedException($"No StateMachine Selected");
             }
@@ -22,6 +22,6 @@ namespace UntitledDeepSeaGame
     public enum StateMachineType
     {
         Player,
-        Jellyfish
+        Fish
     }
 }

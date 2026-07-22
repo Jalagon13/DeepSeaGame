@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public abstract class StateMachine
     {
@@ -59,7 +59,7 @@ namespace UntitledDeepSeaGame
         None,
 
         // Super States
-        Grounded,
+        Locomotion,
         Attacking,
         Mining,
         Dead, // Used for player death animation as well as npc death animation cleanup stuff before formally despawning

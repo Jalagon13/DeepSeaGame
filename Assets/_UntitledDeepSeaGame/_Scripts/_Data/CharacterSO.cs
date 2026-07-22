@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Character Data", menuName = "Data/CharacterData")]
     public class CharacterSO : ScriptableObject

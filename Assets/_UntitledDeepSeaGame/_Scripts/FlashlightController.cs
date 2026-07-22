@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     /// <summary>
     /// Controls the flashlight state and exposes data for the LightmapManager

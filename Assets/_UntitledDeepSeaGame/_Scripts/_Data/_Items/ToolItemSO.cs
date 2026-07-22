@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Tool Data", menuName = "Data/Items/ToolItemData")]
     public class ToolItemSO : ItemSO

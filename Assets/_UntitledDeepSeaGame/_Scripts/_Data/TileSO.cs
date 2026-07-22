@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Tile Data", menuName = "Data/TileData")]
     public class TileSO : RuleTile

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "Water Drain Behavior", menuName = "MultiTile/Lifecycle/WaterDrain")]
     public class WaterDrainBehavior : MultiTileBehavior

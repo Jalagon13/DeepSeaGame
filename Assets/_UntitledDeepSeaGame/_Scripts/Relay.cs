@@ -9,7 +9,7 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class Relay : MonoBehaviour
     {

@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 3431724271537848667}
   - component: {fileID: 8054233521325832671}
   m_Layer: 0
-  m_Name: JellyfishNpc
+  m_Name: FishNpc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

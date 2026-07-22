@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Tile Item Data", menuName = "Data/Items/TileItemData")]
     public class TileItemSO : ItemSO

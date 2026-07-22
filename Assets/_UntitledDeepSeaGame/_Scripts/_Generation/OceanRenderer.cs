@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class OceanRenderer : MonoBehaviour

@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class ClientCharacterFeedbacks : NetworkBehaviour
     {

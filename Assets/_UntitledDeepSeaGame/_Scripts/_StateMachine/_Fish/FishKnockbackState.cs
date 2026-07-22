@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
-    public class JellyfishKnockbackState : BaseState
+    public class FishKnockbackState : BaseState
     {
 
-        public JellyfishKnockbackState(AIState key, StateMachine context) : base(key, context)
+        public FishKnockbackState(AIState key, StateMachine context) : base(key, context)
         {
 
         }
@@ -29,7 +29,7 @@ namespace UntitledDeepSeaGame
         {
             if (Context.ServerCharacter.MovementState.Value != MovementState.Knockback)
             {
-                SwitchState(new AIStateData(AIState.Idle));
+                SwitchState(new AIStateData(AIState.Moving));
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     internal static class OceanRenderSpriteUtility
     {

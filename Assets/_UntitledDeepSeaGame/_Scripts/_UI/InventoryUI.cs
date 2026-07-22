@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class InventoryUI : NetworkBehaviour
     {

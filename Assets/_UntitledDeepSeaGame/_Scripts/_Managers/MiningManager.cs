@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class MiningManager : MonoBehaviour
     {

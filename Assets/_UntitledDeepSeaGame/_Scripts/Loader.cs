@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public static class Loader
     {

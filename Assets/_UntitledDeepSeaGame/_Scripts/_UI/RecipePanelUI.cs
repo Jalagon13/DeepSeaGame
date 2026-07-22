@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class RecipePanelUI : MonoBehaviour
     {

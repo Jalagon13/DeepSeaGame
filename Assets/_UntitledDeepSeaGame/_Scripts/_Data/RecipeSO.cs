@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Recipe Data", menuName = "Data/RecipeData")]
     public class RecipeSO : ScriptableObject

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerAttackState : BaseState
     {
@@ -34,11 +34,11 @@ namespace UntitledDeepSeaGame
         {
             if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
-                SwitchState(new AIStateData(AIState.Grounded));
+                SwitchState(new AIStateData(AIState.Locomotion));
             }
             else if (!Player.Instance.PlayerArmController.IsAttacking)
             {
-                SwitchState(new AIStateData(AIState.Grounded, 0));
+                SwitchState(new AIStateData(AIState.Locomotion, 0));
             }
         }
 

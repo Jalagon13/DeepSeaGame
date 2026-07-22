@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public abstract class GenerationStep : MonoBehaviour
     {

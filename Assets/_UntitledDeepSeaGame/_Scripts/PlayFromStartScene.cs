@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [InitializeOnLoad]
     public static class PlayFromStartScene

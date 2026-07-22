@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class Timer
     {

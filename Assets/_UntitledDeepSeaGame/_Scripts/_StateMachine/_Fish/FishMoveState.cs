@@ -1,21 +1,21 @@
 using System;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
-    public class JellyfishMoveState : BaseState
+    public class FishMoveState : BaseState
     {
-        private JellyfishStateMachine _ctx;
-        private JellyfishCharacterMovement _jellyfishMovement;
+        private readonly FishStateMachine _ctx;
+        private readonly FishCharMovement _fishMovement;
         
-        public JellyfishMoveState(AIState key, StateMachine context) : base(key, context)
+        public FishMoveState(AIState key, StateMachine context) : base(key, context)
         {
-            _ctx = Context as JellyfishStateMachine;
+            _ctx = Context as FishStateMachine;
 
-            _jellyfishMovement = _ctx.ServerCharacter.Movement as JellyfishCharacterMovement;
-            if (_jellyfishMovement == null)
+            _fishMovement = _ctx.ServerCharacter.Movement as FishCharMovement;
+            if (_fishMovement == null)
             {
-                Debug.LogError($"Jellyfish movement script could not be found.");
+                Debug.LogError($"Fish movement script could not be found.");
             }
         }
 
@@ -23,7 +23,7 @@ namespace UntitledDeepSeaGame
         {
             // Debug.Log($"Jellyfish Move State Entered");
             Vector2 direction = GetDirection();
-            _jellyfishMovement.StartPropulsion(direction);
+            _fishMovement.StartPropulsion(direction);
         }
 
         private Vector2 GetDirection()
@@ -49,7 +49,7 @@ namespace UntitledDeepSeaGame
                 SwitchState(new AIStateData(AIState.Knockbacked));
                 return;
             }
-            else if(!_jellyfishMovement.IsPropelling || _ctx.ServerCharacter.CurrentStatus.Value == Status.InAir)
+            else if(!_fishMovement.IsPropelling || _ctx.ServerCharacter.CurrentStatus.Value == Status.InAir)
             {
                 SwitchState(new AIStateData(AIState.Idle));
                 return;

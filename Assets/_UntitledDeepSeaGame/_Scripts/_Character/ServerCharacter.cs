@@ -3,7 +3,7 @@ using Unity.Netcode;
 using System;
 using System.Collections;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [RequireComponent(typeof(NetworkHealthState), typeof(DamageReceiver), typeof(GridCollider))]
     public class ServerCharacter : NetworkBehaviour

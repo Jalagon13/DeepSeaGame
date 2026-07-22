@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
     {

@@ -2,7 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public struct SyncItemData : IEquatable<SyncItemData>, INetworkSerializable
     {

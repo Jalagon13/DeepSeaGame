@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class WorldTileStreamingRenderer : MonoBehaviour
     {

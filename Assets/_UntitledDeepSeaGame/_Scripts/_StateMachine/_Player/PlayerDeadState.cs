@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerDeadState : BaseState
     {
@@ -27,7 +27,7 @@ namespace UntitledDeepSeaGame
         {
             if (_ctx.ServerCharacter.LifeState == LifeState.IFrame)
             {
-                SwitchState(new AIStateData(AIState.Grounded));
+                SwitchState(new AIStateData(AIState.Locomotion));
             }
         }
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class FillLimestoneTerrainStep : GenerationStep
     {

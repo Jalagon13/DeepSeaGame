@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [ExecuteInEditMode]
     public class ParallaxBackground : MonoBehaviour

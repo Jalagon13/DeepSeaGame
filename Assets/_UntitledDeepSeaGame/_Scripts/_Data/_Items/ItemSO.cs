@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Item Data", menuName = "Data/Items/ItemData")]
     public class ItemSO : ScriptableObject

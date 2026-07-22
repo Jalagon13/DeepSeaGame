@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class InteractionManager : MonoBehaviour
     {

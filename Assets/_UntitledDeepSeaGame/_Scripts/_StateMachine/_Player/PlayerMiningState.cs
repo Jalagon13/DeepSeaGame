@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerMiningState : BaseState
     {
@@ -31,11 +31,11 @@ namespace UntitledDeepSeaGame
         {
             if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
-                SwitchState(new AIStateData(AIState.Grounded));
+                SwitchState(new AIStateData(AIState.Locomotion));
             }
             else if((!GameInput.Instance.PrimaryActionHeldDown && !GameInput.Instance.SecondaryActionHeldDown) || _ctx.HeldItem is not ToolItemSO || (_ctx.HeldItem is ToolItemSO tool && tool.HarvestType != ToolType.Drill))
             {
-                SwitchState(new AIStateData(AIState.Grounded));
+                SwitchState(new AIStateData(AIState.Locomotion));
             }
         }
 

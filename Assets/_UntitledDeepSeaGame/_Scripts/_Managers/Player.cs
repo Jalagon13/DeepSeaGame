@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [RequireComponent(typeof(ServerCharacter), typeof(PlayerArmController))]
     public class Player : NetworkBehaviour

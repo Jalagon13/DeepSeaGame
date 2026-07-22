@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
-    public class JellyfishCharacterMovement : CharacterMovement
+    public class FishCharMovement : CharacterMovement
     {
         [Header("Jellyfish Movement Settings")]
         [SerializeField] private float _propulsionPower = 10f;

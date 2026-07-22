@@ -7,7 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerHealthStatUI : MonoBehaviour
     {

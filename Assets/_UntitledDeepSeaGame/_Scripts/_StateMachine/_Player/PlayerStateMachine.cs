@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlayerStateMachine : StateMachine
     {
@@ -18,12 +18,12 @@ namespace UntitledDeepSeaGame
             _states[AIState.Knockbacked] = new PlayerKnockbackState(AIState.Knockbacked, this);
 
             // Super States
-            _states[AIState.Grounded] = new PlayerGroundedState(AIState.Grounded, this);
+            _states[AIState.Locomotion] = new PlayerGroundedState(AIState.Locomotion, this);
             _states[AIState.Attacking] = new PlayerAttackState(AIState.Attacking, this);
             _states[AIState.Mining] = new PlayerMiningState(AIState.Mining, this);
             _states[AIState.Dead] = new PlayerDeadState(AIState.Dead, this);
 
-            _currentState = _states[AIState.Grounded];
+            _currentState = _states[AIState.Locomotion];
         }
 
         public override void OwnerInitialization()

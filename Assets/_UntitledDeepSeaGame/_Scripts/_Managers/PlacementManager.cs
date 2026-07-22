@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     public class PlacementManager : MonoBehaviour
     {

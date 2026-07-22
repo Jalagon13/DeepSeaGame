@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [RequireComponent(typeof(WorldGenerationData), typeof(WorldTileStreamingRenderer))]
     public class WorldGenerator : MonoBehaviour

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
     [CreateAssetMenu(fileName = "New Player Data", menuName = "Data/PlayerData")]
     public class PlayerCharacterSO : CharacterSO

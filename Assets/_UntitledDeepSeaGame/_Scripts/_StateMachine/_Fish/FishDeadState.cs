@@ -1,11 +1,11 @@
 using UnityEngine;
 
 
-namespace UntitledDeepSeaGame
+namespace DeepSeaGame
 {
-    public class JellyfishDeadState : BaseState
+    public class FishDeadState : BaseState
     {
-        public JellyfishDeadState(AIState key, StateMachine context) : base(key, context)
+        public FishDeadState(AIState key, StateMachine context) : base(key, context)
         {
             IsSuperState = true; // This is a super state
         }
