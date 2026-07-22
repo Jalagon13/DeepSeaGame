@@ -6,6 +6,6 @@ namespace DeepSeaGame
     public class ConsumableItemSO : ItemSO
     {
         [field: Header("Consumable Parameters")]
-        [field: SerializeField] public int HungerRestore { get; private set; } = 4;
+        [field: SerializeField] public int HpRestoreAmount { get; private set; } = 4;
     }
 }

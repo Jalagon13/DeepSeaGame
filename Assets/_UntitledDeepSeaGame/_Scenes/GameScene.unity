@@ -6514,14 +6514,8 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
-    _amount: 999
-  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
-    _amount: 99
-  - _item: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
-    _amount: 99
+  - _item: {fileID: 11400000, guid: edcc3f6684f1240f88349de5c8cdcd0f, type: 2}
+    _amount: 9
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0

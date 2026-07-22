@@ -15,7 +15,7 @@ MonoBehaviour:
   BaseSpeed: 3
   BaseMaxHealth: 12
   BaseDefense: 0
-  Damage: 1
+  Damage: 15
   KnockbackForce: 5
   PlayKnockback: 1
   CanDie: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
   MinIdleDuration: 1.25
   MaxIdleDuration: 2.25
   LootDrops:
-  - Item: {fileID: 11400000, guid: 4c3c63d0c5696412e985db38294588c0, type: 2}
+  - Item: {fileID: 11400000, guid: edcc3f6684f1240f88349de5c8cdcd0f, type: 2}
     Min: 1
     Max: 1
     Chance: 100
