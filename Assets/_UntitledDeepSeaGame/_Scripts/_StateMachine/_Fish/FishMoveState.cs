@@ -35,6 +35,12 @@ namespace DeepSeaGame
 
         public override void CheckSwitchStates()
         {
+            if (_ctx.LatestAttacker != null && !_fishMovement.IsFleeDistanceReached(_ctx.LatestAttacker))
+            {
+                SwitchState(new AIStateData(AIState.Fleeing));
+                return;
+            }
+
             if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
                 SwitchState(new AIStateData(AIState.Knockbacked));

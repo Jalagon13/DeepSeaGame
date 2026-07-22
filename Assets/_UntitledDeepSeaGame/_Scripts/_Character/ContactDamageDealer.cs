@@ -5,6 +5,8 @@ namespace DeepSeaGame
 {
     public class ContactDamageDealer : NetworkBehaviour
     {
+        [SerializeField] private bool _dealDamage = true;
+    
         private ServerCharacter _source;
 
         private void Awake()
@@ -13,13 +15,15 @@ namespace DeepSeaGame
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
-        {
-            TryDamage(collision);
+        {   
+            if (_dealDamage)
+                TryDamage(collision);
         }
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            TryDamage(collision);
+            if (_dealDamage)
+                TryDamage(collision);
         }
 
         private void TryDamage(Collider2D collision)

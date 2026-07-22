@@ -4,6 +4,8 @@ namespace DeepSeaGame
 {
     public class FishStateMachine : StateMachine
     {
+        public ServerCharacter LatestAttacker { get; private set; }
+
         public FishStateMachine(ServerCharacter character)
         {
             // This constructor gets played on all client machines
@@ -27,12 +29,20 @@ namespace DeepSeaGame
             {
                 if (amount < 0)
                 {
-                    // Damaged
+                    LatestAttacker = inflicter;
                 }
                 else
                 {
                     // Healed
                 }
+            }
+        }
+
+        public void ClearLatestAttacker(ServerCharacter attacker)
+        {
+            if (LatestAttacker == attacker)
+            {
+                LatestAttacker = null;
             }
         }
     }
