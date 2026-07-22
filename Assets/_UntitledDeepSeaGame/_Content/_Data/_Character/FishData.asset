@@ -16,7 +16,7 @@ MonoBehaviour:
   BaseMaxHealth: 12
   BaseDefense: 0
   Damage: 15
-  KnockbackForce: 5
+  KnockbackForce: 25
   PlayKnockback: 1
   CanDie: 1
   CanBeKnockedBack: 1

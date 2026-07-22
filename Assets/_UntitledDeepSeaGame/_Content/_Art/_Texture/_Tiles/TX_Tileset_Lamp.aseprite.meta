@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7d66b36eb70204f0cb3ca69fcf7f767a
+guid: 8e3b88ea65722497fb11928d670f66e1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639163264652059150
+  platformSettingsDirtyTick: 639151181502264900
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Tileset_TitaniumOre
+  - name: TX_Tileset_Sand
     originalName: 
-    pivot: {x: 0.5, y: -0.20754717}
+    pivot: {x: 0.5633803, y: -0.20754717}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 80
+      width: 71
       height: 53
-    spriteID: 4c1f25a7af91b40d198a59647a15cf82
+    spriteID: bfa7d6277568a4559aaac55f6289a186
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,7 +149,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Tileset_TitaniumOre_0
+  - name: TX_Tileset_Lamp_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -161,7 +161,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 9f082bdb0f8b3433dbdb20ac9f4b0b05
+    spriteID: 6c3e641bc6e2240f6a2dd2edc1a6d542
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -170,7 +170,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_1
+  - name: TX_Tileset_Lamp_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -182,7 +182,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: fcc109186c0684c8fbdc8758917345b5
+    spriteID: e3b71a524883f4157bfd5854bc386aa5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -191,7 +191,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_2
+  - name: TX_Tileset_Lamp_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -203,7 +203,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: fa95c0d3015d04df68a239ed24b8ea46
+    spriteID: ea1b0f2cf7e0b423698f701391afde9c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -212,7 +212,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_3
+  - name: TX_Tileset_Lamp_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -224,7 +224,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 914c11049178842b7977908c2cfd2c61
+    spriteID: 82d78908e1979456bb1e140dce9e588f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -233,7 +233,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_4
+  - name: TX_Tileset_Lamp_4
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -245,7 +245,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 4d0d5475f07e64172bb3a6168272a80c
+    spriteID: aeeddda40550d4997893c3369bd5ff53
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -254,7 +254,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_5
+  - name: TX_Tileset_Lamp_5
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -266,7 +266,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 3ddf9a19f47f740f4a36d23ff43a60de
+    spriteID: 98461f96405824ca8aaeef3bf35d09ec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -275,7 +275,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_6
+  - name: TX_Tileset_Lamp_6
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -287,7 +287,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 17c44759d250d485aaed2e32138888b8
+    spriteID: a78dcf96a643f405b8ee85d76abb5e7b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -296,7 +296,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_7
+  - name: TX_Tileset_Lamp_7
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -308,7 +308,7 @@ ScriptedImporter:
       y: 45
       width: 8
       height: 8
-    spriteID: 70bf72082c04d4e36a7dd25ae6c0d6ae
+    spriteID: 6286a6fc32d1a4032be662e7c81f589b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -317,7 +317,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_8
+  - name: TX_Tileset_Lamp_8
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -329,7 +329,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: ab2ce7225b202464faaa3b9bbf344c32
+    spriteID: 1370d8a2a676d40c19df0b4cac0254e6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -338,7 +338,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_9
+  - name: TX_Tileset_Lamp_9
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -350,7 +350,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: a1912908a406346e28aeb6ad3e6275d5
+    spriteID: 164564717ce104b109820e00dfbae2e6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -359,7 +359,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_10
+  - name: TX_Tileset_Lamp_10
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -371,7 +371,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: d16e1961224cd41789d69d8fab5131d1
+    spriteID: 95dfd172e308447de838ed440f679290
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -380,7 +380,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_11
+  - name: TX_Tileset_Lamp_11
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -392,7 +392,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: 05bbea3c0adce44ee9168aba88001086
+    spriteID: a37f878f9770f42798d5ae6b087ec41e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -401,7 +401,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_12
+  - name: TX_Tileset_Lamp_12
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -413,7 +413,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: 023e6dc2275de407b8f6dd4c193811ec
+    spriteID: 27c43f6dd89e1449db2d9274b4a03055
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -422,7 +422,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_13
+  - name: TX_Tileset_Lamp_13
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -434,7 +434,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: 980e9f1ad75d44e8c91480d74358e43b
+    spriteID: 550641a0620cf45b986278b39c3901e5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -443,7 +443,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_14
+  - name: TX_Tileset_Lamp_14
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -455,7 +455,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: 41ae58fdbb7c54d2ebb30a7e5feef5e9
+    spriteID: e6c5668ec914c461fad45138800ced07
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -464,7 +464,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_15
+  - name: TX_Tileset_Lamp_15
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -476,7 +476,7 @@ ScriptedImporter:
       y: 36
       width: 8
       height: 8
-    spriteID: 7188ea9ae07e744d09aff610f115068e
+    spriteID: 749dfde92aefd44fba2fa67db27d4793
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -485,7 +485,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_16
+  - name: TX_Tileset_Lamp_16
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -497,7 +497,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: 8f02064d18ea7478aa24759288c75cf9
+    spriteID: ebad2f3f995c94940862888cb5cb1173
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -506,7 +506,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_17
+  - name: TX_Tileset_Lamp_17
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -518,7 +518,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: 086fd6c19bdcf4d54974caac91429125
+    spriteID: 7418612af8b504d75b830f4e9471e35c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -527,7 +527,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_18
+  - name: TX_Tileset_Lamp_18
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -539,7 +539,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: f9161dfe6496a477692a44ccd73f5d3d
+    spriteID: f3dc6eced396a4b8fbe48c3661c75d7c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -548,7 +548,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_19
+  - name: TX_Tileset_Lamp_19
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -560,7 +560,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: dbae88d8919b64156a03c64d18b90034
+    spriteID: 10139c7315e4d4e6f9592f0a3987443b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -569,7 +569,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_20
+  - name: TX_Tileset_Lamp_20
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -581,7 +581,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: 3bfee65e58c91405b8a95813f026b984
+    spriteID: def3a2da7f02e4f7880c2d003bff67bb
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -590,7 +590,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_21
+  - name: TX_Tileset_Lamp_21
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -602,7 +602,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: c0781a69b814a4039955d7bc749770cf
+    spriteID: c13d2e23a4b194f62bc6b3b0c4b814ec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -611,7 +611,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_22
+  - name: TX_Tileset_Lamp_22
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -623,7 +623,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: 4266b40f2a7494dd281c270bfd6425b3
+    spriteID: 59944f49c756a48d48240d14dc9d609c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -632,7 +632,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_23
+  - name: TX_Tileset_Lamp_23
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -644,7 +644,7 @@ ScriptedImporter:
       y: 27
       width: 8
       height: 8
-    spriteID: f6ac2ecc28e584be6aa8e1302cfa560e
+    spriteID: d4bfdc0b4b17748abab57257366dfbc4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -653,7 +653,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_24
+  - name: TX_Tileset_Lamp_24
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -665,7 +665,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: 1cfa98859a3d24969a59dd53a332459f
+    spriteID: 2d6b4d6ba543f4b209cad14606a0a103
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -674,7 +674,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_25
+  - name: TX_Tileset_Lamp_25
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -686,7 +686,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: 69576a754204b4ae8b6aea1500b3788a
+    spriteID: 1554a78e946e74fb0a24a62a5e74e6c8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -695,7 +695,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_26
+  - name: TX_Tileset_Lamp_26
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -707,7 +707,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: 0bca34f04389642e38b10f1f2dc474c1
+    spriteID: 5dc1dc4f174c842bd87ebcd2187eddbd
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -716,7 +716,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_27
+  - name: TX_Tileset_Lamp_27
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -728,7 +728,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: 0755007a1e9bd47a0a32f3c0c308e6a1
+    spriteID: 042fc215b9dab48808c51d4fa013f9a4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -737,7 +737,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_28
+  - name: TX_Tileset_Lamp_28
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -749,7 +749,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: f011e5739f8904350ba0907c89dfc3c6
+    spriteID: 4534fac3372a34259aa3c63938d538ad
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -758,7 +758,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_29
+  - name: TX_Tileset_Lamp_29
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -770,7 +770,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: ce2ecfb244b7b41b1b8ea40cbeb0886c
+    spriteID: 2e1f5c67008d044b085c09a0ffd11dfa
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -779,7 +779,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_30
+  - name: TX_Tileset_Lamp_30
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -791,7 +791,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: a9891f37a25444afa93a5dfea678aa98
+    spriteID: 4ee77938c319e4e6585e108ab6a7d415
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -800,7 +800,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_31
+  - name: TX_Tileset_Lamp_31
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -812,7 +812,7 @@ ScriptedImporter:
       y: 18
       width: 8
       height: 8
-    spriteID: f8592e7b23a7d4c10aef6812ab25f26a
+    spriteID: 27b17d72b523f4821afdf93cacc06f5a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -821,7 +821,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_32
+  - name: TX_Tileset_Lamp_32
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -833,7 +833,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: 36df05fe8d3244c6bafc0da41a44c48a
+    spriteID: f6240e1d4a11b4064ba05480c4d24555
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -842,7 +842,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_33
+  - name: TX_Tileset_Lamp_33
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -854,7 +854,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: 3c8f4eb1536cb400cbb4ea8aff5f7f93
+    spriteID: 3908dcf1d7a3f4ffb8fb5e4f08071108
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -863,7 +863,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_34
+  - name: TX_Tileset_Lamp_34
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -875,7 +875,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: 89407df811a3041d787f127b3e993086
+    spriteID: 21b281c20c54643a1b0d098517c7d1e6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -884,7 +884,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_35
+  - name: TX_Tileset_Lamp_35
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -896,7 +896,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: 89d1095bc2ba14cfbbe569db6b2d7b83
+    spriteID: 0cb22b14a500a432ba01d3b42a50204d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -905,7 +905,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_36
+  - name: TX_Tileset_Lamp_36
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -917,7 +917,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: cb87712bdb1334492ac42ae72f71ce87
+    spriteID: 6326880fba29143d680fcfcb74d680c7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -926,7 +926,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_37
+  - name: TX_Tileset_Lamp_37
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -938,7 +938,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: 514fc9494987a46c08ef60fc5bdb090a
+    spriteID: 4e9e62d53ec4043259c979df4cef324f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -947,7 +947,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_38
+  - name: TX_Tileset_Lamp_38
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -959,7 +959,7 @@ ScriptedImporter:
       y: 9
       width: 8
       height: 8
-    spriteID: cbf4997f9ae5345dfa64a766a49d16a1
+    spriteID: 94e339560d5ea4dee966cd97ce49b1db
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -968,7 +968,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_39
+  - name: TX_Tileset_Lamp_39
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -980,7 +980,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 043d0a5f1152049e4a2daaa438f076a2
+    spriteID: 422abc2ed6194487cb7affda66609266
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -989,7 +989,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_40
+  - name: TX_Tileset_Lamp_40
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1001,7 +1001,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 0e989e8a163cc4d6583a116141dbd249
+    spriteID: 572eb0a41c50943ef9656d73e98cc88d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1010,7 +1010,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_41
+  - name: TX_Tileset_Lamp_41
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1022,7 +1022,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 25bd7955495334bc380a6efc54e14a13
+    spriteID: d8ea9a8bc4d9843149d0e23848e08f95
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1031,7 +1031,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_42
+  - name: TX_Tileset_Lamp_42
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1043,7 +1043,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 3350bec25e41545e6bca2eeb0b19fa5b
+    spriteID: 552f24efc9ae44d0e9eb1082aa7a7247
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1052,7 +1052,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_43
+  - name: TX_Tileset_Lamp_43
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1064,7 +1064,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: c90e87b7fb14446ac949c776428f8af3
+    spriteID: ebe1b36c1938645d0895bd2af47a44b7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1073,7 +1073,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_44
+  - name: TX_Tileset_Lamp_44
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1085,7 +1085,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 8b9d879f52c4c4cb388bc504ddc250f7
+    spriteID: 0237d00210c49437492cbb52ef6d4e1f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1094,7 +1094,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_45
+  - name: TX_Tileset_Lamp_45
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1106,7 +1106,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 83b54b78432d942c4bff73226e4c8abe
+    spriteID: c88805644d9ff4c19979f581554fa4ae
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1115,7 +1115,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: TX_Tileset_TitaniumOre_46
+  - name: TX_Tileset_Lamp_46
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -1127,7 +1127,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 2bf4ffade235d4772a3c329115452683
+    spriteID: 09add9323a0604098891cf8f8883026e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1136,21 +1136,42 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  tileSetImportData: []
+  tileSetImportData:
+  - name: Template
+    originalName: 
+    pivot: {x: 0.5633803, y: 0.6037736}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 71
+      height: 53
+    spriteID: 1799598f4e5a645f7be0f42c07d6b68c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1464141253
+      value0: 4033674568
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Tileset_TitaniumOre
-    layerFlags: 0
+    name: Template
+    layerFlags: 3
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Tileset_IronOre
+    - name: TX_Tileset_Lamp
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
@@ -1158,7 +1179,7 @@ ScriptedImporter:
         y: 11
         width: 71
         height: 53
-      spriteId: 4c1f25a7af91b40d198a59647a15cf82
+      spriteId: 1799598f4e5a645f7be0f42c07d6b68c
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
