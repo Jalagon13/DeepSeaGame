@@ -1,18 +1,15 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace DeepSeaGame
 {
-    public class MiningManager : MonoBehaviour
+    public class MiningHandler : MonoBehaviour, IItemUseHandler
     {
         private enum MiningActionType
         {
             Primary,
             Secondary
         }
-
-        public static MiningManager Instance { get; private set; }
 
         [SerializeField]
         private float _miningRange = 3f;
@@ -34,56 +31,37 @@ namespace DeepSeaGame
 
         public ToolItemSO CurrentTool => _currentTool;
 
-        private void Awake()
-        {
-            Instance = this;
-        }
-
-        private void Start()
-        {
-            if (GameInput.Instance != null)
-            {
-                GameInput.Instance.OnPrimaryActionStarted += OnPrimaryActionStarted;
-                GameInput.Instance.OnSecondaryActionStarted += OnSecondaryActionStarted;
-            }
-
-            if (InventoryManager.Instance != null)
-            {
-                InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
-            }
-        }
-
         private void OnDestroy()
         {
-            if (GameInput.Instance != null)
-            {
-                GameInput.Instance.OnPrimaryActionStarted -= OnPrimaryActionStarted;
-                GameInput.Instance.OnSecondaryActionStarted -= OnSecondaryActionStarted;
-            }
-
-            if (InventoryManager.Instance != null)
-            {
-                InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
-            }
+            StopMiningRoutine(MiningActionType.Primary);
+            StopMiningRoutine(MiningActionType.Secondary);
         }
 
-        private void Update()
+        public bool CanHandle(ItemSO item)
+        {
+            return item is ToolItemSO toolItemSO && toolItemSO.HarvestType == ToolType.Drill;
+        }
+
+        public void OnSelectedStackChanged(InventoryStack stack)
+        {
+            _currentTool = !stack.IsEmpty && stack.Item is ToolItemSO toolItemSO && toolItemSO.HarvestType == ToolType.Drill
+                ? toolItemSO
+                : null;
+
+            UpdateMiningActivity();
+        }
+
+        public void OnPrimaryStarted()
         {
             UpdateMiningActivity();
         }
 
-        private void OnSelectedHotbarSlotChanged(int arg1, InventoryStack stack)
-        {
-            _currentTool = !stack.IsEmpty && stack.Item is ToolItemSO toolItemSO ? toolItemSO : null;
-            UpdateMiningActivity();
-        }
-
-        private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
+        public void OnSecondaryStarted()
         {
             UpdateMiningActivity();
         }
 
-        private void OnSecondaryActionStarted(object sender, InputAction.CallbackContext e)
+        public void Tick()
         {
             UpdateMiningActivity();
         }
@@ -329,5 +307,6 @@ namespace DeepSeaGame
 
             GameManager.Instance.SpawnItem(new InventoryStack(tileSO.TileItemSO, 1), spawnPosition);
         }
+
     }
 }

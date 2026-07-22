@@ -6231,7 +6231,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
   - {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
   - {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
-  - {fileID: 11400000, guid: 4c3c63d0c5696412e985db38294588c0, type: 2}
+  - {fileID: 11400000, guid: edcc3f6684f1240f88349de5c8cdcd0f, type: 2}
   - {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
   - {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
   - {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
@@ -6435,9 +6435,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1794183282}
   - component: {fileID: 1794183286}
+  - component: {fileID: 1794183287}
+  - component: {fileID: 1794183288}
   - component: {fileID: 1794183285}
   - component: {fileID: 1794183284}
-  - component: {fileID: 1794183287}
+  - component: {fileID: 1794183289}
   m_Layer: 0
   m_Name: PLAYER_MANAGERS
   m_TagString: Untagged
@@ -6535,6 +6537,34 @@ MonoBehaviour:
   _interactionMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1794183288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10dac689660404ecdabbf7e1e6022733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.ItemUseManager
+  _handlerBehaviours:
+  - {fileID: 1794183285}
+  - {fileID: 1794183284}
+  - {fileID: 1794183289}
+--- !u!114 &1794183289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794183281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26729999ce8d438eadf157eab048531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.ConsumableHandler
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

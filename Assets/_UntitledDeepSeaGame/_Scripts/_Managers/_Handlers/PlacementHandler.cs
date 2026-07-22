@@ -1,12 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace DeepSeaGame
 {
-    public class PlacementManager : MonoBehaviour
+    public class PlacementHandler : MonoBehaviour, IItemUseHandler
     {
-        public static PlacementManager Instance { get; private set; }
-
         [SerializeField]
         private float _placementRange = 3f;
         public float PlacementRange => _placementRange;
@@ -17,64 +14,49 @@ namespace DeepSeaGame
         public PlacingState PlacingState => _placingState;
         public TileItemSO CurrentTileItem => _currentTileItem;
 
-        private void Awake()
+        public bool CanHandle(ItemSO item)
         {
-            Instance = this;
+            return item is TileItemSO;
         }
 
-        private void Start()
-        {
-            GameInput.Instance.OnPrimaryActionStarted += OnPrimaryActionStarted;
-            GameInput.Instance.OnSecondaryActionStarted += OnSecondaryActionStarted;
-            InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
-        }
-
-        private void OnDestroy()
-        {
-            if (GameInput.Instance != null)
-            {
-                GameInput.Instance.OnPrimaryActionStarted -= OnPrimaryActionStarted;
-                GameInput.Instance.OnSecondaryActionStarted -= OnSecondaryActionStarted;
-            }
-
-            if (InventoryManager.Instance != null)
-            {
-                InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
-            }
-        }
-
-        private void Update()
-        {
-            if (_placingState == PlacingState.Placing)
-            {
-                bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
-                bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
-
-                if (primaryHeld)
-                {
-                    TryToPlaceTile(true);
-                }
-                else if (secondaryHeld)
-                {
-                    TryToPlaceTile(false);
-                }
-            }
-        }
-
-        private void OnSelectedHotbarSlotChanged(int arg1, InventoryStack stack)
+        public void OnSelectedStackChanged(InventoryStack stack)
         {
             _currentTileItem = !stack.IsEmpty && stack.Item is TileItemSO tileItemSO ? tileItemSO : null;
             UpdatePlacingState();
         }
 
-        private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
+        public void OnPrimaryStarted()
         {
             UpdatePlacingState();
         }
 
-        private void OnSecondaryActionStarted(object sender, InputAction.CallbackContext e)
+        public void OnSecondaryStarted()
         {
             UpdatePlacingState();
+        }
+
+        public void Tick()
+        {
+            if (_placingState != PlacingState.Placing)
+            {
+                return;
+            }
+
+            bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
+            bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
+
+            if (primaryHeld)
+            {
+                TryToPlaceTile(true);
+            }
+            else if (secondaryHeld)
+            {
+                TryToPlaceTile(false);
+            }
+            else
+            {
+                UpdatePlacingState();
+            }
         }
 
         private void UpdatePlacingState()
@@ -207,5 +189,7 @@ namespace DeepSeaGame
         {
             return Vector2.Distance(Player.Instance.PlayerCenter, GameManager.MouseWorldPosition) <= _placementRange;
         }
+
+        
     }
 }
