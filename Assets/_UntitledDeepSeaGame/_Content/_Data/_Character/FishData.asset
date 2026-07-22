@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acc46b6a2ebe74e5187f3b6285419748, type: 3}
-  m_Name: JellyfishData
+  m_Name: FishData
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.CharacterSO
   BaseSpeed: 3
   BaseMaxHealth: 12

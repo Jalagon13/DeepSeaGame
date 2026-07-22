@@ -149,7 +149,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Jellyfish_0
+  - name: TX_Fish
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -157,8 +157,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 3
-      y: 4
+      x: 2
+      y: 1
       width: 16
       height: 16
     spriteID: 960a350ed3630402cbd7ad28671d423a
@@ -184,14 +184,14 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Jellyfish
+    - name: TX_Fish
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 1
-        y: 0
-        width: 15
-        height: 15
+        x: 2
+        y: 3
+        width: 13
+        height: 10
       spriteId: 0160da0d625474908ad9a4f23ae43e20
     linkedCells: []
     tileCells: []

@@ -4,12 +4,28 @@ namespace DeepSeaGame
 {
     public class FishCharMovement : CharacterMovement
     {
-        [Header("Jellyfish Movement Settings")]
-        [SerializeField] private float _propulsionPower = 10f;
-    
-        private bool _isPropelling;
-        public bool IsPropelling => _isPropelling;
-    
+        [Header("Fish Movement Settings")]
+        [SerializeField] private float _minMoveDuration = 2f;
+        [SerializeField] private float _maxMoveDuration = 5f;
+        [SerializeField] private float _bobAmplitude = 0.15f;
+        [SerializeField] private float _bobFrequency = 2f;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+
+        private int _horizontalDirection;
+        private float _directionChangeTimer;
+        private float _bobTime;
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            if (IsServer)
+            {
+                ChooseInitialDirection();
+                ResetDirectionChangeTimer();
+            }
+        }
+
         protected override void AirMovement()
         {
             // Apply gravity to vertical velocity
@@ -20,31 +36,81 @@ namespace DeepSeaGame
 
         protected override void WaterMovement()
         {
-            if(_isPropelling)
+            if (!_serverCharacter.CharacterData.CanMove)
             {
-                _velocity = Vector2.Lerp(_velocity, Vector2.zero, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
-                
-                if(_velocity.sqrMagnitude < 0.01f)
-                {
-                    _isPropelling = false;
-                    _velocity = Vector2.zero;
-                    // Debug.Log($"Propulsion Ended");
-                }
+                _velocity = Vector2.zero;
+                return;
+            }
+
+            TickDirectionChangeTimer();
+            _bobTime += Time.fixedDeltaTime;
+
+            DesiredDirection = new Vector2(_horizontalDirection, 0f);
+            float verticalBob = Mathf.Sin(_bobTime * _bobFrequency * Mathf.PI * 2f) * _bobAmplitude;
+            _velocity = new Vector2(DesiredDirection.x * _serverCharacter.CharacterData.BaseSpeed, verticalBob);
+            _serverCharacter.CurrentDirection.Value = _horizontalDirection > 0 ? Direction.Right : Direction.Left;
+            
+            // TEMP: Update the sprite orientation based on the current direction
+            if (_horizontalDirection > 0)
+            {
+                _spriteRenderer.flipX = true;
+            }
+            else if (_horizontalDirection < 0)
+            {
+                _spriteRenderer.flipX = false;
             }
         }
-        
-        public void StartPropulsion(Vector2 direction)
+
+        private void TickDirectionChangeTimer()
         {
-            // Debug.Log($"Propulsion Started");
-            _isPropelling = true;
-            DesiredDirection = direction;
-            _velocity = direction * _propulsionPower;
+            _directionChangeTimer -= Time.fixedDeltaTime;
+
+            if (_directionChangeTimer > 0f)
+            {
+                return;
+            }
+
+            FlipDirection();
+            ResetDirectionChangeTimer();
         }
 
         protected override void HandleCollision(CollisionResult result)
         {
-            if (result.HitX) _velocity.x *= -1;
-            if (result.HitY) _velocity.y *= -1;
+            if (!result.HitX)
+            {
+                return;
+            }
+
+            FlipDirection();
+            _velocity = new Vector2(-_velocity.x, 0f);
+            ResetDirectionChangeTimer();
+        }
+
+        public void StartHorizontalSwim()
+        {
+            if (_horizontalDirection == 0)
+            {
+                ChooseInitialDirection();
+            }
+
+            ResetDirectionChangeTimer();
+        }
+
+        private void FlipDirection()
+        {
+            _horizontalDirection = _horizontalDirection >= 0 ? -1 : 1;
+            DesiredDirection = new Vector2(_horizontalDirection, 0f);
+        }
+
+        private void ResetDirectionChangeTimer()
+        {
+            _directionChangeTimer = Random.Range(_minMoveDuration, _maxMoveDuration);
+        }
+
+        private void ChooseInitialDirection()
+        {
+            _horizontalDirection = Random.value < 0.5f ? -1 : 1;
+            DesiredDirection = new Vector2(_horizontalDirection, 0f);
         }
     }
 }

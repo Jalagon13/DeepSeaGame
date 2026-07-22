@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -21,15 +20,7 @@ namespace DeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            // Debug.Log($"Jellyfish Move State Entered");
-            Vector2 direction = GetDirection();
-            _fishMovement.StartPropulsion(direction);
-        }
-
-        private Vector2 GetDirection()
-        {
-            Vector2 randomDirection = UnityEngine.Random.insideUnitCircle.normalized;
-            return randomDirection;
+            _fishMovement.StartHorizontalSwim();
         }
 
         public override void ExitState()
@@ -47,11 +38,6 @@ namespace DeepSeaGame
             if (_ctx.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
                 SwitchState(new AIStateData(AIState.Knockbacked));
-                return;
-            }
-            else if(!_fishMovement.IsPropelling || _ctx.ServerCharacter.CurrentStatus.Value == Status.InAir)
-            {
-                SwitchState(new AIStateData(AIState.Idle));
                 return;
             }
         }
