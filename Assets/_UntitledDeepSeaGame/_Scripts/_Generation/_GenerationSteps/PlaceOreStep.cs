@@ -34,7 +34,7 @@ namespace DeepSeaGame
         [SerializeField, Min(1)] private int _maxCandidateRejectionsPerPoint = 32;
         [SerializeField, Min(1)] private int _maxSeedPlacementAttempts = 80;
 
-        public override WorldGenerationState State => WorldGenerationState.PlacingTitaniumOre;
+        public override WorldGenerationState State => WorldGenerationState.PlacingIronOre;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {

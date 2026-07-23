@@ -30,7 +30,7 @@ MonoBehaviour:
   MinIdleDuration: 2.5
   MaxIdleDuration: 5
   LootDrops: []
-  BaseOxygenDuration: 60
+  BaseOxygenDuration: 600
   OxygenRefillDuration: 2
   OxygenDepletedTimeBetweenDamage: 5
   OxygenDepletedDamage: 10

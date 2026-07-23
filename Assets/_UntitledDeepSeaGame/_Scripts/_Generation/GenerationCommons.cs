@@ -11,7 +11,8 @@ namespace DeepSeaGame
         FillingTerrain,
         CarvingCaves,
         CarvingCaveEntrances,
-        PlacingTitaniumOre,
+        PlacingIronOre,
+        PlacingKelp,
         FinalizingSpawn,
         Completed
     }
