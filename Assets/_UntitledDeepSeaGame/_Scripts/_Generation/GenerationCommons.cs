@@ -22,4 +22,11 @@ namespace DeepSeaGame
         BackgroundTilemap,
         AirTilemap
     }
+
+    public enum TileBreakMode
+    {
+        SingleTileHit,
+        FromHitTileUp,
+        FromHitTileDown,
+    }
 }

@@ -81,6 +81,18 @@ namespace DeepSeaGame
                     TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
                 }
             }
+            else
+            {
+                TileSO tileJustDestroyed = GameDataRegistry.Instance.GetTileSOFromTileId(previousTileId);
+                if(tileJustDestroyed.BreakMode == TileBreakMode.FromHitTileUp)
+                {
+                    TileSO tileAbove = GameDataRegistry.Instance.GetTileSOFromTileId(GetTileId(x, y + 1, WorldTm.ForegroundTilemap));
+                    if(tileAbove != null && tileAbove.StringID == tileJustDestroyed.StringID)
+                    {
+                        SetForegroundTileId(x, y + 1, GameDataRegistry.INVALID_ID);
+                    }
+                }
+            }
         }
 
         public void SetBackgroundTileId(int x, int y, ushort tileId)

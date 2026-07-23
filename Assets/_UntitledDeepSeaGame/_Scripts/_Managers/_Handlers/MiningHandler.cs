@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -178,11 +179,13 @@ namespace DeepSeaGame
             TileSO targetTile = GetMiningTargetTile(actionType);
             Vector2Int targetTilePosition = GetMiningTargetTilePosition(actionType);
 
-            if (WorldManager.Instance?.WorldDataStore == null || targetTile == null)
+            if (WorldManager.Instance.WorldDataStore == null || targetTile == null)
             {
                 StopMiningRoutine(actionType);
                 return;
             }
+
+            List<(TileSO tile, Vector2Int position)> tilesToDrop = GetTilesToDrop(actionType, targetTile, targetTilePosition);
 
             if (actionType == MiningActionType.Primary)
             {
@@ -200,8 +203,43 @@ namespace DeepSeaGame
                 WorldManager.Instance.WorldDataStore.SetBackgroundTileId(targetTilePosition.x, targetTilePosition.y, GameDataRegistry.INVALID_ID);
             }
 
-            SpawnTileDrops(targetTile, targetTilePosition);
+            foreach ((TileSO tile, Vector2Int position) in tilesToDrop)
+            {
+                SpawnTileDrops(tile, position);
+            }
+
             StopMiningRoutine(actionType);
+        }
+
+        private List<(TileSO tile, Vector2Int position)> GetTilesToDrop(MiningActionType actionType, TileSO targetTile, Vector2Int targetTilePosition)
+        {
+            List<(TileSO tile, Vector2Int position)> tilesToDrop = new()
+            {
+                (targetTile, targetTilePosition)
+            };
+
+            if (actionType != MiningActionType.Primary || targetTile.BreakMode != TileBreakMode.FromHitTileUp)
+            {
+                return tilesToDrop;
+            }
+
+            int y = targetTilePosition.y + 1;
+            while (WorldManager.Instance.WorldDataStore.IsInBounds(targetTilePosition.x, y))
+            {
+                Vector2Int tileAbovePosition = new(targetTilePosition.x, y);
+                ushort tileAboveId = WorldManager.Instance.WorldDataStore.GetTileId(tileAbovePosition.x, tileAbovePosition.y, WorldTm.ForegroundTilemap);
+                TileSO tileAbove = GameDataRegistry.Instance.GetTileSOFromTileId(tileAboveId);
+
+                if (tileAbove == null || tileAbove.StringID != targetTile.StringID)
+                {
+                    break;
+                }
+
+                tilesToDrop.Add((tileAbove, tileAbovePosition));
+                y++;
+            }
+
+            return tilesToDrop;
         }
 
         private void PlayMiningSound()

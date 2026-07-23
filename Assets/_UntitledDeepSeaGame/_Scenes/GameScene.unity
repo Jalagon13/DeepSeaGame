@@ -6236,6 +6236,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
   - {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
   - {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
+  - {fileID: 11400000, guid: 1f378060ff1084bd88f821d7f193b011, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
