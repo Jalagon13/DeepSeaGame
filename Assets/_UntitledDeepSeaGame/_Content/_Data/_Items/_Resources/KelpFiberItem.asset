@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.ItemSO
   _itemName: Kelp Fiber
   _itemDescription: 
-  _inventoryIcon: {fileID: -5580121140076595410, guid: 1ec77493adcee454bb4ee8827ddab800, type: 3}
+  _inventoryIcon: {fileID: -9126588268609767738, guid: f808ecc7617114e75ba4fad147d14471, type: 3}
   _isStackable: 1

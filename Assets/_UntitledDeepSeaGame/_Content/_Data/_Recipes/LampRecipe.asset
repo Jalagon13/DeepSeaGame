@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: LampRecipe
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.RecipeSO
   <OutputItem>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-  <OutputAmount>k__BackingField: 2
+  <OutputAmount>k__BackingField: 4
   <Requirements>k__BackingField:
   - <Item>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    <Amount>k__BackingField: 1
+  - <Item>k__BackingField: {fileID: 11400000, guid: 1f378060ff1084bd88f821d7f193b011, type: 2}
     <Amount>k__BackingField: 1

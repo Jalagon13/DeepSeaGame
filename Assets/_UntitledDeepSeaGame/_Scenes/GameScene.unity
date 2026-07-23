@@ -6236,7 +6236,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
   - {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
   - {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
-  - {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
   - {fileID: 11400000, guid: 1f378060ff1084bd88f821d7f193b011, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
@@ -6522,7 +6521,7 @@ MonoBehaviour:
     _amount: 9
   - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
     _amount: 99
-  - _item: {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
+  - _item: {fileID: 11400000, guid: 20f6484a2f616433f807f6edd3a4e7c5, type: 2}
     _amount: 99
 --- !u!114 &1794183287
 MonoBehaviour:
@@ -7151,10 +7150,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.LightmapManager
   _lightmapOverlay: {fileID: 1644655726}
-  _tileAmountBeforeAttenuationBegins: 2
-  _fullBrightnessInterpretation: 10
-  _solidForegroundAttenuation: 2.65
-  _backgroundOnlyAttenuation: 0.5
+  _tileAmountBeforeAttenuationBegins: 1
+  _fullBrightnessInterpretation: 15
+  _solidForegroundAttenuation: 3
+  _backgroundOnlyAttenuation: 0.8
   _airOnlyAttenuation: 0.5
   _coneEdgeFalloffPower: 2
   _lightmapFilterMode: 1
@@ -7931,7 +7930,7 @@ MonoBehaviour:
   <Description>k__BackingField: 
   _kelpTile: {fileID: 11400000, guid: abab70d2b3a654510b0b84c8c7c38755, type: 2}
   _sandTile: {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
-  _kelpMinHeight: 3
+  _kelpMinHeight: 5
   _kelpMaxHeight: 16
   _kelpSpawnChance: 0.225
 --- !u!1 &2134409140
