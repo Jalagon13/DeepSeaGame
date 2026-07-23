@@ -6235,6 +6235,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
   - {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
   - {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
+  - {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
@@ -6249,6 +6250,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
   - {fileID: 11400000, guid: 98a07bb80ec3944cf81ca478bf105955, type: 2}
   - {fileID: 11400000, guid: 0e2fe160f0fb1483f85dbfd48f3c4b45, type: 2}
+  - {fileID: 11400000, guid: abab70d2b3a654510b0b84c8c7c38755, type: 2}
   _characterData:
   - {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
 --- !u!114 &1760391186
@@ -6517,6 +6519,8 @@ MonoBehaviour:
   - _item: {fileID: 11400000, guid: edcc3f6684f1240f88349de5c8cdcd0f, type: 2}
     _amount: 9
   - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 99
+  - _item: {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
     _amount: 99
 --- !u!114 &1794183287
 MonoBehaviour:
