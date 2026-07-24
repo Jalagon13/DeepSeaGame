@@ -31,26 +31,22 @@ namespace DeepSeaGame
         [SerializeField] 
         private float _backgroundOnlyAttenuation = 0.5f;
 
-        [Tooltip("How much light dims when propagating into empty air (no foreground, no background).")]
-        [SerializeField] 
-        private float _airOnlyAttenuation = 0.5f;
-
         [Header("Flashlight Settings")]
         [Tooltip("Controls how sharply the flashlight cone fades toward its edges. 1 = linear, 2+ = brighter core with sharper falloff.")]
         [SerializeField] 
         private float _coneEdgeFalloffPower = 2f;
 
         [Header("Texture Settings")]
+        [Tooltip("How many light pixels per game tile. 1 = 1x1, 2 = 2x2, 4 = 4x4. Higher means less pixelated but more cost.")]
+        [SerializeField, Min(1)] 
+        private int _lightTilesPerGameTile = 1;
+
         [Tooltip("The filter mode for the lightmap overlay texture (Point for pixelated tiles, Bilinear for smooth).")]
         [SerializeField] 
         private FilterMode _lightmapFilterMode = FilterMode.Point;
 
         [Header("Blending Properties")]
-        [Tooltip("Enable multiply blending to darken the scene. If disabled, renders the raw grayscale texture.")]
-        [SerializeField] 
-        private bool _enableMultiplyBlending = true;
-
-        [Tooltip("Optional custom material using the Multiply shader. If left empty, one will be created dynamically at runtime.")]
+        [Tooltip("Custom material using the Multiply shader to darken the scene. If left empty, renders the raw grayscale texture.")]
         [SerializeField] 
         private Material _multiplyMaterial;
 
@@ -149,7 +145,7 @@ namespace DeepSeaGame
 
             if (!TryInflateBounds(currentVisibleTileBounds, out RectInt inflatedBounds)) return;
 
-            PrepareLightmap(inflatedBounds.width, inflatedBounds.height);
+            PrepareLightmap(inflatedBounds.width * _lightTilesPerGameTile, inflatedBounds.height * _lightTilesPerGameTile);
             SeedLightSources(inflatedBounds);
             RunLightSourceBFSPropagation(inflatedBounds);
             RunFlashlightBFSPropagation(inflatedBounds);
@@ -208,15 +204,15 @@ namespace DeepSeaGame
 
         private void SeedLightSources(RectInt inflatedBounds)
         {
-            int width  = inflatedBounds.width;
-            int height = inflatedBounds.height;
+            int width  = inflatedBounds.width * _lightTilesPerGameTile;
+            int height = inflatedBounds.height * _lightTilesPerGameTile;
 
             for (int localX = 0; localX < width; localX++)
             {
                 for (int localY = 0; localY < height; localY++)
                 {
-                    int worldX = inflatedBounds.x + localX;
-                    int worldY = inflatedBounds.y + localY;
+                    int worldX = inflatedBounds.x + localX / _lightTilesPerGameTile;
+                    int worldY = inflatedBounds.y + localY / _lightTilesPerGameTile;
 
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
@@ -248,8 +244,8 @@ namespace DeepSeaGame
 
         private void RunLightSourceBFSPropagation(RectInt inflatedBounds)
         {
-            int width  = inflatedBounds.width;
-            int height = inflatedBounds.height;
+            int width  = inflatedBounds.width * _lightTilesPerGameTile;
+            int height = inflatedBounds.height * _lightTilesPerGameTile;
 
             // Static cardinal directions: Up, Down, Left, Right
             Vector2Int[] directions = { new(0, 1), new(0, -1), new(-1, 0), new(1, 0) };
@@ -269,16 +265,16 @@ namespace DeepSeaGame
 
                     int nextDist = currDist + 1;
 
-                    int worldX = inflatedBounds.x + nextX;
-                    int worldY = inflatedBounds.y + nextY;
+                    int worldX = inflatedBounds.x + nextX / _lightTilesPerGameTile;
+                    int worldY = inflatedBounds.y + nextY / _lightTilesPerGameTile;
 
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
 
                     float attenuation = 0f;
-                    if (nextDist > _tileAmountBeforeAttenuationBegins)
+                    if (nextDist > _tileAmountBeforeAttenuationBegins * _lightTilesPerGameTile)
                     {
-                        attenuation = GetTileAttenuation(fgId, bgId);
+                        attenuation = GetTileAttenuation(fgId, bgId) / _lightTilesPerGameTile;
                     }
 
                     float newLight = currLight - attenuation;
@@ -316,15 +312,16 @@ namespace DeepSeaGame
 
             // Convert player world position to local grid coords within the inflated bounds
             Vector2Int playerTile = fc.PlayerCenterTilePosition;
-            int originLocalX = playerTile.x - inflatedBounds.x;
-            int originLocalY = playerTile.y - inflatedBounds.y;
+            int originLocalX = (playerTile.x - inflatedBounds.x) * _lightTilesPerGameTile;
+            int originLocalY = (playerTile.y - inflatedBounds.y) * _lightTilesPerGameTile;
+
+            int width = inflatedBounds.width * _lightTilesPerGameTile;
+            int height = inflatedBounds.height * _lightTilesPerGameTile;
 
             // If the player is outside the inflated bounds, nothing to do
-            if (originLocalX < 0 || originLocalX >= inflatedBounds.width || originLocalY < 0 || originLocalY >= inflatedBounds.height)
+            if (originLocalX < 0 || originLocalX >= width || originLocalY < 0 || originLocalY >= height)
                 return;
 
-            int width = inflatedBounds.width;
-            int height = inflatedBounds.height;
             int maxRange = fc.FlashlightRange;
             float flashlightIntensity = fc.FlashlightIntensity;
             Vector2 coneDir = fc.ConeDirection;
@@ -338,11 +335,11 @@ namespace DeepSeaGame
             {
                 for (int localY = 0; localY < height; localY++)
                 {
-                    int worldX = inflatedBounds.x + localX;
-                    int worldY = inflatedBounds.y + localY;
+                    // Sub-tile center in world space
+                    float worldX = inflatedBounds.x + (localX + 0.5f) / _lightTilesPerGameTile;
+                    float worldY = inflatedBounds.y + (localY + 0.5f) / _lightTilesPerGameTile;
 
-                    // Tile center in world space
-                    Vector2 tileCenter = new Vector2(worldX + 0.5f, worldY + 0.5f);
+                    Vector2 tileCenter = new Vector2(worldX, worldY);
                     float distToTile = Vector2.Distance(rayOrigin, tileCenter);
 
                     // Skip if beyond max range
@@ -501,21 +498,15 @@ namespace DeepSeaGame
 
         private float GetTileAttenuation(ushort fgId, ushort bgId)
         {
-            TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
-            if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
-            {
-                return _backgroundOnlyAttenuation;
-            }
-        
             if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
             if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation;
-            return _airOnlyAttenuation;
+            return _backgroundOnlyAttenuation;
         }
         
         private void ApplyLightmapToOverlay(RectInt inflatedBounds)
         {
-            int width  = inflatedBounds.width;
-            int height = inflatedBounds.height;
+            int width  = inflatedBounds.width * _lightTilesPerGameTile;
+            int height = inflatedBounds.height * _lightTilesPerGameTile;
 
             // Map each light value [0, 15] to a grayscale byte [0, 255]
             for (int y = 0; y < height; y++)
@@ -538,32 +529,9 @@ namespace DeepSeaGame
             _lightmapOverlay.texture = _lightmapTexture;
 
             // Assign multiply material or fall back to raw grayscale
-            if (_enableMultiplyBlending)
-            {
-                if (_multiplyMaterial == null) InitializeMultiplyMaterial();
-                // _lightmapOverlay.material = _multiplyMaterial;
-            }
-            else
-            {
-                // _lightmapOverlay.material = null;
-            }
+            _lightmapOverlay.material = _multiplyMaterial;
 
             UpdateOverlayRectTf(inflatedBounds);
-        }
-
-        private void InitializeMultiplyMaterial()
-        {
-            if (_multiplyMaterial != null) return;
-
-            Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
-            if (multiplyShader != null)
-            {
-                _multiplyMaterial = new Material(multiplyShader);
-            }
-            else
-            {
-                Debug.LogWarning("LightmapManager: Shader 'UI/MultiplyBlend' not found. Make sure MultiplyUI.shader is imported.");
-            }
         }
 
         private void UpdateOverlayRectTf(RectInt bounds)
