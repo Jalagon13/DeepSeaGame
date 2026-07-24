@@ -63,8 +63,14 @@ namespace DeepSeaGame
         private void Awake()
         {
             Instance = this;
-            ClampStartingSelectedHotbarSlotIndex();
-            InitializeSlots();
+
+            _startingSelectedHotbarSlotIndex = Mathf.Clamp(_startingSelectedHotbarSlotIndex, 0, _hotbarSlotCount - 1);
+            
+            _slots.Clear();
+            for (int i = 0; i < _slotCount; i++)
+            {
+                _slots.Add(new InventoryStack());
+            }
         }
 
         private void Start()
@@ -105,11 +111,6 @@ namespace DeepSeaGame
         private void HandleWorldReady()
         {
             StartCoroutine(GiveStartingItems());
-        }
-
-        private void OnValidate()
-        {
-            ClampStartingSelectedHotbarSlotIndex();
         }
 
         #region Input
@@ -157,7 +158,7 @@ namespace DeepSeaGame
             OnInventoryOpenChanged?.Invoke(false);
             OnInventoryChanged?.Invoke();
 
-            CraftingMenuUI.Instance?.HideCraftingMenu();
+            CraftingMenuUI.Instance.HideCraftingMenu();
             GameInput.Instance.IsGameplayInputBlocked = false;
         }
 
@@ -450,7 +451,53 @@ namespace DeepSeaGame
             OnInventoryChanged?.Invoke();
         }
 
+        public InventoryStack GetSlot(int slotIndex)
+        {
+            return IsValidSlotIndex(slotIndex) ? _slots[slotIndex] : new InventoryStack();
+        }
+
+        private void SelectHotbarSlot(int hotbarSlotIndex)
+        {
+            if (HotbarSlotCount == 0)
+            {
+                SelectedHotbarSlotIndex = 0;
+                UpdateSelectedHotbarStack();
+                return;
+            }
+
+            int newIndex = Mathf.Clamp(hotbarSlotIndex, 0, HotbarSlotCount - 1);
+            if (newIndex == SelectedHotbarSlotIndex)
+            {
+                return;
+            }
+
+            SelectedHotbarSlotIndex = newIndex;
+            UpdateSelectedHotbarStack();
+        }
+
+        private void UpdateSelectedHotbarStack()
+        {
+            if (!IsValidSlotIndex(SelectedHotbarSlotIndex))
+            {
+                SelectedHotbarStack = new InventoryStack();
+                OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack.Clone());
+                Debug.Log($"Invalid hotbar slot index: {SelectedHotbarSlotIndex}");
+                return;
+            }
+
+            SelectedHotbarStack = _slots[SelectedHotbarSlotIndex];
+            OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack);
+        }
+
+        private bool IsValidSlotIndex(int slotIndex)
+        {
+            return slotIndex >= 0 && slotIndex < _slots.Count;
+        }
+
         #endregion
+
+
+
 
         #region Slot Click Functions
 
@@ -700,63 +747,5 @@ namespace DeepSeaGame
 
         #endregion
 
-        private void SelectHotbarSlot(int hotbarSlotIndex)
-        {
-            if (HotbarSlotCount == 0)
-            {
-                SelectedHotbarSlotIndex = 0;
-                UpdateSelectedHotbarStack();
-                return;
-            }
-
-            int newIndex = Mathf.Clamp(hotbarSlotIndex, 0, HotbarSlotCount - 1);
-            if (newIndex == SelectedHotbarSlotIndex)
-            {
-                return;
-            }
-
-            SelectedHotbarSlotIndex = newIndex;
-            UpdateSelectedHotbarStack();
-        }
-
-        private void UpdateSelectedHotbarStack()
-        {
-            if (!IsValidSlotIndex(SelectedHotbarSlotIndex))
-            {
-                SelectedHotbarStack = new InventoryStack();
-                OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack.Clone());
-                Debug.Log($"Invalid hotbar slot index: {SelectedHotbarSlotIndex}");
-                return;
-            }
-
-            SelectedHotbarStack = _slots[SelectedHotbarSlotIndex];
-            OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack);
-        }
-
-        public InventoryStack GetSlot(int slotIndex)
-        {
-            return IsValidSlotIndex(slotIndex) ? _slots[slotIndex] : new InventoryStack();
-        }
-
-        private bool IsValidSlotIndex(int slotIndex)
-        {
-            return slotIndex >= 0 && slotIndex < _slots.Count;
-        }
-
-        private void InitializeSlots()
-        {
-            _slots.Clear();
-
-            for (int i = 0; i < _slotCount; i++)
-            {
-                _slots.Add(new InventoryStack());
-            }
-        }
-
-        private void ClampStartingSelectedHotbarSlotIndex()
-        {
-            int maxHotbarIndex = Mathf.Max(0, _hotbarSlotCount - 1);
-            _startingSelectedHotbarSlotIndex = Mathf.Clamp(_startingSelectedHotbarSlotIndex, 0, maxHotbarIndex);
-        }
     }
 }

@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 namespace DeepSeaGame
 {
-    /// <summary>
-    /// Manages a CPU-based 2D lightmap using a Breadth-First Search (BFS) flood fill algorithm.
-    /// Propagates light based on tile solid/ambient attenuation and outputs a grayscale texture overlay.
-    /// </summary>
     public class LightmapManager : MonoBehaviour
     {
         public static LightmapManager Instance { get; private set; }
@@ -127,7 +123,6 @@ namespace DeepSeaGame
 
         private void OnFlashlightStateChanged()
         {
-            // Use the last known visible bounds to trigger a recalculation
             UpdateLightmap(_currentVisibleTileBounds);
         }
 
@@ -161,10 +156,6 @@ namespace DeepSeaGame
             ApplyLightmapToOverlay(inflatedBounds);
         }
 
-        /// <summary>
-        /// Expands the camera frustum bounds outward by the configured padding to prevent lighting
-        /// pop-in on screen edges. Returns false if the resulting bounds are degenerate.
-        /// </summary>
         private bool TryInflateBounds(RectInt visibleBounds, out RectInt inflatedBounds)
         {
             int minX = visibleBounds.xMin - _extraLightmapPadding;
@@ -178,10 +169,6 @@ namespace DeepSeaGame
             return inflatedBounds.width > 0 && inflatedBounds.height > 0;
         }
 
-        /// <summary>
-        /// Allocates (or reuses) the light grid, color buffer, and Texture2D for the given dimensions.
-        /// Allocation only occurs when dimensions change to avoid GC spikes each frame.
-        /// </summary>
         private void PrepareLightmap(int width, int height)
         {
             if (_lightGrid == null || _gridWidth != width || _gridHeight != height)
@@ -219,10 +206,6 @@ namespace DeepSeaGame
             _bfsQueue.Clear();
         }
 
-        /// <summary>
-        /// Scans the inflated grid and seeds any tile that has no foreground AND no background as a
-        /// full-brightness daylight source (value = 15), enqueuing it for BFS propagation.
-        /// </summary>
         private void SeedLightSources(RectInt inflatedBounds)
         {
             int width  = inflatedBounds.width;
@@ -263,11 +246,6 @@ namespace DeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Iterative queue-based BFS that propagates light outward from all seeded sources simultaneously.
-        /// Each step applies per-tile attenuation based on whether the neighbor is solid, background-only, or open air.
-        /// A neighbor is only enqueued if the new brightness strictly improves on its current stored value.
-        /// </summary>
         private void RunLightSourceBFSPropagation(RectInt inflatedBounds)
         {
             int width  = inflatedBounds.width;
@@ -328,12 +306,6 @@ namespace DeepSeaGame
             }
         }
         
-        /// <summary>
-        /// Ray-casts the flashlight beam outward from the player within the cone angle.
-        /// For each tile, a straight-line ray is marched tile-by-tile from the player,
-        /// accumulating per-tile attenuation. This avoids the light-wrapping artifacts
-        /// inherent to flood-fill algorithms.
-        /// </summary>
         private void RunFlashlightBFSPropagation(RectInt inflatedBounds)
         {
             // Early out: no player or flashlight is off
@@ -412,19 +384,7 @@ namespace DeepSeaGame
                 }
             }
         }
-
-        /// <summary>
-        /// Walks a straight ray from <paramref name="origin"/> to <paramref name="target"/>
-        /// in tile-sized steps using a DDA-style algorithm.
-        /// For each tile stepped over (excluding the start tile), accumulates attenuation
-        /// based on the tile's foreground/background composition, but only for tiles beyond
-        /// <paramref name="_tileAmountBeforeAttenuationBegins"/> steps from the origin.
-        /// </summary>
-        /// <param name="origin">World-space ray origin (player center).</param>
-        /// <param name="target">World-space tile center to cast toward.</param>
-        /// <param name="inflatedBounds">The active bounds for grid-local coordinate conversion.</param>
-        /// <param name="tileCount">Outputs the number of tiles the ray traversed (excluding start).</param>
-        /// <returns>The total accumulated attenuation along the ray, or -1 if the ray left the inflated bounds.</returns>
+        
         private float MarchRay(Vector2 origin, Vector2 target, RectInt inflatedBounds, out int tileCount)
         {
             tileCount = 0;
@@ -552,19 +512,6 @@ namespace DeepSeaGame
             return _airOnlyAttenuation;
         }
         
-        // private float GetFlashlightTileAttenuation(ushort fgId, ushort bgId)
-        // {
-        //     TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
-        //     if (fgId != GameDataRegistry.INVALID_ID && !fgTile.IsSolid)
-        //     {
-        //         return _backgroundOnlyAttenuation * 0.5f;
-        //     }
-        
-        //     if (fgId != GameDataRegistry.INVALID_ID) return _solidForegroundAttenuation;
-        //     if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation * 0.5f;
-        //     return _airOnlyAttenuation;
-        // }
-
         private void ApplyLightmapToOverlay(RectInt inflatedBounds)
         {
             int width  = inflatedBounds.width;
@@ -594,11 +541,11 @@ namespace DeepSeaGame
             if (_enableMultiplyBlending)
             {
                 if (_multiplyMaterial == null) InitializeMultiplyMaterial();
-                _lightmapOverlay.material = _multiplyMaterial;
+                // _lightmapOverlay.material = _multiplyMaterial;
             }
             else
             {
-                _lightmapOverlay.material = null;
+                // _lightmapOverlay.material = null;
             }
 
             UpdateOverlayRectTf(inflatedBounds);

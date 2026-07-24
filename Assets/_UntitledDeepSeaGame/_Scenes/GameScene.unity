@@ -6478,6 +6478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlacementManager
   _placementRange: 4.5
+  _lightSourcePlacementAttempts: 16
 --- !u!114 &1794183285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7151,10 +7152,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.LightmapManager
   _lightmapOverlay: {fileID: 1644655726}
   _tileAmountBeforeAttenuationBegins: 1
-  _fullBrightnessInterpretation: 15
-  _solidForegroundAttenuation: 3
-  _backgroundOnlyAttenuation: 0.8
-  _airOnlyAttenuation: 0.5
+  _fullBrightnessInterpretation: 10
+  _solidForegroundAttenuation: 2
+  _backgroundOnlyAttenuation: 0.75
+  _airOnlyAttenuation: 0
   _coneEdgeFalloffPower: 2
   _lightmapFilterMode: 1
   _enableMultiplyBlending: 1

@@ -122,24 +122,6 @@ namespace DeepSeaGame
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Previous"",
-                    ""type"": ""Button"",
-                    ""id"": ""2776c80d-3c14-4091-8c56-d04ced07a2b0"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Next"",
-                    ""type"": ""Button"",
-                    ""id"": ""b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""PrimaryAction"",
                     ""type"": ""Button"",
                     ""id"": ""3185d166-e8cd-45f4-856d-f37a52a76248"",
@@ -161,6 +143,15 @@ namespace DeepSeaGame
                     ""name"": ""ToggleFlashlight"",
                     ""type"": ""Button"",
                     ""id"": ""3ac8975f-e55f-402e-b27d-728ea45c588e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlaceLightSource"",
+                    ""type"": ""Button"",
+                    ""id"": ""3cf252e6-04db-4eb0-8a9a-4101242c5683"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -302,44 +293,11 @@ namespace DeepSeaGame
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cbac6039-9c09-46a1-b5f2-4e5124ccb5ed"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Next"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e15ca19d-e649-4852-97d5-7fe8ccc44e94"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Next"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""eb40bb66-4559-4dfa-9a2f-820438abb426"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""daba33a1-ad0c-4742-a909-43ad1cdfbeb6"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -352,28 +310,6 @@ namespace DeepSeaGame
                     ""processors"": """",
                     ""groups"": ""XR"",
                     ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1534dc16-a6aa-499d-9c3a-22b47347b52a"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Previous"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""25060bbd-a3a6-476e-8fba-45ae484aad05"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Previous"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -418,6 +354,17 @@ namespace DeepSeaGame
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ToggleFlashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5237a888-52c6-4b49-889b-2774f2f986d2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceLightSource"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1136,11 +1083,10 @@ namespace DeepSeaGame
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-            m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
-            m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
             m_Player_PrimaryAction = m_Player.FindAction("PrimaryAction", throwIfNotFound: true);
             m_Player_SecondaryAction = m_Player.FindAction("SecondaryAction", throwIfNotFound: true);
             m_Player_ToggleFlashlight = m_Player.FindAction("ToggleFlashlight", throwIfNotFound: true);
+            m_Player_PlaceLightSource = m_Player.FindAction("PlaceLightSource", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1239,11 +1185,10 @@ namespace DeepSeaGame
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Interact;
         private readonly InputAction m_Player_Jump;
-        private readonly InputAction m_Player_Previous;
-        private readonly InputAction m_Player_Next;
         private readonly InputAction m_Player_PrimaryAction;
         private readonly InputAction m_Player_SecondaryAction;
         private readonly InputAction m_Player_ToggleFlashlight;
+        private readonly InputAction m_Player_PlaceLightSource;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1268,14 +1213,6 @@ namespace DeepSeaGame
             /// </summary>
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             /// <summary>
-            /// Provides access to the underlying input action "Player/Previous".
-            /// </summary>
-            public InputAction @Previous => m_Wrapper.m_Player_Previous;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/Next".
-            /// </summary>
-            public InputAction @Next => m_Wrapper.m_Player_Next;
-            /// <summary>
             /// Provides access to the underlying input action "Player/PrimaryAction".
             /// </summary>
             public InputAction @PrimaryAction => m_Wrapper.m_Player_PrimaryAction;
@@ -1287,6 +1224,10 @@ namespace DeepSeaGame
             /// Provides access to the underlying input action "Player/ToggleFlashlight".
             /// </summary>
             public InputAction @ToggleFlashlight => m_Wrapper.m_Player_ToggleFlashlight;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/PlaceLightSource".
+            /// </summary>
+            public InputAction @PlaceLightSource => m_Wrapper.m_Player_PlaceLightSource;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1322,12 +1263,6 @@ namespace DeepSeaGame
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Previous.started += instance.OnPrevious;
-                @Previous.performed += instance.OnPrevious;
-                @Previous.canceled += instance.OnPrevious;
-                @Next.started += instance.OnNext;
-                @Next.performed += instance.OnNext;
-                @Next.canceled += instance.OnNext;
                 @PrimaryAction.started += instance.OnPrimaryAction;
                 @PrimaryAction.performed += instance.OnPrimaryAction;
                 @PrimaryAction.canceled += instance.OnPrimaryAction;
@@ -1337,6 +1272,9 @@ namespace DeepSeaGame
                 @ToggleFlashlight.started += instance.OnToggleFlashlight;
                 @ToggleFlashlight.performed += instance.OnToggleFlashlight;
                 @ToggleFlashlight.canceled += instance.OnToggleFlashlight;
+                @PlaceLightSource.started += instance.OnPlaceLightSource;
+                @PlaceLightSource.performed += instance.OnPlaceLightSource;
+                @PlaceLightSource.canceled += instance.OnPlaceLightSource;
             }
 
             /// <summary>
@@ -1357,12 +1295,6 @@ namespace DeepSeaGame
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
-                @Previous.started -= instance.OnPrevious;
-                @Previous.performed -= instance.OnPrevious;
-                @Previous.canceled -= instance.OnPrevious;
-                @Next.started -= instance.OnNext;
-                @Next.performed -= instance.OnNext;
-                @Next.canceled -= instance.OnNext;
                 @PrimaryAction.started -= instance.OnPrimaryAction;
                 @PrimaryAction.performed -= instance.OnPrimaryAction;
                 @PrimaryAction.canceled -= instance.OnPrimaryAction;
@@ -1372,6 +1304,9 @@ namespace DeepSeaGame
                 @ToggleFlashlight.started -= instance.OnToggleFlashlight;
                 @ToggleFlashlight.performed -= instance.OnToggleFlashlight;
                 @ToggleFlashlight.canceled -= instance.OnToggleFlashlight;
+                @PlaceLightSource.started -= instance.OnPlaceLightSource;
+                @PlaceLightSource.performed -= instance.OnPlaceLightSource;
+                @PlaceLightSource.canceled -= instance.OnPlaceLightSource;
             }
 
             /// <summary>
@@ -1716,20 +1651,6 @@ namespace DeepSeaGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnJump(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "Previous" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnPrevious(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "Next" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnNext(InputAction.CallbackContext context);
-            /// <summary>
             /// Method invoked when associated input action "PrimaryAction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1750,6 +1671,13 @@ namespace DeepSeaGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnToggleFlashlight(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "PlaceLightSource" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnPlaceLightSource(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

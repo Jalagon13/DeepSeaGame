@@ -924,7 +924,7 @@ MonoBehaviour:
   <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 1
-  <LightValue>k__BackingField: 13
+  <LightValue>k__BackingField: 10
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}

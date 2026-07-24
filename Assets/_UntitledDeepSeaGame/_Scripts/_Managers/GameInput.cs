@@ -19,6 +19,7 @@ namespace DeepSeaGame
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnInteract;
+        public event EventHandler<InputAction.CallbackContext> OnPlaceLightSource;
 
         private bool _isGameplayInputBlocked, _primaryHeldDown, _secondaryHeldDown, _jumpHeldDown;
 
@@ -63,8 +64,8 @@ namespace DeepSeaGame
             _playerInput.Player.Jump.canceled += PlayerInput_OnJump;
             
             _playerInput.Player.Interact.started += PlayerInput_OnInteract;
-            
             _playerInput.Player.ToggleFlashlight.started += PlayerInput_OnToggleFlashlight;
+            _playerInput.Player.PlaceLightSource.started += PlayerInput_OnPlaceLightSource;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -89,8 +90,8 @@ namespace DeepSeaGame
             _playerInput.Player.Jump.canceled -= PlayerInput_OnJump;
 
             _playerInput.Player.Interact.started -= PlayerInput_OnInteract;
-            
             _playerInput.Player.ToggleFlashlight.started -= PlayerInput_OnToggleFlashlight;
+            _playerInput.Player.PlaceLightSource.started -= PlayerInput_OnPlaceLightSource;
 
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
@@ -100,9 +101,21 @@ namespace DeepSeaGame
             _playerInput.Dispose();
         }
 
+        private void PlayerInput_OnPlaceLightSource(InputAction.CallbackContext context)
+        {
+            if (_isGameplayInputBlocked) return;
+
+            if(context.started)
+            {
+                OnPlaceLightSource?.Invoke(this, context);
+            }
+        }
+
         private void PlayerInput_OnToggleFlashlight(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (_isGameplayInputBlocked) return;
+
+            if (context.started)
             {
                 OnToggleFlashlight?.Invoke(this, context);
             }
