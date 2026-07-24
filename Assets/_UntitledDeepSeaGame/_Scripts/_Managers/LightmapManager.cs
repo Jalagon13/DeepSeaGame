@@ -45,10 +45,18 @@ namespace DeepSeaGame
         [SerializeField] 
         private FilterMode _lightmapFilterMode = FilterMode.Point;
 
-        [Header("Blending Properties")]
-        [Tooltip("Custom material using the Multiply shader to darken the scene. If left empty, renders the raw grayscale texture.")]
-        [SerializeField] 
-        private Material _multiplyMaterial;
+        [Tooltip("Applies a CPU box blur to the lightmap to smooth out pixelation.")]
+        [SerializeField]
+        private bool _enableBlur = true;
+
+        [Tooltip("Number of times to run the box blur. More passes = smoother light but higher CPU cost.")]
+        [SerializeField, Min(1)]
+        private int _blurPasses = 1;
+
+        // [Header("Blending Properties")]
+        // [Tooltip("Custom material using the Multiply shader to darken the scene. If left empty, renders the raw grayscale texture.")]
+        // [SerializeField] 
+        // private Material _multiplyMaterial;
 
         [Header("Padding Settings")]
         [Tooltip("Extra padding (in tiles) around the camera frustum for light calculations. Prevents lighting pop-in on screen edges.")]
@@ -60,6 +68,7 @@ namespace DeepSeaGame
         private RectInt _currentVisibleTileBounds;
         private RectInt _currentInflatedBounds;
         private float[,] _lightGrid;
+        private float[,] _blurGrid;
         private int[,] _distGrid;
         private int _gridWidth;
         private int _gridHeight;
@@ -170,6 +179,7 @@ namespace DeepSeaGame
             if (_lightGrid == null || _gridWidth != width || _gridHeight != height)
             {
                 _lightGrid = new float[width, height];
+                _blurGrid = new float[width, height];
                 _distGrid = new int[width, height];
                 _gridWidth = width;
                 _gridHeight = height;
@@ -502,10 +512,15 @@ namespace DeepSeaGame
             if (bgId != GameDataRegistry.INVALID_ID) return _backgroundOnlyAttenuation;
             return _backgroundOnlyAttenuation;
         }
-        
+
         private void ApplyLightmapToOverlay(RectInt inflatedBounds)
         {
-            int width  = inflatedBounds.width * _lightTilesPerGameTile;
+            if (_enableBlur)
+            {
+                BlurLightGrid();
+            }
+
+            int width = inflatedBounds.width * _lightTilesPerGameTile;
             int height = inflatedBounds.height * _lightTilesPerGameTile;
 
             // Map each light value [0, 15] to a grayscale byte [0, 255]
@@ -514,7 +529,7 @@ namespace DeepSeaGame
                 for (int x = 0; x < width; x++)
                 {
                     float normalized = Mathf.Clamp01(_lightGrid[x, y] / _fullBrightnessInterpretation);
-                    byte  grayscale  = (byte)Mathf.RoundToInt(normalized * 255f);
+                    byte grayscale = (byte)Mathf.RoundToInt(normalized * 255f);
                     _colorBuffer[y * width + x] = new Color32(grayscale, grayscale, grayscale, 255);
                 }
             }
@@ -529,9 +544,57 @@ namespace DeepSeaGame
             _lightmapOverlay.texture = _lightmapTexture;
 
             // Assign multiply material or fall back to raw grayscale
-            _lightmapOverlay.material = _multiplyMaterial;
+            Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
+            _lightmapOverlay.material = new Material(multiplyShader);
 
             UpdateOverlayRectTf(inflatedBounds);
+        }
+
+        // private void InitializeMultiplyMaterial()
+        // {
+        //     if (_multiplyMaterial != null) return;
+
+        //     Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
+        //     if (multiplyShader != null)
+        //     {
+        //         _multiplyMaterial = new Material(multiplyShader);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("LightmapManager: Shader 'UI/MultiplyBlend' not found. Make sure MultiplyUI.shader is imported.");
+        //     }
+        // }
+
+        private void BlurLightGrid()
+        {
+            for (int pass = 0; pass < _blurPasses; pass++)
+            {
+                // Horizontal pass: _lightGrid -> _blurGrid
+                for (int y = 0; y < _gridHeight; y++)
+                {
+                    for (int x = 0; x < _gridWidth; x++)
+                    {
+                        float sum = _lightGrid[x, y];
+                        int count = 1;
+                        if (x > 0) { sum += _lightGrid[x - 1, y]; count++; }
+                        if (x < _gridWidth - 1) { sum += _lightGrid[x + 1, y]; count++; }
+                        _blurGrid[x, y] = sum / count;
+                    }
+                }
+
+                // Vertical pass: _blurGrid -> _lightGrid
+                for (int x = 0; x < _gridWidth; x++)
+                {
+                    for (int y = 0; y < _gridHeight; y++)
+                    {
+                        float sum = _blurGrid[x, y];
+                        int count = 1;
+                        if (y > 0) { sum += _blurGrid[x, y - 1]; count++; }
+                        if (y < _gridHeight - 1) { sum += _blurGrid[x, y + 1]; count++; }
+                        _lightGrid[x, y] = sum / count;
+                    }
+                }
+            }
         }
 
         private void UpdateOverlayRectTf(RectInt bounds)

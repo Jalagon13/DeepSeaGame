@@ -7157,8 +7157,9 @@ MonoBehaviour:
   _backgroundOnlyAttenuation: 1
   _coneEdgeFalloffPower: 2
   _lightTilesPerGameTile: 2
-  _lightmapFilterMode: 1
-  _multiplyMaterial: {fileID: 0}
+  _lightmapFilterMode: 0
+  _enableBlur: 1
+  _blurPasses: 2
   _extraLightmapPadding: 5
 --- !u!114 &1937983706
 MonoBehaviour:
