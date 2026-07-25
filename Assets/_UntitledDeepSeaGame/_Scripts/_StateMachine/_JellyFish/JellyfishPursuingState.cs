@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    public class JellyfishIdleState : BaseState
+    public class JellyfishPursuingState : BaseState
     {
-        public JellyfishIdleState(AIState key, StateMachine context) : base(key, context)
+        public JellyfishPursuingState(AIState key, StateMachine context) : base(key, context)
         {
 
         }
