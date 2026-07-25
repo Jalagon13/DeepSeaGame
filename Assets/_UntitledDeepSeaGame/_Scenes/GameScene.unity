@@ -7156,7 +7156,7 @@ MonoBehaviour:
   _solidForegroundAttenuation: 2
   _backgroundOnlyAttenuation: 0.5
   _coneEdgeFalloffPower: 2
-  _lightTilesPerGameTile: 2
+  _lightTilesPerGameTile: 1
   _lightmapFilterMode: 0
   _enableBlur: 1
   _blurPasses: 1
