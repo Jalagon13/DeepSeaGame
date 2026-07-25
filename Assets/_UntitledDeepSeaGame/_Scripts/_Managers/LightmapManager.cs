@@ -550,21 +550,6 @@ namespace DeepSeaGame
             UpdateOverlayRectTf(inflatedBounds);
         }
 
-        // private void InitializeMultiplyMaterial()
-        // {
-        //     if (_multiplyMaterial != null) return;
-
-        //     Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
-        //     if (multiplyShader != null)
-        //     {
-        //         _multiplyMaterial = new Material(multiplyShader);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning("LightmapManager: Shader 'UI/MultiplyBlend' not found. Make sure MultiplyUI.shader is imported.");
-        //     }
-        // }
-
         private void BlurLightGrid()
         {
             for (int pass = 0; pass < _blurPasses; pass++)

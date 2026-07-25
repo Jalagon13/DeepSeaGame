@@ -261,15 +261,6 @@ MonoBehaviour:
   _heldItemHolder: {fileID: 1224968750194530153}
   _rightPivot: {fileID: 2121108582731336343}
   _leftPivot: {fileID: 3394721781645054817}
-  _leftSwing:
-    StartAngle: 90
-    EndAngle: 230
-  _rightSwing:
-    StartAngle: 90
-    EndAngle: 310
-  _downSwing:
-    StartAngle: 355
-    EndAngle: 210
 --- !u!114 &534220837259839922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,9 +289,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.FlashlightController
   _coneHalfAngle: 70
-  _flashlightIntensity: 15
+  _flashlightIntensity: 13
   _flashlightRange: 20
-  _recalcAngleThreshold: 2
+  _recalcAngleThreshold: 1.5
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0

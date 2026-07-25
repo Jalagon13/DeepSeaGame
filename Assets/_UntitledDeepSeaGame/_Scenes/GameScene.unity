@@ -7151,15 +7151,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.LightmapManager
   _lightmapOverlay: {fileID: 1644655726}
-  _tileAmountBeforeAttenuationBegins: 1
+  _tileAmountBeforeAttenuationBegins: 2
   _fullBrightnessInterpretation: 10
   _solidForegroundAttenuation: 2
-  _backgroundOnlyAttenuation: 1
+  _backgroundOnlyAttenuation: 0.5
   _coneEdgeFalloffPower: 2
   _lightTilesPerGameTile: 2
   _lightmapFilterMode: 0
   _enableBlur: 1
-  _blurPasses: 2
+  _blurPasses: 1
   _extraLightmapPadding: 5
 --- !u!114 &1937983706
 MonoBehaviour:
