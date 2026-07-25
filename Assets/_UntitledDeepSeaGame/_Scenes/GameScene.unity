@@ -6254,6 +6254,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: abab70d2b3a654510b0b84c8c7c38755, type: 2}
   _characterData:
   - {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
+  - {fileID: 11400000, guid: 95493c6075cbc4671b0ff6aea6212a19, type: 2}
 --- !u!114 &1760391186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7195,7 +7196,7 @@ MonoBehaviour:
   _startSpawnDelay: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 60
-  _testNpc: {fileID: 11400000, guid: 0534bc191ea574cc99c1fdb2ad601f11, type: 2}
+  _testNpc: {fileID: 11400000, guid: 95493c6075cbc4671b0ff6aea6212a19, type: 2}
   _innerNoSpawnDimensions: {x: 105, y: 60}
   _outerSpawnDimensions: {x: 168, y: 94}
   _globalMaxNpcCap: 200

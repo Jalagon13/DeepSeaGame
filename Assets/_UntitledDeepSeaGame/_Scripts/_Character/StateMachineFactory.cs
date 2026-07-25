@@ -13,6 +13,8 @@ namespace DeepSeaGame
                     return new PlayerStateMachine(serverCharacter);
                 case StateMachineType.Fish:
                     return new FishStateMachine(serverCharacter);
+                case StateMachineType.Jellyfish:
+                    return new JellyfishStateMachine(serverCharacter);
                 default:
                     throw new NotSupportedException($"No StateMachine Selected");
             }
@@ -22,6 +24,7 @@ namespace DeepSeaGame
     public enum StateMachineType
     {
         Player,
-        Fish
+        Fish,
+        Jellyfish
     }
 }

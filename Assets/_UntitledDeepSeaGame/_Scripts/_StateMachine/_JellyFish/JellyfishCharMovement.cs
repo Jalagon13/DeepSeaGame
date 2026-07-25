@@ -4,14 +4,33 @@ namespace DeepSeaGame
 {
     public class JellyfishCharMovement : CharacterMovement
     {
+        [Header("Jellyfish AI Settings")]
+        public float PropelSpeed = 5f;
+        public float WaitTimeAfterPropel = 0.75f;
+        public float SeekRadius = 15f;
+
         protected override void AirMovement()
         {
-            throw new System.NotImplementedException();
+            _velocity.y += _gravity * Time.fixedDeltaTime;
+            if (_velocity.y < _terminalVelocity) _velocity.y = _terminalVelocity;
         }
 
         protected override void WaterMovement()
         {
-            throw new System.NotImplementedException();
+            // Apply drag to gradually slow down after propelling
+            _velocity = Vector2.Lerp(_velocity, Vector2.zero, Time.fixedDeltaTime * 2f);
+        }
+
+        public void Propel(Vector2 direction)
+        {
+            _velocity = direction.normalized * PropelSpeed;
+        }
+
+        protected override void HandleCollision(CollisionResult result)
+        {
+            // If we hit a wall/ceiling/floor, bounce off
+            if (result.HitX) _velocity.x *= -1f;
+            if (result.HitY) _velocity.y *= -1f;
         }
     }
 }
