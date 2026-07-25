@@ -5,9 +5,10 @@ namespace DeepSeaGame
     public class JellyfishCharMovement : CharacterMovement
     {
         [Header("Jellyfish AI Settings")]
-        public float PropelSpeed = 5f;
-        public float WaitTimeAfterPropel = 0.75f;
+        public float PropelSpeed = 10f;
+        public float WaitTimeAfterPropel = 2f;
         public float SeekRadius = 15f;
+        public float SwimDrag = 2f;
 
         protected override void AirMovement()
         {
@@ -18,7 +19,7 @@ namespace DeepSeaGame
         protected override void WaterMovement()
         {
             // Apply drag to gradually slow down after propelling
-            _velocity = Vector2.Lerp(_velocity, Vector2.zero, Time.fixedDeltaTime * 2f);
+            _velocity = Vector2.Lerp(_velocity, Vector2.zero, Time.fixedDeltaTime * SwimDrag);
         }
 
         public void Propel(Vector2 direction)

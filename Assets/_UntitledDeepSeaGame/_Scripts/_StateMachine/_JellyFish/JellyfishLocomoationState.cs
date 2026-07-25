@@ -31,7 +31,10 @@ namespace DeepSeaGame
         {
             if (_jellyContext.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
-                SwitchState(new AIStateData(AIState.Knockbacked, 0));
+                if (CurrentSubState.StateKey != AIState.Knockbacked)
+                {
+                    SetSubState(AIState.Knockbacked);
+                }
                 return;
             }
 
