@@ -199,16 +199,6 @@ namespace DeepSeaGame
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
         
-        public bool IsInWater(int x, int y)
-        {
-            if(!IsInBounds(x, y))
-            {
-                return false;
-            }
-            
-            return IsBelowSeaLevel(y) && !IsUnderwaterAirAt(x, y);
-        }
-
         public bool IsBelowSeaLevel(int y)
         {
             return y >= 0 && y < _seaLevelY;

@@ -15,25 +15,20 @@ namespace DeepSeaGame
         [SerializeField, Tooltip("How many NPCs spawn per minute in this biome"), Range(0f, 60f)] 
         private float _spawnsPerMinute;
 
-        [Header("Test Npc stuff")]
         [SerializeField] private CharacterSO _testNpc;
 
-        [Header("Spawning Range (in Tiles)")]
         [SerializeField, Tooltip("Inner rectangle bounds where mobs CANNOT spawn (No-Spawn Zone). Also used as the camera frustum zone for despawn timer.")]
         private Vector2Int _innerNoSpawnDimensions = new Vector2Int(124, 70);
 
         [SerializeField, Tooltip("Outer rectangle bounds within which mobs CAN spawn. NPCs outside all players' outer zones are instantly despawned.")]
         private Vector2Int _outerSpawnDimensions = new Vector2Int(168, 94);
 
-        [Header("Global Spawning Caps")]
         [SerializeField, Tooltip("Maximum number of NPCs that can exist in the world at once.")]
         private int _globalMaxNpcCap = 200;
 
-        [Header("NPC Observer Visibility")]
         [SerializeField, Tooltip("How often the server checks and updates NPC visibility for clients (in seconds).")]
         private float _visibilityUpdateInterval = 0.2f;
 
-        [Header("NPC Despawning")]
         [SerializeField, Tooltip("How many seconds an NPC can remain off-screen (outside all inner zones) before being despawned.")]
         private float _npcDespawnDuration = 14f;
 
@@ -195,6 +190,11 @@ namespace DeepSeaGame
             }
         }
 
+        private CharacterSO GetNpcToSpawn()
+        {
+            return _testNpc;
+        }
+
         private int GetGlobalActiveNpcCount()
         {
             int count = 0;
@@ -265,14 +265,6 @@ namespace DeepSeaGame
             spawnData.CurrentCapacity = cap;
         }
 
-        private CharacterSO GetNpcToSpawn()
-        {
-            return _testNpc;
-        }
-
-        /// <summary>
-        /// Returns true if the potential spawn point is NOT inside any connected player's inner (no-spawn) zone.
-        /// </summary>
         private bool SpawnSpotIsValid(Vector2 potentialSpawnPoint)
         {
             WorldDataStore worldDataStore = WorldManager.Instance.WorldDataStore;
@@ -482,10 +474,6 @@ namespace DeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Cleanly despawns an NPC on the server, removes it from all tracking structures,
-        /// and recalculates player NPC capacities.
-        /// </summary>
         public void DespawnNpc(ServerCharacter npc)
         {
             if (!IsServer || npc == null) return;
@@ -517,10 +505,6 @@ namespace DeepSeaGame
             }
         }
 
-        /// <summary>
-        /// Returns true if the given NPC position falls within the inner (camera frustum / no-spawn) zone
-        /// centered on the given player position.
-        /// </summary>
         private bool IsNpcInInnerZone(Vector2 npcPos, Vector2 playerPos)
         {
             float dx = Mathf.Abs(npcPos.x - playerPos.x);
@@ -528,10 +512,6 @@ namespace DeepSeaGame
             return dx <= _innerNoSpawnDimensions.x * 0.5f && dy <= _innerNoSpawnDimensions.y * 0.5f;
         }
 
-        /// <summary>
-        /// Returns true if the given NPC position falls within the outer (spawn / visibility) zone
-        /// centered on the given player position.
-        /// </summary>
         private bool IsNpcInOuterZone(Vector2 npcPos, Vector2 playerPos)
         {
             float dx = Mathf.Abs(npcPos.x - playerPos.x);
