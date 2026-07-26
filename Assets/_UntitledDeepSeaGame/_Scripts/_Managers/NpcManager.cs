@@ -10,13 +10,6 @@ namespace DeepSeaGame
 
         [SerializeField] private bool _enableSpawning = true;
         [SerializeField] private float _startSpawnDelay;
-        [SerializeField] private int _maxNpcSlotAmount = 6;
-
-        [SerializeField, Tooltip("How many NPCs spawn per minute in this biome"), Range(0f, 60f)] 
-        private float _spawnsPerMinute;
-
-        [SerializeField] private CharacterSO _testNpc;
-
         [SerializeField, Tooltip("Inner rectangle bounds where mobs CANNOT spawn (No-Spawn Zone). Also used as the camera frustum zone for despawn timer.")]
         private Vector2Int _innerNoSpawnDimensions = new Vector2Int(124, 70);
 
@@ -32,19 +25,19 @@ namespace DeepSeaGame
         [SerializeField, Tooltip("How many seconds an NPC can remain off-screen (outside all inner zones) before being despawned.")]
         private float _npcDespawnDuration = 14f;
 
+        [SerializeField] private List<BiomeSO> _biomes;
+
         private readonly List<ServerCharacter> _activeNpcs = new();
-        
         private readonly Dictionary<ServerCharacter, Timer> _despawnTimers = new();
         private readonly List<Timer> _timerTickBuffer = new();
-
         private readonly float _tickTime = 1f / 60f; // 60 ticks per second
         private readonly int _maxSpawnAttempts = 50;
-
         private readonly Dictionary<ulong, PlayerSpawnData> _playerSpawnData = new();
         private class PlayerSpawnData
         {
+            public ulong PlayerId;
             public float CurrentCapacity;
-            public int MaxNpcSlotAmount;
+            public BiomeSO CurrentBiome;
             public readonly List<ServerCharacter> SpawnedNpcs = new();
         }
 
@@ -69,7 +62,8 @@ namespace DeepSeaGame
                     {
                         _playerSpawnData[client.ClientId] = new PlayerSpawnData
                         {
-                            MaxNpcSlotAmount = _maxNpcSlotAmount
+                            PlayerId = client.ClientId,
+                            CurrentCapacity = 0
                         };
                     }
                 }
@@ -102,7 +96,8 @@ namespace DeepSeaGame
             {
                 _playerSpawnData[clientId] = new PlayerSpawnData
                 {
-                    MaxNpcSlotAmount = _maxNpcSlotAmount
+                    PlayerId = clientId,
+                    CurrentBiome = GetCurrentBiomeForPlayer(clientId)
                 };
             }
         }
@@ -141,58 +136,112 @@ namespace DeepSeaGame
             // Check global NPC cap
             if (GetGlobalActiveNpcCount() >= _globalMaxNpcCap) return;
 
-            foreach (var client in NetworkManager.ConnectedClientsList)
+            foreach (NetworkClient client in NetworkManager.ConnectedClientsList)
             {
-                if (client.PlayerObject == null) continue;
+                TryToSpawnNpcForClient(client);
+            }
+        }
+        
+        private void TryToSpawnNpcForClient(NetworkClient client)
+        {
+            if (client.PlayerObject == null) return;
 
-                ulong playerId = client.ClientId;
-                Transform playerTransform = client.PlayerObject.transform;
+            ulong playerId = client.ClientId;
+            Transform playerTransform = client.PlayerObject.transform;
 
-                if (!_playerSpawnData.TryGetValue(playerId, out PlayerSpawnData spawnData))
+            if (!_playerSpawnData.TryGetValue(playerId, out PlayerSpawnData spawnData))
+            {
+                spawnData = new PlayerSpawnData
                 {
-                    spawnData = new PlayerSpawnData { MaxNpcSlotAmount = _maxNpcSlotAmount };
-                    _playerSpawnData[playerId] = spawnData;
+                    PlayerId = playerId,
+                    CurrentBiome = GetCurrentBiomeForPlayer(playerId)
+                };
+
+                _playerSpawnData[playerId] = spawnData;
+            }
+
+            // Clean up and recalculate this player's active NPC capacity
+            RecalculatePlayerCapacity(spawnData);
+
+            if(spawnData.CurrentBiome == null)
+            {
+                spawnData.CurrentBiome = GetCurrentBiomeForPlayer(playerId);
+            }
+            
+            if (spawnData.CurrentCapacity >= spawnData.CurrentBiome.MaxNpcSlotAmount) return;
+
+            // Calculate spawn probability per tick (Terraria-style)
+            float spawnModifier = GetSpawnModifier(spawnData.CurrentCapacity, spawnData.CurrentBiome.MaxNpcSlotAmount);
+            float spawnProbability = (spawnData.CurrentBiome.SpawnsPerMinute / 3600f) * spawnModifier; // Convert spawns per minute to probability per tick
+
+            // Roll for spawn attempt
+            if (Random.value >= spawnProbability) return;
+
+            // Try to find a valid spawn spot (Terraria-style: limited attempts per tick)
+            for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++)
+            {
+                Vector2 potentialSpawnPoint = GetRandomTileInSpawnArea(playerTransform.position);
+                
+                if(SpawnAttempt(potentialSpawnPoint, spawnData))
+                {
+                    break; // Successfully spawned, exit attempts loop
                 }
+            }
 
-                // Clean up and recalculate this player's active NPC capacity
-                RecalculatePlayerCapacity(spawnData);
+        }
+        
+        private bool SpawnAttempt(Vector2 potentialSpawnPoint, PlayerSpawnData spawnData)
+        {
+            if (SpawnSpotIsValid(potentialSpawnPoint))
+            {
+                float remainingNpcSlotSpace = spawnData.CurrentBiome.MaxNpcSlotAmount - spawnData.CurrentCapacity;
+                CharacterSO npcToSpawn = GetNpcFromPosition(potentialSpawnPoint);
 
-                if (spawnData.CurrentCapacity >= spawnData.MaxNpcSlotAmount) continue;
-
-                // Calculate spawn probability per tick (Terraria-style)
-                float spawnModifier = GetSpawnModifier(spawnData.CurrentCapacity, spawnData.MaxNpcSlotAmount);
-                float spawnsPerMinute = _spawnsPerMinute;
-
-                // Convert spawns per minute to probability per tick
-                float spawnProbability = (spawnsPerMinute / 3600f) * spawnModifier;
-
-                // Roll for spawn attempt
-                if (Random.value < spawnProbability)
+                if (npcToSpawn != null && npcToSpawn.SlotAmount <= remainingNpcSlotSpace)
                 {
-                    // Try to find a valid spawn spot (Terraria-style: limited attempts per tick)
-                    for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++)
+                    SpawnNpcOnServer(potentialSpawnPoint, npcToSpawn, spawnData.PlayerId);
+                    return true; // Successfully spawned, exit attempts loop
+                }
+            }
+            return false;
+        }
+        
+        private CharacterSO GetNpcFromPosition(Vector2 position)
+        {
+            BiomeType biomeType = WorldManager.Instance.WorldDataStore.GetBiomeAt(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y));
+
+            foreach (BiomeSO biomeSO in _biomes)
+            {
+                if (biomeSO.BiomeType == biomeType)
+                {
+                    return biomeSO.GetRandomNpc();
+                }
+            }
+            return null;
+        }
+        
+        private BiomeSO GetCurrentBiomeForPlayer(ulong playerId)
+        {
+            if (NetworkManager.ConnectedClients.TryGetValue(playerId, out var client))
+            {
+                if (client.PlayerObject != null)
+                {
+                    Vector2 playerPos = client.PlayerObject.transform.position;
+                    BiomeType biomeType = WorldManager.Instance.WorldDataStore.GetBiomeAt(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
+
+                    foreach (var biome in _biomes)
                     {
-                        Vector2 potentialSpawnPoint = GetRandomTileInSpawnArea(playerTransform.position);
-
-                        if (SpawnSpotIsValid(potentialSpawnPoint))
+                        if (biome.BiomeType == biomeType)
                         {
-                            float remainingNpcSlotSpace = spawnData.MaxNpcSlotAmount - spawnData.CurrentCapacity;
-                            CharacterSO npcToSpawn = GetNpcToSpawn();
-
-                            if (npcToSpawn.SlotAmount <= remainingNpcSlotSpace)
-                            {
-                                SpawnNpcOnServer(potentialSpawnPoint, npcToSpawn, playerId);
-                                break; // Successfully spawned, exit attempts loop
-                            }
+                            return biome;
                         }
                     }
                 }
             }
-        }
 
-        private CharacterSO GetNpcToSpawn()
-        {
-            return _testNpc;
+            // Fallback to default biome if none found
+            Debug.LogWarning($"Could not determine biome for player {playerId}. Defaulting to first biome in list.");
+            return _biomes.Count > 0 ? _biomes[0] : null;
         }
 
         private int GetGlobalActiveNpcCount()

@@ -7194,14 +7194,14 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _enableSpawning: 1
   _startSpawnDelay: 1
-  _maxNpcSlotAmount: 6
-  _spawnsPerMinute: 60
-  _testNpc: {fileID: 11400000, guid: 95493c6075cbc4671b0ff6aea6212a19, type: 2}
   _innerNoSpawnDimensions: {x: 105, y: 60}
   _outerSpawnDimensions: {x: 168, y: 94}
   _globalMaxNpcCap: 200
   _visibilityUpdateInterval: 0.2
   _npcDespawnDuration: 14
+  _biomes:
+  - {fileID: 11400000, guid: 574344388e7254c34a3d8e6ed42153d7, type: 2}
+  - {fileID: 11400000, guid: d2660c96eea2346ac819dd7359e1e9ab, type: 2}
 --- !u!114 &1937983708
 MonoBehaviour:
   m_ObjectHideFlags: 0

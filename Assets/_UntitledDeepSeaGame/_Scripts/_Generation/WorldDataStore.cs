@@ -34,12 +34,16 @@ namespace DeepSeaGame
         private readonly int _seaLevelY;
         public int SeaLevelY => _seaLevelY;
         
+        private readonly WorldGenerationData _data;
+        
         public WorldDataStore(WorldGenerationData data)
         {
-            FgTileData = new ushort[data.WorldWidth, data.WorldHeight];
-            BgTileData = new ushort[data.WorldWidth, data.WorldHeight];
+            _data = data;
 
-            _seaLevelY = Mathf.Clamp(data.SeaLevelY, 1, Mathf.Max(1, data.WorldHeight - 1));
+            FgTileData = new ushort[_data.WorldWidth, _data.WorldHeight];
+            BgTileData = new ushort[_data.WorldWidth, _data.WorldHeight];
+
+            _seaLevelY = Mathf.Clamp(_data.SeaLevelY, 1, Mathf.Max(1, _data.WorldHeight - 1));
             _underwaterAirTiles.Clear();
             ActiveMultiTiles = new();
 
@@ -51,6 +55,26 @@ namespace DeepSeaGame
                     BgTileData[x, y] = GameDataRegistry.INVALID_ID;
                 }
             }
+        }
+
+        public BiomeType GetBiomeAt(int x, int y)
+        {
+            if(y >= _seaLevelY)
+            {
+                return BiomeType.None;
+            }
+            
+            if(y < _seaLevelY && y > _data.UndergroundMaxYLevel)
+            {       
+                return BiomeType.Surface;
+            }
+            
+            if(y <= _data.UndergroundMaxYLevel)
+            {
+                return BiomeType.Underground;
+            }
+        
+            return BiomeType.None;
         }
 
         public void SetForegroundTileId(int x, int y, ushort tileId)
