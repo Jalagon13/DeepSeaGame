@@ -24,12 +24,14 @@ namespace DeepSeaGame
 
         private Coroutine _primaryMiningCoroutine;
         private Coroutine _secondaryMiningCoroutine;
-        private ToolItemSO _currentTool;
+        
         private Vector2Int _primaryTargetTilePosition;
         private TileSO _primaryTargetTile;
+        
         private Vector2Int _secondaryTargetTilePosition;
         private TileSO _secondaryTargetTile;
 
+        private ToolItemSO _currentTool;
         public ToolItemSO CurrentTool => _currentTool;
 
         private void OnDestroy()
@@ -45,9 +47,7 @@ namespace DeepSeaGame
 
         public void OnSelectedStackChanged(InventoryStack stack)
         {
-            _currentTool = !stack.IsEmpty && stack.Item is ToolItemSO toolItemSO && toolItemSO.HarvestType == ToolType.Drill
-                ? toolItemSO
-                : null;
+            _currentTool = !stack.IsEmpty && stack.Item is ToolItemSO toolItemSO ? toolItemSO: null;
 
             UpdateMiningActivity();
         }
@@ -109,7 +109,7 @@ namespace DeepSeaGame
 
         private void TryStartMiningRoutine(MiningActionType actionType)
         {
-            if (_currentTool == null || WorldManager.Instance?.WorldDataStore == null)
+            if (_currentTool == null || WorldManager.Instance.WorldDataStore == null)
             {
                 return;
             }
@@ -276,7 +276,7 @@ namespace DeepSeaGame
             tilePosition = GameManager.MouseTilePosition;
             tileSO = null;
 
-            if (_currentTool == null || WorldManager.Instance?.WorldDataStore == null || !PlayerWithinMiningRangeOfMouse())
+            if (_currentTool == null || WorldManager.Instance.WorldDataStore == null || !PlayerWithinMiningRangeOfMouse())
             {
                 return false;
             }

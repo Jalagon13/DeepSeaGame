@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.HabitatCoreInteractable
   _availableRecipes:
   - {fileID: 11400000, guid: 0371c34361428480aac5a594f30ea66c, type: 2}
+  - {fileID: 11400000, guid: d45d2759acfe14ff4a56dae617d70512, type: 2}
   - {fileID: 11400000, guid: 74ac7458314b5457498f0e89e6f32c7c, type: 2}
 --- !u!1 &2634538427065896137
 GameObject:

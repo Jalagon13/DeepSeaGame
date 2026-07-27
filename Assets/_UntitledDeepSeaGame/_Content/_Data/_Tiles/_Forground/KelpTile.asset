@@ -71,7 +71,7 @@ MonoBehaviour:
   <StringID>k__BackingField: Kelp
   <TileType>k__BackingField: 0
   <BreakMode>k__BackingField: 1
-  <RequiredToolType>k__BackingField: 0
+  <RequiredToolType>k__BackingField: 1
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 0

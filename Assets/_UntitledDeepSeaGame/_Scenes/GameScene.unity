@@ -6737,6 +6737,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f378060ff1084bd88f821d7f193b011, type: 2}
   - {fileID: 11400000, guid: ed9476e13687546518bf1ecd8cfa4812, type: 2}
   - {fileID: 11400000, guid: b34f1866235774760b38e5fb56ae52fd, type: 2}
+  - {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
   _airTile: {fileID: 11400000, guid: ce90bd66f6bfd4ac2ae57e25e11bca32, type: 2}
   _tileData:
   - {fileID: 11400000, guid: 2071c31e6cd994e30ae2d8e6496c6846, type: 2}
@@ -7070,10 +7071,8 @@ MonoBehaviour:
   _startingItems:
   - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
+  - _item: {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
-    _amount: 999
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0
