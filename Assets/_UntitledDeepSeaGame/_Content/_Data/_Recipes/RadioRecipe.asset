@@ -17,3 +17,5 @@ MonoBehaviour:
   <Requirements>k__BackingField:
   - <Item>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
     <Amount>k__BackingField: 4
+  - <Item>k__BackingField: {fileID: 11400000, guid: b34f1866235774760b38e5fb56ae52fd, type: 2}
+    <Amount>k__BackingField: 6
