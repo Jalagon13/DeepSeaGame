@@ -42,7 +42,7 @@ namespace DeepSeaGame
 
         public bool CanHandle(ItemSO item)
         {
-            return item is ToolItemSO toolItemSO && toolItemSO.HarvestType == ToolType.Drill;
+            return item is ToolItemSO toolItemSO && (toolItemSO.HarvestType == ToolType.Drill || toolItemSO.HarvestType == ToolType.Spear);
         }
 
         public void OnSelectedStackChanged(InventoryStack stack)
