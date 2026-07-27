@@ -316,7 +316,7 @@ namespace DeepSeaGame
                 {
                     ""name"": """",
                     ""id"": ""1c04ea5f-b012-41d1-a6f7-02e963b52893"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -349,7 +349,7 @@ namespace DeepSeaGame
                 {
                     ""name"": """",
                     ""id"": ""4e3a7f2c-f3be-4128-9dbd-c49a2b3259a4"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -905,7 +905,7 @@ namespace DeepSeaGame
                 {
                     ""name"": """",
                     ""id"": ""80891c6b-d18c-4d3f-9379-7eed37d741a3"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",

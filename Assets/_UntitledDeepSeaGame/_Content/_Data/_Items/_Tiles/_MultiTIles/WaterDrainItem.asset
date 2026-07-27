@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
   _itemName: Water Drain
   _itemDescription: 
-  _inventoryIcon: {fileID: 795840818453011249, guid: 1b897c9e6bd6b4869986940e995657c8, type: 3}
+  _inventoryIcon: {fileID: -7388037188141776459, guid: 962ab9714c65b4d0da6abfb7030a4c18, type: 3}
   _isStackable: 1
   <PrimaryTile>k__BackingField: {fileID: 11400000, guid: 902d8a554dd1541988ed71d202546f19, type: 2}
   <SecondaryTile>k__BackingField: {fileID: 0}

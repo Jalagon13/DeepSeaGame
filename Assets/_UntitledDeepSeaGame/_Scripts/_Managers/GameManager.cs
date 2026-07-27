@@ -8,6 +8,8 @@ namespace DeepSeaGame
 {
     public class GameManager : MonoBehaviour
     {
+        public Action OnPrototypeEnd;
+    
         public static GameManager Instance { get; private set; }
         public static Vector2 MouseWorldPosition { get; private set; }
         public static Vector2Int MouseTilePosition { get; private set; }
@@ -47,6 +49,11 @@ namespace DeepSeaGame
                 Debug.Log($"Starting game as client");
                 NetworkManager.Singleton.StartClient();
             }
+        }
+        
+        public void EndPrototype()
+        {
+            OnPrototypeEnd?.Invoke();
         }
 
         public void SpawnItem(InventoryStack stack, Vector2 spawnPos)
