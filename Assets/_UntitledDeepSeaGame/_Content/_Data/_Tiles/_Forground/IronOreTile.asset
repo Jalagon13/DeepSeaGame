@@ -921,6 +921,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   <StringID>k__BackingField: IronOre
   <TileType>k__BackingField: 0
+  <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
   <Hardness>k__BackingField: 1
   <LightValue>k__BackingField: 0

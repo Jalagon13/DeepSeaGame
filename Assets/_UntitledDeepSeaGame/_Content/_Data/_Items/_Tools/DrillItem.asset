@@ -20,5 +20,6 @@ MonoBehaviour:
   <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
   <Damage>k__BackingField: 4
   <Knockback>k__BackingField: 6
-  <SwingDuration>k__BackingField: 0.5
-  <MiningPower>k__BackingField: 4
+  <AttackDuration>k__BackingField: 0.35
+  <ThrustDistance>k__BackingField: 3
+  <MiningPower>k__BackingField: 40
