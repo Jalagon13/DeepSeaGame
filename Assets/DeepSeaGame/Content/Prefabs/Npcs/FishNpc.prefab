@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ContactDamageDealer
   ShowTopMostFoldoutHeaderGroup: 1
-  _dealDamage: 0
+  _dealDamage: 1
 --- !u!1 &4079201878796104046
 GameObject:
   m_ObjectHideFlags: 0
