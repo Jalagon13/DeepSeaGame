@@ -93,6 +93,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ContactDamageDealer
   ShowTopMostFoldoutHeaderGroup: 1
   _dealDamage: 0
+--- !u!1 &3727948619967477449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5185032080719812624}
+  - component: {fileID: 8692112853126010633}
+  m_Layer: 0
+  m_Name: ClientCharFeedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5185032080719812624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3727948619967477449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6066473071326699461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8692112853126010633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3727948619967477449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8974b9609f10242e58cbadd3f017e266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.ClientCharacterFeedbacks
+  ShowTopMostFoldoutHeaderGroup: 1
+  _serverCharacter: {fileID: 3431724271537848667}
+  _damagedParticles: {fileID: 0}
+  _deathParticles: {fileID: 0}
+  _damageColor: {r: 1, g: 0.58431375, b: 0, a: 1}
 --- !u!1 &4079201878796104046
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +174,7 @@ Transform:
   m_Children:
   - {fileID: 8545628327912391012}
   - {fileID: 9159696022360132724}
+  - {fileID: 5185032080719812624}
   m_Father: {fileID: 7224274360569420902}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4485647363306097189
@@ -362,7 +412,7 @@ MonoBehaviour:
   _characterData: {fileID: 11400000, guid: 95493c6075cbc4671b0ff6aea6212a19, type: 2}
   _characterMovement: {fileID: 3188021381517713982}
   _clientCharacter: {fileID: 4485647363306097189}
-  _clientFeedbacks: {fileID: 0}
+  _clientFeedbacks: {fileID: 8692112853126010633}
 --- !u!114 &3188021381517713982
 MonoBehaviour:
   m_ObjectHideFlags: 0

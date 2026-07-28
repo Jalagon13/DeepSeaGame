@@ -14,6 +14,8 @@ namespace DeepSeaGame
 
         [SerializeField]
         private ParticleSystem _damagedParticles, _deathParticles;
+        
+        [SerializeField] private Color _damageColor;
 
         // [SerializeField]
         // private List<Gibfab> _gibfabs;
@@ -30,7 +32,7 @@ namespace DeepSeaGame
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
         public void PlayDamageNumbersRpc(int damage)
         {
-            GameManager.Instance.PlayDamageNumbers(damage, transform.position, Color.red);
+            GameManager.Instance.PlayDamageNumbers(damage, transform.position, _damageColor);
         }
 
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]

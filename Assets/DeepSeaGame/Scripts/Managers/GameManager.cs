@@ -60,7 +60,6 @@ namespace DeepSeaGame
 
         public void PlayDamageNumbers(int amount, Vector2 position, Color color)
         {
-            Debug.Log($"Playing Damage numbers {amount} at {position}");
             _damageNumbersFeedback.enabled = true;
             MMF_FloatingText floatingText = _damageNumbersFeedback.GetFeedbackOfType<MMF_FloatingText>();
             
@@ -86,6 +85,8 @@ namespace DeepSeaGame
             alphaKey[0].time = 0.0f;
             alphaKey[1].alpha = 1.0f;
             alphaKey[1].time = 1.0f;
+            
+            gradient.SetKeys(colorKey, alphaKey);
 
             floatingText.ForceColor = true;
             floatingText.AnimateColorGradient = gradient;

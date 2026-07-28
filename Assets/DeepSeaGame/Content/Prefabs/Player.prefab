@@ -901,6 +901,7 @@ MonoBehaviour:
   _serverCharacter: {fileID: 1902777031516221210}
   _damagedParticles: {fileID: 0}
   _deathParticles: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6734466772814568300
 GameObject:
   m_ObjectHideFlags: 0
