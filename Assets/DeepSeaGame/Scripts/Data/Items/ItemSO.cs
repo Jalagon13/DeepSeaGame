@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -20,9 +21,27 @@ namespace DeepSeaGame
         [SerializeField, Tooltip("Whether this item can stack in the inventory.")]
         private bool _isStackable = true;
 
-        public string ItemName => _itemName;
-        public string ItemDescription => _itemDescription;
+        public string InGameName => _itemName;
+        public string Description => _itemDescription;
         public Sprite InventoryIcon => _inventoryIcon;
         public bool IsStackable => _isStackable;
+
+        public virtual string GetDescription() 
+        {
+            StringBuilder description = new();
+            description.Append($"Resource<br>");
+            description.Append($"{GetDescriptionBreak()}");
+
+            return description.ToString();
+        }
+
+        protected string GetDescriptionBreak()
+        {
+            string description = "";
+            if (!string.IsNullOrWhiteSpace(Description))
+                description += $"{Description}<br>";
+
+            return description;
+        }
     }
 }

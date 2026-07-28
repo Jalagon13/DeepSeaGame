@@ -48,7 +48,7 @@ namespace DeepSeaGame
         private void PopulateCraftItemPanelUI(RecipeSO recipe)
         {
             _outputItemImage.sprite = recipe.OutputItem.InventoryIcon;
-            _outputItemNameText.text = recipe.OutputItem.ItemName;
+            _outputItemNameText.text = recipe.OutputItem.InGameName;
 
             ClearIngredientListSectionUI();
             PopulateIngredientListSectionUI(recipe);

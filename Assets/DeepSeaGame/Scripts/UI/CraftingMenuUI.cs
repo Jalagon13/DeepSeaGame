@@ -63,15 +63,12 @@ namespace DeepSeaGame
 
         public void ShowCraftingMenu(List<RecipeSO> recipes = null)
         {
-            Debug.Log("ShowCraftingMenu called");
             if (recipes != null)
             {
-                Debug.Log($"Setting active recipes to provided list with {recipes.Count} recipes.");
                 _activeRecipes = recipes;
             }
             else
             {
-                Debug.Log("No recipes provided, using default recipes.");
                 _activeRecipes = _defaultRecipes;
             }
 

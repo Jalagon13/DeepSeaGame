@@ -29,7 +29,7 @@ namespace DeepSeaGame
         public void Setup(ItemRequirement itemRequirement)
         {
             _iconImage.sprite = itemRequirement.Item.InventoryIcon;
-            _nameText.text = itemRequirement.Item.ItemName;
+            _nameText.text = itemRequirement.Item.InGameName;
             _itemReq = itemRequirement;
 
             UpdateIngredientStatus();

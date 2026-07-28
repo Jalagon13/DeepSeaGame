@@ -37,7 +37,7 @@ namespace DeepSeaGame
                 _displayedItem = value;
                 _displayAmount = value.Amount;
 
-                _itemText.text = $"+{DisplayAmount} {_displayedItem.Item.ItemName}";
+                _itemText.text = $"+{DisplayAmount} {_displayedItem.Item.InGameName}";
                 _itemText.color = _itemText.color;
             }
         }

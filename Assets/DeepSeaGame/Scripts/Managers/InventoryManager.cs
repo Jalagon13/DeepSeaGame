@@ -17,9 +17,6 @@ namespace DeepSeaGame
         public event Action<InventoryStack> OnCursorStackChanged;
         public event Action<ItemSO, int> OnItemPickup;
 
-        private const int _minimumHotbarSlotCount = 1;
-        private const int _minimumTotalSlotCount = 8;
-
         [Header("Inventory Layout")]
         [SerializeField, Min(_minimumTotalSlotCount), Tooltip("Total number of inventory slots available to the player, including the hotbar.")]
         private int _slotCount = 24;
@@ -34,10 +31,6 @@ namespace DeepSeaGame
         [SerializeField, Min(1), Tooltip("Maximum number of items allowed in a single stack for stackable items.")]
         private int _inventoryStackMax = 9999;
 
-        public int HotbarSlotCount => Mathf.Min(_hotbarSlotCount, _slots.Count);
-        public int SelectedHotbarSlotIndex { get; private set; } = -1;
-
-
         [SerializeField] private ItemCollectWorldUI _itemCollectPlatePrefab;
         [SerializeField] private float _timeBetweenCollections = 0.1f;
 
@@ -45,6 +38,13 @@ namespace DeepSeaGame
         [SerializeField] private float _initialDelay;
         [SerializeField] private float _delayBetweenItemsGiven;
         [SerializeField] private List<InventoryStack> _startingItems = new();
+
+        private const int _minimumHotbarSlotCount = 1;
+        private const int _minimumTotalSlotCount = 8;
+
+        private bool _isCollecting;
+        private Queue<InventoryStack> _itemQueue = new();
+        private Dictionary<string, ItemCollectWorldUI> _itemPlates = new(); // Maybe replace string with an item id if I decide to make that later
 
         private readonly List<InventoryStack> _slots = new();
         public List<InventoryStack> Slots => _slots;
@@ -55,10 +55,8 @@ namespace DeepSeaGame
 
         public bool IsInventoryOpen { get; private set; }
         public bool IsFull => !_slots.Exists(HasRoomForAnyItem);
-        
-        private bool _isCollecting;
-        private Queue<InventoryStack> _itemQueue = new();
-        private Dictionary<string, ItemCollectWorldUI> _itemPlates = new(); // Maybe replace string with an item id if I decide to make that later
+        public int HotbarSlotCount => Mathf.Min(_hotbarSlotCount, _slots.Count);
+        public int SelectedHotbarSlotIndex { get; private set; } = -1;
 
         private void Awake()
         {
@@ -160,6 +158,7 @@ namespace DeepSeaGame
 
             CraftingMenuUI.Instance.HideCraftingMenu();
             GameInput.Instance.IsGameplayInputBlocked = false;
+            Tooltip.HideUI();
         }
 
         private void HandleDeath()
@@ -257,7 +256,7 @@ namespace DeepSeaGame
             {
                 if (inventorySlotItem.IsEmpty) continue;
 
-                if (inventorySlotItem.Item.ItemName == item.ItemName)
+                if (inventorySlotItem.Item.InGameName == item.InGameName)
                 {
                     itemCounter += inventorySlotItem.Amount;
                 }
@@ -274,7 +273,7 @@ namespace DeepSeaGame
             {
                 if (inventorySlotItem.IsEmpty) continue;
 
-                if (inventorySlotItem.Item.ItemName == item.ItemName)
+                if (inventorySlotItem.Item.InGameName == item.InGameName)
                 {
                     itemCounter += inventorySlotItem.Amount;
                 }
@@ -312,7 +311,7 @@ namespace DeepSeaGame
                     // SoundManager.Instance.PlayOneShot(FMODEvents.Instance.ItemPickup, Player.Instance.transform.position);
                 }
 
-                string itemName = itemToCollect.Item.ItemName;
+                string itemName = itemToCollect.Item.InGameName;
                 InventoryStack invItemToDisplay = new(itemToCollect.Item, itemToCollect.Amount);
 
                 // If there exists an item collect plate as the item being collected, delete it and spawn a new one
@@ -341,7 +340,7 @@ namespace DeepSeaGame
 
         private void SpawnItemCollectPlate(InventoryStack itemToCollect)
         {
-            string itemName = itemToCollect.Item.ItemName;
+            string itemName = itemToCollect.Item.InGameName;
             ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
             itemPlate.DisplayedItem = itemToCollect;
             itemPlate.OnAnimationComplete += () =>

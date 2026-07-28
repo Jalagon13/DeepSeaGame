@@ -88,7 +88,7 @@ namespace DeepSeaGame
             ItemSO itemSO = GameDataRegistry.Instance.GetItemSOFromItemId(_syncItemDataNetworkVariable.Value.ItemId);
 
             _sr.sprite = itemSO.InventoryIcon;
-            gameObject.name = $"Item_{itemSO.ItemName}";
+            gameObject.name = $"Item_{itemSO.InGameName}";
         }
 
         [Rpc(SendTo.SpecifiedInParams)]

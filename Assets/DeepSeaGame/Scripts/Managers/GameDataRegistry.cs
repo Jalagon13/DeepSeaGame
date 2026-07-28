@@ -43,7 +43,7 @@ namespace DeepSeaGame
 
             for (int i = 0; i < _itemData.Count; i++)
             {
-                if (_itemData[i].ItemName == itemData.ItemName)
+                if (_itemData[i].InGameName == itemData.InGameName)
                 {
                     return (ushort)i;
                 }

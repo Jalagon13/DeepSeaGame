@@ -7,8 +7,11 @@ namespace DeepSeaGame
     public class InventoryStack
     {
         [SerializeField] private ItemSO _item;
-        [SerializeField] private int _amount;
+        public ItemSO Item => _item;
         
+        [SerializeField] private int _amount;
+        public int Amount => IsEmpty ? 0 : Mathf.Max(1, _amount);
+        public bool IsEmpty => _item == null;
         public bool HasItem => _item != null && _amount > 0;
 
         public InventoryStack()
@@ -25,10 +28,6 @@ namespace DeepSeaGame
         {
             Set(item, amount);
         }
-
-        public ItemSO Item => _item;
-        public int Amount => IsEmpty ? 0 : Mathf.Max(1, _amount);
-        public bool IsEmpty => _item == null;
 
         public void Set(ItemSO item)
         {
