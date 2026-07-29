@@ -228,6 +228,7 @@ MonoBehaviour:
   _terminalVelocity: -50
   _playerVisuals: {fileID: 2662637307106457156}
   _jumpPower: 25
+  _visualRotationSpeed: 10
 --- !u!114 &7146354698580210200
 MonoBehaviour:
   m_ObjectHideFlags: 0

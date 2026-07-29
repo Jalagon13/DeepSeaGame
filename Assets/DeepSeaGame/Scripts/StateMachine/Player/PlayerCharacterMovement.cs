@@ -7,12 +7,14 @@ namespace DeepSeaGame
     {
         [SerializeField] private Transform _playerVisuals;
     
-        [Header("Air Movement Settings")]
+        [Header("Player Character Move Settings")]
         [SerializeField] private float _jumpPower = 12f; // This remains specific to the player's jump
+        [SerializeField] private float _visualRotationSpeed = 8f;
 
         private bool _isGrounded;
         private bool _jumpRequested;
         private PlayerArmController _playerArmController;
+        private Quaternion _currentVisualRotation = Quaternion.identity;
 
         private void Awake()
         {
@@ -55,12 +57,22 @@ namespace DeepSeaGame
                 }
             }
 
-            // Rotate player visuals so their y-axis points toward the velocity direction
-            if (_playerVisuals != null && _velocity.sqrMagnitude > 0.01f)
+            // Rotate player visuals so their y-axis points toward the velocity direction, lerping smoothly
+            Quaternion targetVisualRotation;
+            
+            if (Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Locomotion && _velocity.sqrMagnitude > 20f)
             {
                 Vector3 velocityDirection = new Vector3(_velocity.x, _velocity.y, 0f).normalized;
-                _playerVisuals.rotation = Quaternion.FromToRotation(Vector3.up, velocityDirection);
+                targetVisualRotation = Quaternion.FromToRotation(Vector3.up, velocityDirection);
             }
+            else
+            {
+                targetVisualRotation = Quaternion.identity;
+            }
+
+            _currentVisualRotation = Quaternion.Slerp(_currentVisualRotation, targetVisualRotation, _visualRotationSpeed * Time.fixedDeltaTime);
+            _playerVisuals.rotation = _currentVisualRotation;
+            
         }
 
         protected override void AirMovement()
@@ -108,6 +120,10 @@ namespace DeepSeaGame
                     }
                 }
             }
+
+            // Lerp visual rotation back to upright while in air
+            _currentVisualRotation = Quaternion.Slerp(_currentVisualRotation, Quaternion.identity, _visualRotationSpeed * Time.fixedDeltaTime);
+            _playerVisuals.rotation = _currentVisualRotation;
         }
 
         public void ReceiveJumpInput()
