@@ -5,6 +5,8 @@ namespace DeepSeaGame
 {
     public class PlayerCharacterMovement : CharacterMovement
     {
+        [SerializeField] private Transform _playerVisuals;
+    
         [Header("Air Movement Settings")]
         [SerializeField] private float _jumpPower = 12f; // This remains specific to the player's jump
 
@@ -51,6 +53,13 @@ namespace DeepSeaGame
                 {
                     _serverCharacter.CurrentDirection.Value = DesiredDirection.x > 0 ? Direction.Right : Direction.Left;
                 }
+            }
+
+            // Rotate player visuals so their y-axis points toward the velocity direction
+            if (_playerVisuals != null && _velocity.sqrMagnitude > 0.01f)
+            {
+                Vector3 velocityDirection = new Vector3(_velocity.x, _velocity.y, 0f).normalized;
+                _playerVisuals.rotation = Quaternion.FromToRotation(Vector3.up, velocityDirection);
             }
         }
 

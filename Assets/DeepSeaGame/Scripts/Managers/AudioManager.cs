@@ -24,8 +24,8 @@ namespace DeepSeaGame
         private void Start()
         {
             // Debug.Log($"Amb started");
-            _ambienceEventInstance = CreateInstance(FMODEvents.Instance.OceanAmbience);
-            _ambienceEventInstance.start();
+            // _ambienceEventInstance = CreateInstance(FMODEvents.Instance.OceanAmbience);
+            // _ambienceEventInstance.start();
             SyncAmbiencePauseToTimeScale(force: true);
         }
 
