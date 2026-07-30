@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace DeepSeaGame
         [SerializeField] private TMP_InputField _joinInput;
         [SerializeField] private Relay _relay;
 
+        private EventInstance _titleMenuMusicEventInstance;
+
         private void Awake()
         {
             if (_hostButton != null)
@@ -25,21 +28,33 @@ namespace DeepSeaGame
 
             if (_joinButton != null)
             {
-                _joinButton.onClick.AddListener(() =>
-                {
-                    _relay.JoinRelay(_joinInput.text);
-                });
+                // _joinButton.onClick.AddListener(() =>
+                // {
+                //     _relay.JoinRelay(_joinInput.text);
+                // });
             }
 
-            if (_quitButton != null)
+            _quitButton.onClick.AddListener(() =>
             {
-                _quitButton.onClick.AddListener(() =>
-                {
-                    Application.Quit();
-                });
-            }
+                Application.Quit();
+            });
 
             Time.timeScale = 1f;
         }
+
+        private void Start()
+        {
+            // AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.WindAmb);
+
+            _titleMenuMusicEventInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.TitleMusic);
+            _titleMenuMusicEventInstance.start();
+        }
+
+        private void OnDestroy()
+        {
+            // AudioManager.Instance.StopCurrentAmbience();
+            _titleMenuMusicEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
+    
 }
