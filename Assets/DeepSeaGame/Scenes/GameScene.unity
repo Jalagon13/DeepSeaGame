@@ -5235,11 +5235,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.FMODEvents
   <OceanAmbience>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 2138442955
+      Data2: 1182242853
+      Data3: 1667618225
+      Data4: 1751957932
+    Path: event:/UnderwaterAMB
   <TitleMusic>k__BackingField:
     Guid:
       Data1: 0

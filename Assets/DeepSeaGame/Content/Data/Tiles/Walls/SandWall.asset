@@ -288,12 +288,15 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  <StringID>k__BackingField: sandWall
   <TileType>k__BackingField: 1
+  <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+  <StringID>k__BackingField: sandWall
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
+  <IsSolid>k__BackingField: 1
+  <ActsAsEnclosure>k__BackingField: 0
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
     Min: 1
@@ -302,4 +305,25 @@ MonoBehaviour:
   <IsMultiTile>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 2}
   <Prefab>k__BackingField: {fileID: 0}
-  <MultiTileLifecycleBehavior>k__BackingField: {fileID: 0}
+  <Behavior>k__BackingField: {fileID: 0}
+  <MiningSFX>k__BackingField:
+    Guid:
+      Data1: 560876640
+      Data2: 1201847969
+      Data3: 1588982695
+      Data4: 1713767398
+    Path: event:/Tiles/SandMiningSFX
+  <PlaceSFX>k__BackingField:
+    Guid:
+      Data1: 560876640
+      Data2: 1201847969
+      Data3: 1588982695
+      Data4: 1713767398
+    Path: event:/Tiles/SandMiningSFX
+  <DestroySFX>k__BackingField:
+    Guid:
+      Data1: 560876640
+      Data2: 1201847969
+      Data3: 1588982695
+      Data4: 1713767398
+    Path: event:/Tiles/SandMiningSFX

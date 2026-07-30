@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -14,6 +15,11 @@ namespace DeepSeaGame
         public int Damage = 1;
         public float KnockbackForce = 6f;
         public bool PlayKnockback = true;
+
+        [Space]
+        [Header("Sounds")]
+        public EventReference DamageSFX;
+        public EventReference DeathSFX;
 
         [Space]
         [Header("Health & Survival")]

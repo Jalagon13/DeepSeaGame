@@ -68,15 +68,15 @@ MonoBehaviour:
     - {x: 0, y: 1, z: 0}
     - {x: 1, y: 0, z: 0}
     m_RuleTransform: 0
-  <StringID>k__BackingField: Kelp
   <TileType>k__BackingField: 0
   <BreakMode>k__BackingField: 1
   <RequiredToolType>k__BackingField: 1
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
+  <StringID>k__BackingField: Kelp
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 0a8928961f70d46ccbca999b3d162619, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: 1f378060ff1084bd88f821d7f193b011, type: 2}
     Min: 1
@@ -86,3 +86,24 @@ MonoBehaviour:
   <Size>k__BackingField: {x: 1, y: 1}
   <Prefab>k__BackingField: {fileID: 0}
   <Behavior>k__BackingField: {fileID: 0}
+  <MiningSFX>k__BackingField:
+    Guid:
+      Data1: 1017866248
+      Data2: 1150949013
+      Data3: 532865931
+      Data4: 40284021
+    Path: event:/Tiles/KelpMiningSFX
+  <PlaceSFX>k__BackingField:
+    Guid:
+      Data1: 1017866248
+      Data2: 1150949013
+      Data3: 532865931
+      Data4: 40284021
+    Path: event:/Tiles/KelpMiningSFX
+  <DestroySFX>k__BackingField:
+    Guid:
+      Data1: 1017866248
+      Data2: 1150949013
+      Data3: 532865931
+      Data4: 40284021
+    Path: event:/Tiles/KelpMiningSFX

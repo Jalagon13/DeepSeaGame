@@ -150,7 +150,7 @@ namespace DeepSeaGame
             float elapsedTime = 0f;
             float nextSoundTime = _timeBetweenMiningSounds;
 
-            PlayMiningSound();
+            AudioManager.Instance.PlayOneShot(targetTile.MiningSFX, (Vector2)targetTilePosition);
 
             while (elapsedTime < totalMiningTime)
             {
@@ -164,7 +164,7 @@ namespace DeepSeaGame
 
                 if (elapsedTime >= nextSoundTime)
                 {
-                    PlayMiningSound();
+                    AudioManager.Instance.PlayOneShot(targetTile.MiningSFX, (Vector2)targetTilePosition);
                     nextSoundTime += _timeBetweenMiningSounds;
                 }
 
@@ -208,6 +208,8 @@ namespace DeepSeaGame
                 SpawnTileDrops(tile, position);
             }
 
+            AudioManager.Instance.PlayOneShot(targetTile.DestroySFX, (Vector2)targetTilePosition);
+
             StopMiningRoutine(actionType);
         }
 
@@ -240,10 +242,6 @@ namespace DeepSeaGame
             }
 
             return tilesToDrop;
-        }
-
-        private void PlayMiningSound()
-        {
         }
 
         private void StopMiningRoutine(MiningActionType actionType)

@@ -919,12 +919,15 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  <StringID>k__BackingField: limestone
   <TileType>k__BackingField: 0
+  <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
+  <StringID>k__BackingField: limestone
   <Hardness>k__BackingField: 0.725
   <LightValue>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
+  <IsSolid>k__BackingField: 1
+  <ActsAsEnclosure>k__BackingField: 0
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: 5e7f98091664e4874abe00639cbf2bdb, type: 2}
     Min: 1
@@ -933,4 +936,25 @@ MonoBehaviour:
   <IsMultiTile>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 1}
   <Prefab>k__BackingField: {fileID: 0}
-  <MultiTileLifecycleBehavior>k__BackingField: {fileID: 0}
+  <Behavior>k__BackingField: {fileID: 0}
+  <MiningSFX>k__BackingField:
+    Guid:
+      Data1: -423782440
+      Data2: 1208390630
+      Data3: -1722128752
+      Data4: 1067385407
+    Path: event:/Tiles/StoneMiningSFX
+  <PlaceSFX>k__BackingField:
+    Guid:
+      Data1: -423782440
+      Data2: 1208390630
+      Data3: -1722128752
+      Data4: 1067385407
+    Path: event:/Tiles/StoneMiningSFX
+  <DestroySFX>k__BackingField:
+    Guid:
+      Data1: 1416119563
+      Data2: 1074343460
+      Data3: -1071319410
+      Data4: 208615342
+    Path: event:/Tiles/StoneDestroySFX

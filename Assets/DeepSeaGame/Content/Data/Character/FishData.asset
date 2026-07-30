@@ -18,6 +18,20 @@ MonoBehaviour:
   Damage: 15
   KnockbackForce: 25
   PlayKnockback: 1
+  DamageSFX:
+    Guid:
+      Data1: 1372295924
+      Data2: 1139915678
+      Data3: 1852653709
+      Data4: -401386090
+    Path: event:/SquishSFX
+  DeathSFX:
+    Guid:
+      Data1: 1372295924
+      Data2: 1139915678
+      Data3: 1852653709
+      Data4: -401386090
+    Path: event:/SquishSFX
   CanDie: 1
   CanBeKnockedBack: 1
   KnockbackResist: 0

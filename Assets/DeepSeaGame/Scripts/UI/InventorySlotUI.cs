@@ -63,6 +63,7 @@ namespace DeepSeaGame
         public void OnPointerExit(PointerEventData eventData)
         {
             Tooltip.HideUI();
+            _hovered = false;
         }
     }
 }

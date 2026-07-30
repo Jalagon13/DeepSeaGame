@@ -43,6 +43,7 @@ namespace DeepSeaGame
 
         public override void ClientEnterState(AIStateData stateData)
         {
+            Debug.Log($"Entering DeadState");
             // NTFS: Player death animations here, just turn off visuals for now
             _ctx.ServerCharacter.ClientFeedbacks.PlayDeathFeedbacksRpc(stateData.Payload);
             _ctx.ServerCharacter.ClientCharacter.Visuals.SetActive(false);

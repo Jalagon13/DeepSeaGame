@@ -919,15 +919,15 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: -1, y: 0, z: 0}
     m_RuleTransform: 0
-  <StringID>k__BackingField: LampTile
   <TileType>k__BackingField: 0
   <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+  <StringID>k__BackingField: LampTile
   <Hardness>k__BackingField: 1
   <LightValue>k__BackingField: 9
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
     Min: 1
@@ -937,3 +937,24 @@ MonoBehaviour:
   <Size>k__BackingField: {x: 1, y: 1}
   <Prefab>k__BackingField: {fileID: 0}
   <Behavior>k__BackingField: {fileID: 0}
+  <MiningSFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX
+  <PlaceSFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX
+  <DestroySFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX

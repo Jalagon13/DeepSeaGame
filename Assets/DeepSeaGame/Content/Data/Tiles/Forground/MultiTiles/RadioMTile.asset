@@ -16,15 +16,15 @@ MonoBehaviour:
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
-  <StringID>k__BackingField: RadioMTile
   <TileType>k__BackingField: 0
   <BreakMode>k__BackingField: 0
   <RequiredToolType>k__BackingField: 0
+  <TileItemSO>k__BackingField: {fileID: 11400000, guid: ed9476e13687546518bf1ecd8cfa4812, type: 2}
+  <StringID>k__BackingField: RadioMTile
   <Hardness>k__BackingField: 0.65
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0
-  <TileItemSO>k__BackingField: {fileID: 11400000, guid: ed9476e13687546518bf1ecd8cfa4812, type: 2}
   <ItemDropTable>k__BackingField:
   - Item: {fileID: 11400000, guid: ed9476e13687546518bf1ecd8cfa4812, type: 2}
     Min: 1
@@ -34,3 +34,24 @@ MonoBehaviour:
   <Size>k__BackingField: {x: 2, y: 2}
   <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: ef82145db4c654a669d0be07683b8c05, type: 3}
   <Behavior>k__BackingField: {fileID: 0}
+  <MiningSFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX
+  <PlaceSFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX
+  <DestroySFX>k__BackingField:
+    Guid:
+      Data1: 192116333
+      Data2: 1096695754
+      Data3: 784147330
+      Data4: 140109906
+    Path: event:/Tiles/MetalMiningSFX

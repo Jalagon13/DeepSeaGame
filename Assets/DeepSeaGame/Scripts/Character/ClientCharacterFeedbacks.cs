@@ -38,7 +38,7 @@ namespace DeepSeaGame
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
         public void PlayDamageFeedbacksRpc(Vector2 hitDirection)
         {
-            // SoundManager.Instance.PlayOneShot(_serverCharacter.Data.HurtSound, transform.position);
+            AudioManager.Instance.PlayOneShot(_serverCharacter.CharacterData.DamageSFX, transform.position);
             RotateFeedbacks(hitDirection);
             // _damageFeedback.PlayFeedbacks();
         }
@@ -49,7 +49,7 @@ namespace DeepSeaGame
             Vector2 hitDirection = new(payload.x, payload.y);
             float knockbackForce = payload.z;
 
-            // SoundManager.Instance.PlayOneShot(_serverCharacter.Data.DeathSound, transform.position);
+            AudioManager.Instance.PlayOneShot(_serverCharacter.CharacterData.DeathSFX, transform.position);
             // SoundManager.Instance.PlayOneShot(FMODEvents.Instance.MobSquash, transform.position);
             RotateFeedbacks(hitDirection);
             // _deathFeedback.PlayFeedbacks();
