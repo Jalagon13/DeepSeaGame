@@ -18,6 +18,7 @@ namespace DeepSeaGame
         public void OnPointerClick(PointerEventData eventData)
         {
             _inventoryUI.HandleSlotClick(SlotIndex, eventData.button);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, default);
         }
 
         public void Initialize(InventoryUI inventoryUI, int slotIndex)

@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,13 +14,22 @@ namespace DeepSeaGame
 
     public class PlayerOxygenController : NetworkBehaviour
     {
+        public Action OnOxygenWarning;
+    
         [SerializeField]
         private PlayerCharacterSO _playerSO;
 
         [SerializeField]
         private Transform _headPoint;
+        
+        [Header("Oxygen Warning")]
+        
+        [SerializeField]
+        [Range(0f, 1f)]
+        private float _oxygenWarningThreshold = 0.25f;
 
         private ServerCharacter _serverCharacter;
+        private bool _hasTriggeredOxygenWarning;
         private OxygenTankItemSO _equippedOxygenTank;
         public OxygenTankItemSO EquippedOxygenTank => _equippedOxygenTank;
         public float MaxOxygenCapacity => GetMaxOxygenCapacity();
@@ -129,6 +139,13 @@ namespace DeepSeaGame
                 StateOfOxygen.Value = OxygenState.Depleting;
                 CurrentOxygen.Value -= Time.deltaTime;
 
+                float oxygenRatio = CurrentOxygen.Value / GetMaxOxygenCapacity();
+                if (oxygenRatio <= _oxygenWarningThreshold && !_hasTriggeredOxygenWarning)
+                {
+                    _hasTriggeredOxygenWarning = true;
+                    OnOxygenWarning?.Invoke();
+                }
+
                 if (CurrentOxygen.Value <= 0)
                 {
                     CurrentOxygen.Value = 0;
@@ -161,6 +178,13 @@ namespace DeepSeaGame
             else
             {
                 StateOfOxygen.Value = OxygenState.Full;
+            }
+
+            // Reset the oxygen warning flag when oxygen is above the threshold
+            float oxygenRatio = CurrentOxygen.Value / maxCapacity;
+            if (oxygenRatio > _oxygenWarningThreshold)
+            {
+                _hasTriggeredOxygenWarning = false;
             }
         }
 

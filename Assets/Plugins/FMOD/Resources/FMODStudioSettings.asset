@@ -539,7 +539,7 @@ MonoBehaviour:
   sourceProjectPath: Assets/DeepSeaGame/Content/Audio/DeepSeaGameFmod/DeepSeaGameFmod.fspro
   sourceBankPath: Assets/DeepSeaGame/Content/Audio/DeepSeaGameFmod/Build
   sourceBankPathUnformatted: 
-  BankRefreshCooldown: 5
+  BankRefreshCooldown: 1
   ShowBankRefreshWindow: 1
   AutomaticEventLoading: 1
   BankLoadType: 0
@@ -564,6 +564,7 @@ MonoBehaviour:
   - Ambience
   - Character
   - Tiles
+  - UI
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

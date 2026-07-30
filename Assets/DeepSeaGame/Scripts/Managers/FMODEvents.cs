@@ -11,6 +11,15 @@ namespace DeepSeaGame
         [field: SerializeField] public EventReference OceanAmbience { get; private set; }
         [field: SerializeField] public EventReference TitleMusic { get; private set; }
 
+        [field: Header("UI")]
+        [field: SerializeField] public EventReference InventoryOpenSFX { get; private set; }
+        [field: SerializeField] public EventReference InventoryCloseSFX { get; private set; }
+        [field: SerializeField] public EventReference SelectedSlotChangedSFX { get; private set; }
+        [field: SerializeField] public EventReference ItemPickupSFX { get; private set; }
+        [field: SerializeField] public EventReference SlotClickedSFX { get; private set; }
+        [field: SerializeField] public EventReference OxygenWarningSFX { get; private set; }
+
+
         private void Awake() 
         {
             Instance = this;    

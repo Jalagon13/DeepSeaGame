@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{71f39823-06bb-4e03-9e65-4323802af155}">
+		<property name="assetPath">
+			<value>UI/SelectedSlotChangedSFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.40370833333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{39bc47ab-d9b9-49aa-9609-5987d550cdd2}</destination>
+		</relationship>
+	</object>
+</objects>

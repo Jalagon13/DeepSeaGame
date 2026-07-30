@@ -15,8 +15,8 @@ MonoBehaviour:
   BaseSpeed: 3
   BaseMaxHealth: 12
   BaseDefense: 0
-  Damage: 15
-  KnockbackForce: 25
+  Damage: 3
+  KnockbackForce: 15
   PlayKnockback: 1
   DamageSFX:
     Guid:

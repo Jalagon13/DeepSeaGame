@@ -5247,6 +5247,48 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  <InventoryOpenSFX>k__BackingField:
+    Guid:
+      Data1: 1506416962
+      Data2: 1145673586
+      Data3: -1663414616
+      Data4: 1162197483
+    Path: event:/UI/InventoryOpenSFX
+  <InventoryCloseSFX>k__BackingField:
+    Guid:
+      Data1: 1784293304
+      Data2: 1222466985
+      Data3: -435673471
+      Data4: -1438932811
+    Path: event:/UI/InventoryCloseSFX
+  <SelectedSlotChangedSFX>k__BackingField:
+    Guid:
+      Data1: -1937724068
+      Data2: 1170312972
+      Data3: -562038889
+      Data4: -394649698
+    Path: event:/UI/SelectedSlotChangedSFX
+  <ItemPickupSFX>k__BackingField:
+    Guid:
+      Data1: -923423384
+      Data2: 1180473954
+      Data3: -2055817832
+      Data4: 131249875
+    Path: event:/UI/ItemPickupSFX
+  <SlotClickedSFX>k__BackingField:
+    Guid:
+      Data1: -307363930
+      Data2: 1108745695
+      Data3: -748887650
+      Data4: -1370485574
+    Path: event:/UI/SlotClickedSFX
+  <OxygenWarningSFX>k__BackingField:
+    Guid:
+      Data1: -487796461
+      Data2: 1255399678
+      Data3: 1067637890
+      Data4: -370651637
+    Path: event:/UI/OxygenWarningSFX
 --- !u!114 &1240150082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6407,6 +6449,7 @@ RectTransform:
   - {fileID: 1010223129}
   - {fileID: 464830370}
   - {fileID: 1787241838}
+  - {fileID: 2080725841}
   m_Father: {fileID: 620709479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7750,6 +7793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.MiningManager
   _miningRange: 4.5
   _timeBetweenMiningSounds: 0.225
+  _miningRestartDelay: 0.1125
 --- !u!114 &1794183286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7767,7 +7811,7 @@ MonoBehaviour:
   _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
   _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
-  _timeBetweenCollections: 0.1
+  _timeBetweenCollections: 0.08
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.2
   _startingItems:
@@ -9568,6 +9612,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.DepthUI
   _depthText: {fileID: 884655079}
   _useMetric: 1
+--- !u!1 &2080725840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080725841}
+  - component: {fileID: 2080725842}
+  m_Layer: 5
+  m_Name: OxygenWarningUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2080725841
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080725840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1594943423}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2080725842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080725840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67162023ba488496cbe224f4475cb5fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.OxygenWarningUI
 --- !u!1 &2100001000
 GameObject:
   m_ObjectHideFlags: 0

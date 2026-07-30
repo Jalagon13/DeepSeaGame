@@ -141,8 +141,9 @@ namespace DeepSeaGame
             OnInventoryChanged?.Invoke();
             OnCursorStackChanged?.Invoke(CursorStack.Clone());
 
-            CraftingMenuUI.Instance?.ShowCraftingMenu(recipes);
+            CraftingMenuUI.Instance.ShowCraftingMenu(recipes);
             GameInput.Instance.IsGameplayInputBlocked = true;
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryOpenSFX, default);
         }
 
         private void CloseInventory(bool force = false)
@@ -159,6 +160,7 @@ namespace DeepSeaGame
             CraftingMenuUI.Instance.HideCraftingMenu();
             GameInput.Instance.IsGameplayInputBlocked = false;
             Tooltip.HideUI();
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryCloseSFX, default);
         }
 
         private void HandleDeath()
@@ -308,7 +310,7 @@ namespace DeepSeaGame
                 Add(itemToCollect);
                 if (playCollectSound)
                 {
-                    // SoundManager.Instance.PlayOneShot(FMODEvents.Instance.ItemPickup, Player.Instance.transform.position);
+                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ItemPickupSFX, default);
                 }
 
                 string itemName = itemToCollect.Item.InGameName;
@@ -338,19 +340,6 @@ namespace DeepSeaGame
             _isCollecting = false;
         }
 
-        private void SpawnItemCollectPlate(InventoryStack itemToCollect)
-        {
-            string itemName = itemToCollect.Item.InGameName;
-            ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
-            itemPlate.DisplayedItem = itemToCollect;
-            itemPlate.OnAnimationComplete += () =>
-            {
-                Destroy(itemPlate.gameObject);
-                _itemPlates.Remove(itemName);
-            };
-            _itemPlates.Add(itemName, itemPlate);
-        }
-
         private void Add(InventoryStack stack)
         {
             int remainingAmount = stack.Amount;
@@ -364,33 +353,6 @@ namespace DeepSeaGame
             }
 
             RefreshAfterInventoryChange();
-        }
-
-        public int RemoveItem(ItemSO item, int amount = 1)
-        {
-            if (item == null || amount <= 0)
-            {
-                return amount;
-            }
-
-            int remainingAmount = amount;
-            for (int index = _slots.Count - 1; index >= 0 && remainingAmount > 0; index--)
-            {
-                InventoryStack slot = _slots[index];
-                if (slot.IsEmpty || slot.Item != item)
-                {
-                    continue;
-                }
-
-                remainingAmount -= slot.RemoveAmount(remainingAmount);
-            }
-
-            if (remainingAmount < amount)
-            {
-                RefreshAfterInventoryChange();
-            }
-
-            return remainingAmount;
         }
 
         private void FillExistingStacks(ItemSO item, ref int remainingAmount)
@@ -444,6 +406,46 @@ namespace DeepSeaGame
             }
         }
 
+        private void SpawnItemCollectPlate(InventoryStack itemToCollect)
+        {
+            string itemName = itemToCollect.Item.InGameName;
+            ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
+            itemPlate.DisplayedItem = itemToCollect;
+            itemPlate.OnAnimationComplete += () =>
+            {
+                Destroy(itemPlate.gameObject);
+                _itemPlates.Remove(itemName);
+            };
+            _itemPlates.Add(itemName, itemPlate);
+        }
+
+        public int RemoveItem(ItemSO item, int amount = 1)
+        {
+            if (item == null || amount <= 0)
+            {
+                return amount;
+            }
+
+            int remainingAmount = amount;
+            for (int index = _slots.Count - 1; index >= 0 && remainingAmount > 0; index--)
+            {
+                InventoryStack slot = _slots[index];
+                if (slot.IsEmpty || slot.Item != item)
+                {
+                    continue;
+                }
+
+                remainingAmount -= slot.RemoveAmount(remainingAmount);
+            }
+
+            if (remainingAmount < amount)
+            {
+                RefreshAfterInventoryChange();
+            }
+
+            return remainingAmount;
+        }
+
         public void RefreshAfterInventoryChange()
         {
             UpdateSelectedHotbarStack();
@@ -461,6 +463,7 @@ namespace DeepSeaGame
             {
                 SelectedHotbarSlotIndex = 0;
                 UpdateSelectedHotbarStack();
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectedSlotChangedSFX, default);
                 return;
             }
 
@@ -472,6 +475,7 @@ namespace DeepSeaGame
 
             SelectedHotbarSlotIndex = newIndex;
             UpdateSelectedHotbarStack();
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectedSlotChangedSFX, default);
         }
 
         private void UpdateSelectedHotbarStack()
@@ -480,7 +484,6 @@ namespace DeepSeaGame
             {
                 SelectedHotbarStack = new InventoryStack();
                 OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack.Clone());
-                Debug.Log($"Invalid hotbar slot index: {SelectedHotbarSlotIndex}");
                 return;
             }
 

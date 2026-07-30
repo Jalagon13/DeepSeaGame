@@ -20,11 +20,18 @@ MonoBehaviour:
   PlayKnockback: 1
   DamageSFX:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1742083388
+      Data2: 1341301597
+      Data3: -454033518
+      Data4: 443739626
+    Path: event:/Player/PlayerHurtSFX
+  DeathSFX:
+    Guid:
+      Data1: 1742083388
+      Data2: 1341301597
+      Data3: -454033518
+      Data4: 443739626
+    Path: event:/Player/PlayerHurtSFX
   CanDie: 1
   CanBeKnockedBack: 1
   KnockbackResist: 0
@@ -37,7 +44,7 @@ MonoBehaviour:
   MinIdleDuration: 2.5
   MaxIdleDuration: 5
   LootDrops: []
-  BaseOxygenDuration: 600
+  BaseOxygenDuration: 10
   OxygenRefillDuration: 2
   OxygenDepletedTimeBetweenDamage: 5
   OxygenDepletedDamage: 10
