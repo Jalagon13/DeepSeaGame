@@ -34,7 +34,7 @@ namespace DeepSeaGame
 
             foreach (MultiTileInstance instance in _activeInstances.Values)
             {
-                instance.Behavior.Update(instance, WorldManager.Instance.WorldDataStore, Time.deltaTime);
+                instance.Behavior.OnUpdate(instance, WorldManager.Instance.WorldDataStore, Time.deltaTime);
             }
         }
 

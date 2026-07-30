@@ -50,7 +50,7 @@ namespace DeepSeaGame
             }
         }
 
-        public override void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
+        public override void OnUpdate(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime)
         {
             if(instance.Anchor.y < _minYHeightToWork)
             {

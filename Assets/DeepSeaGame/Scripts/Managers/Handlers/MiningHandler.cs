@@ -19,6 +19,9 @@ namespace DeepSeaGame
         [SerializeField]
         private float _timeBetweenMiningSounds = 0.225f;
 
+        [SerializeField]
+        private float _miningRestartDelay = 0.1f;
+
         private MiningState _miningState;
         public MiningState MiningState => _miningState;
 
@@ -30,6 +33,9 @@ namespace DeepSeaGame
         
         private Vector2Int _secondaryTargetTilePosition;
         private TileSO _secondaryTargetTile;
+
+        private float _primaryRestartTimer;
+        private float _secondaryRestartTimer;
 
         private ToolItemSO _currentTool;
         public ToolItemSO CurrentTool => _currentTool;
@@ -69,6 +75,9 @@ namespace DeepSeaGame
 
         private void UpdateMiningActivity()
         {
+            _primaryRestartTimer = Mathf.Max(0f, _primaryRestartTimer - Time.deltaTime);
+            _secondaryRestartTimer = Mathf.Max(0f, _secondaryRestartTimer - Time.deltaTime);
+
             bool primaryHeld = GameInput.Instance != null && GameInput.Instance.PrimaryActionHeldDown;
             bool secondaryHeld = GameInput.Instance != null && GameInput.Instance.SecondaryActionHeldDown;
 
@@ -109,6 +118,12 @@ namespace DeepSeaGame
 
         private void TryStartMiningRoutine(MiningActionType actionType)
         {
+            float restartTimer = actionType == MiningActionType.Primary ? _primaryRestartTimer : _secondaryRestartTimer;
+            if (restartTimer > 0f)
+            {
+                return;
+            }
+
             if (_currentTool == null || WorldManager.Instance.WorldDataStore == null)
             {
                 return;
@@ -256,11 +271,13 @@ namespace DeepSeaGame
             {
                 _primaryMiningCoroutine = null;
                 _primaryTargetTile = null;
+                _primaryRestartTimer = _miningRestartDelay;
             }
             else
             {
                 _secondaryMiningCoroutine = null;
                 _secondaryTargetTile = null;
+                _secondaryRestartTimer = _miningRestartDelay;
             }
         }
 

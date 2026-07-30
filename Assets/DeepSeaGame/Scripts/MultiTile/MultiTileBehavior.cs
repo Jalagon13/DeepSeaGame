@@ -6,6 +6,6 @@ namespace DeepSeaGame
     {
         public virtual void OnPlaced(MultiTileInstance instance, WorldDataStore dataStore) { }
         public virtual void OnRemoved(MultiTileInstance instance, WorldDataStore dataStore) { }
-        public abstract void Update(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime);
+        public abstract void OnUpdate(MultiTileInstance instance, WorldDataStore dataStore, float deltaTime);
     }
 }
