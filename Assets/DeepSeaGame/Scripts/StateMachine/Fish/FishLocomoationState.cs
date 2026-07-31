@@ -28,7 +28,11 @@ namespace DeepSeaGame
 
         public override void CheckSwitchStates()
         {
-            
+            if (Context.ServerCharacter.LifeState == LifeState.Dead)
+            {
+                Vector3 payload = new(Context.ServerCharacter.InflicterToTargetDirection.x, Context.ServerCharacter.InflicterToTargetDirection.y, Context.ServerCharacter.KnockbackForceFromInflicter);
+                SwitchState(new AIStateData(AIState.Dead, payload));
+            }
         }
     }
 }

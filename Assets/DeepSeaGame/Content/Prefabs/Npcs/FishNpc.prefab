@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8545628327912391012}
   - component: {fileID: 6383856562982597883}
-  - component: {fileID: 3102985205137443688}
+  - component: {fileID: 7232533304204167984}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -128,7 +128,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.25, y: 1.25}
   m_EdgeRadius: 0
---- !u!114 &3102985205137443688
+--- !u!114 &7232533304204167984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,9 +139,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a58cfab5614426b860f302feb082197, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ContactDamageDealer
+  m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.ContactDamageDealer
   ShowTopMostFoldoutHeaderGroup: 1
-  _dealDamage: 1
+  _dealDamage: 0
 --- !u!1 &4079201878796104046
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3725037719
+  GlobalObjectIdHash: 2431297791
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -431,8 +431,8 @@ MonoBehaviour:
   _gridCollider: {fileID: 4704644086379418733}
   _gravity: -30
   _terminalVelocity: -50
-  _minMoveDuration: 3
-  _maxMoveDuration: 6
+  _minMoveDuration: 10
+  _maxMoveDuration: 20
   _bobAmplitude: 0.8
   _bobFrequency: 0.5
   _fleeDistance: 20

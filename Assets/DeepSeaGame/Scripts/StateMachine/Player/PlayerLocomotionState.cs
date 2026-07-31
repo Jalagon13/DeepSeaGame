@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    public class PlayerGroundedState : BaseState
+    public class PlayerLocomotionState : BaseState
     {
-        private PlayerStateMachine _ctx;
+        private readonly PlayerStateMachine _ctx;
 
-        public PlayerGroundedState(AIState key, StateMachine context) : base(key, context)
+        public PlayerLocomotionState(AIState key, StateMachine context) : base(key, context)
         {
             _ctx = Context as PlayerStateMachine;
             IsSuperState = true;
@@ -26,6 +26,13 @@ namespace DeepSeaGame
 
         public override void CheckSwitchStates()
         {
+            if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
+            {
+                Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);
+                SwitchState(new AIStateData(AIState.Dead, payload));
+                return;
+            }
+
             if (!GameInput.Instance.IsGameplayInputBlocked)
             {
                 if (_ctx.HeldItem is ToolItemSO tool && (GameInput.Instance.PrimaryActionHeldDown || GameInput.Instance.SecondaryActionHeldDown))
@@ -39,11 +46,6 @@ namespace DeepSeaGame
                         SwitchState(new AIStateData(AIState.Attacking));
                     }
                 }
-            }
-            else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
-            {
-                Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);
-                SwitchState(new AIStateData(AIState.Dead, payload));
             }
         }
 

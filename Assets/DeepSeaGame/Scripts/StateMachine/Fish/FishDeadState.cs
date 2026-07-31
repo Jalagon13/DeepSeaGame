@@ -5,7 +5,8 @@ namespace DeepSeaGame
 {
     public class FishDeadState : BaseState
     {
-        private FishStateMachine _ctx;
+        private readonly FishStateMachine _ctx;
+        private float _despawnTimer;
     
         public FishDeadState(AIState key, StateMachine context) : base(key, context)
         {
@@ -13,9 +14,10 @@ namespace DeepSeaGame
             _ctx = Context as FishStateMachine;
         }
 
+
         protected override void EnterState(AIStateData stateData)
         {
-
+            _despawnTimer = 2f; // Wait 2 seconds for client death animations before despawning
         }
 
         public override void ExitState()
@@ -25,7 +27,17 @@ namespace DeepSeaGame
 
         public override void UpdateState()
         {
-
+            if (_despawnTimer > 0)
+            {
+                _despawnTimer -= Time.deltaTime;
+                if (_despawnTimer <= 0)
+                {
+                    if (NpcManager.Instance != null)
+                    {
+                        NpcManager.Instance.DespawnNpc(_ctx.ServerCharacter);
+                    }
+                }
+            }
         }
 
         public override void CheckSwitchStates()
@@ -37,7 +49,7 @@ namespace DeepSeaGame
         {
             Debug.Log($"Entering DeadState");
             // NTFS: Player death animations here, just turn off visuals for now
-            _ctx.ServerCharacter.ClientFeedbacks.PlayDeathFeedbacksRpc(stateData.Payload);
+            _ctx.ServerCharacter.ClientFeedbacks.PlayDeathFeedbacks(stateData.Payload);
             _ctx.ServerCharacter.ClientCharacter.Visuals.SetActive(false);
         }
 

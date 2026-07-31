@@ -29,6 +29,13 @@ namespace DeepSeaGame
 
         public override void CheckSwitchStates()
         {
+            if (_jellyContext.ServerCharacter.LifeState == LifeState.Dead)
+            {
+                Vector3 payload = new(_jellyContext.ServerCharacter.InflicterToTargetDirection.x, _jellyContext.ServerCharacter.InflicterToTargetDirection.y, _jellyContext.ServerCharacter.KnockbackForceFromInflicter);
+                SwitchState(new AIStateData(AIState.Dead, payload));
+                return;
+            }
+
             if (_jellyContext.ServerCharacter.MovementState.Value == MovementState.Knockback)
             {
                 if (CurrentSubState.StateKey != AIState.Knockbacked)

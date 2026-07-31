@@ -7,7 +7,7 @@ namespace DeepSeaGame
         private const float DefaultDecayMultiplier = 5f;
         private const float MinKnockbackForce = 0f;
         private const float MaxKnockbackForce = 100f;
-        private const float EndThreshold = 0.75f;
+        private const float EndThreshold = 1.5f;
         
         private ServerCharacter _serverCharacter;
         private float _decayMultiplier = DefaultDecayMultiplier;

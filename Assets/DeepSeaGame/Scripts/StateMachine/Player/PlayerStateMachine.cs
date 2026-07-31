@@ -18,7 +18,7 @@ namespace DeepSeaGame
             _states[AIState.Knockbacked] = new PlayerKnockbackState(AIState.Knockbacked, this);
 
             // Super States
-            _states[AIState.Locomotion] = new PlayerGroundedState(AIState.Locomotion, this);
+            _states[AIState.Locomotion] = new PlayerLocomotionState(AIState.Locomotion, this);
             _states[AIState.Attacking] = new PlayerAttackState(AIState.Attacking, this);
             _states[AIState.Mining] = new PlayerMiningState(AIState.Mining, this);
             _states[AIState.Dead] = new PlayerDeadState(AIState.Dead, this);

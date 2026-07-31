@@ -206,11 +206,6 @@ namespace DeepSeaGame
                 {
                     LootTable.SpawnLoot(_characterData.LootDrops, transform.position);
                 }
-
-                if (_characterData.IsNpc && NpcManager.Instance != null)
-                {
-                    NpcManager.Instance.DespawnNpc(this);
-                }
             }
         }
 

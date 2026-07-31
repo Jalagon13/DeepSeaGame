@@ -43,8 +43,7 @@ namespace DeepSeaGame
             // _damageFeedback.PlayFeedbacks();
         }
 
-        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
-        public void PlayDeathFeedbacksRpc(Vector3 payload)
+        public void PlayDeathFeedbacks(Vector3 payload)
         {
             Vector2 hitDirection = new(payload.x, payload.y);
             float knockbackForce = payload.z;

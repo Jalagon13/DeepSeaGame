@@ -278,7 +278,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _playerSO: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
   _headPoint: {fileID: 409362107588107734}
-  _oxygenWarningThreshold: 0.75
+  _oxygenWarningThreshold: 0.35
 --- !u!114 &2797800751685443813
 MonoBehaviour:
   m_ObjectHideFlags: 0

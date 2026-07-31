@@ -18,7 +18,7 @@ MonoBehaviour:
   _isStackable: 0
   <HarvestType>k__BackingField: 1
   <HeldObject>k__BackingField: {fileID: 3520576136754281615, guid: 9b2bb134625414610bd039dc8f3b1f23, type: 3}
-  <Damage>k__BackingField: 4
+  <Damage>k__BackingField: 10
   <Knockback>k__BackingField: 25
   <AttackDuration>k__BackingField: 0.6
   <ThrustDistance>k__BackingField: 3.75
