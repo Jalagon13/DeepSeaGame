@@ -47,8 +47,16 @@ namespace DeepSeaGame
         public void TransitionToState(AIStateData stateData)
         {
             _isTransitioningState = true;
+            var prevSubStateKey = _currentState.CurrentSubState?.StateKey;
+            
             _currentState.ExitState();
             _currentState = _states[stateData.CurrentState];
+            
+            if (prevSubStateKey != null)
+            {
+                _currentState.SetSubState(prevSubStateKey.Value);
+            }
+            
             _currentState.EnterStateWithNetworkSync(stateData);
             _isTransitioningState = false;
         }

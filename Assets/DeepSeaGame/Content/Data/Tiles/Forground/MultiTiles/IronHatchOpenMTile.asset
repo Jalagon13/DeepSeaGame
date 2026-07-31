@@ -21,7 +21,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
   <StringID>k__BackingField: IronHatchOpen
-  <Hardness>k__BackingField: 0.65
+  <Hardness>k__BackingField: 0.75
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 1

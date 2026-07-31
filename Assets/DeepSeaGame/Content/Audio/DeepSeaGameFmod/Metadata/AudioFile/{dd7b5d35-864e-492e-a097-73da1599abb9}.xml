@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{dd7b5d35-864e-492e-a097-73da1599abb9}">
+		<property name="assetPath">
+			<value>Character/Splashing/Woosh2SFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3143541666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{39bc47ab-d9b9-49aa-9609-5987d550cdd2}</destination>
+		</relationship>
+	</object>
+</objects>

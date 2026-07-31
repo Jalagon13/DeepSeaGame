@@ -5378,14 +5378,14 @@ MonoBehaviour:
       Data2: 1182242853
       Data3: 1667618225
       Data4: 1751957932
-    Path: event:/UnderwaterAMB
+    Path: event:/Ambience/UnderwaterAMB
   <TitleMusic>k__BackingField:
     Guid:
       Data1: 2138442955
       Data2: 1182242853
       Data3: 1667618225
       Data4: 1751957932
-    Path: event:/UnderwaterAMB
+    Path: event:/Ambience/UnderwaterAMB
   <InventoryOpenSFX>k__BackingField:
     Guid:
       Data1: 1506416962
@@ -5428,6 +5428,41 @@ MonoBehaviour:
       Data3: 1067637890
       Data4: -370651637
     Path: event:/UI/OxygenWarningSFX
+  <OxygenReplenishSFX>k__BackingField:
+    Guid:
+      Data1: 1437390986
+      Data2: 1148259379
+      Data3: 614569888
+      Data4: 1635266848
+    Path: event:/Player/OxygenReplenishSFX
+  <PlayerSwimSFX>k__BackingField:
+    Guid:
+      Data1: -2102575177
+      Data2: 1313280795
+      Data3: -1560040826
+      Data4: 1005198113
+    Path: event:/Player/PlayerSwimSFX
+  <EnterAirSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <EnterWaterSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <ThrustSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1240150082
 MonoBehaviour:
   m_ObjectHideFlags: 0

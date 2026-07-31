@@ -9,8 +9,8 @@ namespace DeepSeaGame
     public class PlayerMoveState : BaseState
     {
         private PlayerStateMachine _ctx;
-        // private Timer _playWalkSoundTimer;
-        // private float _walkSoundCooldown = 0.28f;
+        private Timer _playSwimSoundTimer;
+        private float _swimSoundCooldown = 0.75f;
 
         public PlayerMoveState(AIState key, StateMachine context) : base(key, context)
         {
@@ -19,18 +19,19 @@ namespace DeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            // Debug.Log("Player switched to move state");
-            PlayFootStepSound();
+            Debug.Log("Player switched to move state");
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
 
-            // _playWalkSoundTimer = new(_walkSoundCooldown);
-            // _playWalkSoundTimer.OnTimerEnd += PlayFootStepSound;
+            _playSwimSoundTimer = new(_swimSoundCooldown);
+            _playSwimSoundTimer.OnTimerEnd += PlaySwimSound;
         }
 
         public override void ExitState()
         {
-            // _playWalkSoundTimer.OnTimerEnd -= PlayFootStepSound;
-            // _playWalkSoundTimer.IsPaused = true;
-            // _playWalkSoundTimer = null;
+            Debug.Log($"Exit move state");
+            _playSwimSoundTimer.OnTimerEnd -= PlaySwimSound;
+            _playSwimSoundTimer.IsPaused = true;
+            _playSwimSoundTimer = null;
         }
 
         public override void CheckSwitchStates()
@@ -47,19 +48,13 @@ namespace DeepSeaGame
 
         public override void UpdateState()
         {
-            // _playWalkSoundTimer.Tick(Time.deltaTime);
+            _playSwimSoundTimer.Tick(Time.deltaTime);
         }
 
-        private void PlayFootStepSound(object sender, EventArgs e)
+        private void PlaySwimSound(object sender, EventArgs e)
         {
-            PlayFootStepSound();
-
-            // _playWalkSoundTimer.Reset();
-        }
-
-        private void PlayFootStepSound()
-        {
-            // SoundManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerFootsteps, Player.Instance.transform.position);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
+            _playSwimSoundTimer.Reset();
         }
     }
 }

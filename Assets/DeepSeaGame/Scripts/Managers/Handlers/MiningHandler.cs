@@ -310,6 +310,21 @@ namespace DeepSeaGame
             }
 
             tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
+
+            if (tileSO != null && actionType == MiningActionType.Primary && tileSO.BreakMode == TileBreakMode.SingleTileHit)
+            {
+                int yAbove = tilePosition.y + 1;
+                if (worldDataStore.IsInBounds(tilePosition.x, yAbove))
+                {
+                    ushort tileAboveId = worldDataStore.GetTileId(tilePosition.x, yAbove, WorldTm.ForegroundTilemap);
+                    TileSO tileAbove = GameDataRegistry.Instance.GetTileSOFromTileId(tileAboveId);
+                    if (tileAbove != null && tileAbove.BreakMode == TileBreakMode.FromHitTileUp)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return tileSO != null && tileSO.RequiredToolType == _currentTool.HarvestType;
         }
 

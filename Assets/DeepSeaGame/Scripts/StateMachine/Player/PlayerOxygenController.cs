@@ -163,7 +163,13 @@ namespace DeepSeaGame
             float maxCapacity = GetMaxOxygenCapacity();
             if (CurrentOxygen.Value < maxCapacity)
             {
+                bool wasRefilling = StateOfOxygen.Value == OxygenState.Refilling;
                 StateOfOxygen.Value = OxygenState.Refilling;
+
+                if (!wasRefilling)
+                {
+                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.OxygenReplenishSFX, default);
+                }
 
                 // Total Capacity / Seconds to Refill = Units per second
                 float refillRate = maxCapacity / _playerSO.OxygenRefillDuration;

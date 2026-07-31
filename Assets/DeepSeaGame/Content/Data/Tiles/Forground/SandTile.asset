@@ -924,7 +924,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: c953e2f874204c30bea8b8bfed0fec8e, type: 2}
   <StringID>k__BackingField: sand
-  <Hardness>k__BackingField: 0.65
+  <Hardness>k__BackingField: 0.75
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <ActsAsEnclosure>k__BackingField: 0

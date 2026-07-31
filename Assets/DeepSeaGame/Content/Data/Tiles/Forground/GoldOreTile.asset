@@ -924,7 +924,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: b34f1866235774760b38e5fb56ae52fd, type: 2}
   <StringID>k__BackingField: GoldOre
-  <Hardness>k__BackingField: 1
+  <Hardness>k__BackingField: 1.1
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <ActsAsEnclosure>k__BackingField: 0

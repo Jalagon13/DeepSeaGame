@@ -74,7 +74,7 @@ namespace DeepSeaGame
             _currentSuperState = state;
         }
 
-        protected void SetSubState(AIState aiState)
+        public void SetSubState(AIState aiState)
         {
             var state = Context.GetState(aiState);
 
