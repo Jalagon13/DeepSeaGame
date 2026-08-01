@@ -31,10 +31,35 @@ namespace DeepSeaGame
             yield return new WaitForSeconds(_initialCollectDelay);
             _canCollect = true;
         }
-        
+        [Header("Environment Physics")]
+        [SerializeField] private float _airGravityScale = 1f;
+        [SerializeField] private float _waterGravityScale = 0.2f;
+        [SerializeField] private float _airLinearDamping = 0f;
+        [SerializeField] private float _waterLinearDamping = 2f;
+
         private void FixedUpdate()
         {
+            if (!IsServer) return;
+
             if (_itemCollected) return;
+
+            if (WorldManager.Instance != null && WorldManager.Instance.IsWorldReady)
+            {
+                Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+                WorldDataStore worldData = WorldManager.Instance.WorldDataStore;
+                bool isInAir = !worldData.IsBelowSeaLevel(gridPos.y) || worldData.IsUnderwaterAirAt(gridPos.x, gridPos.y);
+
+                if (isInAir)
+                {
+                    _rb.gravityScale = _airGravityScale;
+                    _rb.linearDamping = _airLinearDamping;
+                }
+                else
+                {
+                    _rb.gravityScale = _waterGravityScale;
+                    _rb.linearDamping = _waterLinearDamping;
+                }
+            }
             
             Player closestPlayer = null;
             float closestDist = Mathf.Infinity;

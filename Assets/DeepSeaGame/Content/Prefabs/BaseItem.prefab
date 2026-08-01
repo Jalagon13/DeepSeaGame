@@ -297,3 +297,7 @@ MonoBehaviour:
   _attractSpeed: 18
   _turnSharpness: 5
   _initialCollectDelay: 0.5
+  _airGravityScale: 1
+  _waterGravityScale: 0.2
+  _airLinearDamping: 0
+  _waterLinearDamping: 2

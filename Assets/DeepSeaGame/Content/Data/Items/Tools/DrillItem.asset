@@ -17,8 +17,8 @@ MonoBehaviour:
   _inventoryIcon: {fileID: -7146235536662460506, guid: f808ecc7617114e75ba4fad147d14471, type: 3}
   _isStackable: 0
   <HarvestType>k__BackingField: 0
-  <HeldObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
-  <Damage>k__BackingField: 4
+  <HeldObject>k__BackingField: {fileID: 1467723375211706299, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
+  <Damage>k__BackingField: 2
   <Knockback>k__BackingField: 6
   <AttackDuration>k__BackingField: 0.35
   <ThrustDistance>k__BackingField: 3

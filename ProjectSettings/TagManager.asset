@@ -51,5 +51,8 @@ TagManager:
   - name: Lightmap
     uniqueID: 794534947
     locked: 0
+  - name: Text
+    uniqueID: 1166913743
+    locked: 0
   m_RenderingLayers:
   - Default

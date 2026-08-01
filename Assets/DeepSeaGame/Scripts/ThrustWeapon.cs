@@ -1,12 +1,29 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 
 namespace DeepSeaGame
 {
     public class ThrustWeapon : HeldObject
     {
         [SerializeField] private Transform _thrustWeaponTip;
+        private List<DamageReceiver> _targetsHit = new();
+
+        public override void OnStart(ToolItemSO toolItem = null, bool isAttacking = false)
+        {
+            base.OnStart(toolItem, isAttacking);
+            if (isAttacking)
+            {
+                _targetsHit.Clear();
+            }
+        }
+
+        public override void OnEnd()
+        {
+            base.OnEnd();
+            _targetsHit.Clear();
+        }
 
         public override void ExecuteAttack(PlayerArmController armController, Direction swingDir, Direction facingDir, ToolItemSO tool, Action onComplete)
         {
@@ -42,6 +59,38 @@ namespace DeepSeaGame
                     holder.localPosition = originalLocalPos;
                     onComplete?.Invoke();
                 });
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            // Only process damage on the client who owns the player character during a swing
+            if (!_isAttacking || _playerServerCharacter == null || !_playerServerCharacter.IsOwner)
+            {
+                return;
+            }
+
+            // Find ServerCharacter on the hit object, supporting child colliders
+            ServerCharacter targetCharacter = collision.GetComponentInParent<ServerCharacter>();
+            
+            if (targetCharacter == null || targetCharacter.CharacterData == null || !targetCharacter.CharacterData.IsNpc)
+            {
+                return;
+            }
+
+            DamageReceiver targetReceiver = targetCharacter.DamageReceiver;
+
+            // Ensure NPC is alive and hasn't been damaged yet during this specific swing
+            if (!_targetsHit.Contains(targetReceiver) && targetReceiver.IsAlive())
+            {
+                _targetsHit.Add(targetReceiver);
+
+                int damage = _currentToolItem != null ? _currentToolItem.Damage : 0;
+                int knockback = _currentToolItem != null ? _currentToolItem.Knockback : 0;
+
+                // Apply damage (negative HP value) and pass knockback
+                targetReceiver.ReceiveHP(_playerServerCharacter, -damage, true, knockback);
+                Debug.Log($"[{gameObject.name}] Dealt {damage} damage and {knockback} knockback to NPC: {targetCharacter.name}");
+            }
         }
     }
 }

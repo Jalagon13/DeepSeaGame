@@ -53,6 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectPrecipicePT.RecipePanelUI
   _nameText: {fileID: 7610264431024018774}
   _iconImage: {fileID: 3839113189101791388}
+  _recipeBackground: {fileID: 6901462116844340719}
+  _craftableBgColor: {r: 0.40161088, g: 0.84149337, b: 0.8962264, a: 1}
+  _craftableTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _uncCraftableBgColor: {r: 0.5849056, g: 0.251068, b: 0.26021737, a: 1}
+  _unCraftableTextColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0.95686275}
 --- !u!1 &1235997296220754500
 GameObject:
   m_ObjectHideFlags: 0
