@@ -25,6 +25,7 @@ namespace DeepSeaGame
         [field: SerializeField] public EventReference EnterAirSFX { get; private set; }
         [field: SerializeField] public EventReference EnterWaterSFX { get; private set; }
         [field: SerializeField] public EventReference ThrustSFX { get; private set; }
+        [field: SerializeField] public EventReference DrillSFX { get; private set; }
 
 
         private void Awake() 

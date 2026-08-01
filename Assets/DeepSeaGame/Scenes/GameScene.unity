@@ -5463,6 +5463,13 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  <DrillSFX>k__BackingField:
+    Guid:
+      Data1: 1564590649
+      Data2: 1298363969
+      Data3: -1910238327
+      Data4: 1043532843
+    Path: event:/Player/DrillSFX
 --- !u!114 &1240150082
 MonoBehaviour:
   m_ObjectHideFlags: 0

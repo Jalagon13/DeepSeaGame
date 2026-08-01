@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{77a3bf87-5d9c-4f7a-b32d-a9dc25545d14}">
+		<property name="assetPath">
+			<value>Player/DrillSFX.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>48.640374999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{39bc47ab-d9b9-49aa-9609-5987d550cdd2}</destination>
+		</relationship>
+	</object>
+</objects>
