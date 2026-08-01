@@ -9,27 +9,14 @@ namespace DeepSeaGame
     {
         public static LightmapManager Instance { get; private set; }
         
-        [Header("References")]
-        [SerializeField] 
-        private RawImage _lightmapOverlay;
-
+        [SerializeField] private RawImage _lightmapOverlay;
+        
         [Header("Light Attenuation Settings")]
-
         [Tooltip("The number of tiles light can traverse from its source before attenuation/dimming begins.")]
-        [SerializeField]
-        private int _tileAmountBeforeAttenuationBegins = 2;
-
-        [Tooltip("How what value the brightest tile is")]
-        [SerializeField]
-        private float _fullBrightnessInterpretation = 15f;
-
-        [Tooltip("How much light dims when propagating into a solid foreground tile.")]
-        [SerializeField] 
-        private float _solidForegroundAttenuation = 1.0f;
-
-        [Tooltip("How much light dims when propagating into a background-only tile.")]
-        [SerializeField] 
-        private float _backgroundOnlyAttenuation = 0.5f;
+        [SerializeField] private int _tileAmountBeforeAttenuationBegins = 2;
+        [SerializeField] private float _fullBrightnessInterpretation = 15f;
+        [SerializeField] private float _solidForegroundAttenuation = 1.0f;
+        [SerializeField] private float _backgroundOnlyAttenuation = 0.5f;
 
         [Header("Flashlight Settings")]
         [Tooltip("Controls how sharply the flashlight cone fades toward its edges. 1 = linear, 2+ = brighter core with sharper falloff.")]
@@ -53,15 +40,9 @@ namespace DeepSeaGame
         [SerializeField, Min(1)]
         private int _blurPasses = 1;
 
-        // [Header("Blending Properties")]
-        // [Tooltip("Custom material using the Multiply shader to darken the scene. If left empty, renders the raw grayscale texture.")]
-        // [SerializeField] 
-        // private Material _multiplyMaterial;
-
         [Header("Padding Settings")]
         [Tooltip("Extra padding (in tiles) around the camera frustum for light calculations. Prevents lighting pop-in on screen edges.")]
-        [SerializeField] 
-        private int _extraLightmapPadding = 8;
+        [SerializeField] private int _extraLightmapPadding = 8;
 
         // Cached runtime variables to completely eliminate GC garbage collection overhead
         private WorldDataStore _worldDataStore;
