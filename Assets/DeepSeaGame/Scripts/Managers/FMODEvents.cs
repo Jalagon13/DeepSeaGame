@@ -22,9 +22,6 @@ namespace DeepSeaGame
         [field: Header("Player")]
         [field: SerializeField] public EventReference OxygenReplenishSFX { get; private set; }
         [field: SerializeField] public EventReference PlayerSwimSFX { get; private set; }
-        [field: SerializeField] public EventReference EnterAirSFX { get; private set; }
-        [field: SerializeField] public EventReference EnterWaterSFX { get; private set; }
-        [field: SerializeField] public EventReference ThrustSFX { get; private set; }
         [field: SerializeField] public EventReference DrillSFX { get; private set; }
 
 

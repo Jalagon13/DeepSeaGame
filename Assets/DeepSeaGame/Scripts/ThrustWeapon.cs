@@ -2,12 +2,15 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using FMODUnity;
 
 namespace DeepSeaGame
 {
     public class ThrustWeapon : HeldObject
     {
         [SerializeField] private Transform _thrustWeaponTip;
+        [SerializeField] private EventReference _thrustSound;
+        
         private List<DamageReceiver> _targetsHit = new();
 
         public override void OnStart(ToolItemSO toolItem = null, bool isAttacking = false)
@@ -17,6 +20,8 @@ namespace DeepSeaGame
             {
                 _targetsHit.Clear();
             }
+            
+            AudioManager.Instance.PlayOneShot(_thrustSound, transform.root.position);
         }
 
         public override void OnEnd()

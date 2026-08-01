@@ -86,7 +86,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -186,7 +186,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ThrustWeapon
   _collider: {fileID: 8196967562198568353}
   _thrustWeaponTip: {fileID: 2879120723829211110}
-  _thrustDistance: 3.5
+  _thrustSound:
+    Guid:
+      Data1: -2102575177
+      Data2: 1313280795
+      Data3: -1560040826
+      Data4: 1005198113
+    Path: event:/Player/PlayerSwimSFX
 --- !u!1 &6829302794521760813
 GameObject:
   m_ObjectHideFlags: 0
