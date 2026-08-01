@@ -58,8 +58,15 @@ namespace DeepSeaGame
             }
         }
 
+        private bool IsPlayerDead()
+        {
+            return Player.Instance != null && Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Dead;
+        }
+
         private void Update()
         {
+            if (IsPlayerDead()) return;
+
             _activeHandler?.Tick();
         }
 
@@ -89,7 +96,7 @@ namespace DeepSeaGame
 
         private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
         {
-            if (!e.started)
+            if (!e.started || IsPlayerDead())
             {
                 return;
             }
@@ -99,7 +106,7 @@ namespace DeepSeaGame
 
         private void OnSecondaryActionStarted(object sender, InputAction.CallbackContext e)
         {
-            if (!e.started)
+            if (!e.started || IsPlayerDead())
             {
                 return;
             }

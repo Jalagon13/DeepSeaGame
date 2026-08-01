@@ -11,22 +11,17 @@ namespace DeepSeaGame
     {
         public event Action<bool> AimingStateChanged;
 
-        [SerializeField]
-        private GameObject _heldItemPivot;
-        [SerializeField]
-        private GameObject _heldItemHolder;
-        
-        [Header("Pivots")]
-        [SerializeField]
-        private Transform _rightPivot;
-        [SerializeField]
-        private Transform _leftPivot;
-        
+        [SerializeField] private GameObject _heldItemPivot;
+        [SerializeField] private GameObject _heldItemHolder;
+        [SerializeField] private Transform _rightPivot;
+        [SerializeField] private Transform _leftPivot;
+
         private HeldObject _currentHeldObject;
         private HeldObject _currentHeldPrefab;
         private ServerCharacter _serverCharacter;
 
         public bool IsAttacking { get; private set; }
+        
         private bool _isAiming;
         public bool IsAiming => _isAiming;
         
@@ -54,7 +49,9 @@ namespace DeepSeaGame
             if(_isAiming)
             {
                 _heldItemPivot.transform.rotation = Quaternion.AngleAxis(AngleToMouse.Value, Vector3.forward);
-                SetPivotPosition(AimDirection.Value);
+                // Always resolve to a left or right pivot based on which horizontal half the mouse is on
+                Direction pivotSide = GetPivotSide(AngleToMouse.Value);
+                SetPivotPosition(pivotSide);
             }
         }
 
@@ -122,7 +119,8 @@ namespace DeepSeaGame
             ToolItemSO toolItemSO = GameDataRegistry.Instance.GetItemSOFromItemId(toolItemId) as ToolItemSO;
 
             EnsureCurrentHeldObject(toolItemSO.HeldObject);
-            SetPivotPosition(facingDir);
+            Direction pivotSide = (facingDir == Direction.Left) ? Direction.Left : Direction.Right; // Resolve facingDir to a valid pivot side (Left or Right)
+            SetPivotPosition(pivotSide);
 
             _heldItemHolder.SetActive(true);
             _currentHeldObject.OnStart(toolItemSO, true);
@@ -161,9 +159,15 @@ namespace DeepSeaGame
                     _heldItemPivot.transform.position = _leftPivot.transform.position;
                     break;
                 case Direction.Right:
+                default:
                     _heldItemPivot.transform.position = _rightPivot.transform.position;
                     break;
             }
+        }
+
+        public Direction GetPivotSide(float angle)
+        {
+            return (angle >= 90f && angle <= 270f) ? Direction.Left : Direction.Right;
         }
 
         private float NormalizeAngle(float angle)
@@ -173,10 +177,21 @@ namespace DeepSeaGame
 
         private Direction DetermineCardinalDirection(float angle)
         {
-            if (angle < 45 || angle > 315) return Direction.Right;
-            if (angle < 135) return Direction.Up;
-            if (angle < 225) return Direction.Left;
-            return Direction.Down;
+            // Left half: 90-270 degrees. Within that, 90-135 and 225-270 are up/down edges.
+            bool isLeftHalf = angle >= 90f && angle <= 270f;
+
+            if (isLeftHalf)
+            {
+                if (angle < 135f) return Direction.Up;   // upper-left quadrant -> Up
+                if (angle > 225f) return Direction.Down; // lower-left quadrant -> Down
+                return Direction.Left;
+            }
+            else
+            {
+                if (angle > 315f || angle < 45f) return Direction.Right; // pure right
+                if (angle <= 315f && angle >= 270f) return Direction.Down; // lower-right
+                return Direction.Up; // upper-right (45-90)
+            }
         }
 
         
