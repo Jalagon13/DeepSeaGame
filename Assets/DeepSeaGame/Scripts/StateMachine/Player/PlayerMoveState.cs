@@ -19,7 +19,7 @@ namespace DeepSeaGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log("Player switched to move state");
+            // Debug.Log("Player switched to move state");
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
 
             _playSwimSoundTimer = new(_swimSoundCooldown);
@@ -28,7 +28,7 @@ namespace DeepSeaGame
 
         public override void ExitState()
         {
-            Debug.Log($"Exit move state");
+            // Debug.Log($"Exit move state");
             _playSwimSoundTimer.OnTimerEnd -= PlaySwimSound;
             _playSwimSoundTimer.IsPaused = true;
             _playSwimSoundTimer = null;

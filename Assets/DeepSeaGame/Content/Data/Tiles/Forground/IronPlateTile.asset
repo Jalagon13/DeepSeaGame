@@ -924,7 +924,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
   <StringID>k__BackingField: IronPlate
-  <Hardness>k__BackingField: 0.75
+  <Hardness>k__BackingField: 0.7
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <ActsAsEnclosure>k__BackingField: 0

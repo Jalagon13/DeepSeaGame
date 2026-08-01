@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.DrillObject
   _collider: {fileID: 4317104345207949285}
   _drillSr: {fileID: 610568141150525354}
-  _damageInterval: 0.2
+  _damageInterval: 0.3
   _vibrationAmount: 0.025
 --- !u!1 &4118800264028296094
 GameObject:

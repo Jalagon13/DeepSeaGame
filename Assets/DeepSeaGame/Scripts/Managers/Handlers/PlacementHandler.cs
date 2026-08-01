@@ -163,6 +163,8 @@ namespace DeepSeaGame
                         break;
                 }
             }
+            
+            AudioManager.Instance.PlayOneShot(tileSO.PlaceSFX, default);
         }
 
         public bool CanHandle(ItemSO item)

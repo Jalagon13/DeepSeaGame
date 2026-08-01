@@ -924,7 +924,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
   <StringID>k__BackingField: LampTile
-  <Hardness>k__BackingField: 1
+  <Hardness>k__BackingField: 0.7
   <LightValue>k__BackingField: 9
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0

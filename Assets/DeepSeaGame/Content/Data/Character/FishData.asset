@@ -39,7 +39,7 @@ MonoBehaviour:
   CanMove: 1
   TurnSharpness: 2
   IsNpc: 1
-  SlotAmount: 0.05
+  SlotAmount: 0.3
   NpcPrefab: {fileID: 3431724271537848667, guid: 15cc30cf7502c4e889d2296a4953e615, type: 3}
   MinIdleDuration: 1.25
   MaxIdleDuration: 2.25
