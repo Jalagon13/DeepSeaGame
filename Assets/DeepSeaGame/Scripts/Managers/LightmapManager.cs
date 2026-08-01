@@ -205,6 +205,9 @@ namespace DeepSeaGame
                     int worldX = inflatedBounds.x + localX / _lightTilesPerGameTile;
                     int worldY = inflatedBounds.y + localY / _lightTilesPerGameTile;
 
+                    // Skip tiles outside world bounds — they must not act as light sources
+                    if (!_worldDataStore.IsInBounds(worldX, worldY)) continue;
+
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
                     TileSO fgTile = GameDataRegistry.Instance.GetTileSOFromTileId(fgId);
@@ -258,6 +261,9 @@ namespace DeepSeaGame
 
                     int worldX = inflatedBounds.x + nextX / _lightTilesPerGameTile;
                     int worldY = inflatedBounds.y + nextY / _lightTilesPerGameTile;
+
+                    // Stop BFS propagation at the world boundary — don't let light leak through out-of-bounds space
+                    if (!_worldDataStore.IsInBounds(worldX, worldY)) continue;
 
                     ushort fgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap);
                     ushort bgId = _worldDataStore.GetTileId(worldX, worldY, WorldTm.BackgroundTilemap);
