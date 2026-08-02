@@ -16,5 +16,5 @@ MonoBehaviour:
   _itemDescription: 
   _inventoryIcon: {fileID: -5166971978470745324, guid: f808ecc7617114e75ba4fad147d14471, type: 3}
   _isStackable: 0
-  <AdditionalOxygen>k__BackingField: 180
+  <AdditionalOxygen>k__BackingField: 120
   <OxygenRecoveryDuration>k__BackingField: 3

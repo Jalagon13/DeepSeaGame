@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DeepSeaGame
@@ -33,6 +34,14 @@ namespace DeepSeaGame
             _itemReq = itemRequirement;
 
             UpdateIngredientStatus();
+
+            TooltipHoverHandler hover = gameObject.AddComponent<TooltipHoverHandler>();
+            hover.OnHoverEnter = () =>
+            {
+                Tooltip.ShowNew();
+                string itemText = $"{_itemReq.Item.InGameName}<br>{_itemReq.Item.GetDescription()}";
+                Tooltip.JustText(itemText, Color.white, fontSize: 12f);
+            };
         }
 
         private void UpdateIngredientStatus()

@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -13,6 +14,14 @@ namespace DeepSeaGame
         [field: SerializeField] public float AttackDuration { get; private set; } = 0.35f;
         [field: SerializeField] public float ThrustDistance { get; private set; } = 3f;
         [field: SerializeField] public float MiningPower { get; private set; } = 1f;
-        
+
+        public override string GetDescription()
+        {
+            StringBuilder description = new();
+            description.Append($"{Damage} Damage<br>{Knockback} Knockback<br>{MiningPower} MiningPower<br>");
+            description.Append($"{GetDescriptionBreak()}");
+
+            return description.ToString();
+        }
     }
 }

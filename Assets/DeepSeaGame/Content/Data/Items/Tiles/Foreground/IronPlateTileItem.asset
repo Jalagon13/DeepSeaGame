@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IronPlateTileItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
   _itemName: Iron Plate
-  _itemDescription: Building
+  _itemDescription: 
   _inventoryIcon: {fileID: -893114918391402929, guid: f87cb156056bc466d817f94b8424db48, type: 3}
   _isStackable: 1
   <PrimaryTile>k__BackingField: {fileID: 11400000, guid: 1494d5cfbad214fb4832cec258458aa0, type: 2}

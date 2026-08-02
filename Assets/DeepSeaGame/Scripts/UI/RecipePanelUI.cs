@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DeepSeaGame
@@ -42,6 +43,14 @@ namespace DeepSeaGame
                 InventoryManager.Instance.OnInventoryChanged += CheckCraftability;
                 CheckCraftability();
             }
+
+            TooltipHoverHandler hover = gameObject.AddComponent<TooltipHoverHandler>();
+            hover.OnHoverEnter = () =>
+            {
+                Tooltip.ShowNew();
+                string itemText = $"{_recipe.OutputItem.InGameName}<br>{_recipe.OutputItem.GetDescription()}";
+                Tooltip.JustText(itemText, Color.white, fontSize: 12f);
+            };
         }
 
         private void CheckCraftability()

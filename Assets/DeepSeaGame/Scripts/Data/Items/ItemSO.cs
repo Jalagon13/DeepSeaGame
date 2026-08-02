@@ -29,7 +29,6 @@ namespace DeepSeaGame
         public virtual string GetDescription() 
         {
             StringBuilder description = new();
-            description.Append($"Resource<br>");
             description.Append($"{GetDescriptionBreak()}");
 
             return description.ToString();
