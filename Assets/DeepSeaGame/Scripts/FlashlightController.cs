@@ -22,10 +22,15 @@ namespace DeepSeaGame
         [Tooltip("Minimum mouse movement angle (in degrees) that triggers a lightmap recalculation. Prevents excessive CPU usage.")]
         [SerializeField] private float _recalcAngleThreshold = 2f;
 
+        [Tooltip("Minimum player movement distance (in world units) that triggers a lightmap recalculation while the flashlight is on.")]
+        [SerializeField] private float _recalcPositionThreshold = 0.15f;
+
         private bool _isFlashlightOn;
         public bool IsFlashlightOn => _isFlashlightOn;
         
         private Vector2 _lastDirection;
+        private Vector2 _lastPlayerPosition;
+
         public Vector2 CenterOfPlayerPosition => Player.Instance.PlayerCollider.bounds.center;
         public Vector2Int PlayerCenterTilePosition => Vector2Int.FloorToInt(CenterOfPlayerPosition);
         public float ConeHalfAngle => _coneHalfAngle;
@@ -50,6 +55,7 @@ namespace DeepSeaGame
         {
             GameInput.Instance.OnToggleFlashlight += GameInput_OnToggleFlashlight;
             _lastDirection = ConeDirection;
+            _lastPlayerPosition = CenterOfPlayerPosition;
         }
 
         private void OnDestroy()
@@ -59,15 +65,18 @@ namespace DeepSeaGame
 
         private void Update()
         {
-            // When flashlight is on, check if the cone direction has changed enough to warrant a recalculation
+            // When flashlight is on, check if the cone direction or player position has changed enough to warrant a recalculation
             if (!_isFlashlightOn) return;
 
             Vector2 currentDir = ConeDirection;
             float angleDelta = Vector2.Angle(_lastDirection, currentDir);
+            Vector2 currentPlayerPosition = CenterOfPlayerPosition;
+            float distanceDelta = Vector2.Distance(_lastPlayerPosition, currentPlayerPosition);
 
-            if (angleDelta >= _recalcAngleThreshold)
+            if (angleDelta >= _recalcAngleThreshold || distanceDelta >= _recalcPositionThreshold)
             {
                 _lastDirection = currentDir;
+                _lastPlayerPosition = currentPlayerPosition;
                 OnFlashlightStateChanged?.Invoke();
             }
         }
@@ -85,8 +94,9 @@ namespace DeepSeaGame
             _isFlashlightOn = !_isFlashlightOn;
             Debug.Log($"Flashlight Toggle: {(_isFlashlightOn ? "ON" : "OFF")}");
 
-            // Reset the stored direction so the first frame after toggling on always fires a recalculation
+            // Reset the stored direction and player position so the first frame after toggling on always fires a recalculation
             _lastDirection = ConeDirection;
+            _lastPlayerPosition = CenterOfPlayerPosition;
 
             // Fire event so LightmapManager knows to recalculate
             OnFlashlightStateChanged?.Invoke();
