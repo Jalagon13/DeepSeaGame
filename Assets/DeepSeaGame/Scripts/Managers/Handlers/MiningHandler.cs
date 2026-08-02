@@ -12,15 +12,11 @@ namespace DeepSeaGame
             Secondary
         }
 
-        [SerializeField]
-        private float _miningRange = 3f;
+        [SerializeField] private float _miningRange = 3f;
         public float MiningRange => _miningRange;
 
-        [SerializeField]
-        private float _timeBetweenMiningSounds = 0.225f;
-
-        [SerializeField]
-        private float _miningRestartDelay = 0.1f;
+        [SerializeField] private float _timeBetweenMiningSounds = 0.225f;
+        [SerializeField] private float _miningRestartDelay = 0.1f;
 
         private MiningState _miningState;
         public MiningState MiningState => _miningState;

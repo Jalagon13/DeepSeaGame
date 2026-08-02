@@ -4,12 +4,6 @@ using UnityEngine.InputSystem;
 
 namespace DeepSeaGame
 {
-    /// <summary>
-    /// Controls the flashlight state and exposes data for the LightmapManager
-    /// to use when performing the cone-constrained BFS light propagation.
-    /// Fires events when the flashlight toggles or the cone direction changes
-    /// so the LightmapManager knows to recalculate.
-    /// </summary>
     public class FlashlightController : MonoBehaviour
     {
         /// <summary>Fired when the flashlight is toggled on/off or the cone direction changes significantly.</summary>
@@ -34,11 +28,10 @@ namespace DeepSeaGame
         private Vector2 _lastDirection;
         public Vector2 CenterOfPlayerPosition => Player.Instance.PlayerCollider.bounds.center;
         public Vector2Int PlayerCenterTilePosition => Vector2Int.FloorToInt(CenterOfPlayerPosition);
+        public float ConeHalfAngle => _coneHalfAngle;
+        public float FlashlightIntensity => _flashlightIntensity;
+        public int FlashlightRange => _flashlightRange;
 
-        /// <summary>
-        /// Normalised direction from the player toward the mouse cursor in world space.
-        /// This becomes the central axis of the flashlight cone.
-        /// </summary>
         public Vector2 ConeDirection
         {
             get
@@ -52,10 +45,6 @@ namespace DeepSeaGame
                 return dir.normalized;
             }
         }
-
-        public float ConeHalfAngle => _coneHalfAngle;
-        public float FlashlightIntensity => _flashlightIntensity;
-        public int FlashlightRange => _flashlightRange;
 
         private void Start()
         {
