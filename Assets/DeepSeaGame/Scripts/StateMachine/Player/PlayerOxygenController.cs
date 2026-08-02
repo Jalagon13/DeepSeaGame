@@ -14,24 +14,26 @@ namespace DeepSeaGame
 
     public class PlayerOxygenController : NetworkBehaviour
     {
-        public Action OnOxygenWarning;
-    
-        [SerializeField]
-        private PlayerCharacterSO _playerSO;
+        public Action OnFirstOxygenWarning;
+        public Action OnSecondOxygenWarning;
+        
+        [SerializeField] private PlayerCharacterSO _playerSO;
+        [SerializeField] private Transform _headPoint;
 
-        [SerializeField]
-        private Transform _headPoint;
-        
         [Header("Oxygen Warning")]
-        
-        [SerializeField]
-        [Range(0f, 1f)]
-        private float _oxygenWarningThreshold = 0.25f;
+        [SerializeField, Range(0f, 1f)]
+        private float _firstOxygenWarningThreshold = 0.25f;
+        [SerializeField, Range(0f, 1f)]
+        private float _secondOxygenWarningThreshold = 0.1f;
 
         private ServerCharacter _serverCharacter;
-        private bool _hasTriggeredOxygenWarning;
+            
         private OxygenTankItemSO _equippedOxygenTank;
         public OxygenTankItemSO EquippedOxygenTank => _equippedOxygenTank;
+            
+        private bool _hasTriggeredFirstOxygenWarning;
+        private bool _hasTriggeredSecondOxygenWarning;
+        
         public float MaxOxygenCapacity => GetMaxOxygenCapacity();
 
         public NetworkVariable<OxygenState> StateOfOxygen { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -140,10 +142,16 @@ namespace DeepSeaGame
                 CurrentOxygen.Value -= Time.deltaTime;
 
                 float oxygenRatio = CurrentOxygen.Value / GetMaxOxygenCapacity();
-                if (oxygenRatio <= _oxygenWarningThreshold && !_hasTriggeredOxygenWarning)
+                if (oxygenRatio <= _firstOxygenWarningThreshold && !_hasTriggeredFirstOxygenWarning)
                 {
-                    _hasTriggeredOxygenWarning = true;
-                    OnOxygenWarning?.Invoke();
+                    _hasTriggeredFirstOxygenWarning = true;
+                    OnFirstOxygenWarning?.Invoke();
+                }
+
+                if (oxygenRatio <= _secondOxygenWarningThreshold && !_hasTriggeredSecondOxygenWarning)
+                {
+                    _hasTriggeredSecondOxygenWarning = true;
+                    OnSecondOxygenWarning?.Invoke();
                 }
 
                 if (CurrentOxygen.Value <= 0)
@@ -186,11 +194,12 @@ namespace DeepSeaGame
                 StateOfOxygen.Value = OxygenState.Full;
             }
 
-            // Reset the oxygen warning flag when oxygen is above the threshold
+            // Reset the oxygen warning flags when oxygen is above the first threshold
             float oxygenRatio = CurrentOxygen.Value / maxCapacity;
-            if (oxygenRatio > _oxygenWarningThreshold)
+            if (oxygenRatio > _firstOxygenWarningThreshold)
             {
-                _hasTriggeredOxygenWarning = false;
+                _hasTriggeredFirstOxygenWarning = false;
+                _hasTriggeredSecondOxygenWarning = false;
             }
         }
 

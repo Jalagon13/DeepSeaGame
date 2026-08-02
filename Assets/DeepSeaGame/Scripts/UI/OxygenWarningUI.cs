@@ -9,10 +9,14 @@ namespace DeepSeaGame
 {
     public class OxygenWarningUI : NetworkBehaviour
     {
-        [SerializeField] private float _displayTimer = 3f;
-        [SerializeField] private RectTransform _warningPanel;
-
-        [Header("Scale Pulse Settings")]
+        [Header("First Oxygen Warning")]
+        [SerializeField] private float _firstDisplayTimer = 3f;
+        [SerializeField] private RectTransform _firstWarningPanel;
+        
+        
+        [Header("Second Oxygen Warning")]
+        [SerializeField] private float _secondDisplayTimer = 3f;
+        [SerializeField] private RectTransform _secondWarningPanel;
         [SerializeField] private int _pulseCount = 2;
         [SerializeField] private float _pulseScale = 1.5f;
         [SerializeField] private float _pulseDuration = 0.4f;
@@ -29,7 +33,8 @@ namespace DeepSeaGame
 
             if (Player.Instance != null)
             {
-                Player.Instance.PlayerOxygenController.OnOxygenWarning -= OnOxygenWarning;
+                Player.Instance.PlayerOxygenController.OnFirstOxygenWarning -= OnFirstOxygenWarning;
+                Player.Instance.PlayerOxygenController.OnSecondOxygenWarning -= OnSecondOxygenWarning;
             }
         }
 
@@ -37,38 +42,45 @@ namespace DeepSeaGame
         {
             if (NetworkManager.LocalClientId != e.PlayerId) return;
 
-            Player.Instance.PlayerOxygenController.OnOxygenWarning += OnOxygenWarning;
+            Player.Instance.PlayerOxygenController.OnFirstOxygenWarning += OnFirstOxygenWarning;
+            Player.Instance.PlayerOxygenController.OnSecondOxygenWarning += OnSecondOxygenWarning;
         }
 
-        private void OnOxygenWarning()
+        private void OnFirstOxygenWarning()
         {
-            Debug.Log("Oxygen Warning");
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.OxygenWarningSFX, default);
 
-            EnableWarningPanel();
-            StopAllCoroutines();
-            StartCoroutine(DisableWarningPanelAfterDelay());
+            _firstWarningPanel.gameObject.SetActive(true);
+            StartCoroutine(DisableWarningPanelAfterDelay(_firstDisplayTimer));
         }
 
-        private IEnumerator DisableWarningPanelAfterDelay()
+        private void OnSecondOxygenWarning()
         {
-            yield return new WaitForSeconds(_displayTimer);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.OxygenWarningSFX, default);
+
+            EnableSecondWarningPanel();
+            StopAllCoroutines();
+            StartCoroutine(DisableWarningPanelAfterDelay(_secondDisplayTimer));
+        }
+
+        private IEnumerator DisableWarningPanelAfterDelay(float timer)
+        {
+            yield return new WaitForSeconds(timer);
             DisableWarningPanel();
         }
 
-        private void EnableWarningPanel()
+        private void EnableSecondWarningPanel()
         {
-            _warningPanel.gameObject.SetActive(true);
-            _warningPanel.localScale = Vector3.one;
-
-            _warningPanel.DOKill();
+            _secondWarningPanel.gameObject.SetActive(true);
+            _secondWarningPanel.localScale = Vector3.one;
+            _secondWarningPanel.DOKill();
 
             Sequence pulseSequence = DOTween.Sequence();
             
             for (int i = 0; i < _pulseCount; i++)
             {
-                pulseSequence.Append(_warningPanel.DOScale(_pulseScale, _pulseDuration * 0.5f).SetEase(Ease.InOutSine));
-                pulseSequence.Append(_warningPanel.DOScale(1f, _pulseDuration * 0.5f).SetEase(Ease.InOutSine));
+                pulseSequence.Append(_secondWarningPanel.DOScale(_pulseScale, _pulseDuration * 0.5f).SetEase(Ease.InOutSine));
+                pulseSequence.Append(_secondWarningPanel.DOScale(1f, _pulseDuration * 0.5f).SetEase(Ease.InOutSine));
             }
             
             pulseSequence.Play();
@@ -76,8 +88,9 @@ namespace DeepSeaGame
 
         private void DisableWarningPanel()
         {
-            _warningPanel.DOKill();
-            _warningPanel.gameObject.SetActive(false);
+            _secondWarningPanel.DOKill();
+            _secondWarningPanel.gameObject.SetActive(false);
+            _firstWarningPanel.gameObject.SetActive(false);
         }
     }
 }
