@@ -11,21 +11,31 @@ namespace DeepSeaGame
         private class OreDefinition
         {
             [SerializeField] private TileSO _oreTile;
-            [SerializeField] private float _minSeedDistance = 8f;
-            [SerializeField] private int _minDepth = 6;
-            [SerializeField] private int _maxDepth = 70;
-            [SerializeField] private int _minVeinSize = 3;
-            [SerializeField] private int _maxVeinSize = 8;
-            [Range(0f, 1f)] [SerializeField] private float _blobRoundness = 0.35f;
-            [SerializeField] private TileSO _requiredHostMaterial;
+            [SerializeField, Min(0f), Tooltip("Relative frequency of ore vein placement. Lower values make this ore rarer.")]
+            private float _spawnFrequency = 1f;
+            [SerializeField, Min(1f), Tooltip("Minimum spacing between ore vein seeds. Larger values reduce ore density.")]
+            private float _seedSpacing = 8f;
+            [SerializeField, Min(0), Tooltip("Minimum depth at which this ore can spawn.")]
+            private int _minDepth = 6;
+            [SerializeField, Min(0), Tooltip("Maximum depth at which this ore can spawn.")]
+            private int _maxDepth = 70;
+            [SerializeField, Min(1), Tooltip("Minimum number of tiles in a vein.")]
+            private int _minVeinSize = 3;
+            [SerializeField, Min(1), Tooltip("Maximum number of tiles in a vein.")]
+            private int _maxVeinSize = 8;
+            [Range(0f, 1f), Tooltip("0 = straight vein, 1 = blob-like vein.")]
+            [SerializeField] private float _veinRoundness = 0.35f;
+            [SerializeField, Tooltip("Optional host material required for this ore to replace.")]
+            private TileSO _requiredHostMaterial;
 
             public TileSO OreTile => _oreTile;
-            public float MinSeedDistance => _minSeedDistance;
+            public float SpawnFrequency => _spawnFrequency;
+            public float SeedSpacing => _seedSpacing;
             public int MinDepth => _minDepth;
             public int MaxDepth => _maxDepth;
             public int MinVeinSize => _minVeinSize;
             public int MaxVeinSize => _maxVeinSize;
-            public float BlobRoundness => _blobRoundness;
+            public float VeinRoundness => _veinRoundness;
             public TileSO RequiredHostMaterial => _requiredHostMaterial;
         }
 
@@ -74,7 +84,7 @@ namespace DeepSeaGame
 
             int width = context.Config.WorldWidth;
             int height = context.Config.WorldHeight;
-            float cellSize = Mathf.Max(0.5f, definition.MinSeedDistance / Mathf.Sqrt(2f));
+            float cellSize = Mathf.Max(0.5f, definition.SeedSpacing / Mathf.Sqrt(2f));
             int gridWidth = Mathf.Max(1, Mathf.CeilToInt(width / cellSize));
             int gridHeight = Mathf.Max(1, Mathf.CeilToInt(height / cellSize));
             Vector2Int?[,] seedGrid = new Vector2Int?[gridWidth, gridHeight];
@@ -96,13 +106,13 @@ namespace DeepSeaGame
                     // If it keeps failing, we stop trying that branch so the generator does not loop forever in sparse regions.
                     for (int attempt = 0; attempt < _maxCandidateRejectionsPerPoint; attempt++)
                     {
-                        Vector2Int candidate = GetCandidateAroundPoint(center, definition.MinSeedDistance, random, width, height);
+                        Vector2Int candidate = GetCandidateAroundPoint(center, definition.SeedSpacing, random, width, height);
                         if (!IsWithinDepthBand(candidate.y, definition) || !IsValidHostTile(context, candidate.x, candidate.y, definition))
                         {
                             continue;
                         }
 
-                        if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.MinSeedDistance))
+                        if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.SeedSpacing))
                         {
                             continue;
                         }
@@ -132,7 +142,9 @@ namespace DeepSeaGame
         private int TryGetInitialSeeds(WorldGenerationContext context, OreDefinition definition, System.Random random, int width, int height,
             Vector2Int?[,] seedGrid, float cellSize, List<Vector2Int> activePoints, List<Vector2Int> acceptedSeeds)
         {
-            int targetSeedCount = Mathf.Max(1, Mathf.CeilToInt((width * height) / Mathf.Max(1f, definition.MinSeedDistance * definition.MinSeedDistance * 32f)));
+            int targetSeedCount = definition.SpawnFrequency <= 0f
+                ? 0
+                : Mathf.Max(1, Mathf.CeilToInt((width * height) * definition.SpawnFrequency / Mathf.Max(1f, definition.SeedSpacing * definition.SeedSpacing * 32f)));
             int placedSeeds = 0;
 
             for (int attempt = 0; attempt < _maxSeedPlacementAttempts && placedSeeds < targetSeedCount; attempt++)
@@ -143,7 +155,7 @@ namespace DeepSeaGame
                     continue;
                 }
 
-                if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.MinSeedDistance))
+                if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.SeedSpacing))
                 {
                     continue;
                 }
@@ -293,14 +305,14 @@ namespace DeepSeaGame
                 Vector2Int.left,
                 Vector2Int.up,
                 Vector2Int.down,
-                new Vector2Int(1, 1),
-                new Vector2Int(1, -1),
-                new Vector2Int(-1, 1),
-                new Vector2Int(-1, -1)
+                new(1, 1),
+                new(1, -1),
+                new(-1, 1),
+                new(-1, -1)
             };
 
             // Lower roundness favors a straighter, snaking vein; higher roundness opens up more side branches and blob-like growth.
-            if (random.NextDouble() < Mathf.Lerp(0.75f, 0.35f, definition.BlobRoundness))
+            if (random.NextDouble() < Mathf.Lerp(0.75f, 0.35f, definition.VeinRoundness))
             {
                 directions.Reverse();
             }
