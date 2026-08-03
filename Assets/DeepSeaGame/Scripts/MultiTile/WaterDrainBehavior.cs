@@ -67,12 +67,17 @@ namespace DeepSeaGame
 
         private void OnTimerComplete(MultiTileInstance instance, WorldDataStore dataStore)
         {
+            Debug.Log($"Timer complete");
+            Debug.Log($"below sea level: {dataStore.IsBelowSeaLevel(instance.Anchor.y)} no underwater air: {!dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y)}");
+        
             if (IsSpaceClosedOff(instance.Anchor, dataStore, out HashSet<Vector2Int> visited))
             {
+                Debug.Log($"Draining water");
                 DrainWater(instance.Anchor, dataStore, visited);
             }
-            else if(dataStore.IsBelowSeaLevel(instance.Anchor.y) && !dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
+            else if(dataStore.IsBelowSeaLevel(instance.Anchor.y) && dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
             {
+                Debug.Log($"Filling Water");
                 FillWater(instance.Anchor, dataStore, visited);
             }
         }
@@ -138,7 +143,7 @@ namespace DeepSeaGame
             {
                 dataStore.AddUnderwaterAirTile(pos.x, pos.y);
             }
-            // Debug.Log($"ShelterCore valid space detected at {anchor}. Drained {visited.Count} tiles.");
+            Debug.Log($"ShelterCore valid space detected at {anchor}. Drained {visited.Count} tiles.");
         }
 
         private void FillWater(Vector2Int anchor, WorldDataStore dataStore, HashSet<Vector2Int> visited)
@@ -147,7 +152,7 @@ namespace DeepSeaGame
             {
                 dataStore.RemoveUnderwaterAirTile(pos.x, pos.y);
             }
-            // Debug.Log($"ShelterCore exposed at {anchor}. Filled {visited.Count} tiles with water.");
+            Debug.Log($"ShelterCore exposed at {anchor}. Filled {visited.Count} tiles with water.");
         }
     }
 }

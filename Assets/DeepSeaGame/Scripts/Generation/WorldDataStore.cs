@@ -234,7 +234,7 @@ namespace DeepSeaGame
             {
                 return false;
             }
-
+            
             return _underwaterAirTiles.Contains(GetTileIndex(x, y));
         }
 
