@@ -7337,27 +7337,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlaceTitaniumOreStep
   <ExecuteStep>k__BackingField: 1
   <Description>k__BackingField: 
-  _oreDefinitions:
-  - _oreTile: {fileID: 11400000, guid: d209e9899a4134876ba9bda8e49ace6a, type: 2}
-    _spawnFrequency: 0.25
-    _seedSpacing: 8
-    _minDepth: 150
-    _maxDepth: 294
-    _minVeinSize: 6
-    _maxVeinSize: 12
-    _veinRoundness: 1
-    _requiredHostMaterial: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
-  - _oreTile: {fileID: 11400000, guid: 466a99daf6a954fe4866c6c02995518a, type: 2}
-    _spawnFrequency: 0.25
-    _seedSpacing: 8
-    _minDepth: 0
-    _maxDepth: 150
-    _minVeinSize: 6
-    _maxVeinSize: 12
-    _veinRoundness: 1
-    _requiredHostMaterial: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
-  _maxCandidateRejectionsPerPoint: 32
-  _maxSeedPlacementAttempts: 80
+  _stoneTileSO: {fileID: 11400000, guid: b2b8d34ed7faa41f0b272a2a682392f0, type: 2}
+  _chunkSize: 40
+  _oreSettings:
+  - OreTile: {fileID: 11400000, guid: d209e9899a4134876ba9bda8e49ace6a, type: 2}
+    MinDepth: 0
+    MaxDepth: 300
+    ClumpsPerChunk: 5
+    MinClumpSize: 3
+    MaxClumpSize: 14
+  - OreTile: {fileID: 11400000, guid: 466a99daf6a954fe4866c6c02995518a, type: 2}
+    MinDepth: 0
+    MaxDepth: 200
+    ClumpsPerChunk: 4
+    MinClumpSize: 5
+    MaxClumpSize: 10
 --- !u!1 &1703393330
 GameObject:
   m_ObjectHideFlags: 0
@@ -8500,6 +8494,8 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 99
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0

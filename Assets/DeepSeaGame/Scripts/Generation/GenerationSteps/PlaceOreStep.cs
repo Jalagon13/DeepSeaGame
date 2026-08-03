@@ -5,216 +5,222 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
+    [Serializable]
+    public struct OreSetting
+    {
+        public TileSO OreTile;
+        public int MinDepth;
+        public int MaxDepth;
+        public int ClumpsPerChunk;
+        public int MinClumpSize;
+        public int MaxClumpSize;
+    }
+
     public class PlaceOreStep : GenerationStep
     {
-        [Serializable]
-        private class OreDefinition
+        [Header("Ore Generation")]
+        [SerializeField] private TileSO _stoneTileSO;
+        [SerializeField, Min(1)] private int _chunkSize = 64;
+        [SerializeField] private List<OreSetting> _oreSettings = new List<OreSetting>();
+
+        private static readonly Vector2Int[] AdjacentOffsets = new[]
         {
-            [SerializeField] private TileSO _oreTile;
-            [SerializeField, Min(0f), Tooltip("Relative frequency of ore vein placement. Lower values make this ore rarer.")]
-            private float _spawnFrequency = 1f;
-            [SerializeField, Min(1f), Tooltip("Minimum spacing between ore vein seeds. Larger values reduce ore density.")]
-            private float _seedSpacing = 8f;
-            [SerializeField, Min(0), Tooltip("Minimum depth at which this ore can spawn.")]
-            private int _minDepth = 6;
-            [SerializeField, Min(0), Tooltip("Maximum depth at which this ore can spawn.")]
-            private int _maxDepth = 70;
-            [SerializeField, Min(1), Tooltip("Minimum number of tiles in a vein.")]
-            private int _minVeinSize = 3;
-            [SerializeField, Min(1), Tooltip("Maximum number of tiles in a vein.")]
-            private int _maxVeinSize = 8;
-            [Range(0f, 1f), Tooltip("0 = straight vein, 1 = blob-like vein.")]
-            [SerializeField] private float _veinRoundness = 0.35f;
-            [SerializeField, Tooltip("Optional host material required for this ore to replace.")]
-            private TileSO _requiredHostMaterial;
-
-            public TileSO OreTile => _oreTile;
-            public float SpawnFrequency => _spawnFrequency;
-            public float SeedSpacing => _seedSpacing;
-            public int MinDepth => _minDepth;
-            public int MaxDepth => _maxDepth;
-            public int MinVeinSize => _minVeinSize;
-            public int MaxVeinSize => _maxVeinSize;
-            public float VeinRoundness => _veinRoundness;
-            public TileSO RequiredHostMaterial => _requiredHostMaterial;
-        }
-
-        [Header("Ore")]
-        [SerializeField] private List<OreDefinition> _oreDefinitions = new List<OreDefinition>();
-        [SerializeField, Min(1)] private int _maxCandidateRejectionsPerPoint = 32;
-        [SerializeField, Min(1)] private int _maxSeedPlacementAttempts = 80;
+            new Vector2Int(1, 0),
+            new Vector2Int(-1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(0, -1)
+        };
 
         public override WorldGenerationState State => WorldGenerationState.PlacingIronOre;
 
         public override IEnumerator Execute(WorldGenerationContext context)
         {
-            if (GameDataRegistry.Instance == null)
+            if (context == null)
             {
-                Debug.LogWarning("GameDataRegistry is unavailable while placing ore veins.");
                 yield break;
             }
 
-            // This step runs after the terrain has already been carved and filled, so it can place ore into
-            // the existing host material instead of creating blocks from scratch.
-            System.Random random = context.Random;
-
-            for (int i = 0; i < _oreDefinitions.Count; i++)
+            if (_stoneTileSO == null)
             {
-                OreDefinition definition = _oreDefinitions[i];
-                if (definition == null || definition.OreTile == null)
+                Debug.LogWarning("PlaceOreStep requires a Stone TileSO to identify stone blocks.");
+                yield break;
+            }
+
+            if (_oreSettings == null || _oreSettings.Count == 0)
+            {
+                yield break;
+            }
+
+            int worldWidth = context.Config.WorldWidth;
+            int worldHeight = context.Config.WorldHeight;
+            int chunkSize = Mathf.Max(1, _chunkSize);
+            WorldDataStore dataStore = context.DataStore;
+            System.Random random = context.Random ?? new System.Random(context.SeedHash);
+            ushort stoneTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(_stoneTileSO);
+            if (stoneTileId == GameDataRegistry.INVALID_ID)
+            {
+                Debug.LogWarning("PlaceOreStep could not resolve the stone tile ID.");
+                yield break;
+            }
+
+            for (int chunkY = 0; chunkY < worldHeight; chunkY += chunkSize)
+            {
+                int currentChunkHeight = Mathf.Min(chunkSize, worldHeight - chunkY);
+                bool chunkHasPotentialOre = false;
+
+                for (int oreIndex = 0; oreIndex < _oreSettings.Count; oreIndex++)
                 {
+                    OreSetting oreSetting = _oreSettings[oreIndex];
+                    if (oreSetting.OreTile == null)
+                    {
+                        continue;
+                    }
+
+                    int oreMinDepth = Mathf.Min(oreSetting.MinDepth, oreSetting.MaxDepth);
+                    int oreMaxDepth = Mathf.Max(oreSetting.MinDepth, oreSetting.MaxDepth);
+                    int chunkMinDepth = chunkY;
+                    int chunkMaxDepth = chunkY + currentChunkHeight - 1;
+
+                    if (oreMaxDepth < chunkMinDepth || oreMinDepth > chunkMaxDepth)
+                    {
+                        continue;
+                    }
+
+                    chunkHasPotentialOre = true;
+                    break;
+                }
+
+                if (!chunkHasPotentialOre)
+                {
+                    context.SetStepProgress((chunkY + currentChunkHeight) / (float)worldHeight);
+                    yield return null;
                     continue;
                 }
 
-                PlaceOreDefinition(context, definition, random);
-                context.SetStepProgress((i + 1f) / Mathf.Max(1, _oreDefinitions.Count));
+                for (int chunkX = 0; chunkX < worldWidth; chunkX += chunkSize)
+                {
+                    int currentChunkWidth = Mathf.Min(chunkSize, worldWidth - chunkX);
+                    GenerateOresInChunk(dataStore, chunkX, chunkY, currentChunkWidth, currentChunkHeight, stoneTileId, random);
+                }
+
+                context.SetStepProgress((chunkY + currentChunkHeight) / (float)worldHeight);
                 yield return null;
             }
 
             context.SetStepProgress(1f);
         }
 
-        private void PlaceOreDefinition(WorldGenerationContext context, OreDefinition definition, System.Random random)
+        public void GenerateOresInChunk(WorldDataStore dataStore, int chunkGlobalX, int chunkGlobalY, int width, int height, ushort stoneTileId, System.Random random = null)
         {
-            ushort oreTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(definition.OreTile);
-            if (oreTileId == GameDataRegistry.INVALID_ID)
+            if (dataStore == null || width <= 0 || height <= 0)
             {
                 return;
             }
 
-            int width = context.Config.WorldWidth;
-            int height = context.Config.WorldHeight;
-            float cellSize = Mathf.Max(0.5f, definition.SeedSpacing / Mathf.Sqrt(2f));
-            int gridWidth = Mathf.Max(1, Mathf.CeilToInt(width / cellSize));
-            int gridHeight = Mathf.Max(1, Mathf.CeilToInt(height / cellSize));
-            Vector2Int?[,] seedGrid = new Vector2Int?[gridWidth, gridHeight];
-            List<Vector2Int> activePoints = new List<Vector2Int>();
-            List<Vector2Int> acceptedSeeds = new List<Vector2Int>();
+            random ??= new System.Random();
 
-            // The active list is the standard Poisson-disk workflow: once a seed is accepted, it can still
-            // generate new candidate points around itself until it no longer finds suitable spacing.
-            int initialSeedCount = TryGetInitialSeeds(context, definition, random, width, height, seedGrid, cellSize, activePoints, acceptedSeeds);
-            if (initialSeedCount > 0)
+            for (int oreIndex = 0; oreIndex < _oreSettings.Count; oreIndex++)
             {
-                int activeIndex = 0;
-                while (activeIndex < activePoints.Count)
-                {
-                    Vector2Int center = activePoints[activeIndex];
-                    bool accepted = false;
-
-                    // Each candidate is tested against spacing and host-tile validity before it can become a new seed.
-                    // If it keeps failing, we stop trying that branch so the generator does not loop forever in sparse regions.
-                    for (int attempt = 0; attempt < _maxCandidateRejectionsPerPoint; attempt++)
-                    {
-                        Vector2Int candidate = GetCandidateAroundPoint(center, definition.SeedSpacing, random, width, height);
-                        if (!IsWithinDepthBand(candidate.y, definition) || !IsValidHostTile(context, candidate.x, candidate.y, definition))
-                        {
-                            continue;
-                        }
-
-                        if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.SeedSpacing))
-                        {
-                            continue;
-                        }
-
-                        RegisterSeed(candidate, seedGrid, cellSize, activePoints, acceptedSeeds);
-                        accepted = true;
-                        break;
-                    }
-
-                    if (!accepted)
-                    {
-                        activePoints.RemoveAt(activeIndex);
-                    }
-                    else
-                    {
-                        activeIndex++;
-                    }
-                }
-            }
-
-            foreach (Vector2Int seed in acceptedSeeds)
-            {
-                GrowVein(context, definition, oreTileId, seed, random);
-            }
-        }
-
-        private int TryGetInitialSeeds(WorldGenerationContext context, OreDefinition definition, System.Random random, int width, int height,
-            Vector2Int?[,] seedGrid, float cellSize, List<Vector2Int> activePoints, List<Vector2Int> acceptedSeeds)
-        {
-            int targetSeedCount = definition.SpawnFrequency <= 0f
-                ? 0
-                : Mathf.Max(1, Mathf.CeilToInt((width * height) * definition.SpawnFrequency / Mathf.Max(1f, definition.SeedSpacing * definition.SeedSpacing * 32f)));
-            int placedSeeds = 0;
-
-            for (int attempt = 0; attempt < _maxSeedPlacementAttempts && placedSeeds < targetSeedCount; attempt++)
-            {
-                Vector2Int candidate = GetRandomPoint(width, height, random);
-                if (!IsWithinDepthBand(candidate.y, definition) || !IsValidHostTile(context, candidate.x, candidate.y, definition))
+                OreSetting oreSetting = _oreSettings[oreIndex];
+                if (oreSetting.OreTile == null)
                 {
                     continue;
                 }
 
-                if (IsTooCloseToExistingSeed(candidate, seedGrid, cellSize, definition.SeedSpacing))
+                int clumpsPerChunk = Mathf.Max(0, oreSetting.ClumpsPerChunk);
+                int minClumpSize = Mathf.Max(1, oreSetting.MinClumpSize);
+                int maxClumpSize = Mathf.Max(minClumpSize, oreSetting.MaxClumpSize);
+                int minDepth = Mathf.Min(oreSetting.MinDepth, oreSetting.MaxDepth);
+                int maxDepth = Mathf.Max(oreSetting.MinDepth, oreSetting.MaxDepth);
+                ushort oreTileId = GameDataRegistry.Instance.GetTileIdFromTileSO(oreSetting.OreTile);
+
+                if (oreTileId == GameDataRegistry.INVALID_ID || clumpsPerChunk <= 0)
                 {
                     continue;
                 }
 
-                RegisterSeed(candidate, seedGrid, cellSize, activePoints, acceptedSeeds);
-                placedSeeds++;
+                int cols = Mathf.CeilToInt(Mathf.Sqrt(clumpsPerChunk));
+                int rows = Mathf.CeilToInt(clumpsPerChunk / (float)cols);
+
+                for (int clumpIndex = 0; clumpIndex < clumpsPerChunk; clumpIndex++)
+                {
+                    int cellX = clumpIndex % cols;
+                    int cellY = clumpIndex / cols;
+
+                    int regionStartX = Mathf.FloorToInt(cellX * width / (float)cols);
+                    int regionEndX = Mathf.FloorToInt((cellX + 1) * width / (float)cols);
+                    int regionStartY = Mathf.FloorToInt(cellY * height / (float)rows);
+                    int regionEndY = Mathf.FloorToInt((cellY + 1) * height / (float)rows);
+
+                    regionEndX = Mathf.Clamp(regionEndX, regionStartX + 1, width);
+                    regionEndY = Mathf.Clamp(regionEndY, regionStartY + 1, height);
+
+                    if (!TryFindClumpStart(dataStore, chunkGlobalX, chunkGlobalY, width, height, regionStartX, regionStartY, regionEndX - regionStartX, regionEndY - regionStartY, minDepth, maxDepth, stoneTileId, random, out int localX, out int localY))
+                    {
+                        continue;
+                    }
+
+                    int worldX = chunkGlobalX + localX;
+                    int worldY = chunkGlobalY + localY;
+                    int targetClumpSize = random.Next(minClumpSize, maxClumpSize + 1);
+                    GrowOreClump(worldX, worldY, oreTileId, targetClumpSize, stoneTileId, dataStore, random);
+                }
+            }
+        }
+
+        private bool TryFindClumpStart(WorldDataStore dataStore, int chunkGlobalX, int chunkGlobalY, int chunkWidth, int chunkHeight, int regionStartX, int regionStartY, int regionWidth, int regionHeight, int minDepth, int maxDepth, ushort stoneTileId, System.Random random, out int localX, out int localY)
+        {
+            localX = 0;
+            localY = 0;
+            int attempts = 6;
+
+            for (int i = 0; i < attempts; i++)
+            {
+                int candidateX = regionStartX + random.Next(0, regionWidth);
+                int candidateY = regionStartY + random.Next(0, regionHeight);
+                int worldY = chunkGlobalY + candidateY;
+
+                if (worldY < minDepth || worldY > maxDepth)
+                {
+                    continue;
+                }
+
+                int worldX = chunkGlobalX + candidateX;
+                if (!dataStore.IsInBounds(worldX, worldY))
+                {
+                    continue;
+                }
+
+                if (dataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap) != stoneTileId)
+                {
+                    continue;
+                }
+
+                localX = candidateX;
+                localY = candidateY;
+                return true;
             }
 
-            return placedSeeds;
-        }
-
-        private void RegisterSeed(Vector2Int point, Vector2Int?[,] seedGrid, float cellSize, List<Vector2Int> activePoints, List<Vector2Int> acceptedSeeds)
-        {
-            int gridX = Mathf.Clamp(Mathf.FloorToInt(point.x / cellSize), 0, seedGrid.GetLength(0) - 1);
-            int gridY = Mathf.Clamp(Mathf.FloorToInt(point.y / cellSize), 0, seedGrid.GetLength(1) - 1);
-            seedGrid[gridX, gridY] = point;
-            activePoints.Add(point);
-            acceptedSeeds.Add(point);
-        }
-
-        private Vector2Int GetRandomPoint(int width, int height, System.Random random)
-        {
-            return new Vector2Int(random.Next(width), random.Next(height));
-        }
-
-        private Vector2Int GetCandidateAroundPoint(Vector2Int center, float minSeedDistance, System.Random random, int width, int height)
-        {
-            float angle = (float)(random.NextDouble() * Mathf.PI * 2f);
-            float radius = minSeedDistance + (float)(random.NextDouble() * minSeedDistance);
-            int x = center.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
-            int y = center.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
-            return new Vector2Int(Mathf.Clamp(x, 0, width - 1), Mathf.Clamp(y, 0, height - 1));
-        }
-
-        private bool IsTooCloseToExistingSeed(Vector2Int candidate, Vector2Int?[,] seedGrid, float cellSize, float minSeedDistance)
-        {
-            int gridX = Mathf.Clamp(Mathf.FloorToInt(candidate.x / cellSize), 0, seedGrid.GetLength(0) - 1);
-            int gridY = Mathf.Clamp(Mathf.FloorToInt(candidate.y / cellSize), 0, seedGrid.GetLength(1) - 1);
-            int searchRadius = Mathf.CeilToInt(minSeedDistance / cellSize);
-
-            for (int x = gridX - searchRadius; x <= gridX + searchRadius; x++)
+            for (int x = regionStartX; x < regionStartX + regionWidth; x++)
             {
-                for (int y = gridY - searchRadius; y <= gridY + searchRadius; y++)
+                for (int y = regionStartY; y < regionStartY + regionHeight; y++)
                 {
-                    if (x < 0 || x >= seedGrid.GetLength(0) || y < 0 || y >= seedGrid.GetLength(1))
+                    int worldY = chunkGlobalY + y;
+                    if (worldY < minDepth || worldY > maxDepth)
                     {
                         continue;
                     }
 
-                    Vector2Int? existingPoint = seedGrid[x, y];
-                    if (!existingPoint.HasValue)
+                    int worldX = chunkGlobalX + x;
+                    if (!dataStore.IsInBounds(worldX, worldY))
                     {
                         continue;
                     }
 
-                    Vector2Int delta = candidate - existingPoint.Value;
-                    float distanceSquared = delta.x * delta.x + delta.y * delta.y;
-                    if (distanceSquared < minSeedDistance * minSeedDistance)
+                    if (dataStore.GetTileId(worldX, worldY, WorldTm.ForegroundTilemap) == stoneTileId)
                     {
+                        localX = x;
+                        localY = y;
                         return true;
                     }
                 }
@@ -223,140 +229,105 @@ namespace DeepSeaGame
             return false;
         }
 
-        private bool IsValidHostTile(WorldGenerationContext context, int x, int y, OreDefinition definition)
+        private void GrowOreClump(int startX, int startY, ushort oreTileId, int targetClumpSize, ushort stoneTileId, WorldDataStore dataStore, System.Random random)
         {
-            if (!context.DataStore.IsInBounds(x, y))
-            {
-                return false;
-            }
-
-            if (!IsWithinDepthBand(y, definition))
-            {
-                return false;
-            }
-
-            ushort tileId = context.DataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
-            if (tileId == GameDataRegistry.INVALID_ID)
-            {
-                return false;
-            }
-
-            if (GameDataRegistry.Instance == null)
-            {
-                return false;
-            }
-
-            TileSO currentTile = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
-            if (currentTile == null)
-            {
-                return false;
-            }
-
-            if (definition.RequiredHostMaterial != null && currentTile != definition.RequiredHostMaterial)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsWithinDepthBand(int y, OreDefinition definition)
-        {
-            int minDepth = Mathf.Min(definition.MinDepth, definition.MaxDepth);
-            int maxDepth = Mathf.Max(definition.MinDepth, definition.MaxDepth);
-            return y >= minDepth && y <= maxDepth;
-        }
-
-        private void GrowVein(WorldGenerationContext context, OreDefinition definition, ushort oreTileId, Vector2Int seed, System.Random random)
-        {
-            int targetSize = random.Next(definition.MinVeinSize, definition.MaxVeinSize + 1);
-            HashSet<Vector2Int> veinCells = new HashSet<Vector2Int>();
-            Queue<Vector2Int> frontier = new Queue<Vector2Int>();
-
-            if (!TryPlaceOreTile(context, definition, oreTileId, seed, veinCells))
+            if (!dataStore.IsInBounds(startX, startY))
             {
                 return;
             }
 
-            frontier.Enqueue(seed);
-
-            while (frontier.Count > 0 && veinCells.Count < targetSize)
+            if (dataStore.GetTileId(startX, startY, WorldTm.ForegroundTilemap) != stoneTileId)
             {
-                Vector2Int current = frontier.Dequeue();
-                Vector2Int next = GetNextVeinStep(context, definition, oreTileId, current, random, veinCells);
-                if (next == Vector2Int.zero)
+                return;
+            }
+
+            dataStore.SetForegroundTileId(startX, startY, oreTileId);
+            var placed = new HashSet<Vector2Int> { new Vector2Int(startX, startY) };
+            var frontier = new List<Vector2Int>();
+            var frontierSet = new HashSet<Vector2Int>();
+            Vector2Int center = new Vector2Int(startX, startY);
+
+            AddBlobFrontier(startX, startY, stoneTileId, dataStore, placed, frontier, frontierSet);
+            float radius = Mathf.Max(2f, Mathf.Sqrt(targetClumpSize) * 1.4f);
+            float radiusSq = radius * radius;
+
+            while (placed.Count < targetClumpSize && frontier.Count > 0)
+            {
+                int index = SelectBlobFrontierIndex(frontier, center, radiusSq, random);
+                Vector2Int candidate = frontier[index];
+                frontierSet.Remove(candidate);
+                frontier.RemoveAt(index);
+
+                if (!dataStore.IsInBounds(candidate.x, candidate.y) || dataStore.GetTileId(candidate.x, candidate.y, WorldTm.ForegroundTilemap) != stoneTileId)
                 {
                     continue;
                 }
 
-                if (TryPlaceOreTile(context, definition, oreTileId, next, veinCells))
-                {
-                    frontier.Enqueue(next);
-                }
+                dataStore.SetForegroundTileId(candidate.x, candidate.y, oreTileId);
+                placed.Add(candidate);
+                AddBlobFrontier(candidate.x, candidate.y, stoneTileId, dataStore, placed, frontier, frontierSet);
             }
         }
 
-        private Vector2Int GetNextVeinStep(WorldGenerationContext context, OreDefinition definition, ushort oreTileId, Vector2Int current,
-            System.Random random, HashSet<Vector2Int> veinCells)
+        private void AddBlobFrontier(int originX, int originY, ushort stoneTileId, WorldDataStore dataStore, HashSet<Vector2Int> placed, List<Vector2Int> frontier, HashSet<Vector2Int> frontierSet)
         {
-            List<Vector2Int> directions = new List<Vector2Int>
+            foreach (Vector2Int direction in AdjacentOffsets)
             {
-                Vector2Int.right,
-                Vector2Int.left,
-                Vector2Int.up,
-                Vector2Int.down,
-                new(1, 1),
-                new(1, -1),
-                new(-1, 1),
-                new(-1, -1)
-            };
+                int neighborX = originX + direction.x;
+                int neighborY = originY + direction.y;
+                var neighborPos = new Vector2Int(neighborX, neighborY);
 
-            // Lower roundness favors a straighter, snaking vein; higher roundness opens up more side branches and blob-like growth.
-            if (random.NextDouble() < Mathf.Lerp(0.75f, 0.35f, definition.VeinRoundness))
-            {
-                directions.Reverse();
+                if (placed.Contains(neighborPos) || frontierSet.Contains(neighborPos))
+                {
+                    continue;
+                }
+
+                if (!dataStore.IsInBounds(neighborX, neighborY))
+                {
+                    continue;
+                }
+
+                if (dataStore.GetTileId(neighborX, neighborY, WorldTm.ForegroundTilemap) != stoneTileId)
+                {
+                    continue;
+                }
+
+                frontier.Add(neighborPos);
+                frontierSet.Add(neighborPos);
             }
-
-            for (int i = 0; i < directions.Count; i++)
-            {
-                Vector2Int candidate = current + directions[i];
-                if (!IsValidHostTile(context, candidate.x, candidate.y, definition))
-                {
-                    continue;
-                }
-
-                if (veinCells.Contains(candidate))
-                {
-                    continue;
-                }
-
-                ushort currentTileId = context.DataStore.GetTileId(candidate.x, candidate.y, WorldTm.ForegroundTilemap);
-                if (currentTileId == oreTileId)
-                {
-                    continue;
-                }
-
-                return candidate;
-            }
-
-            return Vector2Int.zero;
         }
 
-        private bool TryPlaceOreTile(WorldGenerationContext context, OreDefinition definition, ushort oreTileId, Vector2Int position, HashSet<Vector2Int> veinCells)
+        private int SelectBlobFrontierIndex(List<Vector2Int> frontier, Vector2Int center, float radiusSq, System.Random random)
         {
-            if (!IsValidHostTile(context, position.x, position.y, definition))
+            if (frontier.Count == 0)
             {
-                return false;
+                return 0;
             }
 
-            if (veinCells.Contains(position))
+            float totalWeight = 0f;
+            var weights = new float[frontier.Count];
+
+            for (int i = 0; i < frontier.Count; i++)
             {
-                return false;
+                float distSq = (frontier[i] - center).sqrMagnitude;
+                float distanceFactor = Mathf.Clamp01(distSq / radiusSq);
+                float weight = Mathf.Lerp(2f, 0.5f, distanceFactor);
+                weights[i] = weight;
+                totalWeight += weight;
             }
 
-            context.DataStore.SetForegroundTileId(position.x, position.y, oreTileId);
-            veinCells.Add(position);
-            return true;
+            float choice = (float)random.NextDouble() * Mathf.Max(0.0001f, totalWeight);
+            for (int i = 0; i < frontier.Count; i++)
+            {
+                if (choice <= weights[i])
+                {
+                    return i;
+                }
+
+                choice -= weights[i];
+            }
+
+            return frontier.Count - 1;
         }
     }
 }
