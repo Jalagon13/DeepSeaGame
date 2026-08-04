@@ -184,9 +184,7 @@ namespace DeepSeaGame
         {
             if (_bodyCollider != null)
             {
-                Debug.Log($"Setting body collider to size: {size}");
                 _bodyCollider.size = size;
-                Debug.Log($"body collider size curr: {_bodyCollider.size}");
             }
         }
 

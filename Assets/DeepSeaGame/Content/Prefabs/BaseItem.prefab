@@ -294,8 +294,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.Item
   ShowTopMostFoldoutHeaderGroup: 1
   _attractRange: 6
-  _attractSpeed: 18
-  _turnSharpness: 5
+  _attractSpeed: 26
+  _turnSharpness: 7
   _initialCollectDelay: 0.5
   _airGravityScale: 1
   _waterGravityScale: 0.2

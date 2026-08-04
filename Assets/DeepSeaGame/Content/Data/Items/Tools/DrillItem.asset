@@ -22,4 +22,4 @@ MonoBehaviour:
   <Knockback>k__BackingField: 15
   <AttackDuration>k__BackingField: 0.35
   <ThrustDistance>k__BackingField: 3
-  <MiningPower>k__BackingField: 5
+  <MiningPower>k__BackingField: 1

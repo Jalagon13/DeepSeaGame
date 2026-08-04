@@ -119,6 +119,7 @@ namespace DeepSeaGame
                         _jumpCharging = true;
                         _jumpChargeStartTime = Time.unscaledTime;
                     }
+                    
                     _jumpRequested = false; // Consume request regardless of success
                 }
 
