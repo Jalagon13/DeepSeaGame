@@ -43,7 +43,6 @@ namespace DeepSeaGame
             Vector2 size = _bodyCollider.size;
             Vector2 halfSize = size * 0.5f;
             Vector2 offset = _bodyCollider.offset;
-            Debug.Log($"Moving with size: {size}");
 
             // 1. Resolve X Axis
             float deltaX = velocity.x * deltaTime;

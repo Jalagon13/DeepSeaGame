@@ -29,20 +29,29 @@ namespace DeepSeaGame
             _playerArmController = GetComponent<PlayerArmController>();
         }
         
-        // private void Start() 
-        // {
-        //     Player.Instance.Character.CurrentStatus.OnValueChanged += StatusChanged
-        // }
+        private void Start() 
+        {
+            if(Player.Instance != null)
+            {
+                Player.Instance.Character.CurrentStatus.OnValueChanged += StatusChanged;    
+            }
+        }
 
-        // public override void OnDestroy()
-        // {
-            
-        // }
+        public override void OnDestroy()
+        {
+            if (Player.Instance != null)
+            {
+                Player.Instance.Character.CurrentStatus.OnValueChanged -= StatusChanged;
+            }
+        }
+
+        private void StatusChanged(Status previousValue, Status newValue)
+        {
+            _gridCollider.SetBodyColliderSize(newValue == Status.InAir ? _airBodySize : _waterBodySize);
+        }
 
         protected override void WaterMovement()
         {
-            _gridCollider.SetBodyColliderSize(_waterBodySize);
-        
             if (_serverCharacter.CharacterData.CanMove)
             {
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
@@ -79,8 +88,6 @@ namespace DeepSeaGame
 
         protected override void AirMovement()
         {
-            _gridCollider.SetBodyColliderSize(_airBodySize);
-
             // 1. Grounded Check via our Grid Data
             _isGrounded = _gridCollider.IsGrounded();
 
