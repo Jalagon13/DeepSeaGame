@@ -14,8 +14,7 @@ namespace DeepSeaGame
         [SerializeField] protected GridCollider _gridCollider;
         
         [Header("Air Movement Settings (Base)")]
-        [SerializeField] protected float _gravity = -30f;
-        [SerializeField] protected float _terminalVelocity = -50f;
+        [SerializeField] protected float _gravity = -60f;
 
         protected Vector2 _velocity;
         public Vector2 Velocity => _velocity;
