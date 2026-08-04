@@ -13,7 +13,7 @@ namespace DeepSeaGame
         protected override void AirMovement()
         {
             _velocity.y += _gravity * Time.fixedDeltaTime;
-            if (_velocity.y < _terminalVelocity) _velocity.y = _terminalVelocity;
+            if (_velocity.y < -Mathf.Abs(_gravity)) _velocity.y = -Mathf.Abs(_gravity);
         }
 
         protected override void WaterMovement()

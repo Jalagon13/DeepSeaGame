@@ -22,8 +22,10 @@ namespace DeepSeaGame
         public event EventHandler<InputAction.CallbackContext> OnPlaceLightSource;
 
         private bool _isGameplayInputBlocked, _primaryHeldDown, _secondaryHeldDown, _jumpHeldDown;
+        private float _jumpPressTime;
 
         public bool JumpHeldDown => !_isGameplayInputBlocked && _jumpHeldDown;
+        public float JumpHoldDuration => !_isGameplayInputBlocked && _jumpHeldDown ? Time.unscaledTime - _jumpPressTime : 0f;
         public bool PrimaryActionHeldDown => !_isGameplayInputBlocked && _primaryHeldDown;
         public bool SecondaryActionHeldDown => !_isGameplayInputBlocked && _secondaryHeldDown;
 
@@ -146,11 +148,12 @@ namespace DeepSeaGame
 
         private void PlayerInput_OnJump(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (context.started)
             {
                 _jumpHeldDown = true;
+                _jumpPressTime = Time.unscaledTime;
             }
-            else if(context.canceled)
+            else if (context.canceled)
             {
                 _jumpHeldDown = false;
             }

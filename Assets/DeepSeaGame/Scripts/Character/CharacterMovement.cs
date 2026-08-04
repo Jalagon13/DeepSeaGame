@@ -15,7 +15,6 @@ namespace DeepSeaGame
         
         [Header("Air Movement Settings (Base)")]
         [SerializeField] protected float _gravity = -30f;
-        [SerializeField] protected float _terminalVelocity = -50f;
 
         protected Vector2 _velocity;
         public Vector2 Velocity => _velocity;

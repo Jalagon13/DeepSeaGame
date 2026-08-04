@@ -67,17 +67,12 @@ namespace DeepSeaGame
 
         private void OnTimerComplete(MultiTileInstance instance, WorldDataStore dataStore)
         {
-            Debug.Log($"Timer complete");
-            Debug.Log($"below sea level: {dataStore.IsBelowSeaLevel(instance.Anchor.y)} no underwater air: {!dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y)}");
-        
             if (IsSpaceClosedOff(instance.Anchor, dataStore, out HashSet<Vector2Int> visited))
             {
-                Debug.Log($"Draining water");
                 DrainWater(instance.Anchor, dataStore, visited);
             }
             else if(dataStore.IsBelowSeaLevel(instance.Anchor.y) && dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
             {
-                Debug.Log($"Filling Water");
                 FillWater(instance.Anchor, dataStore, visited);
             }
         }

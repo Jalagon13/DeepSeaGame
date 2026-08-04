@@ -33,7 +33,7 @@ namespace DeepSeaGame
         {
             // Apply gravity to vertical velocity
             float targetY = _velocity.y + (_gravity * Time.fixedDeltaTime);
-            targetY = Mathf.Max(targetY, _terminalVelocity);
+            targetY = Mathf.Max(targetY, -Mathf.Abs(_gravity));
             _velocity = new Vector2(_velocity.x, targetY);
         }
 

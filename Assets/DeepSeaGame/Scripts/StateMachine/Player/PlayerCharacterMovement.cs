@@ -8,11 +8,15 @@ namespace DeepSeaGame
         [SerializeField] private Transform _playerVisuals;
     
         [Header("Player Character Move Settings")]
-        [SerializeField] private float _jumpPower = 12f; // This remains specific to the player's jump
+        [SerializeField] private float _minJumpPower = 7f;
+        [SerializeField] private float _maxJumpPower = 12f;
+        [SerializeField] private float _maxJumpHoldTime = 0.35f;
         [SerializeField] private float _visualRotationSpeed = 8f;
 
         private bool _isGrounded;
         private bool _jumpRequested;
+        private bool _jumpCharging;
+        private float _jumpChargeStartTime;
         private PlayerArmController _playerArmController;
         private Quaternion _currentVisualRotation = Quaternion.identity;
 
@@ -26,24 +30,6 @@ namespace DeepSeaGame
             if (_serverCharacter.CharacterData.CanMove)
             {
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
-
-                // In water mode, we treat the Jump button as a vertical 'Up' input override.
-                // We use an effective input vector so we don't overwrite the cached _desiredDirection.
-                Vector2 effectiveInput = DesiredDirection;
-                if (GameInput.Instance.JumpHeldDown)
-                {
-                    effectiveInput.y = 1f;
-                }
-
-                // Re-evaluate movement state and direction based on the combined input
-                if (effectiveInput.sqrMagnitude > 0.0001f)
-                {
-                    DesiredDirection = effectiveInput.normalized;
-                }
-                else
-                {
-                    DesiredDirection = Vector2.zero;
-                }
 
                 _velocity = Vector2.Lerp(_velocity, DesiredDirection * currentSpeed, _serverCharacter.CharacterData.TurnSharpness * Time.fixedDeltaTime);
             }
@@ -91,8 +77,8 @@ namespace DeepSeaGame
                 float targetY = _velocity.y;
                 if (!_isGrounded || targetY > 0)
                 {
-                    targetY += (_gravity * Time.fixedDeltaTime);
-                    targetY = Mathf.Max(targetY, _terminalVelocity);
+                    targetY += _gravity * Time.fixedDeltaTime;
+                    targetY = Mathf.Max(targetY, -Mathf.Abs(_gravity));
                 }
                 else
                 {
@@ -104,9 +90,33 @@ namespace DeepSeaGame
                 {
                     if (_isGrounded)
                     {
-                        targetY = _jumpPower;
+                        targetY = _minJumpPower;
+                        _jumpCharging = true;
+                        _jumpChargeStartTime = Time.unscaledTime;
                     }
                     _jumpRequested = false; // Consume request regardless of success
+                }
+
+                if (_jumpCharging)
+                {
+                    if (GameInput.Instance != null && GameInput.Instance.JumpHeldDown)
+                    {
+                        float elapsedHoldTime = Time.unscaledTime - _jumpChargeStartTime;
+                        if (elapsedHoldTime < _maxJumpHoldTime)
+                        {
+                            float holdRatio = Mathf.Clamp01(elapsedHoldTime / _maxJumpHoldTime);
+                            float chargedJumpPower = Mathf.Lerp(_minJumpPower, _maxJumpPower, holdRatio);
+                            targetY = Mathf.Max(targetY, chargedJumpPower);
+                        }
+                        else
+                        {
+                            _jumpCharging = false;
+                        }
+                    }
+                    else
+                    {
+                        _jumpCharging = false;
+                    }
                 }
 
                 _velocity = new Vector2(targetX, targetY);
