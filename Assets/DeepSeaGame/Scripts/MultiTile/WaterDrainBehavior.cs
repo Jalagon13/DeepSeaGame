@@ -138,7 +138,7 @@ namespace DeepSeaGame
             {
                 dataStore.AddUnderwaterAirTile(pos.x, pos.y);
             }
-            Debug.Log($"ShelterCore valid space detected at {anchor}. Drained {visited.Count} tiles.");
+            // Debug.Log($"ShelterCore valid space detected at {anchor}. Drained {visited.Count} tiles.");
         }
 
         private void FillWater(Vector2Int anchor, WorldDataStore dataStore, HashSet<Vector2Int> visited)
@@ -147,7 +147,7 @@ namespace DeepSeaGame
             {
                 dataStore.RemoveUnderwaterAirTile(pos.x, pos.y);
             }
-            Debug.Log($"ShelterCore exposed at {anchor}. Filled {visited.Count} tiles with water.");
+            // Debug.Log($"ShelterCore exposed at {anchor}. Filled {visited.Count} tiles with water.");
         }
     }
 }

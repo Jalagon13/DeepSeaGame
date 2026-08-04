@@ -6,9 +6,12 @@ namespace DeepSeaGame
     public class PlayerCharacterMovement : CharacterMovement
     {
         [SerializeField] private Transform _playerVisuals;
-    
         [SerializeField] private float _visualRotationSpeed = 8f;
         
+        [Header("Collider Size Settings")]
+        [SerializeField] private Vector2 _airBodySize;
+        [SerializeField] private Vector2 _waterBodySize;
+
         [Header("Player Character Move Settings")]
         [SerializeField] private float _minJumpPower = 5f;
         [SerializeField] private float _maxJumpPower = 20f;
@@ -25,9 +28,21 @@ namespace DeepSeaGame
         {
             _playerArmController = GetComponent<PlayerArmController>();
         }
+        
+        // private void Start() 
+        // {
+        //     Player.Instance.Character.CurrentStatus.OnValueChanged += StatusChanged
+        // }
+
+        // public override void OnDestroy()
+        // {
+            
+        // }
 
         protected override void WaterMovement()
         {
+            _gridCollider.SetBodyColliderSize(_waterBodySize);
+        
             if (_serverCharacter.CharacterData.CanMove)
             {
                 float currentSpeed = _serverCharacter.CharacterData.BaseSpeed;
@@ -64,6 +79,8 @@ namespace DeepSeaGame
 
         protected override void AirMovement()
         {
+            _gridCollider.SetBodyColliderSize(_airBodySize);
+
             // 1. Grounded Check via our Grid Data
             _isGrounded = _gridCollider.IsGrounded();
 

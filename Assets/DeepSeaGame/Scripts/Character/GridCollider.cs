@@ -20,6 +20,9 @@ namespace DeepSeaGame
         [SerializeField]
         private float _skinWidth = 0.02f; // Tiny offset to prevent getting stuck in walls
 
+        [SerializeField, Tooltip("How quickly the collider interpolates toward a resolved unstuck position.")]
+        private float _unstuckLerpSpeed = 8f;
+
         [SerializeField]
         private float _groundCheckDepth = 0.05f; // How far below the collider to look for ground
 
@@ -36,11 +39,11 @@ namespace DeepSeaGame
 
             Vector2 currentPos = transform.position;
             CollisionResult result = new();
-            
             // Calculate AABB manually to avoid stale 'collider.bounds' data after teleports
             Vector2 size = _bodyCollider.size;
             Vector2 halfSize = size * 0.5f;
             Vector2 offset = _bodyCollider.offset;
+            Debug.Log($"Moving with size: {size}");
 
             // 1. Resolve X Axis
             float deltaX = velocity.x * deltaTime;
@@ -107,9 +110,85 @@ namespace DeepSeaGame
                 else currentPos.y += deltaY;
             }
 
-            transform.position = new Vector3(currentPos.x, currentPos.y, 0f);
-            Debug.Log($"colliding");
+            if (IsOverlappingForeground(currentPos, halfSize, offset))
+            {
+                Vector2 unstuckDirection = GetBestUnstuckDirection(currentPos, halfSize, offset);
+                if (unstuckDirection != Vector2.zero)
+                {
+                    currentPos += unstuckDirection.normalized * _unstuckLerpSpeed * deltaTime;
+                }
+            }
+
+            transform.position = new(currentPos.x, currentPos.y, 0f);
             return result;
+        }
+
+        private bool IsOverlappingForeground(Vector2 position, Vector2 halfSize, Vector2 offset)
+        {
+            int minGridX = Mathf.FloorToInt(position.x + offset.x - halfSize.x + _skinWidth);
+            int maxGridX = Mathf.FloorToInt(position.x + offset.x + halfSize.x - _skinWidth);
+            int minGridY = Mathf.FloorToInt(position.y + offset.y - halfSize.y + _skinWidth);
+            int maxGridY = Mathf.FloorToInt(position.y + offset.y + halfSize.y - _skinWidth);
+
+            for (int x = minGridX; x <= maxGridX; x++)
+            {
+                for (int y = minGridY; y <= maxGridY; y++)
+                {
+                    if (IsTileSolid(x, y)) return true;
+                }
+            }
+            return false;
+        }
+
+        private Vector2 GetBestUnstuckDirection(Vector2 position, Vector2 halfSize, Vector2 offset)
+        {
+            int minGridX = Mathf.FloorToInt(position.x + offset.x - halfSize.x + _skinWidth);
+            int maxGridX = Mathf.FloorToInt(position.x + offset.x + halfSize.x - _skinWidth);
+            int minGridY = Mathf.FloorToInt(position.y + offset.y - halfSize.y + _skinWidth);
+            int maxGridY = Mathf.FloorToInt(position.y + offset.y + halfSize.y - _skinWidth);
+
+            Vector2 colliderCenter = position + offset;
+            Vector2 direction = Vector2.zero;
+            int overlapCount = 0;
+
+            for (int x = minGridX; x <= maxGridX; x++)
+            {
+                for (int y = minGridY; y <= maxGridY; y++)
+                {
+                    if (!IsTileSolid(x, y)) continue;
+                    overlapCount++;
+
+                    Vector2 tileCenter = new Vector2(x + 0.5f, y + 0.5f);
+                    Vector2 fromTile = colliderCenter - tileCenter;
+                    if (fromTile.sqrMagnitude < 0.0001f)
+                    {
+                        fromTile = new Vector2(0.5f, 0.5f);
+                    }
+                    direction += fromTile.normalized;
+                }
+            }
+
+            return overlapCount > 0 ? direction : Vector2.zero;
+        }
+
+        private bool IsTileSolid(int x, int y)
+        {
+            if (!_worldDataStore.IsInBounds(x, y)) return true; // World bounds are solid
+            ushort tileId = _worldDataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
+            if (tileId == GameDataRegistry.INVALID_ID) return false;
+
+            TileSO tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
+            return tileSO == null || tileSO.IsSolid;
+        }
+
+        public void SetBodyColliderSize(Vector2 size)
+        {
+            if (_bodyCollider != null)
+            {
+                Debug.Log($"Setting body collider to size: {size}");
+                _bodyCollider.size = size;
+                Debug.Log($"body collider size curr: {_bodyCollider.size}");
+            }
         }
 
         public bool IsGrounded()
@@ -133,16 +212,6 @@ namespace DeepSeaGame
                 if (IsTileSolid(x, gridY)) return true;
             }
             return false;
-        }
-
-        private bool IsTileSolid(int x, int y)
-        {
-            if (!_worldDataStore.IsInBounds(x, y)) return true; // World bounds are solid
-            ushort tileId = _worldDataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
-            if (tileId == GameDataRegistry.INVALID_ID) return false;
-
-            TileSO tileSO = GameDataRegistry.Instance.GetTileSOFromTileId(tileId);
-            return tileSO == null || tileSO.IsSolid;
         }
     }
 }
