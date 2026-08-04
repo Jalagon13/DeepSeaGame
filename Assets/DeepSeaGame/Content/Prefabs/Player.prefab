@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.GridCollider
   _bodyCollider: {fileID: 7189654115469789931}
-  _feetCollider: {fileID: 3079386733588127609}
+  _feetCollider: {fileID: 0}
   _skinWidth: 0.02
   _groundCheckDepth: 0.05
 --- !u!114 &1902777031516221210

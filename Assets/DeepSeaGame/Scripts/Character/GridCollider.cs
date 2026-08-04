@@ -35,12 +35,12 @@ namespace DeepSeaGame
             if (_worldDataStore == null) return default;
 
             Vector2 currentPos = transform.position;
-            CollisionResult result = new CollisionResult();
+            CollisionResult result = new();
             
             // Calculate AABB manually to avoid stale 'collider.bounds' data after teleports
             Vector2 size = _bodyCollider.size;
-            Vector2 offset = _bodyCollider.offset;
             Vector2 halfSize = size * 0.5f;
+            Vector2 offset = _bodyCollider.offset;
 
             // 1. Resolve X Axis
             float deltaX = velocity.x * deltaTime;
@@ -108,6 +108,7 @@ namespace DeepSeaGame
             }
 
             transform.position = new Vector3(currentPos.x, currentPos.y, 0f);
+            Debug.Log($"colliding");
             return result;
         }
 
