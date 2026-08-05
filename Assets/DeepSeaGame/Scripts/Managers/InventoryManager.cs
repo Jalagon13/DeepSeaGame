@@ -28,9 +28,7 @@ namespace DeepSeaGame
         private int _startingSelectedHotbarSlotIndex = 0;
 
         [Header("Stacking")]
-        [SerializeField, Min(1), Tooltip("Maximum number of items allowed in a single stack for stackable items.")]
-        private int _inventoryStackMax = 9999;
-
+        [SerializeField, Min(1)] private int _inventoryStackMax = 9999;
         [SerializeField] private ItemCollectWorldUI _itemCollectPlatePrefab;
         [SerializeField] private float _timeBetweenCollections = 0.1f;
 

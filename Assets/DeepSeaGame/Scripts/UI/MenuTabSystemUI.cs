@@ -32,21 +32,6 @@ namespace DeepSeaGame
 
         private void Awake()
         {
-            SetupTabButtons();
-        }
-
-        private void Start()
-        {
-            if (_tabs.Count > 0)
-            {
-                SetTab(_startIndex);
-            }
-            
-            RefreshTabs();
-        }
-
-        private void SetupTabButtons()
-        {
             for (int i = 0; i < _tabs.Count; i++)
             {
                 int index = i;
@@ -55,6 +40,16 @@ namespace DeepSeaGame
                     _tabs[i].TabButton.onClick.AddListener(() => SetTab(index));
                 }
             }
+        }
+
+        private void Start()
+        {
+            if (_tabs.Count > 0)
+            {
+                SetTab(_startIndex);
+            }
+
+            RefreshTabs();
         }
 
         public void SetTab(int index)
