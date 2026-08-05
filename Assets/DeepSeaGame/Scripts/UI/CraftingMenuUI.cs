@@ -33,19 +33,7 @@ namespace DeepSeaGame
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-        }
-
-        private void Start()
-        {
-            _activeRecipes = _defaultRecipes;
-            HideCraftingMenu();
         }
 
         private void OnEnable()
@@ -59,9 +47,10 @@ namespace DeepSeaGame
         {
             ClearRecipeListPanelUI();
             CraftingMenuUIOpen = false;
+            _activeRecipes = _defaultRecipes;
         }
 
-        public void ShowCraftingMenu(List<RecipeSO> recipes = null)
+        public void PopulateRecipes(List<RecipeSO> recipes)
         {
             if (recipes != null)
             {
@@ -71,20 +60,9 @@ namespace DeepSeaGame
             {
                 _activeRecipes = _defaultRecipes;
             }
-
-            gameObject.SetActive(true);
+            
             ClearRecipeListPanelUI();
             PopulateRecipeListPanelUI();
-
-            CraftingMenuUIOpen = true;
-        }
-
-        public void HideCraftingMenu()
-        {
-            _activeRecipes = _defaultRecipes;
-            gameObject.SetActive(false);
-
-            CraftingMenuUIOpen = false;
         }
 
         private void ClearRecipeListPanelUI()

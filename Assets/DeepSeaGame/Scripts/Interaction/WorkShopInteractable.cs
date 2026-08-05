@@ -11,8 +11,8 @@ namespace DeepSeaGame
 
         public void Interact()
         {
-            Debug.Log($"Interacting with {gameObject.name}");
-            InventoryManager.Instance?.OpenInventory(_availableRecipes);
+            InventoryManager.Instance.OpenInventory();
+            CraftingMenuUI.Instance.PopulateRecipes(_availableRecipes);
         }
 
         public void OnFlipX()

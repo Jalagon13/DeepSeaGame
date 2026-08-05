@@ -18,14 +18,9 @@ namespace DeepSeaGame
         public event Action<ItemSO, int> OnItemPickup;
 
         [Header("Inventory Layout")]
-        [SerializeField, Min(_minimumTotalSlotCount), Tooltip("Total number of inventory slots available to the player, including the hotbar.")]
-        private int _slotCount = 24;
-
-        [SerializeField, Min(_minimumHotbarSlotCount), Tooltip("Number of slots reserved for the hotbar at the bottom of the screen.")]
-        private int _hotbarSlotCount = 8;
-
-        [SerializeField, Min(0), Tooltip("Hotbar slot selected when the game starts. Clamped to the available hotbar range.")]
-        private int _startingSelectedHotbarSlotIndex = 0;
+        [SerializeField, Min(8)] private int _slotCount = 24;
+        [SerializeField, Min(1)] private int _hotbarSlotCount = 8;
+        [SerializeField, Min(0)] private int _startingSelectedHotbarSlotIndex = 0;
 
         [Header("Stacking")]
         [SerializeField, Min(1)] private int _inventoryStackMax = 9999;
@@ -33,12 +28,8 @@ namespace DeepSeaGame
         [SerializeField] private float _timeBetweenCollections = 0.1f;
 
         [Header("Starting Items")]
-        [SerializeField] private float _initialDelay;
         [SerializeField] private float _delayBetweenItemsGiven;
         [SerializeField] private List<InventoryStack> _startingItems = new();
-
-        private const int _minimumHotbarSlotCount = 1;
-        private const int _minimumTotalSlotCount = 8;
 
         private bool _isCollecting;
         private Queue<InventoryStack> _itemQueue = new();
@@ -95,7 +86,7 @@ namespace DeepSeaGame
 
         private IEnumerator GiveStartingItems()
         {
-            yield return new WaitForSeconds(_initialDelay);
+            yield return new WaitForSeconds(0.25f);
 
             foreach (InventoryStack slotItem in _startingItems)
             {
@@ -127,7 +118,7 @@ namespace DeepSeaGame
             OpenInventory();
         }
 
-        public void OpenInventory(List<RecipeSO> recipes = null)
+        public void OpenInventory()
         {
             if (IsInventoryOpen || !CanOpenInventory())
             {
@@ -139,7 +130,6 @@ namespace DeepSeaGame
             OnInventoryChanged?.Invoke();
             OnCursorStackChanged?.Invoke(CursorStack.Clone());
 
-            CraftingMenuUI.Instance.ShowCraftingMenu(recipes);
             GameInput.Instance.IsGameplayInputBlocked = true;
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryOpenSFX, default);
         }
@@ -155,7 +145,6 @@ namespace DeepSeaGame
             OnInventoryOpenChanged?.Invoke(false);
             OnInventoryChanged?.Invoke();
 
-            CraftingMenuUI.Instance.HideCraftingMenu();
             GameInput.Instance.IsGameplayInputBlocked = false;
             Tooltip.HideUI();
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryCloseSFX, default);

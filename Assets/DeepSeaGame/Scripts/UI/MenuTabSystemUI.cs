@@ -75,20 +75,6 @@ namespace DeepSeaGame
             }
         }
 
-        public void SetTab(string tabName)
-        {
-            if (string.IsNullOrEmpty(tabName) || _tabs == null)
-            {
-                return;
-            }
-
-            int index = _tabs.FindIndex(tab => string.Equals(tab.TabName, tabName, StringComparison.OrdinalIgnoreCase));
-            if (index >= 0)
-            {
-                SetTab(index);
-            }
-        }
-
         public void RefreshTabs()
         {
             if (_tabs == null || _tabs.Count == 0)
