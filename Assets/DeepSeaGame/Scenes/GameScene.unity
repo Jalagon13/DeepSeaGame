@@ -5664,6 +5664,34 @@ MonoBehaviour:
       Data3: -1910238327
       Data4: 1043532843
     Path: event:/Player/DrillSFX
+  <FlashlightOnSFX>k__BackingField:
+    Guid:
+      Data1: -1556126462
+      Data2: 1294029973
+      Data3: -1828362111
+      Data4: 2093537008
+    Path: event:/Player/FlashlightOnSFX
+  <FlashlightOffSFX>k__BackingField:
+    Guid:
+      Data1: -748423179
+      Data2: 1291233963
+      Data3: -1377520968
+      Data4: 399670583
+    Path: event:/Player/FlashlightOffSFX
+  <HatchOpen>k__BackingField:
+    Guid:
+      Data1: 642950089
+      Data2: 1259336937
+      Data3: -1467448154
+      Data4: 1767014282
+    Path: event:/Tiles/HatchOpenSFX
+  <HatchClosed>k__BackingField:
+    Guid:
+      Data1: -103539960
+      Data2: 1130076389
+      Data3: -766546764
+      Data4: -451936766
+    Path: event:/Tiles/HatchClosedSFX
 --- !u!114 &1240150082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8497,7 +8525,13 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
+  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 11
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 11
+  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    _amount: 888
+  - _item: {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
     _amount: 1
 --- !u!114 &1794183287
 MonoBehaviour:

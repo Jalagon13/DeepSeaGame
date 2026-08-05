@@ -23,6 +23,12 @@ namespace DeepSeaGame
         [field: SerializeField] public EventReference OxygenReplenishSFX { get; private set; }
         [field: SerializeField] public EventReference PlayerSwimSFX { get; private set; }
         [field: SerializeField] public EventReference DrillSFX { get; private set; }
+        [field: SerializeField] public EventReference FlashlightOnSFX { get; private set; }
+        [field: SerializeField] public EventReference FlashlightOffSFX { get; private set; }
+
+        [field: Header("World")]
+        [field: SerializeField] public EventReference HatchOpen { get; private set; }
+        [field: SerializeField] public EventReference HatchClosed { get; private set; }
 
 
         private void Awake() 

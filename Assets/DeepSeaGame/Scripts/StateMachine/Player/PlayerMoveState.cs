@@ -20,7 +20,10 @@ namespace DeepSeaGame
         protected override void EnterState(AIStateData stateData)
         {
             // Debug.Log("Player switched to move state");
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
+            if(_ctx.ServerCharacter.CurrentStatus.Value == Status.InWater)
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
+            }
 
             _playSwimSoundTimer = new(_swimSoundCooldown);
             _playSwimSoundTimer.OnTimerEnd += PlaySwimSound;
@@ -53,7 +56,10 @@ namespace DeepSeaGame
 
         private void PlaySwimSound(object sender, EventArgs e)
         {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
+            if (_ctx.ServerCharacter.CurrentStatus.Value == Status.InWater)
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerSwimSFX, Player.Instance.transform.position);
+            }
             _playSwimSoundTimer.Reset();
         }
     }

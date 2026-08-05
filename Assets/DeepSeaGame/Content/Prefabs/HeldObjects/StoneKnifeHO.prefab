@@ -188,11 +188,11 @@ MonoBehaviour:
   _thrustWeaponTip: {fileID: 2879120723829211110}
   _thrustSound:
     Guid:
-      Data1: -2102575177
-      Data2: 1313280795
-      Data3: -1560040826
-      Data4: 1005198113
-    Path: event:/Player/PlayerSwimSFX
+      Data1: -728526012
+      Data2: 1227182260
+      Data3: -1669163884
+      Data4: -165125004
+    Path: event:/Player/ThrustSFX
 --- !u!1 &6829302794521760813
 GameObject:
   m_ObjectHideFlags: 0

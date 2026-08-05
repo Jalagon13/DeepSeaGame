@@ -85,21 +85,17 @@ namespace DeepSeaGame
         {
             if (e.started)
             {
-                ToggleFlashlight();
+                _isFlashlightOn = !_isFlashlightOn;
+                
+                AudioManager.Instance.PlayOneShot(_isFlashlightOn ? FMODEvents.Instance.FlashlightOnSFX : FMODEvents.Instance.FlashlightOffSFX, transform.position);
+
+                // Reset the stored direction and player position so the first frame after toggling on always fires a recalculation
+                _lastDirection = ConeDirection;
+                _lastPlayerPosition = CenterOfPlayerPosition;
+
+                // Fire event so LightmapManager knows to recalculate
+                OnFlashlightStateChanged?.Invoke();
             }
-        }
-
-        private void ToggleFlashlight()
-        {
-            _isFlashlightOn = !_isFlashlightOn;
-            Debug.Log($"Flashlight Toggle: {(_isFlashlightOn ? "ON" : "OFF")}");
-
-            // Reset the stored direction and player position so the first frame after toggling on always fires a recalculation
-            _lastDirection = ConeDirection;
-            _lastPlayerPosition = CenterOfPlayerPosition;
-
-            // Fire event so LightmapManager knows to recalculate
-            OnFlashlightStateChanged?.Invoke();
         }
     }
 }

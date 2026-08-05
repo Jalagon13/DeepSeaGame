@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -20,7 +21,7 @@ namespace DeepSeaGame
                 return;
             }
 
-            Debug.Log($"Interacting with {gameObject.name}");
+            AudioManager.Instance.PlayOneShot(_isOpenHatch ? FMODEvents.Instance.HatchOpen : FMODEvents.Instance.HatchClosed, transform.position);
 
             if (WorldManager.Instance.WorldDataStore.ActiveMultiTiles.TryGetValue(anchor, out MultiTileData currentData))
             {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{c6fe7a08-33f2-41d6-8824-69e613ef3dd1}">
+		<property name="assetPath">
+			<value>Tiles/HatchOpenSFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>2.0253749999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{39bc47ab-d9b9-49aa-9609-5987d550cdd2}</destination>
+		</relationship>
+	</object>
+</objects>
