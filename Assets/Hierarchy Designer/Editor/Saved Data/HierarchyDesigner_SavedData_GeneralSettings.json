@@ -2,7 +2,7 @@
     "LayoutMode": 2,
     "TreeMode": 0,
     "EnableGameObjectMainIcon": false,
-    "EnableGameObjectComponentIcons": true,
+    "EnableGameObjectComponentIcons": false,
     "EnableHierarchyTree": true,
     "EnableGameObjectTag": false,
     "EnableGameObjectLayer": false,

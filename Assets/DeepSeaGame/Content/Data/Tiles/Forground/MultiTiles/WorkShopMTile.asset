@@ -21,7 +21,7 @@ MonoBehaviour:
   <RequiredToolType>k__BackingField: 0
   <TileItemSO>k__BackingField: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
   <StringID>k__BackingField: WorkShop
-  <Hardness>k__BackingField: 0.75
+  <Hardness>k__BackingField: 0.5
   <LightValue>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <ActsAsEnclosure>k__BackingField: 0

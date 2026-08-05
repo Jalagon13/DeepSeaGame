@@ -114,12 +114,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
+  <InScenePlaced>k__BackingField: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -228,7 +229,7 @@ MonoBehaviour:
   _gravity: -50
   _playerVisuals: {fileID: 2662637307106457156}
   _visualRotationSpeed: 10
-  _airBodySize: {x: 1.75, y: 2.5}
+  _airBodySize: {x: 1.75, y: 2.75}
   _waterBodySize: {x: 1.75, y: 1.75}
   _minJumpPower: 5
   _maxJumpPower: 20

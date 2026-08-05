@@ -204,12 +204,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3311200795
+  GlobalObjectIdHash: 2077796778
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
+  <InScenePlaced>k__BackingField: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -296,7 +297,7 @@ MonoBehaviour:
   _attractRange: 6
   _attractSpeed: 26
   _turnSharpness: 7
-  _initialCollectDelay: 0.5
+  _initialCollectDelay: 0.3
   _airGravityScale: 1
   _waterGravityScale: 0.2
   _airLinearDamping: 0

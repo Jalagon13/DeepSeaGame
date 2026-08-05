@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RadioItem
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.TileItemSO
   _itemName: Radio
-  _itemDescription: 
+  _itemDescription: Place it down and interact with it to call help.
   _inventoryIcon: {fileID: -7112214663663397382, guid: 962ab9714c65b4d0da6abfb7030a4c18, type: 3}
   _isStackable: 1
   <PrimaryTile>k__BackingField: {fileID: 11400000, guid: e5cef520acd21469cbda44f11d6b15fc, type: 2}
