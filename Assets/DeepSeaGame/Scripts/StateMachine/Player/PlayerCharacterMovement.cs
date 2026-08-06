@@ -13,8 +13,8 @@ namespace DeepSeaGame
         [SerializeField] private Vector2 _waterBodySize;
 
         [Header("Player Character Move Settings")]
-        [SerializeField] private float _minJumpPower = 5f;
-        [SerializeField] private float _maxJumpPower = 20f;
+        [SerializeField] private float _minJumpPower = 8f;
+        [SerializeField] private float _maxJumpPower = 24f;
         [SerializeField] private float _maxJumpHoldTime = 0.225f;
 
         private bool _isGrounded;
@@ -119,11 +119,10 @@ namespace DeepSeaGame
                         _jumpCharging = true;
                         _jumpChargeStartTime = Time.unscaledTime;
                     }
-                    
+
                     _jumpRequested = false; // Consume request regardless of success
                 }
 
-                // Jumped based on hold time
                 if (_jumpCharging)
                 {
                     if (GameInput.Instance != null && GameInput.Instance.JumpHeldDown)

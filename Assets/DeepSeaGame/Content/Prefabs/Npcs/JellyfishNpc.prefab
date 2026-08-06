@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.ContactDamageDealer
   ShowTopMostFoldoutHeaderGroup: 1
-  _dealDamage: 0
+  _dealDamage: 1
 --- !u!1 &3727948619967477449
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,12 +334,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2259381156
+  GlobalObjectIdHash: 3128680445
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
+  <InScenePlaced>k__BackingField: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -394,6 +395,7 @@ MonoBehaviour:
   _bodyCollider: {fileID: 6383856562982597883}
   _feetCollider: {fileID: 6383856562982597883}
   _skinWidth: 0.02
+  _unstuckLerpSpeed: 8
   _groundCheckDepth: 0.05
 --- !u!114 &3431724271537848667
 MonoBehaviour:
@@ -430,7 +432,8 @@ MonoBehaviour:
   _serverCharacter: {fileID: 3431724271537848667}
   _gridCollider: {fileID: 4704644086379418733}
   _gravity: -30
-  _terminalVelocity: -50
+  _visuals: {fileID: 9159696022360132724}
+  _visualRotationSpeed: 8
   PropelSpeed: 10
   WaitTimeAfterPropel: 2
   SeekRadius: 20

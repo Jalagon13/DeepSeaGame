@@ -34,7 +34,7 @@ namespace DeepSeaGame
             // Apply gravity to vertical velocity
             float targetY = _velocity.y + (_gravity * Time.fixedDeltaTime);
             targetY = Mathf.Max(targetY, _gravity);
-            _velocity = new Vector2(_velocity.x, targetY);
+            _velocity = new Vector2(/* _velocity.x */ 0, targetY);
         }
 
         protected override void WaterMovement()
@@ -93,9 +93,13 @@ namespace DeepSeaGame
                 return;
             }
 
-            FlipDirection();
-            _velocity = new Vector2(-_velocity.x, 0f);
-            ResetDirectionChangeTimer();
+            if(_serverCharacter.CurrentStatus.Value == Status.InWater)
+            {
+                FlipDirection();
+                _velocity = new Vector2(-_velocity.x, 0f);
+                ResetDirectionChangeTimer();
+            }
+            
         }
 
         public void StartHorizontalSwim()

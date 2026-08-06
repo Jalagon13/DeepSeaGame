@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1336743837
+  GlobalObjectIdHash: 1733515650
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -231,9 +231,9 @@ MonoBehaviour:
   _visualRotationSpeed: 10
   _airBodySize: {x: 1.75, y: 2.75}
   _waterBodySize: {x: 1.75, y: 1.75}
-  _minJumpPower: 5
-  _maxJumpPower: 20
-  _maxJumpHoldTime: 0.225
+  _minJumpPower: 10
+  _maxJumpPower: 17
+  _maxJumpHoldTime: 0.2
 --- !u!114 &7146354698580210200
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2526,7 +2526,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.82908, y: 24, z: 0}
+  m_LocalPosition: {x: 42.64943, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4118,7 +4118,7 @@ MonoBehaviour:
   _seaLevelY: 326
   <Seed>k__BackingField: 123
   _defaultSeed: prototype-world
-  <UndergroundMaxYLevel>k__BackingField: 238
+  <UndergroundMaxYLevel>k__BackingField: 250
   <UndergroundMinYLevel>k__BackingField: 0
   _columnsPerFrame: 32
 --- !u!114 &885515395
@@ -8524,14 +8524,18 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
     _amount: 1
-  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
-    _amount: 11
-  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
-    _amount: 11
-  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
-    _amount: 888
-  - _item: {fileID: 11400000, guid: ed7ba5cb4d2474d959379c77e243120c, type: 2}
+  - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    _amount: 1233
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 12
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9461,7 +9465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.NpcManager
   ShowTopMostFoldoutHeaderGroup: 1
-  _enableSpawning: 0
+  _enableSpawning: 1
   _startSpawnDelay: 1
   _innerNoSpawnDimensions: {x: 105, y: 60}
   _outerSpawnDimensions: {x: 168, y: 94}
@@ -10571,7 +10575,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134409140}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a33dc90631ea94781920f172ab16a26d, type: 3}
   m_Name: 
@@ -10588,7 +10592,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134409140}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

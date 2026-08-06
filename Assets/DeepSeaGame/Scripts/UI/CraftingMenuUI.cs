@@ -47,10 +47,9 @@ namespace DeepSeaGame
         {
             ClearRecipeListPanelUI();
             CraftingMenuUIOpen = false;
-            _activeRecipes = _defaultRecipes;
         }
 
-        public void PopulateRecipes(List<RecipeSO> recipes)
+        public void PopulateRecipes(List<RecipeSO> recipes = null)
         {
             if (recipes != null)
             {

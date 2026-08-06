@@ -115,6 +115,7 @@ namespace DeepSeaGame
                 return;
             }
 
+            CraftingMenuUI.Instance.PopulateRecipes();
             OpenInventory();
         }
 
